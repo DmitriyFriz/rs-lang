@@ -5,6 +5,7 @@ import './GamesList.scss';
 const createCard = (game) => {
   const element = document.createElement('div');
   element.className = 'games-item';
+  element.id = game.id;
   const title = document.createElement('h3');
   title.innerText = game.name;
   const description = document.createElement('p');
