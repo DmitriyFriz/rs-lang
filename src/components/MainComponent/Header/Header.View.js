@@ -1,6 +1,5 @@
 // views
 import BaseComponent from '../../BaseComponent/BaseComponent';
-import Loader from '../Loader/Loader.View';
 
 // layout
 import getLayout from './Header.Layout';
@@ -16,15 +15,12 @@ class Header extends BaseComponent {
       ...options,
     };
 
-    this.loader = new Loader(parent, 'div');
-    this.loader.show();
-
     this.handleMenuClick = this.handleMenuClick.bind(this);
     this.handleButtonOutClick = this.handleButtonOutClick.bind(this);
   }
 
   createLayout() {
-    this.component.innerHTML = getLayout(this.state);
+    this.component.append(...getLayout(this.state));
   }
 
   addListeners() {
@@ -38,16 +34,6 @@ class Header extends BaseComponent {
   removeListeners() {
     this.menu.removeEventListener('click', this.handleMenuClick);
     this.buttonOut.removeEventListener('click', this.handleButtonOutClick);
-  }
-
-  async prepareData() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.data = 'It\'s not a real data but it shows the component lifecycle';
-        this.loader.hide();
-        resolve();
-      }, 3000);
-    });
   }
 
   handleMenuClick(event) {

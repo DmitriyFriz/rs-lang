@@ -1,7 +1,7 @@
 import Header from './Header/Header.View';
 
 const root = document.querySelector('#root');
-const currentUserMail = 'Petrov@gmail.com'
+const currentUserMail = 'Petrov@gmail.com';
 
 const header = new Header(root, 'header', {
   menuClassName: 'menu',
@@ -12,7 +12,3 @@ const header = new Header(root, 'header', {
 });
 
 header.show();
-
-setTimeout(() => {
-  header.hide();
-}, 8000);
