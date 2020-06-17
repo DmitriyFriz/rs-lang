@@ -17,16 +17,13 @@ export default function getLayout({
   logOutClassName,
   userEmail,
 }) {
-  const menu = createElement({ tag: 'ul', content: null, className: menuClassName });
+  const menu = createElement({ tag: 'div', content: null, className: menuClassName });
 
   const menuElements = authorizedMenuElements.map((element) => {
-    const elementContainer = createElement({ tag: 'li' });
+    const elementButton = createElement({ tag: 'button', content: element.title, className: menuItemClassName });
+    elementButton.dataset.destination = element.destination;
 
-    const elementHref = createElement({ tag: 'a', content: element.title, className: menuItemClassName });
-    elementHref.href = `#/${element.href}`;
-
-    elementContainer.append(elementHref);
-    return elementContainer;
+    return elementButton;
   });
 
   menu.append(...menuElements);

@@ -17,6 +17,10 @@ body {
   border-radius: 4px;
   border: solid 1px rgb(155, 153, 151);
 
+  * {
+    pointer-events: none;
+  }
+
   h3 {
     font-size: 1.5em;
   }

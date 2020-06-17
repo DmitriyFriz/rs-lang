@@ -1,4 +1,4 @@
-import Header from './Header/Header.View';
+import Header from './Header.View';
 
 const root = document.querySelector('#root');
 const currentUserMail = 'Petrov@gmail.com';
