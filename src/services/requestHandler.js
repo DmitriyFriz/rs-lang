@@ -9,8 +9,12 @@ const getOptions = (method, token, data) => {
     },
   };
 
-  if (token) options.headers.Authorization = `Bearer ${token}`;
-  if (data) options.body = JSON.stringify(data);
+  if (token) {
+    options.headers.Authorization = `Bearer ${token}`;
+  }
+  if (data && (method === 'PUT' || method === 'POST')) {
+    options.body = JSON.stringify(data);
+  }
 
   return options;
 };
