@@ -1,0 +1,12 @@
+@import "../../base/basicStyle.scss";
+@import "../../base/typography.scss";
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 5px;
+  border: $lightBorder;
+  width: 70%;
+  height: auto;
+}

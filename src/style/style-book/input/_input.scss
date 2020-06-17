@@ -1,0 +1,15 @@
+@import "../../base/basicStyle.scss";
+@import "../../base/typography.scss";
+
+.input {
+  border: $lightBorder;
+  width: 900px;
+  height: 70px;
+  outline: none;
+  font-family: $mainFont2;
+  font-size: $fontSize;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow: hidden;
+  text-transform: uppercase;
+}
