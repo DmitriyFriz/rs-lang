@@ -1,4 +1,5 @@
 const rootUrl = 'https://afternoon-falls-25894.herokuapp.com/';
+const NO_CONTENT_STATUS = 204;
 
 const endPoints = {
   users: {
@@ -53,21 +54,120 @@ const endPoints = {
           Authorization: `Bearer ${token}`,
         },
       },
-      mode: 'delete',
+    }),
+  },
+
+  words: {
+    getChunk: ({ page, group }) => ({
+      url: `${rootUrl}words?page=${page}&group=${group}`,
+
+      options: {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    }),
+
+    getWordById: (wordId) => ({
+      url: `${rootUrl}words/${wordId}`,
+
+      options: {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    }),
+
+    createUserWord: ({
+      token, userId, wordId, word,
+    }) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+
+      options: {
+        method: 'POST',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(word),
+      },
+    }),
+
+    getUserWord: ({ token, userId, wordId }) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+
+      options: {
+        method: 'GET',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      },
+    }),
+
+    getAllUserWords: ({ token, userId, wordId }) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+
+      options: {
+        method: 'GET',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      },
+    }),
+
+    updateUserWord: ({
+      token, userId, wordId, word,
+    }) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+
+      options: {
+        method: 'PUT',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(word),
+      },
+    }),
+
+    deleteUserWord: ({ token, userId, wordId }) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+
+      options: {
+        method: 'DELETE',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      },
     }),
 
   },
 };
 
-async function createRequest({ url, options, mode }) {
+async function createRequest({ url, options }) {
   try {
     const res = await fetch(url, options);
-    if (mode === 'delete') return null;
+    const { status, statusText } = res;
+
+    if (!(/2\d\d/.test(status))) throw Error(`${statusText} (${status})`);
+    if (status === NO_CONTENT_STATUS) return null;
 
     const data = await res.json();
     return data;
   } catch (e) {
-    throw Error('request');
+    throw e.message;
   }
 }
 
