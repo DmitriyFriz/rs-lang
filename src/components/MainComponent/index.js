@@ -6,6 +6,7 @@ const currentUserMail = 'Petrov@gmail.com';
 const header = new Header(root, 'header', {
   menuClassName: 'menu',
   menuItemClassName: 'menu-item',
+  logoClassName: 'logo',
   emailClassName: 'user-email',
   logOutClassName: 'log-out',
   userEmail: currentUserMail,

@@ -4,11 +4,12 @@ import createElement from '../../BaseComponent/Common/createElement';
 export default function getLayout({
   menuClassName,
   menuItemClassName,
+  logoClassName,
   emailClassName,
   logOutClassName,
   userEmail,
 }) {
-  const menu = createElement({ tag: 'ul', content: null, className: menuClassName });
+  const menu = createElement({ tag: 'ul', className: menuClassName });
 
   const menuElements = authorizedMenuElements.map((element) => {
     const elementContainer = createElement({ tag: 'li' });
@@ -22,8 +23,9 @@ export default function getLayout({
 
   menu.append(...menuElements);
 
+  const logoContainer = createElement({ tag: 'div', className: logoClassName });
   const emailContainer = createElement({ tag: 'div', content: userEmail, className: emailClassName });
   const buttonOut = createElement({ tag: 'button', content: 'Log out', className: logOutClassName });
 
-  return [menu, emailContainer, buttonOut];
+  return [logoContainer, menu, emailContainer, buttonOut];
 }
