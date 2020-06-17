@@ -97,7 +97,7 @@ const endPoints = {
       },
     }),
 
-    getUserWord: ({ token, userId, wordId }) => ({
+    getUserWordById: ({ token, userId, wordId }) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
 
       options: {
@@ -152,7 +152,66 @@ const endPoints = {
         },
       },
     }),
+  },
 
+  statistics: {
+    update: ({ token, userId, data }) => ({
+      url: `${rootUrl}users/${userId}/statistics`,
+
+      options: {
+        method: 'PUT',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      },
+    }),
+
+    get: ({ token, userId }) => ({
+      url: `${rootUrl}users/${userId}/statistics`,
+
+      options: {
+        method: 'GET',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      },
+    }),
+  },
+
+  settings: {
+    get: ({ token, userId }) => ({
+      url: `${rootUrl}users/${userId}/settings`,
+
+      options: {
+        method: 'GET',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      },
+    }),
+
+    update: ({ token, userId, data }) => ({
+      url: `${rootUrl}users/${userId}/settings`,
+
+      options: {
+        method: 'PUT',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      },
+    }),
   },
 };
 
