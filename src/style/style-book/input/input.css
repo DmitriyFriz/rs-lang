@@ -20,14 +20,14 @@
 }
 
 .input {
+  overflow: hidden;
   border: 1px solid #0e1e40;
-  width: 900px;
-  height: 70px;
   outline: none;
-  font-family: "Montserrat Regular", sans-serif;
-  font-size: 20px;
   padding-left: 5px;
   padding-right: 5px;
-  overflow: hidden;
+  width: 900px;
+  height: 70px;
+  font-family: "Montserrat Regular", sans-serif;
+  font-size: 20px;
   text-transform: uppercase;
 }

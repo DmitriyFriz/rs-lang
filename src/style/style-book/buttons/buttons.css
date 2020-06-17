@@ -20,6 +20,7 @@
 }
 
 .button {
+  overflow: hidden;
   width: 265px;
   height: 80px;
   background-color: #68c2e8;
@@ -30,6 +31,5 @@
   cursor: pointer;
   font-family: "Montserrat Light", sans-serif;
   text-transform: uppercase;
-  overflow: hidden;
   text-align: center;
 }
