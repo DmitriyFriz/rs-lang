@@ -1,0 +1,33 @@
+body {
+  background: rgb(248, 242, 238);
+}
+
+.games-container {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.games-item {
+  margin: 20px;
+  padding: 20px;
+  min-height: 20vh;
+  width: 80%;
+  border-radius: 4px;
+  border: solid 1px rgb(155, 153, 151);
+
+  h3 {
+    font-size: 1.5em;
+  }
+}
+
+@media (min-width: 900px) {
+  .games-item {
+    width: 35%;
+
+    h3 {
+      font-size: 2em;
+    }
+  }
+}
