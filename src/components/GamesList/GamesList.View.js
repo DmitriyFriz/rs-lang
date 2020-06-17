@@ -6,12 +6,15 @@ const createCard = (game) => {
   const element = document.createElement('div');
   element.className = 'games-item';
   element.id = game.id;
+
   const title = document.createElement('h3');
   title.innerText = game.name;
+  element.appendChild(title);
+
   const description = document.createElement('p');
   description.innerText = game.description;
-  element.appendChild(title);
   element.appendChild(description);
+
   return element;
 };
 
@@ -23,13 +26,8 @@ class GamesList extends BaseComponent {
   }
 
   createLayout() {
-    const result = [];
-    this.games.forEach((game) => {
-      const card = createCard(game);
-      result.push(card);
-    });
     this.component.className = 'games-container';
-    this.component.append(...result);
+    this.component.append(...this.games.map((game) => createCard(game)));
   }
 }
 
