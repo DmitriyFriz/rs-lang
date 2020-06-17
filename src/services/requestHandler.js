@@ -1,216 +1,105 @@
 const rootUrl = 'https://afternoon-falls-25894.herokuapp.com/';
 const NO_CONTENT_STATUS = 204;
+const getOptions = (method, token, data) => {
+  const options = {
+    method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  if (token) options.headers.Authorization = `Bearer ${token}`;
+  if (data) options.body = JSON.stringify(data);
+
+  return options;
+};
 
 const endPoints = {
   users: {
-    create(user) {
-      return {
-        url: `${rootUrl}users`,
-
-        options: {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(user),
-        },
-      };
-    },
+    create: (user) => ({
+      url: `${rootUrl}users`,
+      options: getOptions('POST', null, user),
+    }),
 
     signIn: (user) => ({
       url: `${rootUrl}signin`,
-
-      options: {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      },
+      options: getOptions('POST', null, user),
     }),
 
     update: ({ token, userId, user }) => ({
       url: `${rootUrl}users/${userId}`,
-
-      options: {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      },
+      options: getOptions('PUT', token, user),
     }),
 
     delete: ({ token, userId }) => ({
       url: `${rootUrl}users/${userId}`,
-
-      options: {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+      options: getOptions('DELETE', token),
     }),
   },
 
   words: {
     getChunk: ({ page, group }) => ({
       url: `${rootUrl}words?page=${page}&group=${group}`,
-
-      options: {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-        },
-      },
+      options: getOptions('GET'),
     }),
 
     getWordById: (wordId) => ({
       url: `${rootUrl}words/${wordId}`,
-
-      options: {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-        },
-      },
+      options: getOptions('GET'),
     }),
 
     createUserWord: ({
       token, userId, wordId, word,
     }) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
-
-      options: {
-        method: 'POST',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(word),
-      },
+      options: getOptions('POST', token, word),
     }),
 
     getUserWordById: ({ token, userId, wordId }) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
-
-      options: {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-        },
-      },
+      options: getOptions('GET', token),
     }),
 
     getAllUserWords: ({ token, userId, wordId }) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
-
-      options: {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-        },
-      },
+      options: getOptions('GET', token),
     }),
 
     updateUserWord: ({
       token, userId, wordId, word,
     }) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
-
-      options: {
-        method: 'PUT',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(word),
-      },
+      options: getOptions('PUT', token, word),
     }),
 
     deleteUserWord: ({ token, userId, wordId }) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
-
-      options: {
-        method: 'DELETE',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-        },
-      },
+      options: getOptions('DELETE', token),
     }),
   },
 
   statistics: {
     update: ({ token, userId, data }) => ({
       url: `${rootUrl}users/${userId}/statistics`,
-
-      options: {
-        method: 'PUT',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      },
+      options: getOptions('PUT', token, data),
     }),
 
     get: ({ token, userId }) => ({
       url: `${rootUrl}users/${userId}/statistics`,
-
-      options: {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-        },
-      },
+      options: getOptions('GET', token),
     }),
   },
 
   settings: {
     get: ({ token, userId }) => ({
       url: `${rootUrl}users/${userId}/settings`,
-
-      options: {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-        },
-      },
+      options: getOptions('GET', token),
     }),
 
     update: ({ token, userId, data }) => ({
       url: `${rootUrl}users/${userId}/settings`,
-
-      options: {
-        method: 'PUT',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      },
+      options: getOptions('PUT', token, data),
     }),
   },
 };
