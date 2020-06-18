@@ -1,3 +1,7 @@
+// Since this file shows how to use this component, then
+/* eslint-disable no-empty-function */
+/* eslint-disable class-methods-use-this */
+
 /**
  * Should be used to construct any component.
  * The API and lifecycle can be updated

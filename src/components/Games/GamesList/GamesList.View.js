@@ -1,11 +1,23 @@
-import BaseComponent from '../BaseComponent/BaseComponent';
+// views
+import BaseComponent from '../../BaseComponent/BaseComponent';
+
+// router
+import { onRouteChangeEvent } from '../../../router/RouteHandler';
+
+// data
 import data from './GamesList.Data';
+
+// constants
+import { ROUTERS } from '../../../router/Router.Constants';
+
+// styles
 import './GamesList.scss';
 
 const createCard = (game) => {
   const element = document.createElement('div');
   element.className = 'games-item';
   element.id = game.id;
+  element.dataset.destination = game.destination;
 
   const title = document.createElement('h3');
   title.innerText = game.name;
@@ -23,11 +35,25 @@ class GamesList extends BaseComponent {
     super(parent, tagName);
 
     this.games = data;
+
+    this.handleGameOpen = this.handleGameOpen.bind(this);
   }
 
   createLayout() {
     this.component.className = 'games-container';
     this.component.append(...this.games.map((game) => createCard(game)));
+  }
+
+  addListeners() {
+    this.component.addEventListener('click', this.handleGameOpen);
+  }
+
+  removeListeners() {
+    this.component.removeEventListener('click', this.handleGameOpen);
+  }
+
+  handleGameOpen(event) {
+    onRouteChangeEvent(event, ROUTERS.GAMES);
   }
 }
 
