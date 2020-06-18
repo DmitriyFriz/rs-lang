@@ -1,4 +1,4 @@
-import authorizedMenuElements from './Header.Layout.Data';
+import HeaderLayoutData from './Header.Layout.Data';
 import createElement from '../../BaseComponent/Common/createElement';
 
 export default function getLayout({
@@ -6,12 +6,14 @@ export default function getLayout({
   menuItemClassName,
   logoClassName,
   emailClassName,
-  logOutClassName,
+  buttonClassName,
   userEmail,
+  isAuthorized,
 }) {
   const menu = createElement({ tag: 'ul', className: menuClassName });
-
-  const menuElements = authorizedMenuElements.map((element) => {
+  const menuElementsData = isAuthorized
+    ? HeaderLayoutData.authorized.menuElements : HeaderLayoutData.guest.MenuElements;
+  const menuElements = menuElementsData.map((element) => {
     const elementContainer = createElement({ tag: 'li' });
 
     const elementHref = createElement({ tag: 'a', content: element.title, className: menuItemClassName });
@@ -23,9 +25,20 @@ export default function getLayout({
 
   menu.append(...menuElements);
 
-  const logoContainer = createElement({ tag: 'div', className: logoClassName });
-  const emailContainer = createElement({ tag: 'div', content: userEmail, className: emailClassName });
-  const buttonOut = createElement({ tag: 'button', content: 'Log out', className: logOutClassName });
+  if (isAuthorized) {
+    const logoContainer = createElement({ tag: 'div', className: logoClassName });
+    const emailContainer = createElement({ tag: 'div', content: userEmail, className: emailClassName });
+    const buttonOut = createElement({
+      tag: 'button',
+      content: HeaderLayoutData.authorized.buttons.title,
+      className: buttonClassName,
+      id: HeaderLayoutData.authorized.buttons.id,
+    });
 
-  return [logoContainer, menu, emailContainer, buttonOut];
+    return [logoContainer, menu, emailContainer, buttonOut];
+  }
+  const guestButtons = HeaderLayoutData.guest.buttons.map((buttonData) => createElement({
+    tag: 'button', content: buttonData.title, className: buttonClassName, id: buttonData.id,
+  }));
+  return [menu, ...guestButtons];
 }
