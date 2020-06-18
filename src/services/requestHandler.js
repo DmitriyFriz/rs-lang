@@ -37,10 +37,6 @@ const authorizationData = {
       localStorage.setItem('userId', userId);
     }
   },
-
-  clearSession: () => {
-    ['token', 'userId'].forEach((key) => localStorage.setItem(key, ''));
-  },
 };
 
 const endPoints = {
@@ -134,6 +130,10 @@ async function checkAuthorizationStatus() {
   return res.status !== UNAUTHORIZED_STATUS;
 }
 
+function clearSession() {
+  ['token', 'userId'].forEach((key) => localStorage.setItem(key, ''));
+}
+
 async function createRequest({ url, options }) {
   try {
     const res = await fetch(url, options);
@@ -163,4 +163,5 @@ export {
   createRequest,
   authorizationData,
   checkAuthorizationStatus,
+  clearSession,
 };
