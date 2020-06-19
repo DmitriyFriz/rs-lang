@@ -1,6 +1,5 @@
 const rootUrl = 'https://afternoon-falls-25894.herokuapp.com/';
 const NO_CONTENT_STATUS = 204;
-const UNAUTHORIZED_STATUS = 401;
 
 const getOptions = (method, token, data) => {
   const options = {
@@ -21,27 +20,9 @@ const getOptions = (method, token, data) => {
   return options;
 };
 
-const authorizationData = {
-  get data() {
-    return {
-      token: localStorage.getItem('token'),
-      userId: localStorage.getItem('userId'),
-    };
-  },
-
-  set data([token, userId]) {
-    if (token) {
-      localStorage.setItem('token', token);
-    }
-    if (userId) {
-      localStorage.setItem('userId', userId);
-    }
-  },
-};
-
 const endPoints = {
   users: {
-    create: (user) => ({
+    register: (user) => ({
       url: `${rootUrl}users`,
       options: getOptions('POST', null, user),
     }),
@@ -51,14 +32,14 @@ const endPoints = {
       options: getOptions('POST', null, user),
     }),
 
-    update: (user) => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}`,
-      options: getOptions('PUT', authorizationData.data.token, user),
+    update: (userId, token, user) => ({
+      url: `${rootUrl}users/${userId}`,
+      options: getOptions('PUT', token, user),
     }),
 
-    delete: () => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}`,
-      options: getOptions('DELETE', authorizationData.data.token),
+    remove: (userId, token) => ({
+      url: `${rootUrl}users/${userId}`,
+      options: getOptions('DELETE', token),
     }),
   },
 
@@ -112,9 +93,9 @@ const endPoints = {
   },
 
   settings: {
-    update: (data) => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/settings`,
-      options: getOptions('PUT', authorizationData.data.token, data),
+    update: (userId, token, data) => ({
+      url: `${rootUrl}users/${userId}/settings`,
+      options: getOptions('PUT', token, data),
     }),
 
     get: () => ({
@@ -124,35 +105,18 @@ const endPoints = {
   },
 };
 
-async function checkAuthorizationStatus() {
-  const { url, options } = endPoints.settings.update();
-  const res = await fetch(url, options);
-  return res.status !== UNAUTHORIZED_STATUS;
-}
-
-function clearSession() {
-  ['token', 'userId'].forEach((key) => localStorage.setItem(key, ''));
-}
-
 async function createRequest({ url, options }) {
   try {
     const res = await fetch(url, options);
     const { status, statusText } = res;
 
-    if (!(/2\d\d/.test(status))) {
-      throw Error(`${statusText} (${status})`);
-    }
-    if (status === NO_CONTENT_STATUS) {
-      return null;
+    if (!/2\d\d/.test(status)
+      || status === NO_CONTENT_STATUS) {
+      return { status, statusText };
     }
 
     const data = await res.json();
-
-    if (data.token) {
-      authorizationData.data = [data.token, data.userId];
-    }
-
-    return data;
+    return { status, statusText, data };
   } catch (e) {
     throw e.message;
   }
@@ -161,7 +125,4 @@ async function createRequest({ url, options }) {
 export {
   endPoints,
   createRequest,
-  authorizationData,
-  checkAuthorizationStatus,
-  clearSession,
 };
