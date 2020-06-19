@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "Montserrat Bold";
+  src: url("../../../fonts/Montserrat-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Montserrat Regular";
+  src: url("../../../fonts/Montserrat-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Montserrat Light";
+  src: url("../../../fonts/Montserrat-Light.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300;
+}
+
+.button {
+  overflow: hidden;
+  width: 265px;
+  height: 80px;
+  background-color: #68c2e8;
+  color: #fff;
+  font-size: 30px;
+  outline: none;
+  border: 1px solid #0e1e40;
+  cursor: pointer;
+  font-family: "Montserrat Light", sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+}
