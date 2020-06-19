@@ -6,8 +6,9 @@ function createElement(tag, content, className, id) {
   return element;
 }
 
-export default function createWordCard(word) {
+export default function createWordCard(word, i) {
   const card = createElement('div', null, 'card');
+  card.setAttribute('id', i);
 
   const text = createElement('p', word.word, 'word');
   card.appendChild(text);
