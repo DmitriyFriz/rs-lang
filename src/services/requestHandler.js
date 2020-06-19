@@ -44,7 +44,7 @@ const endPoints = {
   },
 
   words: {
-    getChunk: ({ page, group }) => ({
+    getChunk: (page, group) => ({
       url: `${rootUrl}words?page=${page}&group=${group}`,
       options: getOptions('GET'),
     }),
@@ -54,41 +54,41 @@ const endPoints = {
       options: getOptions('GET'),
     }),
 
-    createUserWord: ({ wordId, word }) => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/words/${wordId}`,
-      options: getOptions('POST', authorizationData.data.token, word),
+    createUserWord: (userId, token, wordId, word) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+      options: getOptions('POST', token, word),
     }),
 
-    getUserWordById: (wordId) => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/words/${wordId}`,
-      options: getOptions('GET', authorizationData.data.token),
+    getUserWordById: (userId, token, wordId) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+      options: getOptions('GET', token),
     }),
 
-    getAllUserWords: (wordId) => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/words/${wordId}`,
-      options: getOptions('GET', authorizationData.data.token),
+    getAllUserWords: (userId, token, wordId) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+      options: getOptions('GET', token),
     }),
 
-    updateUserWord: ({ wordId, word }) => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/words/${wordId}`,
-      options: getOptions('PUT', authorizationData.data.token, word),
+    updateUserWord: (userId, token, wordId, word) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+      options: getOptions('PUT', token, word),
     }),
 
-    deleteUserWord: (wordId) => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/words/${wordId}`,
-      options: getOptions('DELETE', authorizationData.data.token),
+    deleteUserWord: (userId, token, wordId) => ({
+      url: `${rootUrl}users/${userId}/words/${wordId}`,
+      options: getOptions('DELETE', token),
     }),
   },
 
   statistics: {
-    update: (data) => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/statistics`,
-      options: getOptions('PUT', authorizationData.data.token, data),
+    update: (userId, token, data) => ({
+      url: `${rootUrl}users/${userId}/statistics`,
+      options: getOptions('PUT', token, data),
     }),
 
-    get: () => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/statistics`,
-      options: getOptions('GET', authorizationData.data.token),
+    get: (userId, token) => ({
+      url: `${rootUrl}users/${userId}/statistics`,
+      options: getOptions('GET', token),
     }),
   },
 
@@ -98,9 +98,9 @@ const endPoints = {
       options: getOptions('PUT', token, data),
     }),
 
-    get: () => ({
-      url: `${rootUrl}users/${authorizationData.data.userId}/settings`,
-      options: getOptions('GET', authorizationData.data.token),
+    get: (userId, token) => ({
+      url: `${rootUrl}users/${userId}/settings`,
+      options: getOptions('GET', token),
     }),
   },
 };
