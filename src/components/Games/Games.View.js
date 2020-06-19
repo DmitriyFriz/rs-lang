@@ -3,6 +3,7 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 import GamesList from './GamesList/GamesList.View';
 import SpeakIt from './SpeakIt/SpeakIt.View';
+import EnglishPuzzle from './EnglishPuzzle/EnglishPuzzle.View';
 import SpeakItMain from './SpeakIt/components/SpeakItMain.View';
 import SprintStart from './Sprint/Start/SprintStart.View';
 import SprintGame from './Sprint/Game/SprintGame.View';
@@ -30,6 +31,7 @@ class Games extends BaseComponent {
       [GAMES_ROUTES.GAMES_LIST]: GamesList,
       [GAMES_ROUTES.SPEAK_IT]: SpeakIt,
       [SPEAK_IT_ROUTERS.SPEAK_IT_MAIN]: SpeakItMain,
+      [GAMES_ROUTES.ENGLISH_PUZZLE]: EnglishPuzzle,
       [GAMES_ROUTES.SPRINT]: SprintStart,
       [GAMES_ROUTES.SPRINT_GAME]: SprintGame,
       [GAMES_ROUTES.SPRINT_FINISH]: SprintFinish,
