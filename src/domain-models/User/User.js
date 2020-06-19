@@ -1,4 +1,4 @@
-import { endPoints, createRequest } from '../services/requestHandler';
+import { endPoints, createRequest } from '../../services/requestHandler';
 
 const UNAUTHORIZED_STATUS = 401;
 const OK_STATUS = 200;
@@ -67,6 +67,9 @@ export default {
   },
 
   logOut() {
+    if (!this.isAuthorized) {
+      return;
+    }
     this.clearSession();
     this.isAuthorized = false;
   },
