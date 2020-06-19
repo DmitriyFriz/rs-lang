@@ -1,8 +1,14 @@
 // views
-import BaseComponent from '../../BaseComponent/BaseComponent';
+import BaseComponent from '../BaseComponent/BaseComponent';
+
+// router
+import { onRouteChangeEvent } from '../../router/RouteHandler';
 
 // layout
 import getLayout from './Header.Layout';
+
+// constants
+import { ROUTERS } from '../../router/Router.Constants';
 
 // styles
 import './Header.scss';
@@ -22,23 +28,13 @@ class Header extends BaseComponent {
   }
 
   createLayout() {
-    this.component.append(...getLayout(this.state));
+    [this.logo, this.menu, this.emailContainer, this.buttonOut] = getLayout(this.state);
+    this.component.append(this.logo, this.menu, this.emailContainer, this.buttonOut);
   }
 
   addListeners() {
-    this.menu = this.component.querySelector(`.${this.state.menuClassName}`);
     this.menu.addEventListener('click', this.handleMenuClick);
-
-    if (this.state.isAuthorized) {
-      this.buttonOut = this.component.querySelector(`#${this.state.buttonId.logOut}`);
-      this.buttonOut.addEventListener('click', this.handleButtonOutClick);
-    } else {
-      this.buttonIn = this.component.querySelector(`#${this.state.buttonId.signIn}`);
-      this.buttonIn.addEventListener('click', this.handleButtonInClick);
-
-      this.buttonUp = this.component.querySelector(`#${this.state.buttonId.signUp}`);
-      this.buttonUp.addEventListener('click', this.handleButtonUpClick);
-    }
+    this.buttonOut.addEventListener('click', this.handleButtonOutClick);
   }
 
   removeListeners() {
@@ -59,10 +55,7 @@ class Header extends BaseComponent {
   }
 
   handleMenuClick(event) {
-    const menuItem = event.target;
-    if (menuItem.classList.contains(`${this.state.menuItemClassName}`)) {
-      console.log(menuItem.href);
-    }
+    onRouteChangeEvent(event, ROUTERS.MAIN);
   }
 
   handleButtonOutClick() {

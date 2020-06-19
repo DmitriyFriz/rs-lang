@@ -1,3 +1,7 @@
+// Since this file shows how to use this component, then
+/* eslint-disable no-empty-function */
+/* eslint-disable class-methods-use-this */
+
 /**
  * Should be used to construct any component.
  * The API and lifecycle can be updated
@@ -44,6 +48,22 @@ class BaseComponent {
   hide() {
     this.removeListeners();
     this.parent.removeChild(this.component);
+  }
+
+  static createElement({
+    tag, content, className, id,
+  }) {
+    const element = document.createElement(tag);
+    if (content) {
+      element.textContent = content;
+    }
+    if (className) {
+      element.className = className;
+    }
+    if (id) {
+      element.id = id;
+    }
+    return element;
   }
 }
 

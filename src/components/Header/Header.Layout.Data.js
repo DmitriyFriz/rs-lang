@@ -1,30 +1,32 @@
+import { MAIN_ROUTES } from '../../router/Router.Constants';
+
 const HeaderLayoutData = {
 
   authorized: {
     menuElements: [
       {
         title: 'Main page',
-        href: 'main',
+        destination: MAIN_ROUTES.MAIN_PAGE,
       },
       {
         title: 'Games',
-        href: 'games',
+        destination: MAIN_ROUTES.GAMES,
       },
       {
         title: 'Vocabulary',
-        href: 'vocabulary',
+        destination: MAIN_ROUTES.VOCABULARY,
       },
       {
         title: 'Statistic',
-        href: 'statistic',
+        destination: MAIN_ROUTES.STATISTIC,
       },
       {
         title: 'Promo page',
-        href: 'promo',
+        destination: MAIN_ROUTES.PROMO,
       },
       {
         title: 'About Us',
-        href: 'about',
+        destination: MAIN_ROUTES.ABOUT_TEAM,
       },
     ],
 
@@ -38,11 +40,11 @@ const HeaderLayoutData = {
     MenuElements: [
       {
         title: 'Promo page',
-        href: 'promo',
+        destination: MAIN_ROUTES.PROMO,
       },
       {
         title: 'About Us',
-        href: 'about',
+        destination: MAIN_ROUTES.ABOUT_TEAM,
       },
     ],
 
@@ -59,4 +61,5 @@ const HeaderLayoutData = {
   },
 
 };
+
 export default HeaderLayoutData;
