@@ -1,0 +1,18 @@
+@import "../../../../style/base/basicStyle";
+
+.words-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  max-width: 1000px;
+
+  .card {
+    margin: 10px;
+    border: $lightBorder;
+    border-radius: 4px;
+    width: 170px;
+    padding: 10px;
+    background-color: $basicColor3;
+  }
+}

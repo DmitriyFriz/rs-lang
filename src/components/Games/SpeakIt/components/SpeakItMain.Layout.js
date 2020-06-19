@@ -1,8 +1,8 @@
 import defaultImage from '../images/english.jpg';
 
-export default function() {
+export default function createLayout() {
   return `
-  <section class="main-section hidden">
+  <section class="main-section">
 <fieldset>
   <legend>Levels</legend>
   <div class="custom-control custom-radio custom-control-inline">
@@ -30,7 +30,7 @@ export default function() {
     <label class="custom-control-label" for="defaultInline6">6</label>
   </div>
 </fieldset>
-<button id="stats-btn" class="button"><i class="fas fa-list-ol"></i> statistics</button>
+<button id="stats-btn"><i class="fas fa-list-ol"></i> statistics</button>
 <div id="picture-card" class="card">
   <div class="card-body">
     <img class="card-img-top" src=${defaultImage} alt="picture">
@@ -38,11 +38,10 @@ export default function() {
   </div>
 </div>
 <div class="buttons-group">
-  <div class="button" id="reset-button">Reset</div>
+  <div id="reset-button">Reset</div>
   <div id="speak-button"><i class="fas fa-microphone"></i>Speak</div>
   <div id="results-button">Results<span id="result"></span></div>
 </div>
 <div class="stars-container"></div>
-<div class="words-container d-flex flex-wrap"></div>
 </section>`;
 }
