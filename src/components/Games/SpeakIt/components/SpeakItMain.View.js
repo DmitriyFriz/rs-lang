@@ -48,7 +48,6 @@ class SpeakItMain extends BaseComponent {
     const endPoint = endPoints.words.getChunk({ page, group: this.state.level });
     const data = await createRequest(endPoint);
     this.state.words = data.slice(0, 10);
-    console.log(this.state.words);
   }
 
   createWords() {
