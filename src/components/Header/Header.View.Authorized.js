@@ -13,25 +13,23 @@ import { ROUTERS } from '../../router/Router.Constants';
 // styles
 import './Header.scss';
 
-class Header extends BaseComponent {
-  constructor(parent, tagName, options) {
+class HeaderAuthorized extends BaseComponent {
+  constructor(parent, tagName) {
     super(parent, tagName);
 
-    this.state = {
-      ...options,
-    };
+    this.isAuthorized = true;
 
     this.handleMenuClick = this.handleMenuClick.bind(this);
     this.handleButtonOutClick = this.handleButtonOutClick.bind(this);
   }
 
   createLayout() {
-    [this.menu, this.emailContainer, this.buttonOut] = getLayout(this.state);
-    this.component.append(this.menu, this.emailContainer, this.buttonOut);
+    [this.logo, this.menu, this.emailContainer, this.buttonOut] = getLayout(this.isAuthorized);
+    this.component.append(this.logo, this.menu, this.emailContainer, this.buttonOut);
   }
 
   addListeners() {
-    this.menu.addEventListener('click', this.handleMenuClick);
+    this.component.addEventListener('click', this.handleMenuClick);
     this.buttonOut.addEventListener('click', this.handleButtonOutClick);
   }
 
@@ -44,9 +42,9 @@ class Header extends BaseComponent {
     onRouteChangeEvent(event, ROUTERS.MAIN);
   }
 
-  handleButtonOutClick() {
-    console.log('Out');
+  handleButtonOutClick(event) {
+    onRouteChangeEvent(event, ROUTERS.HEADER);
   }
 }
 
-export default Header;
+export default HeaderAuthorized;

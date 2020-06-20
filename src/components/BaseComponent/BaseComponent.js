@@ -49,6 +49,26 @@ class BaseComponent {
     this.removeListeners();
     this.parent.removeChild(this.component);
   }
+
+  static createElement({
+    tag, content, className, id, destination
+  }) {
+    const element = document.createElement(tag);
+    if (content) {
+      element.textContent = content;
+    }
+    if (className) {
+      element.className = className;
+    }
+    if (id) {
+      element.id = id;
+    }
+    if (destination) {
+      element.dataset.destination = destination;
+    }
+
+    return element;
+  }
 }
 
 export default BaseComponent;
