@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // views
 import BaseComponent from '../../../BaseComponent/BaseComponent';
 
@@ -68,9 +69,9 @@ class SpeakItMain extends BaseComponent {
       this.prepareData().then(() => {
         this.wordsContainer.innerHTML = '';
         this.wordsContainer.append(...this.createWords());
-        this.resetImage();
       });
     }
+    this.reset();
   }
 
   wordClickHandler(event) {
