@@ -22,8 +22,8 @@ class SpeakIt extends BaseComponent {
       <p>Click on the words to hear them sound.<br>
         Click on the button and speak the words into the microphone.</p>
       <div>
-        <button data-destination=${SPEAK_IT_ROUTERS.SPEAK_IT_MAIN}>Back</button>
-        <button data-destination=${GAMES_ROUTES.GAMES_LIST}>Play</button>
+        <button data-destination=${GAMES_ROUTES.GAMES_LIST}>Back</button>
+        <button data-destination=${SPEAK_IT_ROUTERS.SPEAK_IT_MAIN}>Play</button>
       </div>
     </div>
     `;
