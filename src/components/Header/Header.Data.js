@@ -1,6 +1,6 @@
 import { MAIN_ROUTES } from '../../router/Router.Constants';
 
-const HeaderLayoutData = {
+const HeaderLayout = {
 
   authorized: {
     menuElements: [
@@ -32,7 +32,11 @@ const HeaderLayoutData = {
 
     buttons: {
       title: 'Log out',
-      id: 'log-out',
+      destination: MAIN_ROUTES.LOG_OUT,
+    },
+
+    logo: {
+      destination: MAIN_ROUTES.MAIN_PAGE,
     },
   },
 
@@ -51,15 +55,23 @@ const HeaderLayoutData = {
     buttons: [
       {
         title: 'Sign up',
-        id: 'sign-up',
+        destination: MAIN_ROUTES.SIGN_UP,
       },
       {
         title: 'Sign in',
-        id: 'sign-in',
+        destination: MAIN_ROUTES.SIGN_IN,
       },
     ],
   },
 
 };
 
-export default HeaderLayoutData;
+const HeaderClassName = {
+  menu: 'menu',
+  menuItem: 'menu-item',
+  logo: 'logo',
+  email: 'user-email',
+  button: 'header-button',
+};
+
+export { HeaderLayout, HeaderClassName };

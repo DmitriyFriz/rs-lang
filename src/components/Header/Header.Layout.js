@@ -1,43 +1,49 @@
-import HeaderLayoutData from './Header.Layout.Data';
+import { HeaderLayout, HeaderClassName } from './Header.Data';
 import BaseComponent from '../BaseComponent/BaseComponent';
 
-export default function getLayout({
-  menuClassName,
-  menuItemClassName,
-  logoClassName,
-  emailClassName,
-  buttonClassName,
-  userEmail,
-  isAuthorized,
-}) {
-  const menu = BaseComponent.createElement({ tag: 'div', content: null, className: menuClassName });
+export default function getLayout(isAuthorized) {
+  const menu = BaseComponent.createElement({ tag: 'div', className: HeaderClassName.menu });
   const menuElementsData = isAuthorized
-    ? HeaderLayoutData.authorized.menuElements : HeaderLayoutData.guest.MenuElements;
-
+    ? HeaderLayout.authorized.menuElements : HeaderLayout.guest.MenuElements;
 
   const menuElements = menuElementsData.map((element) => {
-    const elementButton = BaseComponent.createElement({ tag: 'button', content: element.title, className: menuItemClassName });
-    elementButton.dataset.destination = element.destination;
-
+    const elementButton = BaseComponent.createElement({
+      tag: 'button',
+      content: element.title,
+      className: HeaderClassName.menuItem,
+      destination: element.destination,
+    });
     return elementButton;
   });
 
   menu.append(...menuElements);
 
   if (isAuthorized) {
-    const logoContainer = BaseComponent.createElement({ tag: 'div', className: logoClassName });
-    const emailContainer = BaseComponent.createElement({ tag: 'div', content: userEmail, className: emailClassName });
+    const logoContainer = BaseComponent.createElement({
+      tag: 'div',
+      className: HeaderClassName.logo,
+      destination: HeaderLayout.authorized.logo.destination,
+    });
+    const userEmail = 'Petrov';
+    const emailContainer = BaseComponent.createElement({
+      tag: 'div',
+      content: userEmail,
+      className: HeaderClassName.email,
+    });
     const buttonOut = BaseComponent.createElement({
       tag: 'button',
-      content: HeaderLayoutData.authorized.buttons.title,
-      className: buttonClassName,
-      id: HeaderLayoutData.authorized.buttons.id,
+      content: HeaderLayout.authorized.buttons.title,
+      className: HeaderClassName.button,
+      destination: HeaderLayout.authorized.buttons.destination,
     });
 
     return [logoContainer, menu, emailContainer, buttonOut];
   }
-  const guestButtons = HeaderLayoutData.guest.buttons.map((buttonData) => BaseComponent.createElement({
-    tag: 'button', content: buttonData.title, className: buttonClassName, id: buttonData.id,
+  const guestButtons = HeaderLayout.guest.buttons.map((buttonData) => BaseComponent.createElement({
+    tag: 'button',
+    content: buttonData.title,
+    className: HeaderClassName.button,
+    destination: buttonData.destination,
   }));
   return [menu, ...guestButtons];
 }

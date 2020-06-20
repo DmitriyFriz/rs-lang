@@ -51,7 +51,7 @@ class BaseComponent {
   }
 
   static createElement({
-    tag, content, className, id,
+    tag, content, className, id, destination
   }) {
     const element = document.createElement(tag);
     if (content) {
@@ -63,6 +63,10 @@ class BaseComponent {
     if (id) {
       element.id = id;
     }
+    if (destination) {
+      element.dataset.destination = destination;
+    }
+
     return element;
   }
 }
