@@ -4,6 +4,7 @@ import BaseComponent from '../../../BaseComponent/BaseComponent';
 // layout
 import getLayout from './SpeakItMain.Layout';
 import createWordCard from './SpeakItCard.Layout';
+import createResults from './SpeakItResults.Layout';
 import defaultImage from '../images/english.jpg';
 import starImage from '../images/star-win.svg';
 
@@ -11,7 +12,7 @@ import starImage from '../images/star-win.svg';
 import { onRouteChangeEvent } from '../../../../router/RouteHandler';
 
 // constants
-import { ROUTERS, SPEAK_IT_ROUTERS } from '../../../../router/Router.Constants';
+import { ROUTERS } from '../../../../router/Router.Constants';
 
 // services
 import { endPoints, createRequest } from '../../../../services/requestHandler';
@@ -34,11 +35,11 @@ class SpeakItMain extends BaseComponent {
     this.state = {
       level: 0,
       words: null,
+      learnedWords: [],
       isGameActive: false,
     };
     this.results = {
       correctCount: 0,
-      correctWords: [],
     };
   }
 
@@ -120,17 +121,16 @@ class SpeakItMain extends BaseComponent {
   checkSpelling(word) {
     const { words } = this.state;
     const id = words.findIndex((el) => el.word.toLowerCase() === word);
-    if (id >= 0 && !this.results.correctWords.includes(word)) {
+    if (id >= 0 && !this.state.learnedWords.includes(word)) {
       document.getElementById('translation').textContent = word;
-      this.results.correctWords.push(word);
+      this.state.learnedWords.push(word);
       const card = document.getElementById(`${id}`);
       card.classList.add('card-active');
       this.setImage(words[id].image);
       this.addStar();
-      this.results.correctCount += 1;
-      /* if (this.results.correctCount === words.length) {
-        showResult();
-      } */
+      if (this.state.learnedWords.length === words.length) {
+        this.showResults();
+      }
     }
   }
 
@@ -155,11 +155,24 @@ class SpeakItMain extends BaseComponent {
     }
   }
 
+  showResults() {
+    this.modal = createResults(this.state.learnedWords, this.state.words);
+    this.component.appendChild(this.modal);
+    this.modal.addEventListener('click', (event) => this.modalHandler(event));
+  }
+
+  modalHandler(event) {
+    if (event.target.id === 'back') {
+      this.component.removeChild(this.modal);
+    }
+  }
+
   addListeners() {
     this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
     document.querySelector('fieldset').addEventListener('click', (event) => this.switchLevels(event));
     this.wordsContainer.addEventListener('click', (event) => this.wordClickHandler(event));
     document.getElementById('speak-button').addEventListener('click', () => this.startGame());
+    document.getElementById('results-button').addEventListener('click', () => this.showResults());
     recognition.addEventListener('result', (event) => this.recognitionResultHandler(event));
 
     recognition.addEventListener('end', () => {

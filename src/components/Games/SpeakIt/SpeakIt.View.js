@@ -7,6 +7,9 @@ import { onRouteChangeEvent } from '../../../router/RouteHandler';
 // constants
 import { ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS } from '../../../router/Router.Constants';
 
+// styles
+import './SpeakIt.scss';
+
 class SpeakIt extends BaseComponent {
   static get name() {
     return GAMES_ROUTES.SPEAK_IT;
@@ -14,6 +17,7 @@ class SpeakIt extends BaseComponent {
 
   createLayout() {
     this.component.innerHTML = `
+    <div class="start-message">
       <h1>SPEAKIT</h1>
       <p>Click on the words to hear them sound.<br>
         Click on the button and speak the words into the microphone.</p>
@@ -21,6 +25,7 @@ class SpeakIt extends BaseComponent {
         <button data-destination=${SPEAK_IT_ROUTERS.SPEAK_IT_MAIN}>Start</button>
         <button data-destination=${GAMES_ROUTES.GAMES_LIST}>Back to Games</button>
       </div>
+    </div>
     `;
   }
 
