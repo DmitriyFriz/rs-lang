@@ -165,6 +165,29 @@ class SpeakItMain extends BaseComponent {
     if (event.target.id === 'back') {
       this.component.removeChild(this.modal);
     }
+    if (event.target.id === 'modal-reset') {
+      this.component.removeChild(this.modal);
+      this.reset();
+    }
+    if (event.target.tagName === 'LI') {
+      const word = event.target.id;
+      const { words } = this.state;
+      const i = words.findIndex((el) => el.word === word);
+      const audioSrc = `https://raw.githubusercontent.com/ana-karp/rslang/rslang-data/data/${words[i].audio}`;
+      const audio = new Audio(audioSrc);
+      audio.play();
+    }
+  }
+
+  reset() {
+    this.state.isGameActive = false;
+    this.state.learnedWords = [];
+    recognition.stop();
+    document.querySelectorAll('.card').forEach((el) => {
+      el.classList.remove('card-active');
+    });
+    this.resetImage();
+    document.querySelector('.stars-container').innerHTML = '';
   }
 
   addListeners() {
@@ -173,6 +196,7 @@ class SpeakItMain extends BaseComponent {
     this.wordsContainer.addEventListener('click', (event) => this.wordClickHandler(event));
     document.getElementById('speak-button').addEventListener('click', () => this.startGame());
     document.getElementById('results-button').addEventListener('click', () => this.showResults());
+    document.getElementById('reset-button').addEventListener('click', () => this.reset());
     recognition.addEventListener('result', (event) => this.recognitionResultHandler(event));
 
     recognition.addEventListener('end', () => {

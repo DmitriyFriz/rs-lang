@@ -31,6 +31,15 @@
   width: 300px;
   margin: auto;
   justify-content: space-between;
+
+  div {
+    background-color: $basicColor2;
+    padding: 10px;
+  }
+
+  div:hover {
+    cursor: pointer;
+  }
 }
 
 .words-container {
@@ -69,5 +78,53 @@
   img {
     display: block;
     height: 25px;
+  }
+}
+
+.results-section {
+  position: fixed;
+  overflow: scroll;
+  width: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: #0009;
+}
+
+.result-modal {
+  min-width: 30%;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 2em;
+  background-color: #fff;
+  color: #1c2331;
+  border-radius: 5px;
+
+  ul {
+    padding-bottom: 10px;
+  }
+
+  li {
+    padding: 10px 0;
+    transition: .3s;
+  }
+
+  li::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    padding-right: 10px;
+    background-size: 70%;
+    background-image: url(../images/sound-icon.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  li:hover {
+    transform: scale(1.05);
+    cursor: pointer;
   }
 }
