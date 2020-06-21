@@ -39,16 +39,13 @@ class SpeakItMain extends BaseComponent {
       learnedWords: [],
       isGameActive: false,
     };
-    this.results = {
-      correctCount: 0,
-    };
   }
 
   async prepareData() {
     const page = Math.floor(Math.random() * 30);
-    const endPoint = endPoints.words.getChunk({ page, group: this.state.level });
-    const data = await createRequest(endPoint);
-    this.state.words = data.slice(0, 10);
+    const endPoint = endPoints.words.getChunk(page, this.state.level);
+    const response = await createRequest(endPoint);
+    this.state.words = response.data.slice(0, 10);
   }
 
   createWords() {
