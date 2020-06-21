@@ -29,32 +29,27 @@ class User extends BaseDomainModel {
   }
 
   async update(user) {
-    if (!this.isAuthorized) {
-      return null;
-    }
     const endPoint = update(this.userId, this.token, user);
-    const { status, statusText } = await this.getData(endPoint);
+    const { status, statusText } = await this.getDataOfAuthorizedUser(endPoint);
     return { status, statusText };
   }
 
   async remove() {
-    if (!this.isAuthorized) {
-      return null;
-    }
     const endPoint = remove(this.userId, this.token);
-    const { status, statusText } = await this.getData(endPoint);
+    const { status, statusText } = await this.getDataOfAuthorizedUser(endPoint);
     this.logOut();
     return { status, statusText };
   }
 
   async checkAuthStatus() {
-    if (!(this.token && this.userId)) {
-      this.isAuthorized = false;
-      return false;
+    if (this.token && this.userId) {
+      const { status } = await this.update();
+      this.isAuthorized = (status !== this.STATUSES.UNAUTHORIZED);
+      return this.isAuthorized;
     }
-    const { status } = await this.update();
-    this.isAuthorized = (status !== this.STATUSES.UNAUTHORIZED);
-    return this.isAuthorized;
+
+    this.isAuthorized = false;
+    return false;
   }
 
   logOut() {

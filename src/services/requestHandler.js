@@ -1,5 +1,4 @@
 const rootUrl = 'https://afternoon-falls-25894.herokuapp.com/';
-const NO_CONTENT_STATUS = 204;
 
 const getOptions = (method, token, data) => {
   const options = {
@@ -108,15 +107,9 @@ const endPoints = {
 async function createRequest({ url, options }) {
   try {
     const res = await fetch(url, options);
-    const { status, statusText } = res;
-
-    if (!/2\d\d/.test(status)
-      || status === NO_CONTENT_STATUS) {
-      return { status, statusText };
-    }
-
     const data = await res.json();
-    return { status, statusText, data };
+
+    return data;
   } catch (e) {
     throw e.message;
   }

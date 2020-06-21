@@ -35,12 +35,23 @@ class BaseDomainModel {
   }
 
   async getData(endPoint) {
-    const { status, statusText, data } = await createRequest(endPoint);
-    if (status === this.STATUSES.UNAUTHORIZED) {
+    const data = await createRequest(endPoint);
+    if (data.status === this.STATUSES.UNAUTHORIZED) {
       this.isAuthorized = false;
     }
 
-    return { status, statusText, data };
+    return data;
+  }
+
+  async getDataOfAuthorizedUser(endPoint) {
+    if (this.isAuthorized) {
+      return this.getData(endPoint);
+    }
+
+    return {
+      status: this.STATUSES.UNAUTHORIZED,
+      statusText: 'Unauthorized',
+    };
   }
 }
 
