@@ -1,42 +1,63 @@
-const createCard = (data) => {
-  const card = document.createElement('div');
-  card.className = 'team__item';
+import BaseComponent from '../BaseComponent/BaseComponent';
 
-  const image = document.createElement('img');
+const createCard = (data) => {
+  const card = BaseComponent.createElement({
+    tag: 'div',
+    className: 'team__item',
+  });
+
+  const infoWrap = BaseComponent.createElement({
+    tag: 'div',
+    className: 'team__info',
+  });
+
+  const image = BaseComponent.createElement({
+    tag: 'img',
+    className: 'team__image',
+  });
   image.src = data.photo ? data.photo : './assets/img/github.svg';
   image.alt = data.name;
-  image.className = 'team__image';
 
-  const name = document.createElement('h3');
-  name.innerText = data.name;
+  const name = BaseComponent.createElement({
+    tag: 'h3',
+    content: data.name,
+    className: 'team__name',
+  });
 
-  const link = document.createElement('a');
+  const link = BaseComponent.createElement({
+    tag: 'a',
+    content: data.github,
+    className: 'team__link',
+  });
   link.href = `https://github.com/${data.github}/`;
   link.target = '_blank';
-  link.innerText = data.github;
 
-  const contributionsList = document.createElement('ul');
+  const contributionsList = BaseComponent.createElement({
+    tag: 'ul',
+    className: 'team__contributions',
+  });
   data.contributions.forEach((text) => {
     const contributionsItem = document.createElement('li');
     contributionsItem.innerText = text;
     contributionsList.insertAdjacentElement('beforeend', contributionsItem);
   });
 
-  card.insertAdjacentElement('beforeend', image);
-  card.insertAdjacentElement('beforeend', name);
-  card.insertAdjacentElement('beforeend', link);
-  card.insertAdjacentElement('beforeend', contributionsList);
+  infoWrap.append(image, name, link);
+
+  card.append(infoWrap, contributionsList);
 
   return card;
 };
 
 export default function (teammates) {
-  const element = document.createElement('div');
-  element.className = 'team__list';
+  const element = BaseComponent.createElement({
+    tag: 'div',
+    className: 'team__list',
+  });
 
   teammates.forEach((value) => {
     const card = createCard(value);
-    element.insertAdjacentElement('beforeend', card);
+    element.append(card);
   });
 
   return element;

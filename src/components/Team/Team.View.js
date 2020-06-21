@@ -14,7 +14,7 @@ class Team extends BaseComponent {
   createLayout() {
     this.component.className = 'team';
     const layout = getLayout(this.data);
-    this.component.insertAdjacentElement('beforeend', layout);
+    this.component.append(layout);
   }
 }
 
