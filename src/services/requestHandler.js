@@ -6,7 +6,8 @@ async function handleRequest(endPointGetter, ...param) {
     const res = await fetch(url, options);
     const { status, statusText } = res;
 
-    if (STATUSES.isSuccess(status) && status !== STATUSES.NO_CONTENT) {
+    if (STATUSES.isSuccess(status)
+      && status !== STATUSES.NO_CONTENT) {
       const data = await res.json();
       return { status, statusText, data };
     }

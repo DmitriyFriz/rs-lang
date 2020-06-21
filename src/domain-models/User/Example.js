@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import User from './User';
 
 const userDomainModel = new User();

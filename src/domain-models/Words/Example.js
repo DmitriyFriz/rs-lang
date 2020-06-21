@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Words from './Words';
 
 const wordsDomainModel = new Words();
