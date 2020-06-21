@@ -1,5 +1,6 @@
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
-import { endPoints } from '../../services/requestHandler';
+import STATUSES from '../../services/requestHandler.Statuses';
+import endPoints from '../../services/endPoints/endPoints.main';
 
 const {
   signIn, register, update, remove,
@@ -12,9 +13,9 @@ class User extends BaseDomainModel {
   }
 
   async signIn(user) {
-    const { status, statusText, data } = await this.getData(signIn(user));
+    const { status, statusText, data } = await this.getData(signIn, user);
 
-    if (data && status === this.STATUSES.OK) {
+    if (data) {
       this.token = data.token;
       this.userId = data.userId;
       this.isAuthorized = true;
@@ -24,27 +25,29 @@ class User extends BaseDomainModel {
   }
 
   async register(user) {
-    const { status, statusText } = await this.getData(register(user));
-    return { status, statusText };
+    const res = await this.getData(register, user);
+    return res;
   }
 
   async update(user) {
-    const endPoint = update(this.userId, this.token, user);
-    const { status, statusText } = await this.getDataOfAuthorizedUser(endPoint);
-    return { status, statusText };
+    const res = await this.getDataOfAuthorizedUser(
+      update, this.userId, this.token, user,
+    );
+    return res;
   }
 
   async remove() {
-    const endPoint = remove(this.userId, this.token);
-    const { status, statusText } = await this.getDataOfAuthorizedUser(endPoint);
+    const res = await this.getDataOfAuthorizedUser(
+      remove, this.userId, this.token,
+    );
     this.logOut();
-    return { status, statusText };
+    return res;
   }
 
   async checkAuthStatus() {
     if (this.token && this.userId) {
-      const { status } = await this.update();
-      this.isAuthorized = (status !== this.STATUSES.UNAUTHORIZED);
+      const { status } = await this.update(null);
+      this.isAuthorized = (status !== STATUSES.UNAUTHORIZED);
       return this.isAuthorized;
     }
 

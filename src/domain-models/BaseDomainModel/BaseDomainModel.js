@@ -1,15 +1,12 @@
-import { createRequest } from '../../services/requestHandler';
+/**
+ * This base domain model is used to create other models
+ * that receive and send data to the main app service.
+ */
 
-const STATUSES = {
-  OK: 200,
-  UNAUTHORIZED: 401,
-};
+import createRequest from '../../services/requestHandler';
+import STATUSES from '../../services/requestHandler.Statuses';
 
 class BaseDomainModel {
-  constructor() {
-    this.STATUSES = STATUSES;
-  }
-
   get isAuthorized() {
     return JSON.parse(localStorage.getItem('isAuthorized'));
   }
@@ -34,22 +31,18 @@ class BaseDomainModel {
     localStorage.setItem('userId', userId);
   }
 
-  async getData(endPoint) {
-    const data = await createRequest(endPoint);
-    if (data.status === this.STATUSES.UNAUTHORIZED) {
-      this.isAuthorized = false;
-    }
-
-    return data;
+  async getData(endPointGetter, ...param) {
+    const res = await createRequest(endPointGetter, ...param);
+    return res;
   }
 
-  async getDataOfAuthorizedUser(endPoint) {
+  async getDataOfAuthorizedUser(endPointGetter, ...param) {
     if (this.isAuthorized) {
-      return this.getData(endPoint);
+      return this.getData(endPointGetter, ...param);
     }
 
     return {
-      status: this.STATUSES.UNAUTHORIZED,
+      status: STATUSES.UNAUTHORIZED,
       statusText: 'Unauthorized',
     };
   }
