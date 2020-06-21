@@ -63,8 +63,8 @@ const endPoints = {
       options: getOptions('GET', token),
     }),
 
-    getAllUserWords: (userId, token, wordId) => ({
-      url: `${rootUrl}users/${userId}/words/${wordId}`,
+    getAllUserWords: (userId, token) => ({
+      url: `${rootUrl}users/${userId}/words/`,
       options: getOptions('GET', token),
     }),
 
