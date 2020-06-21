@@ -29,6 +29,11 @@ class User extends BaseDomainModel {
     return res;
   }
 
+  /**
+  * The update method doesn't work at the moment.
+  * The API has problems with password encoding and returns an error (status: 500).
+  */
+
   async update(user) {
     const res = await this.getDataOfAuthorizedUser(
       update, this.userId, this.token, user,
@@ -43,6 +48,10 @@ class User extends BaseDomainModel {
     this.logOut();
     return res;
   }
+
+  /**
+  * checkAuthStatus method sends an empty request to API and checks a response status.
+  */
 
   async checkAuthStatus() {
     if (this.token && this.userId) {
