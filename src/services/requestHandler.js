@@ -1,5 +1,6 @@
 const rootUrl = 'https://afternoon-falls-25894.herokuapp.com/';
 const NO_CONTENT_STATUS = 204;
+
 const getOptions = (method, token, data) => {
   const options = {
     method,
@@ -21,7 +22,7 @@ const getOptions = (method, token, data) => {
 
 const endPoints = {
   users: {
-    create: (user) => ({
+    register: (user) => ({
       url: `${rootUrl}users`,
       options: getOptions('POST', null, user),
     }),
@@ -31,19 +32,19 @@ const endPoints = {
       options: getOptions('POST', null, user),
     }),
 
-    update: ({ token, userId, user }) => ({
+    update: (userId, token, user) => ({
       url: `${rootUrl}users/${userId}`,
       options: getOptions('PUT', token, user),
     }),
 
-    delete: ({ token, userId }) => ({
+    remove: (userId, token) => ({
       url: `${rootUrl}users/${userId}`,
       options: getOptions('DELETE', token),
     }),
   },
 
   words: {
-    getChunk: ({ page, group }) => ({
+    getChunk: (page, group) => ({
       url: `${rootUrl}words?page=${page}&group=${group}`,
       options: getOptions('GET'),
     }),
@@ -53,57 +54,53 @@ const endPoints = {
       options: getOptions('GET'),
     }),
 
-    createUserWord: ({
-      token, userId, wordId, word,
-    }) => ({
+    createUserWord: (userId, token, wordId, word) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
       options: getOptions('POST', token, word),
     }),
 
-    getUserWordById: ({ token, userId, wordId }) => ({
+    getUserWordById: (userId, token, wordId) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
       options: getOptions('GET', token),
     }),
 
-    getAllUserWords: ({ token, userId, wordId }) => ({
+    getAllUserWords: (userId, token, wordId) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
       options: getOptions('GET', token),
     }),
 
-    updateUserWord: ({
-      token, userId, wordId, word,
-    }) => ({
+    updateUserWord: (userId, token, wordId, word) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
       options: getOptions('PUT', token, word),
     }),
 
-    deleteUserWord: ({ token, userId, wordId }) => ({
+    deleteUserWord: (userId, token, wordId) => ({
       url: `${rootUrl}users/${userId}/words/${wordId}`,
       options: getOptions('DELETE', token),
     }),
   },
 
   statistics: {
-    update: ({ token, userId, data }) => ({
+    update: (userId, token, data) => ({
       url: `${rootUrl}users/${userId}/statistics`,
       options: getOptions('PUT', token, data),
     }),
 
-    get: ({ token, userId }) => ({
+    get: (userId, token) => ({
       url: `${rootUrl}users/${userId}/statistics`,
       options: getOptions('GET', token),
     }),
   },
 
   settings: {
-    get: ({ token, userId }) => ({
-      url: `${rootUrl}users/${userId}/settings`,
-      options: getOptions('GET', token),
-    }),
-
-    update: ({ token, userId, data }) => ({
+    update: (userId, token, data) => ({
       url: `${rootUrl}users/${userId}/settings`,
       options: getOptions('PUT', token, data),
+    }),
+
+    get: (userId, token) => ({
+      url: `${rootUrl}users/${userId}/settings`,
+      options: getOptions('GET', token),
     }),
   },
 };
@@ -113,14 +110,19 @@ async function createRequest({ url, options }) {
     const res = await fetch(url, options);
     const { status, statusText } = res;
 
-    if (!(/2\d\d/.test(status))) throw Error(`${statusText} (${status})`);
-    if (status === NO_CONTENT_STATUS) return null;
+    if (!/2\d\d/.test(status)
+      || status === NO_CONTENT_STATUS) {
+      return { status, statusText };
+    }
 
     const data = await res.json();
-    return data;
+    return { status, statusText, data };
   } catch (e) {
     throw e.message;
   }
 }
 
-export { endPoints, createRequest };
+export {
+  endPoints,
+  createRequest,
+};
