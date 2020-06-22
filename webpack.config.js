@@ -33,8 +33,10 @@ module.exports = {
     }),
   ],
   resolve: {
-    modules: ['node_modules'],
-    extensions: ['.js'],
+    alias: {
+      components: path.resolve(__dirname, 'src/components/'),
+      styles: path.resolve(__dirname, 'src/style'),
+    },
   },
   devtool: 'module-source-map',
   module: {
@@ -50,7 +52,25 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'resolve-url-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'resolve-url-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              prependData: (loaderContext) => {
+                const { resourcePath } = loaderContext;
+
+                if (/components/.test(resourcePath)) {
+                  return '@import "~styles/base/basicStyle";';
+                }
+
+                return '';
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.(ttf|woff|woff2|eot)$/,
