@@ -13,15 +13,6 @@ const userDomainModel = new User();
  };
 */
 
-// ============ Init() - run when the App starts =========
-
-userDomainModel.init();
-
-/*
-  this method checks the authorization status and saves it in User.isAuthorized.
-  It can also get into local storage (localStorage.getItem ('isAuthorized'))
-*/
-
 // ============ register(user) =============
 
 const registerData = {
