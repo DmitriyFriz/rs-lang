@@ -1,6 +1,6 @@
+import STATUSES from 'services/requestHandler.Statuses';
+import endPoints from 'services/endPoints/endPoints.main';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
-import STATUSES from '../../services/requestHandler.Statuses';
-import endPoints from '../../services/endPoints/endPoints.main';
 
 const {
   signIn, register, update, remove,

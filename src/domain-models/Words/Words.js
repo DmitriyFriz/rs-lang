@@ -1,5 +1,5 @@
+import endPoints from 'services/endPoints/endPoints.main';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
-import endPoints from '../../services/endPoints/endPoints.main';
 
 const {
   getChunk,

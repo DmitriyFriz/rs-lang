@@ -35,6 +35,9 @@ module.exports = {
   resolve: {
     alias: {
       components: path.resolve(__dirname, 'src/components/'),
+      router: path.resolve(__dirname, 'src/router/'),
+      services: path.resolve(__dirname, 'src/services/'),
+      domainModels: path.resolve(__dirname, 'src/domain-models/'),
       styles: path.resolve(__dirname, 'src/style'),
     },
   },

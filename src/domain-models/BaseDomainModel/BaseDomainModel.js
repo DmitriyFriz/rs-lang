@@ -3,8 +3,8 @@
  * that receive and send data to the main app service.
  */
 
-import createRequest from '../../services/requestHandler';
-import STATUSES from '../../services/requestHandler.Statuses';
+import createRequest from 'services/requestHandler';
+import STATUSES from 'services/requestHandler.Statuses';
 
 class BaseDomainModel {
   get isAuthorized() {

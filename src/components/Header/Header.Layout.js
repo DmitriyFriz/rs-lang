@@ -1,5 +1,5 @@
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 import { HeaderLayout, HeaderClassName } from './Header.Data';
-import BaseComponent from '../BaseComponent/BaseComponent';
 
 export default function getLayout(isAuthorized) {
   const menu = BaseComponent.createElement({ tag: 'div', className: HeaderClassName.menu });
