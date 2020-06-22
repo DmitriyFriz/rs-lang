@@ -33,6 +33,11 @@ module.exports = {
     }),
   ],
   resolve: {
+    alias: {
+      base: path.resolve(__dirname, 'src/components/BaseComponent'),
+      services: path.resolve(__dirname, 'src/services'),
+      router: path.resolve(__dirname, 'src/router'),
+    },
     modules: ['node_modules'],
     extensions: ['.js'],
   },
