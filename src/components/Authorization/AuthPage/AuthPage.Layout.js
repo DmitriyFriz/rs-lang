@@ -1,4 +1,4 @@
-import BaseComponent from 'base/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 import { authPageLayout, authClassName } from './AuthPage.Data';
 
