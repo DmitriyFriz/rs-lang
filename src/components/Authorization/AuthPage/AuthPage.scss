@@ -1,0 +1,29 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  input[type = 'email'], input[type = 'password'] {
+    //&:focus {
+    //  outline-color: crimson;
+    //}
+  }
+}
+
+.confirmed {
+  border: 1px solid #2cd62c;
+
+  &:focus {
+    outline-color: #2cd62c;
+  }
+}
+
+.unconfirmed {
+  border: 1px solid #ee1632;
+
+  &:focus {
+    outline-color: #ee1632;
+  }
+}
+
+
