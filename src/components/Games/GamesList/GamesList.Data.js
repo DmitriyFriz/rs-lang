@@ -1,4 +1,4 @@
-import { GAMES_ROUTES } from '../../../router/Router.Constants';
+import { GAMES_ROUTES } from 'router/Router.Constants';
 
 const games = [
   {

@@ -1,14 +1,14 @@
 // views
-import BaseComponent from '../../BaseComponent/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // router
-import { onRouteChangeEvent } from '../../../router/RouteHandler';
+import { onRouteChangeEvent } from 'router/RouteHandler';
+
+// constants
+import { ROUTERS } from 'router/Router.Constants';
 
 // data
 import data from './GamesList.Data';
-
-// constants
-import { ROUTERS } from '../../../router/Router.Constants';
 
 // styles
 import './GamesList.scss';

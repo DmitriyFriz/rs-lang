@@ -1,18 +1,18 @@
-// views
-import BaseComponent from '../BaseComponent/BaseComponent';
-import StartMenu from './StartMenu/StartMenu.View';
-import LearningWords from './LearningWords/LearningWords.View';
+// constants
+import { ROUTERS, MAIN_ROUTES, MAIN_PAGE_ROUTES } from 'router/Router.Constants';
 
 // router
-import Router from '../../router/Router';
+import Router from 'router/Router';
 import {
   registerRouter,
   onRouteChangeEvent,
   unregisterRouter,
-} from '../../router/RouteHandler';
+} from 'router/RouteHandler';
 
-// constants
-import { ROUTERS, MAIN_ROUTES, MAIN_PAGE_ROUTES } from '../../router/Router.Constants';
+// views
+import BaseComponent from 'components/BaseComponent/BaseComponent';
+import StartMenu from './StartMenu/StartMenu.View';
+import LearningWords from './LearningWords/LearningWords.View';
 
 class MainPage extends BaseComponent {
   static get name() {
