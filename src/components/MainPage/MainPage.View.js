@@ -14,6 +14,9 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 import StartMenu from './StartMenu/StartMenu.View';
 import LearningWords from './LearningWords/LearningWords.View';
 
+// styles
+import './MainPage.scss';
+
 class MainPage extends BaseComponent {
   static get name() {
     return MAIN_ROUTES.MAIN_PAGE;
@@ -25,6 +28,7 @@ class MainPage extends BaseComponent {
       [MAIN_PAGE_ROUTES.LEARNING_WORDS]: LearningWords,
     };
 
+    this.component.className = 'main-page';
     this.mainPageRouter = new Router(
       ROUTERS.MAIN_PAGE,
       this.component,
