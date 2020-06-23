@@ -6,10 +6,11 @@ import { registerRouter } from './router/RouteHandler';
 
 // components
 import HeaderAuthorized from './components/Header/Header.View.Authorized';
+import AuthPage from 'components/Authorization/AuthPage/AuthPage.View';
 import HeaderGuest from './components/Header/Header.View.Guest';
 import MainPage from './components/MainPage/MainPage.View';
-import Games from './components/Games/Games.View';
 
+import Games from './components/Games/Games.View';
 // constants
 import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
 
@@ -27,6 +28,7 @@ const headerRoutes = {
 
 const mainRoutes = {
   [MAIN_ROUTES.MAIN_PAGE]: MainPage,
+  [MAIN_ROUTES.SIGN_IN]: AuthPage,
   [MAIN_ROUTES.GAMES]: Games,
   // other endpoints should be added here,
 };
