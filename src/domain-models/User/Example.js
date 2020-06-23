@@ -1,90 +1,97 @@
+/* eslint-disable no-console */
 import User from './User';
 
-// ============ Init (run when the App starts) =========
-
-User.init();
+const userDomainModel = new User();
 
 /*
-  this method checks the authorization status and saves it in User.isAuthorized.
-  It can also get into local storage (localStorage.getItem ('isAuthorized'))
+  if you use an authorized user method and the user is not authorized,
+  the method return:
+
+ {
+  status: 401,
+  statusText: 'Unauthorized',
+ };
 */
 
-// ============ Registration =============
+// ============ register(user) =============
 
 const registerData = {
   email: 'jack1234@gmail.com',
   password: 'Ab12345-',
 };
 
-User.register(registerData);
+userDomainModel.register(registerData).then((res) => console.log(res));
 
 /*
-  === console.log ===
-{
+  console log:
+ {
+  data:{
+    email: "jack1234@gmail.com",
+    id: "5eef7fc75a08ac00171d8db4",
+  }
+ },
   status: 200,
-  statusText 'OK'
-}
+  statusText: "OK",
+  }
 */
 
-// ============== SignIn ==================
+// ============== signIn(user) ==================
 
 const signInData = {
   email: 'jack1234@gmail.com',
   password: 'Ab12345-',
 };
 
-User.signIn(signInData);
+userDomainModel.signIn(signInData).then((res) => console.log(res));
 
 /*
-  === console.log ===
-{
+  console log:
+ {
   status: 200,
-  statusText 'OK'
-}
+  statusText: "OK",
+  }
 */
 
-// ============== Update user data ==================
+// ============== update(user) ==================
 
 const updateData = {
-  email: 'jack1234@gmail.com',
+  email: 'jack123455@gmail.com',
   password: 'Ab12345-',
 };
 
-User.update(updateData);
+userDomainModel.update(updateData).then((res) => console.log(res));
 
 /*
-  === console.log ===
-{
-  status: 200,
-  statusText 'OK'
-}
-
-if user is not authorized, returned null
-
+  console.log:
+ {
+   data: {
+    email: "jack123455@gmail.com",
+    id: "5eef7fc75a08ac00171d8db4",
+  },
+   status: 200,
+   statusText 'OK'
+ }
 */
 
-// ============== Remove user  ==================
+// ============== remove()  ==================
 
-User.remove();
+userDomainModel.remove().then((res) => console.log(res));
 
 /*
-  === console.log ===
-{
+  console log:
+ {
   status: 204,
-  statusText 'No content'
-}
-
-if user is not authorized, returned null
-
+  statusText: "No Content"
+ }
 */
+
+// Success delete
 
 // ============== LogOut ==================
 
-User.logOut();
+userDomainModel.logOut();
 
 /*
-  === console.log ===
-
-Returned undefined
-
+  this method clears the user token and user ID,
+  switches the isAuthorization property to "false"
 */
