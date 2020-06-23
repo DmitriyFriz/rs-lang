@@ -1,70 +1,68 @@
-import { endPoints, createRequest } from '../../services/requestHandler';
+import STATUSES from 'services/requestHandler.Statuses';
+import endPoints from 'services/endPoints/endPoints.main';
+import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
 
-const UNAUTHORIZED_STATUS = 401;
-const OK_STATUS = 200;
 const {
   signIn, register, update, remove,
 } = endPoints.users;
 
-export default {
-  get isAuthorized() {
-    return JSON.parse(localStorage.getItem('isAuthorized'));
-  },
-  set isAuthorized(value) {
-    localStorage.setItem('isAuthorized', value);
-  },
-
-  get token() {
-    return localStorage.getItem('token');
-  },
-  set token(token) {
-    localStorage.setItem('token', token);
-  },
-
-  get userId() {
-    return localStorage.getItem('userId');
-  },
-  set userId(userId) {
-    localStorage.setItem('userId', userId);
-  },
+class User extends BaseDomainModel {
+  constructor() {
+    super();
+    this.checkAuthStatus();
+  }
 
   async signIn(user) {
-    const endPoint = signIn(user);
-    const { status, statusText, data } = await createRequest(endPoint);
+    const { status, statusText, data } = await this.getData(signIn, user);
 
-    if (data && status === OK_STATUS) {
+    if (data) {
       this.token = data.token;
       this.userId = data.userId;
       this.isAuthorized = true;
     }
 
     return { status, statusText };
-  },
+  }
 
   async register(user) {
-    const endPoint = register(user);
-    const { status, statusText } = await createRequest(endPoint);
-    return { status, statusText };
-  },
+    const res = await this.getData(register, user);
+    return res;
+  }
+
+  /**
+  * The update method doesn't work at the moment.
+  * The API has problems with password encoding and returns an error (status: 500).
+  */
 
   async update(user) {
-    if (!this.isAuthorized) {
-      return null;
-    }
-    const endPoint = update(this.userId, this.token, user);
-    const { status, statusText } = await createRequest(endPoint);
-    return { status, statusText };
-  },
+    const res = await this.getDataOfAuthorizedUser(
+      update, this.userId, this.token, user,
+    );
+    return res;
+  }
 
   async remove() {
-    if (!this.isAuthorized) {
-      return null;
-    }
-    const endPoint = remove(this.userId, this.token);
-    const { status, statusText } = await createRequest(endPoint);
+    const res = await this.getDataOfAuthorizedUser(
+      remove, this.userId, this.token,
+    );
     this.logOut();
-    return { status, statusText };
-  },
+    return res;
+  }
+
+  /**
+  * checkAuthStatus method sends an empty request to API and checks a response status.
+  */
+
+  async checkAuthStatus() {
+    if (this.token && this.userId) {
+      const { status } = await this.update(null);
+      this.isAuthorized = (status !== STATUSES.UNAUTHORIZED);
+      return this.isAuthorized;
+    }
+
+    this.isAuthorized = false;
+    return false;
+  }
 
   logOut() {
     if (!this.isAuthorized) {
@@ -72,24 +70,11 @@ export default {
     }
     this.clearSession();
     this.isAuthorized = false;
-  },
-
-  async checkAuthStatus() {
-    if (!(this.token && this.userId)) {
-      this.isAuthorized = false;
-      return false;
-    }
-    const { url, options } = endPoints.settings.update(this.userId, this.token);
-    const res = await fetch(url, options);
-    this.isAuthorized = (res.status !== UNAUTHORIZED_STATUS);
-    return this.isAuthorized;
-  },
+  }
 
   clearSession() {
     ['token', 'userId'].forEach((key) => localStorage.setItem(key, ''));
-  },
+  }
+}
 
-  async init() {
-    await this.checkAuthStatus();
-  },
-};
+export default User;

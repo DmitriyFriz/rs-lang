@@ -1,4 +1,4 @@
-import { MAIN_ROUTES } from '../../router/Router.Constants';
+import { MAIN_ROUTES } from 'router/Router.Constants';
 
 const HeaderLayout = {
 

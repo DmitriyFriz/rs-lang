@@ -1,14 +1,14 @@
 // views
-import BaseComponent from '../BaseComponent/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // router
-import { onRouteChangeEvent } from '../../router/RouteHandler';
+import { onRouteChangeEvent } from 'router/RouteHandler';
+
+// constants
+import { ROUTERS } from 'router/Router.Constants';
 
 // layout
 import getLayout from './Header.Layout';
-
-// constants
-import { ROUTERS } from '../../router/Router.Constants';
 
 // styles
 import './Header.scss';

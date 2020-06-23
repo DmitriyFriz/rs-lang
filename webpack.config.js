@@ -34,12 +34,12 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      base: path.resolve(__dirname, 'src/components/BaseComponent'),
-      services: path.resolve(__dirname, 'src/services'),
-      router: path.resolve(__dirname, 'src/router'),
+      components: path.resolve(__dirname, 'src/components/'),
+      router: path.resolve(__dirname, 'src/router/'),
+      services: path.resolve(__dirname, 'src/services/'),
+      domainModels: path.resolve(__dirname, 'src/domain-models/'),
+      styles: path.resolve(__dirname, 'src/style'),
     },
-    modules: ['node_modules'],
-    extensions: ['.js'],
   },
   devtool: 'module-source-map',
   module: {
@@ -55,7 +55,25 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'resolve-url-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'resolve-url-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              prependData: (loaderContext) => {
+                const { resourcePath } = loaderContext;
+
+                if (/components/.test(resourcePath)) {
+                  return '@import "~styles/base/basicStyle";';
+                }
+
+                return '';
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.(ttf|woff|woff2|eot)$/,

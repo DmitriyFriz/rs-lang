@@ -1,8 +1,8 @@
 // views
-import BaseComponent from '../BaseComponent/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // constants
-import { MAIN_ROUTES } from '../../router/Router.Constants';
+import { MAIN_ROUTES } from 'router/Router.Constants';
 
 class MainPage extends BaseComponent {
   static get name() {
