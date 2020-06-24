@@ -1,6 +1,16 @@
 /* eslint-disable no-undef */
+// router
+import { onRouteChangeEvent } from 'router/RouteHandler';
+
 // views
-import BaseComponent from '../../../BaseComponent/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
+
+// constants
+import { ROUTERS } from 'router/Router.Constants';
+
+// services
+// import endPoints from 'services/endPoints/endPoints.main';
+// import handleRequest from 'services/requestHandler';
 
 // layout
 import getLayout from './SpeakItMain.Layout';
@@ -8,15 +18,6 @@ import createWordCard from './SpeakItCard.Layout';
 import createResults from './SpeakItResults.Layout';
 import defaultImage from '../images/english.jpg';
 import starImage from '../images/star-win.svg';
-
-// router
-import { onRouteChangeEvent } from '../../../../router/RouteHandler';
-
-// constants
-import { ROUTERS } from '../../../../router/Router.Constants';
-
-// services
-import { endPoints, createRequest } from '../../../../services/requestHandler';
 
 // styles
 import './SpeakItMain.scss';
@@ -44,7 +45,7 @@ class SpeakItMain extends BaseComponent {
   async prepareData() {
     const page = Math.floor(Math.random() * 30);
     const endPoint = endPoints.words.getChunk(page, this.state.level);
-    const response = await createRequest(endPoint);
+    const response = await handleRequest(endPoint);
     this.state.words = response.data.slice(0, 10);
   }
 
