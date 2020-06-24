@@ -1,5 +1,5 @@
 // views
-import BaseComponent from '../BaseComponent/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 import GamesList from './GamesList/GamesList.View';
 import SpeakIt from './SpeakIt/SpeakIt.View';

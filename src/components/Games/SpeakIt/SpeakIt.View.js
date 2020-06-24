@@ -1,14 +1,11 @@
 // views
-import BaseComponent from '../../BaseComponent/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // router
-import { onRouteChangeEvent } from '../../../router/RouteHandler';
+import { onRouteChangeEvent } from 'router/RouteHandler';
 
 // constants
-import { ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS } from '../../../router/Router.Constants';
-
-// styles
-import './SpeakIt.scss';
+import { ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS } from 'router/Router.Constants';
 
 class SpeakIt extends BaseComponent {
   static get name() {
