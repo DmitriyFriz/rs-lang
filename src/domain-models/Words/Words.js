@@ -56,6 +56,11 @@ class Words extends BaseDomainModel {
     );
     return res;
   }
+
+  getFileLink(file) {
+    const url = 'https://raw.githubusercontent.com/jack-guzya/rslang-data/master/';
+    return `${url}${file}`;
+  }
 }
 
 export default Words;

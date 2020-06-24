@@ -8,7 +8,7 @@ const swiperOptions = {
   grabCursor: false,
   watchOverflow: true,
   preventInteractionOnTransition: true,
-  // touchEventsTarget: 'container',
+  touchEventsTarget: 'container',
 
   breakpoints: {
 
@@ -28,11 +28,11 @@ const swiperOptions = {
     prevEl: '.swiper-button-prev',
   },
   virtual: {
-    renderSlide(slide) {
-      // slide.setAttribute('data-swiper-slide-index', index);
+    renderSlide(slide, index) {
+      slide.setAttribute('data-swiper-slide-index', index);
       return slide;
     },
-    cache: true,
+    cache: false,
     addSlidesBefore: 2,
     addSlidesAfter: 2,
   },

@@ -9,3 +9,85 @@
   width: 95%;
   height: 95%;
 }
+
+
+// $swiperButtonsMargin: -40px;
+// $heightPosterForLargeScreen: 340px;
+// $heightPoster: 300px;
+// $heightPosterForSmallScreen: 250px;
+// $fontSlide: 18px;
+
+.swiper__container {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 25px;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  list-style: none;
+}
+
+.swiper-slide {
+  display: flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  flex-flow: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  transition-duration: 1s;
+  align-items: center;
+  align-content: flex-start;
+  box-sizing: border-box;
+  border: 1px solid;
+  border-radius: 7px;
+  padding: 5px;
+  // width: 95% !important;
+  text-align: center;
+  background-color: $basicColor3;
+  font-size: 0.8em;
+
+  .associative{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 50%;
+  }
+
+  .word,
+  .meaning,
+  .example {
+    margin-bottom: 7px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid;
+    width: 95%;
+  }
+
+  input[type="text"] {
+    font-size: 1em;
+    letter-spacing: 0.35em;
+  }
+}
+
+// .swiper-button-next {
+//   right: $swiperButtonsMargin !important;
+//   @media (max-width: 1019px) {
+//     right: 0 !important;
+//   }
+// }
+
+// .swiper-button-prev {
+//   left: $swiperButtonsMargin !important;
+//   @media (max-width: 1019px) {
+//     left: 0 !important;
+//   }
+// }

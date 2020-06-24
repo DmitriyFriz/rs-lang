@@ -10,7 +10,10 @@ import swiperOptions from './Swiper.Options';
 import 'swiper/css/swiper.min.css';
 
 // layout
-import { getLayout } from './Layout/LearningWords.Layout';
+import { getLayout, createWordCard } from './Layout/LearningWords.Layout';
+
+// handler
+import { getWords } from './LearningWordsHandler';
 
 class LearningWords extends BaseComponent {
   static get name() {
@@ -30,7 +33,22 @@ class LearningWords extends BaseComponent {
       },
     );
     this.component.append(this.exitBtn);
+  }
+
+  async show() {
+    await super.show();
     this.swiper = new Swiper('.swiper__container', swiperOptions);
+    const data = await getWords();
+
+    data.forEach((word) => {
+      this.swiper.virtual.appendSlide(createWordCard(word));
+    });
+    this.swiper.update();
+  }
+
+  hide() {
+    super.hide();
+    this.swiper.destroy(true, true);
   }
 }
 
