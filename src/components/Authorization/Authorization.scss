@@ -1,0 +1,65 @@
+@import "src/style/base/basicStyle";
+
+.confirmed:not(legend) {
+  border-color: rgba(53, 221, 53, .6) !important;
+
+  input {
+    border-color: rgba(53, 221, 53, .8);
+  }
+
+  legend {
+    color: $fontColor !important;
+    background-color: rgba(53, 221, 53, .8);
+  }
+}
+
+.unconfirmed:not(legend) {
+  border-color: rgba(238, 22, 50, .6) !important;
+
+  input {
+    border-color: rgba(238, 22, 50, .6);
+  }
+
+  legend {
+    color: $fontColor !important;
+    background-color: rgba(238, 22, 50, .6);
+  }
+}
+
+.auth, .reg {
+  text-align: center;
+
+  fieldset {
+    padding: 1rem;
+    border: 1.4px solid rgba(91, 91, 91, 0.4);
+
+    margin-bottom: 1rem;
+
+
+    legend {
+      font-family: $mainFont;
+      color: rgba(91, 91, 91, 0.4);
+      font-size: .9rem;
+      padding: .3rem;
+      text-align: left;
+      margin-left: 2rem;
+    }
+  }
+}
+
+.reg-fieldsetEmail, .reg-fieldsetPassword {
+  transition: all 1s;
+  display: flex;
+}
+
+.reg-fieldsetEmail {
+  input {
+    margin-top: 0 !important;
+  }
+}
+
+.reg-fieldsetPassword {
+  input:not(:last-child) {
+    margin-top: 0 !important;
+  }
+}
