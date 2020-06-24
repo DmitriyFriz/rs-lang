@@ -8,6 +8,7 @@ import SpeakItMain from './SpeakIt/components/SpeakItMain.View';
 import SprintStart from './Sprint/Start/SprintStart.View';
 import SprintGame from './Sprint/Game/SprintGame.View';
 import SprintFinish from './Sprint/Finish/SprintFinish.View';
+import EnglishPuzzleHeader from './EnglishPuzzle/components/Header/EnglishPuzzle.Header';
 
 // router
 import Router from '../../router/Router';
@@ -18,7 +19,7 @@ import {
 
 // constants
 import {
-  MAIN_ROUTES, ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS,
+  MAIN_ROUTES, ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS, ENGLISH_PUZZLE_ROUTES,
 } from '../../router/Router.Constants';
 
 class Games extends BaseComponent {
@@ -32,6 +33,7 @@ class Games extends BaseComponent {
       [GAMES_ROUTES.SPEAK_IT]: SpeakIt,
       [SPEAK_IT_ROUTERS.SPEAK_IT_MAIN]: SpeakItMain,
       [GAMES_ROUTES.ENGLISH_PUZZLE]: EnglishPuzzle,
+      [ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_GAME]: EnglishPuzzleHeader,
       [GAMES_ROUTES.SPRINT]: SprintStart,
       [GAMES_ROUTES.SPRINT_GAME]: SprintGame,
       [GAMES_ROUTES.SPRINT_FINISH]: SprintFinish,

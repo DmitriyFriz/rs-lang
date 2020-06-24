@@ -5,7 +5,7 @@ import BaseComponent from '../../BaseComponent/BaseComponent';
 import { onRouteChangeEvent } from '../../../router/RouteHandler';
 
 // constants
-import { ROUTERS, GAMES_ROUTES } from '../../../router/Router.Constants';
+import { ROUTERS, GAMES_ROUTES, ENGLISH_PUZZLE_ROUTES } from '../../../router/Router.Constants';
 import createLayoutGame from './components/StartLayout/EnglishPuzzle.StartLayout';
 
 class EnglishPuzzle extends BaseComponent {
@@ -18,7 +18,8 @@ class EnglishPuzzle extends BaseComponent {
   }
 
   addListeners() {
-    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
+    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.ENGLISH_PUZZLE));
+    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_GAME));
   }
 }
 
