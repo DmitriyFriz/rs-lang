@@ -8,9 +8,8 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 // constants
 import { ROUTERS } from 'router/Router.Constants';
 
-// services
-// import endPoints from 'services/endPoints/endPoints.main';
-// import handleRequest from 'services/requestHandler';
+// domain models
+import Words from 'domainModels/Words/Words';
 
 // layout
 import getLayout from './SpeakItMain.Layout';
@@ -22,8 +21,9 @@ import starImage from '../images/star-win.svg';
 // styles
 import './SpeakItMain.scss';
 
-// Speech Recognition Mode
+const wordsDomainModel = new Words();
 
+// Speech Recognition Mode
 window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
@@ -44,8 +44,7 @@ class SpeakItMain extends BaseComponent {
 
   async prepareData() {
     const page = Math.floor(Math.random() * 30);
-    const endPoint = endPoints.words.getChunk(page, this.state.level);
-    const response = await handleRequest(endPoint);
+    const response = await wordsDomainModel.getChunk(page, this.state.level);
     this.state.words = response.data.slice(0, 10);
   }
 
