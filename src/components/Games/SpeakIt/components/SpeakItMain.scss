@@ -1,0 +1,130 @@
+@import "../../../../style/base/basicStyle";
+
+.control-inline {
+  display: inline-flex;
+}
+
+#picture-card {
+  max-width: 390px;
+  margin: 10px auto;
+  text-align: center;
+}
+
+#translation {
+  visibility: hidden;
+}
+
+.sound-icon {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  left: 10px;
+  top: 20px;
+  background-image: url(../images/sound-icon.svg);
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.buttons-group {
+  display: flex;
+  width: 300px;
+  margin: auto;
+  justify-content: space-between;
+
+  div {
+    background-color: $basicColor2;
+    padding: 10px;
+  }
+
+  div:hover {
+    cursor: pointer;
+  }
+}
+
+.words-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  max-width: 1000px;
+
+  .card {
+    position: relative;
+    margin: 5px;
+    border: $lightBorder;
+    border-radius: 4px;
+    width: 170px;
+    padding: 10px 10px 10px 35px;
+    box-sizing: border-box;
+    background-color: $basicColor3;
+    transition: .3s;
+  }
+
+  .card-active {
+    background-color: $basicColor4;
+    color: #fff;
+  }
+}
+
+.stars-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px auto;
+  max-width: 900px;
+  height: 25px;
+
+  img {
+    display: block;
+    height: 25px;
+  }
+}
+
+.results-section {
+  position: fixed;
+  overflow: scroll;
+  width: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: #0009;
+}
+
+.result-modal {
+  min-width: 30%;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 2em;
+  background-color: #fff;
+  color: #1c2331;
+  border-radius: 5px;
+
+  ul {
+    padding-bottom: 10px;
+  }
+
+  li {
+    padding: 10px 0;
+    transition: .3s;
+  }
+
+  li::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    padding-right: 10px;
+    background-size: 70%;
+    background-image: url(../images/sound-icon.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  li:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+}
