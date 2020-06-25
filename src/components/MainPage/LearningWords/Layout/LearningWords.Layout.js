@@ -12,18 +12,28 @@ function getLayout() {
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
   </div>
-  <div class"difficulty">
-    <button class="button button-hard">Hard</button>
-    <button class="button button-medium">Medium</button>
-    <button class="button button-easy">Easy</button>
-    <button class="button button-again">Again</button>
-  </div>
   <div class="dictionary-buttons">
     <button class="button button-hard-dictionary">Add to hard</button>
     <button class="button button-deleted-dictionary">Add to deleted</button>
   </div>
   <button class="button button-answer">I don't know</button>
   `;
+}
+
+function createDifficultyButtons() {
+  const difficultyBlock = createElement({
+    tag: 'div',
+    className: 'difficulty',
+  });
+
+  difficultyBlock.innerHTML = `
+  <button class="button button-hard" id="hard">Hard</button>
+  <button class="button button-medium" id="medium">Medium</button>
+  <button class="button button-easy" id="easy">Easy</button>
+  <button class="button button-again" id="again">Again</button>
+  `;
+
+  return difficultyBlock;
 }
 
 function createWordCard({
@@ -34,10 +44,12 @@ function createWordCard({
   wordTranslate,
   textMeaning,
   textMeaningTranslate,
+  id,
 }) {
   const card = createElement({
     tag: 'div',
     className: 'swiper-slide',
+    id,
   });
 
   card.innerHTML = `
@@ -63,4 +75,4 @@ function createWordCard({
   return card;
 }
 
-export { getLayout, createWordCard };
+export { getLayout, createWordCard, createDifficultyButtons };

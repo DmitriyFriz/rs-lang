@@ -10,10 +10,10 @@ import swiperOptions from './Swiper.Options';
 import 'swiper/css/swiper.min.css';
 
 // layout
-import { getLayout, createWordCard } from './Layout/LearningWords.Layout';
+import { getLayout, createWordCard, createDifficultyButtons } from './Layout/LearningWords.Layout';
 
 // handler
-import { getWords } from './LearningWordsHandler';
+import { getWords, handleDifficultyButtons } from './LearningWordsHandler';
 
 class LearningWords extends BaseComponent {
   static get name() {
@@ -21,8 +21,8 @@ class LearningWords extends BaseComponent {
   }
 
   createLayout() {
-    this.component.innerHTML = getLayout();
     this.component.className = 'learning-words';
+    this.component.innerHTML = getLayout();
     this.exitBtn = BaseComponent.createElement(
       {
         tag: 'button',
@@ -32,15 +32,28 @@ class LearningWords extends BaseComponent {
         content: 'Finish training',
       },
     );
-    this.component.append(this.exitBtn);
+    this.difficultyBlock = createDifficultyButtons();
+    this.component.append(this.exitBtn, this.difficultyBlock);
+  }
+
+  addListeners() {
+    this.difficultyBlock.addEventListener('click', handleDifficultyButtons);
+  }
+
+  removeListeners() {
+    this.difficultyBlock.removeEventListener('click', handleDifficultyButtons);
+  }
+
+  async prepareData() {
+    this.data = await getWords();
   }
 
   async show() {
     await super.show();
     this.swiper = new Swiper('.swiper__container', swiperOptions);
-    const data = await getWords();
+    this.swiper.virtual.removeAllSlides();
 
-    data.forEach((word) => {
+    this.data.forEach((word) => {
       this.swiper.virtual.appendSlide(createWordCard(word));
     });
     this.swiper.update();

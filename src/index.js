@@ -17,7 +17,7 @@ import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
 const header = document.querySelector('#header');
 const root = document.querySelector('#root');
 
-//get from localStorage
+// get from localStorage
 const isAuthorized = true;
 
 const headerRoutes = {
@@ -33,8 +33,8 @@ const mainRoutes = {
   // other endpoints should be added here,
 };
 
-const currentHeaderRoute = isAuthorized ?
-  HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
+const currentHeaderRoute = isAuthorized
+  ? HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
 const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);
 registerRouter(headerRouter);
 

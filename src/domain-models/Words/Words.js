@@ -1,5 +1,6 @@
 import endPoints from 'services/endPoints/endPoints.main';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
+import STATUSES from '../../services/requestHandler.Statuses';
 
 const {
   getChunk,
@@ -22,10 +23,27 @@ class Words extends BaseDomainModel {
     return res;
   }
 
-  async createUserWord(wordId, parameters) {
-    const res = await this.getDataOfAuthorizedUser(
+  async createUserWord(wordId, difficulty, vocabulary) {
+    const parameters = { optional: {} };
+
+    if (difficulty) {
+      parameters.difficulty = difficulty;
+      parameters.optional.registrationDate = Date.now();
+    }
+    if (vocabulary) {
+      parameters.optional.vocabulary = vocabulary;
+    }
+
+    let res = await this.getDataOfAuthorizedUser(
       createUserWord, this.userId, this.token, wordId, parameters,
     );
+
+    if (res.status === STATUSES.EXPECTATION_FAILED) {
+      res = await this.getDataOfAuthorizedUser(
+        updateUserWord, this.userId, this.token, wordId, parameters,
+      );
+    }
+
     return res;
   }
 
@@ -43,7 +61,17 @@ class Words extends BaseDomainModel {
     return res;
   }
 
-  async updateUserWord(wordId, parameters) {
+  async updateUserWord(wordId, difficulty, vocabulary) {
+    const parameters = { optional: {} };
+
+    if (difficulty) {
+      parameters.difficulty = difficulty;
+      parameters.optional.registrationDate = Date.now();
+    }
+    if (vocabulary) {
+      parameters.optional.vocabulary = vocabulary;
+    }
+
     const res = await this.getDataOfAuthorizedUser(
       updateUserWord, this.userId, this.token, wordId, parameters,
     );

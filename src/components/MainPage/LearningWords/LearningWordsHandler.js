@@ -1,15 +1,31 @@
 import WordsDomain from '../../../domain-models/Words/Words';
+import STATUSES from '../../../services/requestHandler.Statuses';
 
 const wordsDomain = new WordsDomain();
 const { getFileLink } = wordsDomain;
 
-function getInput(text) {
+const DIFFICULTY = {
+  EASY: 7776000000,
+  MEDIUM: 3888000000,
+  HARD: 1123200000,
+  AGAIN: 600000,
+};
+
+function pasteInput(text) {
   const regExp = /(?<=<b>)(.*)(?=<\/b>)/g;
   const [word] = text.match(regExp);
   const input = `<input class="original__answer" type="text" size=${word.length}></input>`;
   const res = text.replace(/<b>.*<\/b>/, input);
   return res;
 }
+
+function checkWordStatus(registrationDate, difficulty) {
+  const repeatDate = registrationDate + difficulty;
+  const date = new Date(repeatDate);
+  return date < Date.now() ? 'ready!' : 'pending!';
+}
+
+// DEMO
 
 async function getWords() {
   const { data } = await wordsDomain.getChunk(0, 0);
@@ -22,20 +38,44 @@ async function getWords() {
       wordTranslate,
       textMeaning,
       textMeaningTranslate,
+      id,
     } = word;
 
     return {
       image: getFileLink(image),
-      textExample: getInput(textExample),
+      textExample: pasteInput(textExample),
       textExampleTranslate,
       transcription,
       wordTranslate,
       textMeaning,
       textMeaningTranslate,
+      id,
     };
   });
 
   return res;
 }
 
-export { getWords, getFileLink };
+async function handleDifficultyButtons(event) {
+  const { id } = event.target;
+  if (!id) { return; }
+
+  const activeSlide = document.querySelector('.swiper-slide-active');
+  const wordId = activeSlide.id;
+  const difficulty = id;
+
+  // const { data } = await wordsDomain.getAllUserWords();
+  // const dateArr = data.map((wordData) => {
+  //   const { registrationDate } = wordData.optional;
+  //   const difficulty = DIFFICULTY[wordData.difficulty.toUpperCase()]
+  //   const status = checkWordStatus(registrationDate, difficulty);
+  //   return { date, status };
+  // });
+
+  const { data } = await wordsDomain.createUserWord(wordId, difficulty);
+
+  console.log(data);
+  // console.log(res);
+}
+
+export { getWords, getFileLink, handleDifficultyButtons };
