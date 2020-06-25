@@ -21,10 +21,31 @@ const DIFFICULTY = {
   AGAIN: 600000,
 };
 
-function checkWordStatus(registrationDate, difficulty) {
-  const repeatDate = registrationDate + difficulty;
+function checkWordStatus(repeatDate) {
   const date = new Date(repeatDate);
   return date < Date.now();
+}
+
+function registrationWord(data, difficulty, vocabulary) {
+  const parameters = data;
+
+  parameters.optional.date = Date.now();
+  if (parameters.optional.amount === undefined) {
+    parameters.optional.amount = 0;
+  }
+  parameters.optional.amount += 1;
+
+  if (difficulty) {
+    parameters.difficulty = difficulty;
+    parameters.optional.repeat = {};
+    parameters.optional.repeat.date = Date.now() + DIFFICULTY[difficulty.toUpperCase()];
+    parameters.optional.repeat.status = false;
+  }
+  if (vocabulary) {
+    parameters.optional.vocabulary = vocabulary;
+  }
+
+  return parameters;
 }
 
 class Words extends BaseDomainModel {
@@ -39,15 +60,7 @@ class Words extends BaseDomainModel {
   }
 
   async createUserWord(wordId, difficulty, vocabulary) {
-    const parameters = { optional: {} };
-
-    if (difficulty) {
-      parameters.difficulty = difficulty;
-      parameters.optional.registrationDate = Date.now();
-    }
-    if (vocabulary) {
-      parameters.optional.vocabulary = vocabulary;
-    }
+    const parameters = registrationWord({ optional: {} }, difficulty, vocabulary);
 
     let res = await this.getDataOfAuthorizedUser(
       createUserWord, this.userId, this.token, wordId, parameters,
@@ -77,15 +90,9 @@ class Words extends BaseDomainModel {
   async updateUserWord(wordId, newDifficulty, newVocabulary) {
     const { data } = await this.getUserWordById(wordId);
     const { difficulty, optional } = data;
-    const parameters = { difficulty, optional };
-
-    if (newDifficulty) {
-      parameters.difficulty = newDifficulty;
-      parameters.optional.registrationDate = Date.now();
-    }
-    if (newVocabulary) {
-      parameters.optional.vocabulary = newVocabulary;
-    }
+    const parameters = registrationWord(
+      { difficulty, optional }, newDifficulty, newVocabulary,
+    );
 
     const res = await this.getDataOfAuthorizedUser(
       updateUserWord, this.userId, this.token, wordId, parameters,
