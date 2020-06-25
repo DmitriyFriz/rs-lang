@@ -75,8 +75,8 @@ async function handleRateBlock(event) {
 
   const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
   // const aggregateData = await wordsDomain.getGroupWords(0);
-  console.log(wordsDomain.repeatWords);
-  console.log(wordsDomain.newWords);
+  // console.log(wordsDomain.repeatWords);
+  // console.log(wordsDomain.newWords);
   console.log(data);
 }
 
