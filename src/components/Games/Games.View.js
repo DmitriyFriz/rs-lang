@@ -1,6 +1,7 @@
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
+import EnglishPuzzleGame from 'components/Games/EnglishPuzzle/EnglishPuzzle';
 import GamesList from './GamesList/GamesList.View';
 import SpeakIt from './SpeakIt/SpeakIt.View';
 import EnglishPuzzle from './EnglishPuzzle/EnglishPuzzle.View';
@@ -37,6 +38,7 @@ class Games extends BaseComponent {
       [GAMES_ROUTES.SPRINT]: SprintStart,
       [GAMES_ROUTES.SPRINT_GAME]: SprintGame,
       [GAMES_ROUTES.SPRINT_FINISH]: SprintFinish,
+      [ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_GAME]: EnglishPuzzleGame,
     };
 
     this.gamesRouter = new Router(
