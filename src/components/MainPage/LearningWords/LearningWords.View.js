@@ -10,10 +10,12 @@ import swiperOptions from './Swiper.Options';
 import 'swiper/css/swiper.min.css';
 
 // layout
-import { getLayout, createWordCard, createDifficultyButtons } from './Layout/LearningWords.Layout';
+import {
+  getLayout, createWordCard, createRateBlock,
+} from './Layout/LearningWords.Layout';
 
 // handler
-import { getWords, handleDifficultyButtons } from './LearningWordsHandler';
+import { getWords, handleRateBlock } from './LearningWordsHandler';
 
 class LearningWords extends BaseComponent {
   static get name() {
@@ -32,16 +34,16 @@ class LearningWords extends BaseComponent {
         content: 'Finish training',
       },
     );
-    this.difficultyBlock = createDifficultyButtons();
-    this.component.append(this.exitBtn, this.difficultyBlock);
+    this.rateBlock = createRateBlock();
+    this.component.append(this.exitBtn, this.rateBlock);
   }
 
   addListeners() {
-    this.difficultyBlock.addEventListener('click', handleDifficultyButtons);
+    this.rateBlock.addEventListener('click', handleRateBlock);
   }
 
   removeListeners() {
-    this.difficultyBlock.removeEventListener('click', handleDifficultyButtons);
+    this.rateBlock.removeEventListener('click', handleRateBlock);
   }
 
   async prepareData() {

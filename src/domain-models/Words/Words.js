@@ -39,9 +39,7 @@ class Words extends BaseDomainModel {
     );
 
     if (res.status === STATUSES.EXPECTATION_FAILED) {
-      res = await this.getDataOfAuthorizedUser(
-        updateUserWord, this.userId, this.token, wordId, parameters,
-      );
+      res = await this.updateUserWord(wordId, difficulty, vocabulary);
     }
 
     return res;
@@ -61,15 +59,17 @@ class Words extends BaseDomainModel {
     return res;
   }
 
-  async updateUserWord(wordId, difficulty, vocabulary) {
-    const parameters = { optional: {} };
+  async updateUserWord(wordId, newDifficulty, newVocabulary) {
+    const { data } = await this.getUserWordById(wordId);
+    const { difficulty, optional } = data;
+    const parameters = { difficulty, optional };
 
-    if (difficulty) {
-      parameters.difficulty = difficulty;
+    if (newDifficulty) {
+      parameters.difficulty = newDifficulty;
       parameters.optional.registrationDate = Date.now();
     }
-    if (vocabulary) {
-      parameters.optional.vocabulary = vocabulary;
+    if (newVocabulary) {
+      parameters.optional.vocabulary = newVocabulary;
     }
 
     const res = await this.getDataOfAuthorizedUser(

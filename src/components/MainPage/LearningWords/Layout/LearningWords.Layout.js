@@ -12,28 +12,29 @@ function getLayout() {
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
   </div>
-  <div class="dictionary-buttons">
-    <button class="button button-hard-dictionary">Add to hard</button>
-    <button class="button button-deleted-dictionary">Add to deleted</button>
-  </div>
   <button class="button button-answer">I don't know</button>
   `;
 }
 
-function createDifficultyButtons() {
-  const difficultyBlock = createElement({
+function createRateBlock() {
+  const block = createElement({
     tag: 'div',
-    className: 'difficulty',
+    className: 'rate',
   });
 
-  difficultyBlock.innerHTML = `
-  <button class="button button-hard" id="hard">Hard</button>
-  <button class="button button-medium" id="medium">Medium</button>
-  <button class="button button-easy" id="easy">Easy</button>
-  <button class="button button-again" id="again">Again</button>
+  block.innerHTML = `
+  <div class="rate__vocabulary">
+    <button class="button button-hard-vocabulary" data-vocabulary="hard">Add to hard</button>
+    <button class="button button-removed-vocabulary" data-vocabulary="removed">Add to removed</button>
+  </>div
+  <div class="rate__difficulty">
+    <button class="button button-hard" data-difficulty="hard">Hard</button>
+    <button class="button button-medium" data-difficulty="medium">Medium</button>
+    <button class="button button-easy" data-difficulty="easy">Easy</button>
+   <button class="button button-again" data-difficulty="again">Again</button>
+  </div>
   `;
-
-  return difficultyBlock;
+  return block;
 }
 
 function createWordCard({
@@ -75,4 +76,8 @@ function createWordCard({
   return card;
 }
 
-export { getLayout, createWordCard, createDifficultyButtons };
+export {
+  getLayout,
+  createWordCard,
+  createRateBlock,
+};

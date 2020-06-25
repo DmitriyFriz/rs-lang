@@ -1,3 +1,4 @@
+import get from 'lodash.get';
 import WordsDomain from '../../../domain-models/Words/Words';
 import STATUSES from '../../../services/requestHandler.Statuses';
 
@@ -56,13 +57,13 @@ async function getWords() {
   return res;
 }
 
-async function handleDifficultyButtons(event) {
-  const { id } = event.target;
-  if (!id) { return; }
+async function handleRateBlock(event) {
+  const difficulty = get(event, 'target.dataset.difficulty');
+  const vocabulary = get(event, 'target.dataset.vocabulary');
+  if (!difficulty && !vocabulary) { return; }
 
   const activeSlide = document.querySelector('.swiper-slide-active');
   const wordId = activeSlide.id;
-  const difficulty = id;
 
   // const { data } = await wordsDomain.getAllUserWords();
   // const dateArr = data.map((wordData) => {
@@ -72,10 +73,9 @@ async function handleDifficultyButtons(event) {
   //   return { date, status };
   // });
 
-  const { data } = await wordsDomain.createUserWord(wordId, difficulty);
+  const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
 
   console.log(data);
-  // console.log(res);
 }
 
-export { getWords, getFileLink, handleDifficultyButtons };
+export { getWords, getFileLink, handleRateBlock };
