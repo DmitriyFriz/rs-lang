@@ -1,5 +1,66 @@
-.start-message {
+.sprint-container {
   margin: auto;
   max-width: 80%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.sprint-card {
+  width: 500px;
+  height: 500px;
+  background-color: $basicColor3;
+  border: $lightBorder;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+
+.key {
+  display: inline-flex;
+  height: 35px;
+  width: 45px;
+  border: $lightBorder;
+  border-radius: 4px;
+  justify-content: center;
+  align-items: center;
+  background-color: yellow;
+}
+
+.time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+	animation-name: timer;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	border: 4px solid green;
+	border-radius: 50%;
+	box-sizing: border-box;
+	height: 50px;
+	position: relative;
+  width: 50px;
+}
+
+@keyframes timer {
+	from {
+		transform: scale(1.0);
+	}
+
+	50% {
+		transform: scale(1.2);
+	}
+
+	to {
+		transform: scale(1.0);
+	}
+}
+
+.work-key {
+  background-color: orange;
 }
