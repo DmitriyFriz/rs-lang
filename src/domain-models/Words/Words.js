@@ -10,7 +10,22 @@ const {
   getAllUserWords,
   updateUserWord,
   deleteUserWord,
+  getAggregatedWords,
+  getAggregatedWordData,
 } = endPoints.words;
+
+const DIFFICULTY = {
+  EASY: 7776000000,
+  MEDIUM: 3888000000,
+  HARD: 1123200000,
+  AGAIN: 600000,
+};
+
+function checkWordStatus(registrationDate, difficulty) {
+  const repeatDate = registrationDate + difficulty;
+  const date = new Date(repeatDate);
+  return date < Date.now();
+}
 
 class Words extends BaseDomainModel {
   async getChunk(page, group) {
@@ -74,6 +89,20 @@ class Words extends BaseDomainModel {
 
     const res = await this.getDataOfAuthorizedUser(
       updateUserWord, this.userId, this.token, wordId, parameters,
+    );
+    return res;
+  }
+
+  async getAggregatedWords(filter) {
+    const res = await this.getDataOfAuthorizedUser(
+      getAggregatedWords, this.userId, this.token, filter,
+    );
+    return res;
+  }
+
+  async getAggregatedWordData(filter) {
+    const res = await this.getDataOfAuthorizedUser(
+      getAggregatedWordData, this.userId, this.token, filter,
     );
     return res;
   }

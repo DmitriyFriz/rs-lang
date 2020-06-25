@@ -1,16 +1,16 @@
 import get from 'lodash.get';
 import WordsDomain from '../../../domain-models/Words/Words';
-import STATUSES from '../../../services/requestHandler.Statuses';
+// import STATUSES from '../../../services/requestHandler.Statuses';
 
 const wordsDomain = new WordsDomain();
 const { getFileLink } = wordsDomain;
 
-const DIFFICULTY = {
-  EASY: 7776000000,
-  MEDIUM: 3888000000,
-  HARD: 1123200000,
-  AGAIN: 600000,
-};
+// const DIFFICULTY = {
+//   EASY: 7776000000,
+//   MEDIUM: 3888000000,
+//   HARD: 1123200000,
+//   AGAIN: 600000,
+// };
 
 function pasteInput(text) {
   const regExp = /(?<=<b>)(.*)(?=<\/b>)/g;
@@ -23,7 +23,7 @@ function pasteInput(text) {
 function checkWordStatus(registrationDate, difficulty) {
   const repeatDate = registrationDate + difficulty;
   const date = new Date(repeatDate);
-  return date < Date.now() ? 'ready!' : 'pending!';
+  return date < Date.now();
 }
 
 // DEMO

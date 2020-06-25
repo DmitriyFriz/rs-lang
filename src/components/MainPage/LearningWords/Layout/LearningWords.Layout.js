@@ -26,7 +26,7 @@ function createRateBlock() {
   <div class="rate__vocabulary">
     <button class="button button-hard-vocabulary" data-vocabulary="hard">Add to hard</button>
     <button class="button button-removed-vocabulary" data-vocabulary="removed">Add to removed</button>
-  </>div
+  </div>
   <div class="rate__difficulty">
     <button class="button button-hard" data-difficulty="hard">Hard</button>
     <button class="button button-medium" data-difficulty="medium">Medium</button>

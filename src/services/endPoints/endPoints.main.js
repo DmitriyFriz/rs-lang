@@ -77,6 +77,16 @@ const endPoints = {
       url: `${rootUrl}users/${userId}/words/${wordId}`,
       options: getOptions('DELETE', token),
     }),
+
+    getAggregatedWords: (userId, token, data) => ({
+      url: `${rootUrl}users/${userId}/aggregatedWords`,
+      options: getOptions('GET', token, data),
+    }),
+
+    getAggregatedWordData: (userId, token, wordId, data) => ({
+      url: `${rootUrl}users/${userId}/aggregatedWords/${wordId}`,
+      options: getOptions('GET', token, data),
+    }),
   },
 
   statistics: {
