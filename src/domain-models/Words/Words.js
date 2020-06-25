@@ -1,5 +1,6 @@
 import endPoints from 'services/endPoints/endPoints.main';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
+import STATUSES from '../../services/requestHandler.Statuses';
 
 const {
   getChunk,
@@ -22,10 +23,25 @@ class Words extends BaseDomainModel {
     return res;
   }
 
-  async createUserWord(wordId, parameters) {
-    const res = await this.getDataOfAuthorizedUser(
+  async createUserWord(wordId, difficulty, vocabulary) {
+    const parameters = { optional: {} };
+
+    if (difficulty) {
+      parameters.difficulty = difficulty;
+      parameters.optional.registrationDate = Date.now();
+    }
+    if (vocabulary) {
+      parameters.optional.vocabulary = vocabulary;
+    }
+
+    let res = await this.getDataOfAuthorizedUser(
       createUserWord, this.userId, this.token, wordId, parameters,
     );
+
+    if (res.status === STATUSES.EXPECTATION_FAILED) {
+      res = await this.updateUserWord(wordId, difficulty, vocabulary);
+    }
+
     return res;
   }
 
@@ -43,7 +59,19 @@ class Words extends BaseDomainModel {
     return res;
   }
 
-  async updateUserWord(wordId, parameters) {
+  async updateUserWord(wordId, newDifficulty, newVocabulary) {
+    const { data } = await this.getUserWordById(wordId);
+    const { difficulty, optional } = data;
+    const parameters = { difficulty, optional };
+
+    if (newDifficulty) {
+      parameters.difficulty = newDifficulty;
+      parameters.optional.registrationDate = Date.now();
+    }
+    if (newVocabulary) {
+      parameters.optional.vocabulary = newVocabulary;
+    }
+
     const res = await this.getDataOfAuthorizedUser(
       updateUserWord, this.userId, this.token, wordId, parameters,
     );
@@ -55,6 +83,11 @@ class Words extends BaseDomainModel {
       deleteUserWord, this.userId, this.token, wordId,
     );
     return res;
+  }
+
+  getFileLink(file) {
+    const url = 'https://raw.githubusercontent.com/jack-guzya/rslang-data/master/';
+    return `${url}${file}`;
   }
 }
 
