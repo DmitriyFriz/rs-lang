@@ -1,6 +1,8 @@
+import get from 'lodash.get';
 import endPoints from 'services/endPoints/endPoints.main';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
 import STATUSES from '../../services/requestHandler.Statuses';
+import { checkGroupWordsStatus, registrationWord } from './WordsHandler';
 
 const {
   getChunk,
@@ -14,41 +16,12 @@ const {
   getAggregatedWordData,
 } = endPoints.words;
 
-const DIFFICULTY = {
-  EASY: 7776000000,
-  MEDIUM: 3888000000,
-  HARD: 1123200000,
-  AGAIN: 600000,
-};
-
-function checkWordStatus(repeatDate) {
-  const date = new Date(repeatDate);
-  return date < Date.now();
-}
-
-function registrationWord(data, difficulty, vocabulary) {
-  const parameters = data;
-
-  parameters.optional.date = Date.now();
-  if (parameters.optional.amount === undefined) {
-    parameters.optional.amount = 0;
-  }
-  parameters.optional.amount += 1;
-
-  if (difficulty) {
-    parameters.difficulty = difficulty;
-    parameters.optional.repeat = {};
-    parameters.optional.repeat.date = Date.now() + DIFFICULTY[difficulty.toUpperCase()];
-    parameters.optional.repeat.status = false;
-  }
-  if (vocabulary) {
-    parameters.optional.vocabulary = vocabulary;
-  }
-
-  return parameters;
-}
-
 class Words extends BaseDomainModel {
+  constructor(group) {
+    super();
+    if (group !== undefined) { this.selectGroupWords(group); }
+  }
+
   async getChunk(page, group) {
     const res = await this.getData(getChunk, page, group);
     return res;
@@ -88,7 +61,11 @@ class Words extends BaseDomainModel {
   }
 
   async updateUserWord(wordId, newDifficulty, newVocabulary) {
-    const { data } = await this.getUserWordById(wordId);
+    const { data, status, statusText } = await this.getUserWordById(wordId);
+    if (status === STATUSES.UNAUTHORIZED) {
+      return { status, statusText };
+    }
+
     const { difficulty, optional } = data;
     const parameters = registrationWord(
       { difficulty, optional }, newDifficulty, newVocabulary,
@@ -112,6 +89,46 @@ class Words extends BaseDomainModel {
       getAggregatedWordData, this.userId, this.token, filter,
     );
     return res;
+  }
+
+  async selectGroupWords(group) {
+    const ALL_WORDS = 600;
+    const filter = {
+      $or: [
+        { 'userWord.optional.repeat.status': false },
+        { 'userWord.optional.repeat.status': true },
+        { userWord: null }],
+    };
+
+    const parameters = {
+      group,
+      wordsPerPage: ALL_WORDS,
+      filter: encodeURIComponent(JSON.stringify(filter)),
+    };
+
+    const { data, status, statusText } = await this.getAggregatedWords(parameters);
+    if (status === STATUSES.UNAUTHORIZED) {
+      return { status, statusText };
+    }
+
+    const [res] = data;
+    this.groupWords = checkGroupWordsStatus(res.paginatedResults);
+
+    return this.groupWords;
+  }
+
+  get repeatWords() {
+    return this.groupWords.filter((word) => {
+      const status = get(word, 'userWord.optional.repeat.status');
+      return !!status;
+    });
+  }
+
+  get newWords() {
+    return this.groupWords.filter((word) => {
+      const userWord = get(word, 'userWord');
+      return !userWord;
+    });
   }
 
   async deleteUserWord(wordId) {

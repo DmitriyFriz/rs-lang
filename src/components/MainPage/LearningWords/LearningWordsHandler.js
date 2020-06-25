@@ -2,7 +2,7 @@ import get from 'lodash.get';
 import WordsDomain from '../../../domain-models/Words/Words';
 // import STATUSES from '../../../services/requestHandler.Statuses';
 
-const wordsDomain = new WordsDomain();
+const wordsDomain = new WordsDomain(0);
 const { getFileLink } = wordsDomain;
 
 // const DIFFICULTY = {
@@ -20,11 +20,11 @@ function pasteInput(text) {
   return res;
 }
 
-function checkWordStatus(registrationDate, difficulty) {
-  const repeatDate = registrationDate + difficulty;
-  const date = new Date(repeatDate);
-  return date < Date.now();
-}
+// function checkWordStatus(registrationDate, difficulty) {
+//   const repeatDate = registrationDate + difficulty;
+//   const date = new Date(repeatDate);
+//   return date < Date.now();
+// }
 
 // DEMO
 
@@ -74,7 +74,9 @@ async function handleRateBlock(event) {
   // });
 
   const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
-
+  // const aggregateData = await wordsDomain.getGroupWords(0);
+  console.log(wordsDomain.repeatWords);
+  console.log(wordsDomain.newWords);
   console.log(data);
 }
 
