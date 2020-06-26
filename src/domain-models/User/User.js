@@ -5,6 +5,7 @@ import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
 const {
   signIn, register, update, remove,
 } = endPoints.users;
+const { get } = endPoints.settings;
 
 class User extends BaseDomainModel {
   constructor() {
@@ -55,7 +56,9 @@ class User extends BaseDomainModel {
 
   async checkAuthStatus() {
     if (this.token && this.userId) {
-      const { status } = await this.update(null);
+      const { status } = await this.getDataOfAuthorizedUser(
+        get, this.userId, this.token,
+      );
       this.isAuthorized = (status !== STATUSES.UNAUTHORIZED);
       return this.isAuthorized;
     }
