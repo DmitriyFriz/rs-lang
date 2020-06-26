@@ -1,7 +1,7 @@
 import get from 'lodash.get';
 import endPoints from 'services/endPoints/endPoints.main';
+import STATUSES from 'services/requestHandler.Statuses';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
-import STATUSES from '../../services/requestHandler.Statuses';
 import { checkGroupWordsStatus, registrationWord } from './WordsHandler';
 
 const {
