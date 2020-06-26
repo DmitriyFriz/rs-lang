@@ -1,16 +1,8 @@
 import get from 'lodash.get';
 import WordsDomain from '../../../domain-models/Words/Words';
-// import STATUSES from '../../../services/requestHandler.Statuses';
 
 const wordsDomain = new WordsDomain(0);
 const { getFileLink } = wordsDomain;
-
-// const DIFFICULTY = {
-//   EASY: 7776000000,
-//   MEDIUM: 3888000000,
-//   HARD: 1123200000,
-//   AGAIN: 600000,
-// };
 
 function pasteInput(text) {
   const regExp = /(?<=<b>)(.*)(?=<\/b>)/g;
@@ -19,12 +11,6 @@ function pasteInput(text) {
   const res = text.replace(/<b>.*<\/b>/, input);
   return res;
 }
-
-// function checkWordStatus(registrationDate, difficulty) {
-//   const repeatDate = registrationDate + difficulty;
-//   const date = new Date(repeatDate);
-//   return date < Date.now();
-// }
 
 // DEMO
 
@@ -65,18 +51,7 @@ async function handleRateBlock(event) {
   const activeSlide = document.querySelector('.swiper-slide-active');
   const wordId = activeSlide.id;
 
-  // const { data } = await wordsDomain.getAllUserWords();
-  // const dateArr = data.map((wordData) => {
-  //   const { registrationDate } = wordData.optional;
-  //   const difficulty = DIFFICULTY[wordData.difficulty.toUpperCase()]
-  //   const status = checkWordStatus(registrationDate, difficulty);
-  //   return { date, status };
-  // });
-
   const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
-  // const aggregateData = await wordsDomain.getGroupWords(0);
-  // console.log(wordsDomain.repeatWords);
-  // console.log(wordsDomain.newWords);
   console.log(data);
 }
 
