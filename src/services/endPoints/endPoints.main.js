@@ -77,6 +77,19 @@ const endPoints = {
       url: `${rootUrl}users/${userId}/words/${wordId}`,
       options: getOptions('DELETE', token),
     }),
+
+    getAggregatedWords: (userId, token, data) => {
+      const { group, wordsPerPage, filter } = data;
+      return {
+        url: `${rootUrl}users/${userId}/aggregatedWords?group=${group}&wordsPerPage=${wordsPerPage}&filter=${filter}`,
+        options: getOptions('GET', token),
+      };
+    },
+
+    getAggregatedWordData: (userId, token, wordId, data) => ({
+      url: `${rootUrl}users/${userId}/aggregatedWords/${wordId}`,
+      options: getOptions('GET', token, data),
+    }),
   },
 
   statistics: {

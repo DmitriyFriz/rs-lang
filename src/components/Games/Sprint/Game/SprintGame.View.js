@@ -7,8 +7,8 @@ import { onRouteChangeEvent } from 'router/RouteHandler';
 // constants
 import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 
+// domain
 import Words from 'domainModels/Words/Words';
-const wordsDomainModel = new Words();
 
 // layout
 import getLayout from './SprintGame.Layout';
