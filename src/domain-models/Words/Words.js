@@ -17,11 +17,6 @@ const {
 } = endPoints.words;
 
 class Words extends BaseDomainModel {
-  constructor(group) {
-    super();
-    if (group !== undefined) { this.selectGroupWords(group); }
-  }
-
   async getChunk(page, group) {
     const res = await this.getData(getChunk, page, group);
     return res;
