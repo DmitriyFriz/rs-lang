@@ -8,11 +8,6 @@ const {
 const { get } = endPoints.settings;
 
 class User extends BaseDomainModel {
-  constructor() {
-    super();
-    this.checkAuthStatus();
-  }
-
   async signIn(user) {
     const { status, statusText, data } = await this.getData(signIn, user);
 
