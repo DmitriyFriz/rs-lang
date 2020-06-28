@@ -10,7 +10,7 @@ async function saveSettings(settingsList) {
       ? setting.checked : +setting.value;
     return data;
   }, {});
-
+  console.log(optional)
   await settingsDomain.updateSettings({ optional });
 }
 

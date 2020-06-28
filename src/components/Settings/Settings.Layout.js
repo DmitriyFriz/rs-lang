@@ -1,3 +1,5 @@
+import SETTINGS from './Settings.Constants';
+
 function getLayout() {
   return `
   <div class="settings__words">
@@ -21,25 +23,28 @@ function getLayout() {
 
   <div class="settings__cards">
     <p>Display on cards</p>
-    <input type="checkbox" id="image" name="image" data-settings="image">
+    <input type="checkbox" id="image" name="image" data-settings="${SETTINGS.IMAGE}">
     <label for="image">Associative image</label>
 
-    <input type="checkbox" id="example" name="example" data-settings="example">
+    <input type="checkbox" id="example" name="example" data-settings="${SETTINGS.EXAMPLE}">
     <label for="example">Example</label>
 
-    <input type="checkbox" id="meaning" name="meaning" data-settings="meaning">
+    <input type="checkbox" id="meaning" name="meaning" data-settings="${SETTINGS.MEANING}">
     <label for="meaning">Meaning</label>
 
-    <input type="checkbox" id="translate" name="translate" data-settings="translation">
+    <input type="checkbox" id="translate" name="translate" data-settings="${SETTINGS.TRANSLATION}">
     <label for="translate">Translation</label>
+
+    <input type="checkbox" id="transcription" name="transcription" data-settings="${SETTINGS.TRANSCRIPTION}">
+    <label for="translate">Transcription</label>
   </div>
 
   <div class="settings__buttons">
   <p>Buttons</p>
-    <input type="checkbox" id="difficulty" name="difficulty" data-settings="difficultyButtons">
+    <input type="checkbox" id="difficulty" name="difficulty" data-settings="${SETTINGS.DIFFICULTY_BUTTONS}">
     <label for="difficulty">Difficulty buttons</label>
 
-    <input type="checkbox" id="vocabulary" name="vocabulary" data-settings="vocabularyButtons">
+    <input type="checkbox" id="vocabulary" name="vocabulary" data-settings="${SETTINGS.VOCABULARY_BUTTONS}">
     <label for="vocabulary">Vocabulary buttons</label>
   </div>
   `;

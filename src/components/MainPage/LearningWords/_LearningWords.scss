@@ -56,16 +56,16 @@
   background-color: $basicColor3;
   font-size: 0.8em;
 
-  .associative{
+  &__associative{
     position: relative;
     overflow: hidden;
     width: 100%;
     height: 50%;
   }
 
-  .word,
-  .meaning,
-  .example {
+  &__word,
+  &__meaning,
+  &__example {
     margin-bottom: 7px;
     padding-bottom: 3px;
     border-bottom: 1px solid;

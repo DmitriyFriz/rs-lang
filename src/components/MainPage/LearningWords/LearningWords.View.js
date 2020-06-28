@@ -10,16 +10,30 @@ import swiperOptions from './Swiper.Options';
 import 'swiper/css/swiper.min.css';
 
 // layout
-import {
-  getLayout, createWordCard, createRateBlock,
-} from './Layout/LearningWords.Layout';
+import { getLayout, createWordCard } from './Layout/LearningWords.Layout';
 
 // handler
-import { getWords, handleRateBlock } from './LearningWordsHandler';
+import { getWords } from './LearningWordsHandler';
+
+// domains
+import SettingsDomain from '../../../domain-models/Settings/Settings';
+import WordsDomain from '../../../domain-models/Words/Words';
 
 class LearningWords extends BaseComponent {
   static get name() {
     return MAIN_PAGE_ROUTES.LEARNING_WORDS;
+  }
+
+  async prepareData() {
+    this.data = await getWords();
+    const settingsDomain = new SettingsDomain();
+    const settingsData = await settingsDomain.getSettings();
+    const { optional } = settingsData.data;
+    this.enabledSettings = Object.keys(optional)
+      .filter((setting) => optional[setting] === true);
+    console.log(this.enabledSettings, optional);
+    // const wordsDomain = new WordsDomain();
+    // const settings = await settingsDomain.getSettings();
   }
 
   createLayout() {
@@ -34,20 +48,16 @@ class LearningWords extends BaseComponent {
         content: 'Finish training',
       },
     );
-    this.rateBlock = createRateBlock();
+    // this.rateBlock = createRateBlock();
     this.component.append(this.exitBtn, this.rateBlock);
   }
 
   addListeners() {
-    this.rateBlock.addEventListener('click', handleRateBlock);
+    // this.rateBlock.addEventListener('click', handleRateBlock);
   }
 
   removeListeners() {
-    this.rateBlock.removeEventListener('click', handleRateBlock);
-  }
-
-  async prepareData() {
-    this.data = await getWords();
+    // this.rateBlock.removeEventListener('click', handleRateBlock);
   }
 
   async show() {
@@ -56,7 +66,7 @@ class LearningWords extends BaseComponent {
     this.swiper.virtual.removeAllSlides();
 
     this.data.forEach((word) => {
-      this.swiper.virtual.appendSlide(createWordCard(word));
+      this.swiper.virtual.appendSlide(createWordCard(this.enabledSettings, word));
     });
     this.swiper.update();
   }
