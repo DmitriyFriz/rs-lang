@@ -13,7 +13,7 @@ import 'swiper/css/swiper.min.css';
 import { getLayout, createWordCard } from './Layout/LearningWords.Layout';
 
 // handler
-import { getWords } from './LearningWordsHandler';
+import { handleWords, handleRateBlock, getDayWordsCollection } from './LearningWordsHandler';
 
 // domains
 import SettingsDomain from '../../../domain-models/Settings/Settings';
@@ -25,15 +25,14 @@ class LearningWords extends BaseComponent {
   }
 
   async prepareData() {
-    this.data = await getWords();
     const settingsDomain = new SettingsDomain();
     const settingsData = await settingsDomain.getSettings();
     const { optional } = settingsData.data;
     this.enabledSettings = Object.keys(optional)
       .filter((setting) => optional[setting] === true);
     console.log(this.enabledSettings, optional);
-    // const wordsDomain = new WordsDomain();
-    // const settings = await settingsDomain.getSettings();
+
+    this.data = await getDayWordsCollection(optional);
   }
 
   createLayout() {

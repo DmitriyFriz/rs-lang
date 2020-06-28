@@ -1,7 +1,8 @@
 import get from 'lodash.get';
+import shuffle from 'lodash.shuffle';
 import WordsDomain from '../../../domain-models/Words/Words';
 
-const wordsDomain = new WordsDomain(0);
+const wordsDomain = new WordsDomain();
 const { getFileLink } = wordsDomain;
 
 function pasteInput(text) {
@@ -14,8 +15,7 @@ function pasteInput(text) {
 
 // DEMO
 
-async function getWords() {
-  const { data } = await wordsDomain.getChunk(0, 0);
+function handleWords(data) {
   const res = data.map((word) => {
     const {
       image,
@@ -43,6 +43,23 @@ async function getWords() {
   return res;
 }
 
+async function getDayWordsCollection(optional) {
+  const { newWords = 5, level = 0, wordsPerDay = 20 } = optional;
+  await wordsDomain.selectGroupWords(level);
+
+  const newWordsList = wordsDomain.newWords.slice(0, newWords);
+  const repeatWordList = wordsDomain.repeatWords.slice(0, (wordsPerDay - newWords));
+  let allWords = newWordsList.concat(repeatWordList);
+
+  if (allWords.length < wordsPerDay) {
+    const amount = wordsPerDay - allWords.length;
+    const additionalWords = (shuffle(wordsDomain.groupWords)).slice(0, amount);
+    allWords = allWords.concat(additionalWords);
+  }
+
+  return shuffle(handleWords(allWords));
+}
+
 async function handleRateBlock(event) {
   const difficulty = get(event, 'target.dataset.difficulty');
   const vocabulary = get(event, 'target.dataset.vocabulary');
@@ -55,4 +72,6 @@ async function handleRateBlock(event) {
   console.log(data);
 }
 
-export { getWords, getFileLink, handleRateBlock };
+export {
+  handleWords, getDayWordsCollection, getFileLink, handleRateBlock,
+};
