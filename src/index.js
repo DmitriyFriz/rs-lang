@@ -1,4 +1,5 @@
 import './style/main.scss';
+// import UserDomain from './domain-models/User/User';
 
 // router
 import Router from './router/Router';
@@ -42,3 +43,12 @@ registerRouter(headerRouter);
 
 const mainRouter = new Router(ROUTERS.MAIN, root, mainRoutes, MAIN_ROUTES.MAIN_PAGE);
 registerRouter(mainRouter);
+
+// const userDomain = new UserDomain();
+
+// const signInData = {
+//   email: 'jack1234@gmail.com',
+//   password: 'Ab12345-',
+// };
+
+// userDomain.signIn(signInData).then((res) => console.log(res));
