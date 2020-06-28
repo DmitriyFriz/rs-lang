@@ -47,14 +47,27 @@
   width: 50px;
 }
 
-.score {
-  background-color: white;
+.score-icon, .result-icon {
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
 }
 
-.result-icon {
-  height: 25px;
-  width: 25px;
-  background-color: red;
+.score-icon {
+  background-image: url('../../../../assets/mini-games/img/score-icon.svg');
+}
+
+.score {
+  margin-left: 10px;
+  color: gold;
+  font-size: 20px;
+}
+
+.score-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 @keyframes timer {

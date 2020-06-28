@@ -9,7 +9,6 @@ import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 
 // domain
 import Words from 'domainModels/Words/Words';
-const wordsDomainModel = new Words();
 
 // layout
 import getLayout from './SprintGame.Layout';
@@ -17,10 +16,17 @@ import getLayout from './SprintGame.Layout';
 // styles
 import './SprintGame.scss';
 
+// icons
+import correctIcon from '../../../../assets/mini-games/img/correct-icon.svg';
+import incorrectIcon from '../../../../assets/mini-games/img/incorrect-icon.svg';
+
+const wordsDomainModel = new Words();
+
 class SprintGame extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
 
+    this.gameIndex = 0;
     this.groupIndex = 0;
     this.repeatWordsIndex = 0;
     this.newWordsIndex = 0;
@@ -40,10 +46,15 @@ class SprintGame extends BaseComponent {
   async prepareData() {
     this.group = await wordsDomainModel.selectGroupWords(0);
     this.repeatWords = wordsDomainModel.repeatWords;
-    this.newWords = wordsDomainModel.newWords
+    this.newWords = wordsDomainModel.newWords;
     this.shuffleWords(this.group);
     this.shuffleWords(this.repeatWords);
     this.shuffleWords(this.newWords);
+    this.gameArray = [];
+    this.gameArray.push(...this.repeatWords, ...this.newWords, ...this.group);
+    console.log(this.repeatWords, this.newWords, this.group);
+    console.log(this.gameArray);
+    console.log(correctIcon, incorrectIcon);
   }
 
   static get name() {
@@ -61,7 +72,7 @@ class SprintGame extends BaseComponent {
       this.leftKey,
       this.rightKey,
       this.resultIcon,
-      this.scoreContainer
+      this.scoreContainer,
     ] = getLayout();
 
     this.getNewWord();
@@ -87,16 +98,12 @@ class SprintGame extends BaseComponent {
   }
 
   getNewWord() {
-    if (this.repeatWords.length > this.repeatWordsIndex) {
-      this.currentWord = this.repeatWords[this.repeatWordsIndex];
-      this.repeatWordsIndex += 1;
-    } else if (this.newWords.length > this.newWordsIndex) {
-      this.currentWord = this.newWords[this.newWordsIndex];
-      this.newWordsIndex += 1;
-    } else {
-      this.currentWord = this.group[this.groupIndex];
-      this.groupIndex += 1;
+    if (this.gameArray.length < this.gameIndex) {
+      console.log('finish game');
     }
+
+    this.currentWord = this.gameArray[this.gameIndex];
+    this.gameIndex += 1;
 
     this.wordContainer.textContent = this.currentWord.word;
 
@@ -108,7 +115,7 @@ class SprintGame extends BaseComponent {
     if (rightAnswer) {
       this.answerContainer.textContent = this.currentWord.wordTranslate;
     } else {
-      const randomIndex = this.randomNumber(this.group.length)
+      const randomIndex = this.randomNumber(this.group.length);
       const falseAnswer = this.group[randomIndex].wordTranslate;
       this.answerContainer.textContent = falseAnswer;
     }
@@ -120,7 +127,7 @@ class SprintGame extends BaseComponent {
 
   shuffleWords(words) {
     const array = words;
-    for (let i = array.length - 1; i > 0; i--) {
+    for (let i = array.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (array.length));
       [array[i], array[j]] = [array[j], array[i]];
     }
@@ -152,12 +159,12 @@ class SprintGame extends BaseComponent {
 
   handleKeyDown(event) {
     if (event.code === 'ArrowLeft') {
-      if(event.repeat) return;
+      if (event.repeat) return;
       this.leftKey.classList.add('work-key');
       this.handleAnswer(false);
     }
     if (event.code === 'ArrowRight') {
-      if(event.repeat) return;
+      if (event.repeat) return;
       this.rightKey.classList.add('work-key');
       this.handleAnswer(true);
     }
@@ -187,7 +194,7 @@ class SprintGame extends BaseComponent {
     this.streakWinning += 1;
 
     if (this.streakWinning === this.superWinning) {
-      this.awardedPoints *= 2
+      this.awardedPoints *= 2;
       this.score += this.awardedPoints;
       this.streakWinning = 0;
     } else {
@@ -195,11 +202,18 @@ class SprintGame extends BaseComponent {
     }
 
     this.scoreContainer.textContent = this.score;
+
+    this.resultIcon.style.backgroundImage = `url(${correctIcon})`;
   }
 
   handleIncorrectAnswer() {
     this.streakWinning = 0;
     this.awardedPoints = this.basePoints;
+    this.resultIcon.style.backgroundImage = `url(${incorrectIcon})`;
+  }
+
+  handleFinish() {
+
   }
 }
 
