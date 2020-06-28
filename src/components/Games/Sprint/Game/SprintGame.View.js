@@ -2,7 +2,7 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // router
-import { onRouteChangeEvent } from 'router/RouteHandler';
+import { changeRoute } from 'router/RouteHandler';
 
 // constants
 import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
@@ -41,6 +41,7 @@ class SprintGame extends BaseComponent {
     this.handleTrueButton = this.handleTrueButton.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleFinish = this.handleFinish.bind(this);
   }
 
   async prepareData() {
@@ -93,7 +94,7 @@ class SprintGame extends BaseComponent {
 
     if (currentTime === 0) {
       clearInterval(this.intervalID);
-      console.log('finish');
+      setTimeout(this.handleFinish, 500);
     }
   }
 
@@ -162,13 +163,14 @@ class SprintGame extends BaseComponent {
       if (event.repeat) return;
       this.leftKey.classList.add('work-key');
       this.handleAnswer(false);
+      this.getNewWord();
     }
     if (event.code === 'ArrowRight') {
       if (event.repeat) return;
       this.rightKey.classList.add('work-key');
       this.handleAnswer(true);
+      this.getNewWord();
     }
-    this.getNewWord();
   }
 
   handleKeyUp(event) {
@@ -213,7 +215,8 @@ class SprintGame extends BaseComponent {
   }
 
   handleFinish() {
-
+    localStorage.setItem('sprint-score', this.score);
+    changeRoute(GAMES_ROUTES.SPRINT_FINISH, ROUTERS.GAMES);
   }
 }
 

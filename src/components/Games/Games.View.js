@@ -6,6 +6,7 @@ import SpeakIt from './SpeakIt/SpeakIt.View';
 import SpeakItMain from './SpeakIt/components/SpeakItMain.View';
 import SprintStart from './Sprint/Start/SprintStart.View';
 import SprintGame from './Sprint/Game/SprintGame.View';
+import SprintFinish from './Sprint/Finish/SprintFinish.View';
 
 // router
 import Router from '../../router/Router';
@@ -27,9 +28,10 @@ class Games extends BaseComponent {
     const gamesRoutes = {
       [GAMES_ROUTES.GAMES_LIST]: GamesList,
       [GAMES_ROUTES.SPEAK_IT]: SpeakIt,
+      [SPEAK_IT_ROUTERS.SPEAK_IT_MAIN]: SpeakItMain,
       [GAMES_ROUTES.SPRINT]: SprintStart,
       [GAMES_ROUTES.SPRINT_GAME]: SprintGame,
-      [SPEAK_IT_ROUTERS.SPEAK_IT_MAIN]: SpeakItMain,
+      [GAMES_ROUTES.SPRINT_FINISH]: SprintFinish,
     };
 
     this.gamesRouter = new Router(

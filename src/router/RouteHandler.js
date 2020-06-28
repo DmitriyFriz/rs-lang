@@ -62,4 +62,5 @@ export {
   registerRouter,
   unregisterRouter,
   onRouteChangeEvent,
+  changeRoute,
 };
