@@ -47,6 +47,16 @@
   width: 50px;
 }
 
+.score {
+  background-color: white;
+}
+
+.result-icon {
+  height: 25px;
+  width: 25px;
+  background-color: red;
+}
+
 @keyframes timer {
 	from {
 		transform: scale(1.0);

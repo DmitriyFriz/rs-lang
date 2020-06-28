@@ -9,6 +9,7 @@ import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 
 // domain
 import Words from 'domainModels/Words/Words';
+const wordsDomainModel = new Words();
 
 // layout
 import getLayout from './SprintGame.Layout';
@@ -20,7 +21,14 @@ class SprintGame extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
 
-    this.wordForGame = null;
+    this.groupIndex = 0;
+    this.repeatWordsIndex = 0;
+    this.newWordsIndex = 0;
+    this.streakWinning = 0;
+    this.superWinning = 4;
+    this.score = 0;
+    this.basePoints = 10;
+    this.awardedPoints = this.basePoints;
 
     this.setTimer = this.setTimer.bind(this);
     this.handleFalseButton = this.handleFalseButton.bind(this);
@@ -30,7 +38,12 @@ class SprintGame extends BaseComponent {
   }
 
   async prepareData() {
-
+    this.group = await wordsDomainModel.selectGroupWords(0);
+    this.repeatWords = wordsDomainModel.repeatWords;
+    this.newWords = wordsDomainModel.newWords
+    this.shuffleWords(this.group);
+    this.shuffleWords(this.repeatWords);
+    this.shuffleWords(this.newWords);
   }
 
   static get name() {
@@ -41,19 +54,20 @@ class SprintGame extends BaseComponent {
     [
       this.container,
       this.time,
-      this.question,
-      this.answer,
+      this.wordContainer,
+      this.answerContainer,
       this.falseButton,
       this.trueButton,
       this.leftKey,
-      this.rightKey
+      this.rightKey,
+      this.resultIcon,
+      this.scoreContainer
     ] = getLayout();
 
-    this.question.textContent = 'question';
-    this.answer.textContent = 'answer';
+    this.getNewWord();
 
     this.component.append(this.container);
-    setInterval(this.setTimer, 1000);
+    this.intervalID = setInterval(this.setTimer, 1000);
   }
 
   setTimer() {
@@ -66,9 +80,49 @@ class SprintGame extends BaseComponent {
       this.time.textContent = currentTime;
     }
 
-
     if (currentTime === 0) {
+      clearInterval(this.intervalID);
       console.log('finish');
+    }
+  }
+
+  getNewWord() {
+    if (this.repeatWords.length > this.repeatWordsIndex) {
+      this.currentWord = this.repeatWords[this.repeatWordsIndex];
+      this.repeatWordsIndex += 1;
+    } else if (this.newWords.length > this.newWordsIndex) {
+      this.currentWord = this.newWords[this.newWordsIndex];
+      this.newWordsIndex += 1;
+    } else {
+      this.currentWord = this.group[this.groupIndex];
+      this.groupIndex += 1;
+    }
+
+    this.wordContainer.textContent = this.currentWord.word;
+
+    this.getNewAnswer();
+  }
+
+  getNewAnswer() {
+    const rightAnswer = this.randomNumber(1) === 1;
+    if (rightAnswer) {
+      this.answerContainer.textContent = this.currentWord.wordTranslate;
+    } else {
+      const randomIndex = this.randomNumber(this.group.length)
+      const falseAnswer = this.group[randomIndex].wordTranslate;
+      this.answerContainer.textContent = falseAnswer;
+    }
+  }
+
+  randomNumber(number) {
+    return Math.round(Math.random() * number);
+  }
+
+  shuffleWords(words) {
+    const array = words;
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (array.length));
+      [array[i], array[j]] = [array[j], array[i]];
     }
   }
 
@@ -87,24 +141,27 @@ class SprintGame extends BaseComponent {
   }
 
   handleFalseButton() {
-    console.log(false);
+    this.handleAnswer(false);
+    this.getNewWord();
   }
 
   handleTrueButton() {
-    console.log(true);
+    this.handleAnswer(true);
+    this.getNewWord();
   }
 
   handleKeyDown(event) {
-    if (event.code === 'ArrowRight') {
-      if(event.repeat) return;
-      console.log('right');
-      this.rightKey.classList.add('work-key');
-    }
     if (event.code === 'ArrowLeft') {
       if(event.repeat) return;
-      console.log('left');
       this.leftKey.classList.add('work-key');
+      this.handleAnswer(false);
     }
+    if (event.code === 'ArrowRight') {
+      if(event.repeat) return;
+      this.rightKey.classList.add('work-key');
+      this.handleAnswer(true);
+    }
+    this.getNewWord();
   }
 
   handleKeyUp(event) {
@@ -116,6 +173,34 @@ class SprintGame extends BaseComponent {
     }
   }
 
+  handleAnswer(userAnswer) {
+    const rightAnswer = this.currentWord.wordTranslate === this.answerContainer.textContent;
+    const result = userAnswer === rightAnswer;
+    if (result) {
+      this.handleCorrectAnswer();
+    } else {
+      this.handleIncorrectAnswer();
+    }
+  }
+
+  handleCorrectAnswer() {
+    this.streakWinning += 1;
+
+    if (this.streakWinning === this.superWinning) {
+      this.awardedPoints *= 2
+      this.score += this.awardedPoints;
+      this.streakWinning = 0;
+    } else {
+      this.score += this.awardedPoints;
+    }
+
+    this.scoreContainer.textContent = this.score;
+  }
+
+  handleIncorrectAnswer() {
+    this.streakWinning = 0;
+    this.awardedPoints = this.basePoints;
+  }
 }
 
 export default SprintGame;
