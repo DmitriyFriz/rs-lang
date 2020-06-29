@@ -84,7 +84,7 @@ function createExample(root, textExample) {
   });
   block.dataset.settings = SETTINGS.EXAMPLE;
   block.dataset.translation = TRANSLATIONS.EXAMPLE;
-  block.innerHTML = `<p class="example__original">${textExample}</p>`;
+  block.innerHTML = `<p class="example__original" data-cut="textExample">${textExample}</p>`;
   root.append(block);
   return block;
 }
@@ -108,7 +108,7 @@ function createMeaning(root, textMeaning) {
   });
   block.dataset.settings = SETTINGS.MEANING;
   block.dataset.translation = TRANSLATIONS.MEANING;
-  block.innerHTML = `<p class="meaning__original">${textMeaning}</p>`;
+  block.innerHTML = `<p class="meaning__original" data-cut="textMeaning">${textMeaning}</p>`;
   root.append(block);
   return block;
 }

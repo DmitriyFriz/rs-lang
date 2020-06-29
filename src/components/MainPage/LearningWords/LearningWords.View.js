@@ -13,11 +13,11 @@ import 'swiper/css/swiper.min.css';
 import { getLayout, createWordCard } from './Layout/LearningWords.Layout';
 
 // handler
-import { getDayWordsCollection } from './LearningWordsHandler';
+import { getDayWordsCollection, replaceWord } from './LearningWordsHandler';
 
 // domains
 import SettingsDomain from '../../../domain-models/Settings/Settings';
-import WordsDomain from '../../../domain-models/Words/Words';
+// import WordsDomain from '../../../domain-models/Words/Words';
 
 class LearningWords extends BaseComponent {
   static get name() {
@@ -34,7 +34,10 @@ class LearningWords extends BaseComponent {
 
     this.data = await getDayWordsCollection(optional);
     this.trueWords = this.data
-      .map((wordData) => wordData.word)
+      .map((wordData) => {
+        const { word, cutWords } = wordData;
+        return { word, cutWords };
+      })
       .reverse();
     console.log(this.trueWords);
   }
@@ -83,10 +86,6 @@ class LearningWords extends BaseComponent {
 
     this.swiper.virtual.removeAllSlides();
     this.addWordToSwiper();
-    // this.data.forEach((word) => {
-    //   this.swiper.virtual.appendSlide(createWordCard(this.enabledSettings, word));
-    // });
-    // this.swiper.update();
   }
 
   hide() {
@@ -96,8 +95,11 @@ class LearningWords extends BaseComponent {
 
   checkInputWord() {
     const { input, index } = this.currentSlide;
-    if (input.value === this.trueWords[index]) {
+    const { word, cutWords } = this.trueWords[index];
+
+    if (input.value === word) {
       this.addWordToSwiper();
+      this.pasteWordsToTexts(cutWords);
     }
     console.log(input.value, index);
   }
@@ -118,6 +120,18 @@ class LearningWords extends BaseComponent {
   addFocusToInput() {
     const { input } = this.currentSlide;
     input.focus();
+  }
+
+  pasteWordsToTexts(words) {
+    const { index } = this.currentSlide;
+    const texts = this.swiper.virtual.slides[index]
+      .querySelectorAll('[data-cut]');
+
+    [...texts].forEach((item) => {
+      const text = item;
+      const { cut } = text.dataset;
+      text.innerHTML = replaceWord(text.innerHTML, words[cut]).text;
+    });
   }
 }
 
