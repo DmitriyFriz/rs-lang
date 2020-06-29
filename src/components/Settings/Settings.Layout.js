@@ -32,11 +32,11 @@ function getLayout() {
     <input type="checkbox" id="meaning" name="meaning" data-settings="${SETTINGS.MEANING}">
     <label for="meaning">Meaning</label>
 
-    <input type="checkbox" id="translate" name="translate" data-settings="${SETTINGS.TRANSLATION}">
-    <label for="translate">Translation</label>
-
     <input type="checkbox" id="transcription" name="transcription" data-settings="${SETTINGS.TRANSCRIPTION}">
     <label for="translate">Transcription</label>
+
+    <input type="checkbox" id="translate" name="translate" data-settings="${SETTINGS.TRANSLATION}">
+    <label for="translate">Translation</label>
   </div>
 
   <div class="settings__buttons">

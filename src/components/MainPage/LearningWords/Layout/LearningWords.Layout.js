@@ -116,26 +116,26 @@ function createMeaning(root, textMeaning) {
 const translationsList = {
   [TRANSLATIONS.MEANING]: ({ textMeaningTranslate }) => createElement({
     tag: 'p',
-    className: `${TRANSLATIONS.MEANING}__translation`,
+    className: 'translation',
     content: textMeaningTranslate,
   }),
 
   [TRANSLATIONS.EXAMPLE]: ({ textExampleTranslate }) => createElement({
     tag: 'p',
-    className: `${TRANSLATIONS.EXAMPLE}__translation`,
+    className: 'translation',
     content: textExampleTranslate,
   }),
 
   [TRANSLATIONS.WORD]: ({ wordTranslate }) => createElement({
     tag: 'p',
-    className: `${TRANSLATIONS.WORD}__translation`,
+    className: 'translation',
     content: wordTranslate,
   }),
 };
 
 function createTranslations(root, parameters) {
   const blocks = root.querySelectorAll('[data-translation]');
-
+  console.log(blocks);
   [...blocks].forEach((block) => {
     const { translation } = block.dataset;
     block.append(translationsList[translation](parameters));

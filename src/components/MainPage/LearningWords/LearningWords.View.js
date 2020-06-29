@@ -80,7 +80,7 @@ class LearningWords extends BaseComponent {
 
     this.swiper.on('transitionEnd', () => {
       if (this.swiper.progress === 1) {
-        this.addFocusToInput();
+        this.currentInput.focus();
       }
     });
 
@@ -94,14 +94,14 @@ class LearningWords extends BaseComponent {
   }
 
   checkInputWord() {
-    const { input, index } = this.currentSlide;
-    const { word, cutWords } = this.trueWords[index];
+    const { word, cutWords } = this.trueWords[this.currentIndex];
 
-    if (input.value === word) {
+    if (this.currentInput.value === word) {
       this.addWordToSwiper();
       this.pasteWordsToTexts(cutWords);
+      this.showTranslation();
     }
-    console.log(input.value, index);
+    console.log(this.currentInput.value, this.currentIndex);
   }
 
   addWordToSwiper() {
@@ -110,28 +110,33 @@ class LearningWords extends BaseComponent {
     this.swiper.update();
   }
 
-  get currentSlide() {
-    const index = this.swiper.activeIndex;
-    const input = this.swiper.virtual.slides[index]
-      .querySelector('.swiper-slide__word-input > input');
-    return { input, index };
+  get currentIndex() {
+    return this.swiper.activeIndex;
   }
 
-  addFocusToInput() {
-    const { input } = this.currentSlide;
-    input.focus();
+  get currentInput() {
+    return this.swiper.virtual.slides[this.currentIndex]
+      .querySelector('.swiper-slide__word-input > input');
+  }
+
+  get currentSlide() {
+    return this.swiper.virtual.slides[this.currentIndex];
   }
 
   pasteWordsToTexts(words) {
-    const { index } = this.currentSlide;
-    const texts = this.swiper.virtual.slides[index]
-      .querySelectorAll('[data-cut]');
+    const texts = this.currentSlide.querySelectorAll('[data-cut]');
 
     [...texts].forEach((item) => {
       const text = item;
       const { cut } = text.dataset;
       text.innerHTML = replaceWord(text.innerHTML, words[cut]).text;
     });
+  }
+
+  showTranslation() {
+    const blocks = this.currentSlide
+      .querySelectorAll('[data-translation] .translation, .swiper-slide__word');
+    [...blocks].forEach((block) => block.classList.add('show'));
   }
 }
 
