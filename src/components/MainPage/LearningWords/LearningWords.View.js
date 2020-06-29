@@ -1,3 +1,6 @@
+// lodash
+import get from 'lodash.get';
+
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
@@ -13,7 +16,7 @@ import 'swiper/css/swiper.min.css';
 import { getLayout, createWordCard } from './Layout/LearningWords.Layout';
 
 // handler
-import { getDayWordsCollection, replaceWord } from './LearningWordsHandler';
+import { getDayWordsCollection, replaceWord, addWordDifficulty, addWordToVocabulary } from './LearningWordsHandler';
 
 // domains
 import SettingsDomain from '../../../domain-models/Settings/Settings';
@@ -39,6 +42,20 @@ class LearningWords extends BaseComponent {
         return { word, cutWords };
       })
       .reverse();
+
+    this.hiddenElementsList = [
+      '[data-translation] .translation',
+      '.swiper-slide__word',
+      '.swiper-slide__difficulty-buttons',
+      '.swiper-slide__vocabulary-buttons',
+    ];
+
+    this.functionListForButtons = {
+      difficulty: (event) => addWordDifficulty(event, this.currentSlide.id),
+      vocabulary: (event) => addWordToVocabulary(event, this.currentSlide.id),
+      trueWord: () => this.showTrueWord(),
+      check: () => this.checkInputWord(),
+    };
     console.log(this.trueWords);
   }
 
@@ -54,6 +71,7 @@ class LearningWords extends BaseComponent {
         content: 'Finish training',
       },
     );
+
     this.checkBtn = BaseComponent.createElement(
       {
         tag: 'button',
@@ -61,6 +79,7 @@ class LearningWords extends BaseComponent {
         content: 'Check',
       },
     );
+    this.checkBtn.dataset.button = 'check';
 
     this.component.append(this.exitBtn, this.checkBtn);
   }
@@ -68,6 +87,7 @@ class LearningWords extends BaseComponent {
   addListeners() {
     this.checkBtn.addEventListener('click', () => this.checkInputWord());
     this.component.addEventListener('change', () => this.checkInputWord());
+    this.component.addEventListener('click', (event) => this.handleButtons(event));
   }
 
   removeListeners() {
@@ -99,7 +119,7 @@ class LearningWords extends BaseComponent {
     if (this.currentInput.value === word) {
       this.addWordToSwiper();
       this.pasteWordsToTexts(cutWords);
-      this.showTranslation();
+      this.showElementsForTrueWord();
     }
     console.log(this.currentInput.value, this.currentIndex);
   }
@@ -119,6 +139,11 @@ class LearningWords extends BaseComponent {
       .querySelector('.swiper-slide__word-input > input');
   }
 
+  set currentInput(value) {
+    this.swiper.virtual.slides[this.currentIndex]
+      .querySelector('.swiper-slide__word-input > input').value = value;
+  }
+
   get currentSlide() {
     return this.swiper.virtual.slides[this.currentIndex];
   }
@@ -133,10 +158,27 @@ class LearningWords extends BaseComponent {
     });
   }
 
-  showTranslation() {
-    const blocks = this.currentSlide
-      .querySelectorAll('[data-translation] .translation, .swiper-slide__word');
-    [...blocks].forEach((block) => block.classList.add('show'));
+  showElementsForTrueWord() {
+    this.hiddenElementsList.forEach((selector) => {
+      const elem = this.currentSlide.querySelector(selector);
+      elem.classList.add('show');
+    });
+  }
+
+  showTrueWord() {
+    this.currentInput = this.trueWords[this.currentIndex].word;
+    this.checkInputWord();
+  }
+
+  async handleButtons(event) {
+    const buttonFunction = get(event, 'target.dataset.button');
+    if (!buttonFunction) { return; }
+    this.functionListForButtons[buttonFunction](event);
+    // const activeSlide = document.querySelector('.swiper-slide-active');
+    // const wordId = activeSlide.id;
+
+    // const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
+    // console.log(data);
   }
 }
 

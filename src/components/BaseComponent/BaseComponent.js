@@ -21,22 +21,22 @@ class BaseComponent {
    * If the component is simple than it can be defined inside the function.
    * If not - use <Component>.Layout.js file.
    */
-  createLayout() {}
+  createLayout() { }
 
   /**
    * Adds listeners to the component's Nodes.
    */
-  addListeners() {}
+  addListeners() { }
 
   /**
    * Removes listeners before the component is destroyed.
    */
-  removeListeners() {}
+  removeListeners() { }
 
   /**
    * Prepares data which should be used in the component.
    */
-  async prepareData() {}
+  async prepareData() { }
 
   async show() {
     await this.prepareData();
@@ -51,7 +51,7 @@ class BaseComponent {
   }
 
   static createElement({
-    tag, content, className, id, destination
+    tag, content, className, id, destination, data,
   }) {
     const element = document.createElement(tag);
     if (content) {
@@ -66,7 +66,11 @@ class BaseComponent {
     if (destination) {
       element.dataset.destination = destination;
     }
-
+    if (data) {
+      [...data].forEach((key) => {
+        element.dataset[key] = data[key];
+      });
+    }
     return element;
   }
 }

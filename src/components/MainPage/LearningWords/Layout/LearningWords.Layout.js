@@ -22,13 +22,14 @@ function getLayout() {
   `;
 }
 
-function createAnswerBtn(root) {
+function createTrueWordBtn(root) {
   const block = createElement({
     tag: 'button',
-    className: 'button button-answer',
+    className: 'button button-true-word',
     content: 'I don\'t know',
   });
   block.dataset.settings = SETTINGS.ANSWER_BUTTON;
+  block.dataset.button = 'trueWord';
   root.append(block);
   return block;
 }
@@ -36,14 +37,14 @@ function createAnswerBtn(root) {
 function createDifficultyButtons(root) {
   const block = createElement({
     tag: 'div',
-    className: 'rate__difficulty',
+    className: 'swiper-slide__difficulty-buttons',
   });
   block.dataset.settings = SETTINGS.DIFFICULTY_BUTTONS;
   block.innerHTML = `
-    <button class="button button-hard" data-difficulty="hard">Hard</button>
-    <button class="button button-medium" data-difficulty="medium">Medium</button>
-    <button class="button button-easy" data-difficulty="easy">Easy</button>
-    <button class="button button-again" data-difficulty="again">Again</button>
+    <button class="button button-hard" data-difficulty="hard" data-button="difficulty">Hard</button>
+    <button class="button button-medium" data-difficulty="medium" data-button="difficulty">Medium</button>
+    <button class="button button-easy" data-difficulty="easy" data-button="difficulty">Easy</button>
+    <button class="button button-again" data-difficulty="again" data-button="difficulty">Again</button>
   `;
   root.append(block);
   return block;
@@ -52,13 +53,13 @@ function createDifficultyButtons(root) {
 function createVocabularyButtons(root) {
   const block = createElement({
     tag: 'div',
-    className: 'rate__vocabulary',
+    className: 'swiper-slide__vocabulary-buttons',
   });
   block.dataset.settings = SETTINGS.VOCABULARY_BUTTONS;
 
   block.innerHTML = `
-    <button class="button button-hard-vocabulary" data-vocabulary="hard">Add to hard</button>
-    <button class="button button-removed-vocabulary" data-vocabulary="removed">Add to removed</button>
+    <button class="button button-hard-vocabulary" data-vocabulary="hard" data-button="vocabulary">Add to hard</button>
+    <button class="button button-removed-vocabulary" data-vocabulary="removed" data-button="vocabulary">Add to removed</button>
   `;
   root.append(block);
   return block;
@@ -150,16 +151,15 @@ const cardLayout = {
   [SETTINGS.TRANSCRIPTION]: (root, { transcription }) => createTranscription(root, transcription),
   [SETTINGS.TRANSLATION]: (root, parameters) => createTranslations(root, parameters),
   [SETTINGS.MEANING]: (root, { textMeaning }) => createMeaning(root, textMeaning),
-  [SETTINGS.ANSWER_BUTTON]: (root) => createAnswerBtn(root),
+  [SETTINGS.ANSWER_BUTTON]: (root) => createTrueWordBtn(root),
 };
 
-function createWordCard(elementList, { id, word, ...param }) {
+function createWordCard(elementList, { _id, word, ...param }) {
   const card = createElement({
     tag: 'div',
     className: 'swiper-slide',
-    id,
+    id: _id,
   });
-
   elementList.forEach((elem) => {
     cardLayout[elem](card, { ...param });
   });

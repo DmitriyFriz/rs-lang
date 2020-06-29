@@ -1,17 +1,9 @@
-// import get from 'lodash.get';
+import get from 'lodash.get';
 import shuffle from 'lodash.shuffle';
 import WordsDomain from '../../../domain-models/Words/Words';
 
 const wordsDomain = new WordsDomain();
 const { getFileLink } = wordsDomain;
-
-// function сutWord(text) {
-//   // const regExp = /(?<=<(b|i)>)(.*)(?=<\/(b|i)>)/g;
-//   // const [word] = text.match(regExp);
-//   // const input = ;
-//   const res = text.replace(/<(b|i)>.*<\/(b|i)>/, ' ... ');
-//   return res;
-// }
 
 function replaceWord(targetText, value) {
   const regExp = /(?<=<(b|i)>)(.*)(?=<\/(b|i)>)/g;
@@ -19,13 +11,6 @@ function replaceWord(targetText, value) {
   const text = targetText.replace(regExp, value);
   return { word, text };
 }
-
-// function getWordFromText(value) {
-//   const regExp = /(?<=<(b|i)>)(.*)(?=<\/(b|i)>)/g;
-//   const [word] = value.match(regExp);
-//   const text = value.replace(regExp, ' ... ');
-//   return { word, text };
-// }
 
 function handleWords(data) {
   const res = data.map((wordData) => {
@@ -37,7 +22,7 @@ function handleWords(data) {
       wordTranslate,
       textMeaning,
       textMeaningTranslate,
-      id,
+      _id,
       word,
     } = wordData;
 
@@ -49,13 +34,12 @@ function handleWords(data) {
       wordTranslate,
       textMeaning: replaceWord(textMeaning, ' ... ').text,
       textMeaningTranslate,
-      id,
+      _id,
       word,
       cutWords: {
         textExample: replaceWord(textExample).word,
         textMeaning: replaceWord(textMeaning).word,
       },
-      // input: `<input class="word-input__input" type="text" size=${word.length}>`,
     };
   });
 
@@ -81,18 +65,33 @@ async function getDayWordsCollection(optional) {
   return shuffle(handleWords(allWords));
 }
 
-// async function handleRateBlock(event) {
-//   const difficulty = get(event, 'target.dataset.difficulty');
-//   const vocabulary = get(event, 'target.dataset.vocabulary');
-//   if (!difficulty && !vocabulary) { return; }
+async function handleButtons(event, functionsList) {
+  const buttonFunction = get(event, 'target.dataset.button');
+  if (!buttonFunction) { return; }
+  functionsList[buttonFunction]();
+  // const activeSlide = document.querySelector('.swiper-slide-active');
+  // const wordId = activeSlide.id;
 
-//   const activeSlide = document.querySelector('.swiper-slide-active');
-//   const wordId = activeSlide.id;
+  // const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
+  // console.log(data);
+}
 
-//   const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
-//   console.log(data);
-// }
+async function addWordDifficulty(event, wordId) {
+  const difficulty = get(event, 'target.dataset.difficulty');
+  if (!difficulty) { return; }
+
+  const { data } = await wordsDomain.createUserWord(wordId, difficulty);
+  console.log(data);
+}
+
+async function addWordToVocabulary(event, wordId) {
+  const vocabulary = get(event, 'target.dataset.vocabulary');
+  if (!vocabulary) { return; }
+
+  const { data } = await wordsDomain.createUserWord(wordId, null, vocabulary);
+  console.log(data);
+}
 
 export {
-  handleWords, getDayWordsCollection, getFileLink, replaceWord,
+  handleWords, getDayWordsCollection, getFileLink, replaceWord, handleButtons, addWordDifficulty, addWordToVocabulary,
 };

@@ -81,8 +81,12 @@
     text-align: center;
   }
 
+
+
   .translation,
-  &__word {
+  &__word,
+  &__difficulty-buttons,
+  &__vocabulary-buttons {
     display: none;
 
     &.show {
