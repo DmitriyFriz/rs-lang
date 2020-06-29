@@ -67,7 +67,7 @@ class BaseComponent {
       element.dataset.destination = destination;
     }
     if (data) {
-      [...data].forEach((key) => {
+      Object.keys(data).forEach((key) => {
         element.dataset[key] = data[key];
       });
     }

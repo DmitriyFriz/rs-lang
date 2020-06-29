@@ -9,7 +9,7 @@ const TRANSLATIONS = {
   WORD: 'word',
 };
 
-function getLayout() {
+function getMainLayout() {
   return `
   <div class='swiper'>
     <div class="swiper__container">
@@ -22,24 +22,16 @@ function getLayout() {
   `;
 }
 
-function createTrueWordBtn(root) {
-  const block = createElement({
-    tag: 'button',
-    className: 'button button-true-word',
-    content: 'I don\'t know',
-  });
-  block.dataset.settings = SETTINGS.ANSWER_BUTTON;
-  block.dataset.button = 'trueWord';
-  root.append(block);
-  return block;
-}
-
 function createDifficultyButtons(root) {
-  const block = createElement({
+  const parameters = {
     tag: 'div',
     className: 'swiper-slide__difficulty-buttons',
-  });
-  block.dataset.settings = SETTINGS.DIFFICULTY_BUTTONS;
+    data: {
+      settings: SETTINGS.DIFFICULTY_BUTTONS,
+    },
+  };
+  const block = createElement(parameters);
+
   block.innerHTML = `
     <button class="button button-hard" data-difficulty="hard" data-button="difficulty">Hard</button>
     <button class="button button-medium" data-difficulty="medium" data-button="difficulty">Medium</button>
@@ -51,11 +43,14 @@ function createDifficultyButtons(root) {
 }
 
 function createVocabularyButtons(root) {
-  const block = createElement({
+  const parameters = {
     tag: 'div',
     className: 'swiper-slide__vocabulary-buttons',
-  });
-  block.dataset.settings = SETTINGS.VOCABULARY_BUTTONS;
+    data: {
+      settings: SETTINGS.VOCABULARY_BUTTONS,
+    },
+  };
+  const block = createElement(parameters);
 
   block.innerHTML = `
     <button class="button button-hard-vocabulary" data-vocabulary="hard" data-button="vocabulary">Add to hard</button>
@@ -65,12 +60,31 @@ function createVocabularyButtons(root) {
   return block;
 }
 
+function createTrueWordBtn(root) {
+  const parameters = {
+    tag: 'button',
+    className: 'button button-true-word',
+    content: 'I don\'t know',
+    data: {
+      settings: SETTINGS.ANSWER_BUTTON,
+      button: 'trueWord',
+    },
+  };
+  const block = createElement(parameters);
+
+  root.append(block);
+  return block;
+}
+
 function createAssociativeImg(root, image) {
-  const block = createElement({
+  const parameters = {
     tag: 'div',
     className: 'swiper-slide__associative',
-  });
-  block.dataset.settings = SETTINGS.IMAGE;
+    data: {
+      settings: SETTINGS.IMAGE,
+    },
+  };
+  const block = createElement(parameters);
 
   block.innerHTML = `<img src="${image}"
       onerror="this.src = 'assets/default.svg'">`;
@@ -79,12 +93,16 @@ function createAssociativeImg(root, image) {
 }
 
 function createExample(root, textExample) {
-  const block = createElement({
+  const parameters = {
     tag: 'div',
     className: 'swiper-slide__example',
-  });
-  block.dataset.settings = SETTINGS.EXAMPLE;
-  block.dataset.translation = TRANSLATIONS.EXAMPLE;
+    data: {
+      settings: SETTINGS.EXAMPLE,
+      translation: TRANSLATIONS.EXAMPLE,
+    },
+  };
+  const block = createElement(parameters);
+
   block.innerHTML = `<p class="example__original" data-cut="textExample">${textExample}</p>`;
   root.append(block);
   return block;
@@ -94,21 +112,27 @@ function createTranscription(root, transcription) {
   const block = createElement({
     tag: 'div',
     className: 'swiper-slide__word',
+    data: {
+      settings: SETTINGS.TRANSCRIPTION,
+      translation: TRANSLATIONS.WORD,
+    },
   });
-  block.dataset.settings = SETTINGS.TRANSCRIPTION;
-  block.dataset.translation = TRANSLATIONS.WORD;
   block.innerHTML = `<p class="word__transcription">${transcription}</p>`;
   root.append(block);
   return block;
 }
 
 function createMeaning(root, textMeaning) {
-  const block = createElement({
+  const parameters = {
     tag: 'div',
     className: 'swiper-slide__meaning',
-  });
-  block.dataset.settings = SETTINGS.MEANING;
-  block.dataset.translation = TRANSLATIONS.MEANING;
+    data: {
+      settings: SETTINGS.MEANING,
+      translation: TRANSLATIONS.MEANING,
+    },
+  };
+  const block = createElement(parameters);
+
   block.innerHTML = `<p class="meaning__original" data-cut="textMeaning">${textMeaning}</p>`;
   root.append(block);
   return block;
@@ -136,7 +160,7 @@ const translationsList = {
 
 function createTranslations(root, parameters) {
   const blocks = root.querySelectorAll('[data-translation]');
-  console.log(blocks);
+
   [...blocks].forEach((block) => {
     const { translation } = block.dataset;
     block.append(translationsList[translation](parameters));
@@ -160,6 +184,7 @@ function createWordCard(elementList, { _id, word, ...param }) {
     className: 'swiper-slide',
     id: _id,
   });
+
   elementList.forEach((elem) => {
     cardLayout[elem](card, { ...param });
   });
@@ -168,14 +193,13 @@ function createWordCard(elementList, { _id, word, ...param }) {
     tag: 'div',
     className: 'swiper-slide__word-input',
   });
-
   wordInput.innerHTML = `<input type="text" size=${word.length} maxlength=${word.length}>`;
-  card.append(wordInput);
 
+  card.append(wordInput);
   return card;
 }
 
 export {
-  getLayout,
+  getMainLayout,
   createWordCard,
 };

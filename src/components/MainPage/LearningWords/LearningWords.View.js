@@ -13,7 +13,7 @@ import swiperOptions from './Swiper.Options';
 import 'swiper/css/swiper.min.css';
 
 // layout
-import { getLayout, createWordCard } from './Layout/LearningWords.Layout';
+import { getMainLayout, createWordCard } from './Layout/LearningWords.Layout';
 
 // handler
 import { getDayWordsCollection, replaceWord, addWordDifficulty, addWordToVocabulary } from './LearningWordsHandler';
@@ -61,7 +61,7 @@ class LearningWords extends BaseComponent {
 
   createLayout() {
     this.component.className = 'learning-words';
-    this.component.innerHTML = getLayout();
+    this.component.innerHTML = getMainLayout();
     this.exitBtn = BaseComponent.createElement(
       {
         tag: 'button',
