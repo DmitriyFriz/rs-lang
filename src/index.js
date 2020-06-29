@@ -10,6 +10,7 @@ import HeaderGuest from './components/Header/Header.View.Guest';
 import MainPage from './components/MainPage/MainPage.View';
 import Games from './components/Games/Games.View';
 import Team from './components/Team/Team.View';
+import Vocabulary from './components/Vocabulary/Vocabulary.View';
 
 // constants
 import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
@@ -29,6 +30,7 @@ const headerRoutes = {
 const mainRoutes = {
   [MAIN_ROUTES.MAIN_PAGE]: MainPage,
   [MAIN_ROUTES.GAMES]: Games,
+  [MAIN_ROUTES.VOCABULARY]: Vocabulary,
   [MAIN_ROUTES.ABOUT_TEAM]: Team,
   // other endpoints should be added here,
 };
