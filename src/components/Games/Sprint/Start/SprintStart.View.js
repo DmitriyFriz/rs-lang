@@ -7,28 +7,31 @@ import { onRouteChangeEvent } from 'router/RouteHandler';
 // constants
 import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 
+// layout
+import getLayout from './SprintStart.Layout';
+
 // styles
 import './SprintStart.scss';
 
 class SprintStart extends BaseComponent {
+  constructor(parent, tagName) {
+    super(parent, tagName);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+
   static get name() {
     return GAMES_ROUTES.SPRINT;
   }
 
   createLayout() {
-    this.component.innerHTML = `
-    <div class="start-message">
-      <h1>SPRINT</h1>
-      <p>Select correct or incorrect translation</p>
-      <div>
-        <button data-destination=${GAMES_ROUTES.GAMES_LIST}>Back</button>
-        <button data-destination=${GAMES_ROUTES.SPRINT_GAME}>Play</button>
-      </div>
-    </div>
-    `;
+    this.component.innerHTML = getLayout();
   }
 
   addListeners() {
+    this.levelGroup = document.getElementsByName(name);
+
     this.component.addEventListener('click', this.handleClick);
   }
 
@@ -37,6 +40,12 @@ class SprintStart extends BaseComponent {
   }
 
   handleClick(event) {
+    this.levelGroup.forEach(level => {
+      if (level.checked) {
+        localStorage.setItem('sprint-level', level.value);
+      }
+    })
+
     onRouteChangeEvent(event, ROUTERS.GAMES);
   }
 }

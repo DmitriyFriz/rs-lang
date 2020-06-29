@@ -26,15 +26,14 @@ class SprintGame extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
 
+    this.level = localStorage.getItem('sprint-level');
     this.gameIndex = 0;
-    this.groupIndex = 0;
-    this.repeatWordsIndex = 0;
-    this.newWordsIndex = 0;
     this.streakWinning = 0;
     this.superWinning = 4;
     this.score = 0;
     this.basePoints = 10;
     this.awardedPoints = this.basePoints;
+    this.keyUserWord = 'userWord';
 
     this.setTimer = this.setTimer.bind(this);
     this.handleFalseButton = this.handleFalseButton.bind(this);
@@ -45,7 +44,7 @@ class SprintGame extends BaseComponent {
   }
 
   async prepareData() {
-    this.group = await wordsDomainModel.selectGroupWords(0);
+    this.group = await wordsDomainModel.selectGroupWords(this.level);
     this.repeatWords = wordsDomainModel.repeatWords;
     this.newWords = wordsDomainModel.newWords;
     this.shuffleWords(this.group);
@@ -55,7 +54,7 @@ class SprintGame extends BaseComponent {
     this.gameArray.push(...this.repeatWords, ...this.newWords, ...this.group);
     console.log(this.repeatWords, this.newWords, this.group);
     console.log(this.gameArray);
-    console.log(correctIcon, incorrectIcon);
+    console.log(this.level);
   }
 
   static get name() {
@@ -99,8 +98,9 @@ class SprintGame extends BaseComponent {
   }
 
   getNewWord() {
-    if (this.gameArray.length < this.gameIndex) {
-      console.log('finish game');
+    if (this.gameArray.length <= this.gameIndex) {
+      this.handleFinish();
+      return;
     }
 
     this.currentWord = this.gameArray[this.gameIndex];
@@ -116,7 +116,7 @@ class SprintGame extends BaseComponent {
     if (rightAnswer) {
       this.answerContainer.textContent = this.currentWord.wordTranslate;
     } else {
-      const randomIndex = this.randomNumber(this.group.length);
+      const randomIndex = this.randomNumber(this.group.length - 1);
       const falseAnswer = this.group[randomIndex].wordTranslate;
       this.answerContainer.textContent = falseAnswer;
     }
@@ -212,6 +212,9 @@ class SprintGame extends BaseComponent {
     this.streakWinning = 0;
     this.awardedPoints = this.basePoints;
     this.resultIcon.style.backgroundImage = `url(${incorrectIcon})`;
+    if (this.keyUserWord in this.currentWord) {
+
+    }
   }
 
   handleFinish() {
