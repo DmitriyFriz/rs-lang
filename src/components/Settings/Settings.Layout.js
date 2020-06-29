@@ -46,6 +46,9 @@ function getLayout() {
 
     <input type="checkbox" id="vocabulary" name="vocabulary" data-settings="${SETTINGS.VOCABULARY_BUTTONS}">
     <label for="vocabulary">Vocabulary buttons</label>
+
+    <input type="checkbox" id="answer" name="answer" data-settings="${SETTINGS.ANSWER_BUTTON}">
+    <label for="answer">"I don't know" button</label>
   </div>
   `;
 }

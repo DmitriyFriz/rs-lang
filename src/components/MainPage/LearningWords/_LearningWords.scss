@@ -10,7 +10,6 @@
   height: 95%;
 }
 
-
 // $swiperButtonsMargin: -40px;
 // $heightPosterForLargeScreen: 340px;
 // $heightPoster: 300px;
@@ -56,11 +55,15 @@
   background-color: $basicColor3;
   font-size: 0.8em;
 
-  &__associative{
+  &__associative {
     position: relative;
     overflow: hidden;
     width: 100%;
     height: 50%;
+
+    img {
+      width: 100%;
+    }
   }
 
   &__word,
@@ -72,9 +75,10 @@
     width: 95%;
   }
 
-  input[type="text"] {
-    font-size: 1em;
-    letter-spacing: 0.35em;
+  &__word-input > input{
+      font-size: 1em;
+      letter-spacing: 0.2em;
+      text-align: center;
   }
 }
 

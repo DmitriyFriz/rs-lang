@@ -36,6 +36,10 @@ const swiperOptions = {
     addSlidesBefore: 2,
     addSlidesAfter: 2,
   },
+
+  keyboard: {
+    enabled: true,
+  },
 };
 
 export default swiperOptions;

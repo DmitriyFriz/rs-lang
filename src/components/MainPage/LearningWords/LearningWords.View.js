@@ -13,7 +13,7 @@ import 'swiper/css/swiper.min.css';
 import { getLayout, createWordCard } from './Layout/LearningWords.Layout';
 
 // handler
-import { handleWords, handleRateBlock, getDayWordsCollection } from './LearningWordsHandler';
+import { getDayWordsCollection } from './LearningWordsHandler';
 
 // domains
 import SettingsDomain from '../../../domain-models/Settings/Settings';
@@ -33,6 +33,10 @@ class LearningWords extends BaseComponent {
     console.log(this.enabledSettings, optional);
 
     this.data = await getDayWordsCollection(optional);
+    this.trueWords = this.data
+      .map((wordData) => wordData.word)
+      .reverse();
+    console.log(this.trueWords);
   }
 
   createLayout() {
@@ -41,18 +45,26 @@ class LearningWords extends BaseComponent {
     this.exitBtn = BaseComponent.createElement(
       {
         tag: 'button',
-        className: 'button',
+        className: 'button button-finish',
         id: 'exit',
         destination: 'START_MENU',
         content: 'Finish training',
       },
     );
-    // this.rateBlock = createRateBlock();
-    this.component.append(this.exitBtn, this.rateBlock);
+    this.checkBtn = BaseComponent.createElement(
+      {
+        tag: 'button',
+        className: 'button button-check-word',
+        content: 'Check',
+      },
+    );
+
+    this.component.append(this.exitBtn, this.checkBtn);
   }
 
   addListeners() {
-    // this.rateBlock.addEventListener('click', handleRateBlock);
+    this.checkBtn.addEventListener('click', () => this.checkInputWord());
+    this.component.addEventListener('change', () => this.checkInputWord());
   }
 
   removeListeners() {
@@ -62,17 +74,50 @@ class LearningWords extends BaseComponent {
   async show() {
     await super.show();
     this.swiper = new Swiper('.swiper__container', swiperOptions);
-    this.swiper.virtual.removeAllSlides();
 
-    this.data.forEach((word) => {
-      this.swiper.virtual.appendSlide(createWordCard(this.enabledSettings, word));
+    this.swiper.on('transitionEnd', () => {
+      if (this.swiper.progress === 1) {
+        this.addFocusToInput();
+      }
     });
-    this.swiper.update();
+
+    this.swiper.virtual.removeAllSlides();
+    this.addWordToSwiper();
+    // this.data.forEach((word) => {
+    //   this.swiper.virtual.appendSlide(createWordCard(this.enabledSettings, word));
+    // });
+    // this.swiper.update();
   }
 
   hide() {
     super.hide();
     this.swiper.destroy(true, true);
+  }
+
+  checkInputWord() {
+    const { input, index } = this.currentSlide;
+    if (input.value === this.trueWords[index]) {
+      this.addWordToSwiper();
+    }
+    console.log(input.value, index);
+  }
+
+  addWordToSwiper() {
+    const wordData = this.data.pop();
+    this.swiper.virtual.appendSlide(createWordCard(this.enabledSettings, wordData));
+    this.swiper.update();
+  }
+
+  get currentSlide() {
+    const index = this.swiper.activeIndex;
+    const input = this.swiper.virtual.slides[index]
+      .querySelector('.swiper-slide__word-input > input');
+    return { input, index };
+  }
+
+  addFocusToInput() {
+    const { input } = this.currentSlide;
+    input.focus();
   }
 }
 

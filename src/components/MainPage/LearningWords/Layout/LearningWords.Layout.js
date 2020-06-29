@@ -71,7 +71,8 @@ function createAssociativeImg(root, image) {
   });
   block.dataset.settings = SETTINGS.IMAGE;
 
-  block.innerHTML = `<img src="${image}">`;
+  block.innerHTML = `<img src="${image}"
+      onerror="this.src = 'assets/default.svg'">`;
   root.append(block);
   return block;
 }
@@ -79,7 +80,7 @@ function createAssociativeImg(root, image) {
 function createExample(root, textExample) {
   const block = createElement({
     tag: 'div',
-    className: 'rate__example',
+    className: 'swiper-slide__example',
   });
   block.dataset.settings = SETTINGS.EXAMPLE;
   block.dataset.translation = TRANSLATIONS.EXAMPLE;
@@ -91,7 +92,7 @@ function createExample(root, textExample) {
 function createTranscription(root, transcription) {
   const block = createElement({
     tag: 'div',
-    className: 'rate__word',
+    className: 'swiper-slide__word',
   });
   block.dataset.settings = SETTINGS.TRANSCRIPTION;
   block.dataset.translation = TRANSLATIONS.WORD;
@@ -103,7 +104,7 @@ function createTranscription(root, transcription) {
 function createMeaning(root, textMeaning) {
   const block = createElement({
     tag: 'div',
-    className: 'rate__meaning',
+    className: 'swiper-slide__meaning',
   });
   block.dataset.settings = SETTINGS.MEANING;
   block.dataset.translation = TRANSLATIONS.MEANING;
@@ -152,7 +153,7 @@ const cardLayout = {
   [SETTINGS.ANSWER_BUTTON]: (root) => createAnswerBtn(root),
 };
 
-function createWordCard(elementList, { id, ...param }) {
+function createWordCard(elementList, { id, word, ...param }) {
   const card = createElement({
     tag: 'div',
     className: 'swiper-slide',
@@ -162,6 +163,14 @@ function createWordCard(elementList, { id, ...param }) {
   elementList.forEach((elem) => {
     cardLayout[elem](card, { ...param });
   });
+
+  const wordInput = createElement({
+    tag: 'div',
+    className: 'swiper-slide__word-input',
+  });
+
+  wordInput.innerHTML = `<input type="text" size=${word.length} maxlength=${word.length}>`;
+  card.append(wordInput);
 
   return card;
 }

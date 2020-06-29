@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+// import get from 'lodash.get';
 import shuffle from 'lodash.shuffle';
 import WordsDomain from '../../../domain-models/Words/Words';
 
@@ -6,17 +6,15 @@ const wordsDomain = new WordsDomain();
 const { getFileLink } = wordsDomain;
 
 function pasteInput(text) {
-  const regExp = /(?<=<b>)(.*)(?=<\/b>)/g;
-  const [word] = text.match(regExp);
-  const input = `<input class="original__answer" type="text" size=${word.length}></input>`;
-  const res = text.replace(/<b>.*<\/b>/, input);
+  // const regExp = /(?<=<(b|i)>)(.*)(?=<\/(b|i)>)/g;
+  // const [word] = text.match(regExp);
+  // const input = ;
+  const res = text.replace(/<(b|i)>.*<\/(b|i)>/, ' ... ');
   return res;
 }
 
-// DEMO
-
 function handleWords(data) {
-  const res = data.map((word) => {
+  const res = data.map((wordData) => {
     const {
       image,
       textExample,
@@ -26,7 +24,8 @@ function handleWords(data) {
       textMeaning,
       textMeaningTranslate,
       id,
-    } = word;
+      word,
+    } = wordData;
 
     return {
       image: getFileLink(image),
@@ -34,9 +33,11 @@ function handleWords(data) {
       textExampleTranslate,
       transcription,
       wordTranslate,
-      textMeaning,
+      textMeaning: pasteInput(textMeaning),
       textMeaningTranslate,
       id,
+      word,
+      // input: `<input class="word-input__input" type="text" size=${word.length}>`,
     };
   });
 
@@ -53,25 +54,31 @@ async function getDayWordsCollection(optional) {
 
   if (allWords.length < wordsPerDay) {
     const amount = wordsPerDay - allWords.length;
-    const additionalWords = (shuffle(wordsDomain.groupWords)).slice(0, amount);
+    const additionalWords = shuffle(wordsDomain.groupWords)
+      .slice(0, amount);
     allWords = allWords.concat(additionalWords);
+    console.log(allWords);
   }
 
   return shuffle(handleWords(allWords));
 }
 
-async function handleRateBlock(event) {
-  const difficulty = get(event, 'target.dataset.difficulty');
-  const vocabulary = get(event, 'target.dataset.vocabulary');
-  if (!difficulty && !vocabulary) { return; }
-
-  const activeSlide = document.querySelector('.swiper-slide-active');
-  const wordId = activeSlide.id;
-
-  const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
-  console.log(data);
+function checkInputWord() {
+  console.log('!!');
 }
 
+// async function handleRateBlock(event) {
+//   const difficulty = get(event, 'target.dataset.difficulty');
+//   const vocabulary = get(event, 'target.dataset.vocabulary');
+//   if (!difficulty && !vocabulary) { return; }
+
+//   const activeSlide = document.querySelector('.swiper-slide-active');
+//   const wordId = activeSlide.id;
+
+//   const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
+//   console.log(data);
+// }
+
 export {
-  handleWords, getDayWordsCollection, getFileLink, handleRateBlock,
+  handleWords, getDayWordsCollection, getFileLink, checkInputWord,
 };
