@@ -51,7 +51,7 @@ class BaseComponent {
   }
 
   static createElement({
-    tag, content, className, id, destination
+    tag, content, className, id, destination, dataset,
   }) {
     const element = document.createElement(tag);
     if (content) {
@@ -66,7 +66,11 @@ class BaseComponent {
     if (destination) {
       element.dataset.destination = destination;
     }
-
+    if (dataset) {
+      Object.entries(dataset).forEach(([key, value]) => {
+        element.dataset[key] = value;
+      });
+    }
     return element;
   }
 }

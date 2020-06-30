@@ -1,4 +1,4 @@
-const rootUrl = 'https://afternoon-falls-25894.herokuapp.com/';
+const rootUrl = 'https://jack-guzya-rs-lang.herokuapp.com/';
 
 const getOptions = (method, token, data) => {
   const options = {
