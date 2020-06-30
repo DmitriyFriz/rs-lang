@@ -1,18 +1,18 @@
-import SETTINGS from './Settings.Constants';
+import { SETTINGS } from './Settings.Constants';
 
 function getLayout() {
   return `
   <div class="settings__words">
     <p>Words</p>
-    <input type="range" id="total-words" name="total-words" data-settings="wordsPerDay" min=5 max=50 step=1>
+    <input type="range" id="total-words" name="total-words" data-settings="${SETTINGS.WORDS_PER_DAY}" min=5 max=50 step=1>
     <label for="image">Total words per day</label>
 
-    <input type="range" id="new-words" name="new-words" data-settings="newWords" min="3" max="20" step="1">
+    <input type="range" id="new-words" name="new-words" data-settings="${SETTINGS.NEW_WORDS}" min="3" max="20" step="1">
     <label for="image">New words per day</label>
 
   </div>
   <p>Level</p>
-  <select id="level" data-settings="level">
+  <select id="level" data-settings="${SETTINGS.LEVEL}">
     <option value="0">level 0</option>
     <option value="1">level 1</option>
     <option value="2">level 2</option>

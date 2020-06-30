@@ -21,7 +21,7 @@ import {
   replaceWord,
   addWordDifficulty,
   addWordToVocabulary,
-  getSettings,
+  splitSettings,
   getTrueWords,
 } from './LearningWordsHandler';
 
@@ -31,8 +31,8 @@ class LearningWords extends BaseComponent {
   }
 
   async prepareData() {
-    this.settings = await getSettings();
-    this.wordsCollection = await getDayWordsCollection(this.settings.optional);
+    this.settings = await splitSettings();
+    this.wordsCollection = await getDayWordsCollection(this.settings.all);
     this.trueWords = getTrueWords(this.wordsCollection);
 
     this.hiddenElementsList = [
@@ -157,7 +157,7 @@ class LearningWords extends BaseComponent {
   showElementsForTrueWord() {
     this.hiddenElementsList.forEach((selector) => {
       const elem = this.currentSlide.querySelector(selector);
-      elem.classList.add('show');
+      if (elem) { elem.classList.add('show'); }
     });
   }
 

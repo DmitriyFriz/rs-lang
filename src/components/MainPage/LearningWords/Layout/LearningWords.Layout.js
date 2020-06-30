@@ -1,5 +1,5 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-import SETTINGS from '../../../Settings/Settings.Constants';
+import { SETTINGS } from '../../../Settings/Settings.Constants';
 
 const { createElement } = BaseComponent;
 

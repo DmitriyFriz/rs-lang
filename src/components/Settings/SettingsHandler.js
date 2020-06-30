@@ -1,6 +1,14 @@
+import get from 'lodash.get';
 import SettingsDomain from '../../domain-models/Settings/Settings';
+import { DEFAULT_SETTINGS } from './Settings.Constants';
 
 const settingsDomain = new SettingsDomain();
+
+async function getSettings() {
+  const { data } = await settingsDomain.getSettings();
+  const settings = get(data, 'optional');
+  return settings || DEFAULT_SETTINGS;
+}
 
 async function saveSettings(settingsList) {
   const optional = [...settingsList].reduce((accumulator, setting) => {
@@ -10,20 +18,19 @@ async function saveSettings(settingsList) {
       ? setting.checked : +setting.value;
     return data;
   }, {});
-  console.log(optional)
   await settingsDomain.updateSettings({ optional });
 }
 
 async function loadSettings(settingsList) {
-  const { data } = await settingsDomain.getSettings();
+  const settings = await getSettings();
 
   [...settingsList].forEach((item) => {
     const setting = item;
     const settingName = setting.dataset.settings;
     const type = setting.type === 'checkbox' ? 'checked' : 'value';
-    setting[type] = data.optional[settingName];
-    return data;
+    setting[type] = settings[settingName];
+    return setting;
   });
 }
 
-export { saveSettings, loadSettings };
+export { saveSettings, loadSettings, getSettings };

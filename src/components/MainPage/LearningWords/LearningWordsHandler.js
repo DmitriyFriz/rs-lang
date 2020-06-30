@@ -3,8 +3,11 @@ import get from 'lodash.get';
 import shuffle from 'lodash.shuffle';
 
 // domains
-import SettingsDomain from '../../../domain-models/Settings/Settings';
+// import SettingsDomain from '../../../domain-models/Settings/Settings';
 import WordsDomain from '../../../domain-models/Words/Words';
+
+// Settings
+import { getSettings } from '../../Settings/SettingsHandler'
 
 // ===================== words =============================
 
@@ -100,13 +103,14 @@ async function addWordToVocabulary(event, wordId) {
 
 // ===================== settings =============================
 
-async function getSettings() {
-  const settingsDomain = new SettingsDomain();
-  const settingsData = await settingsDomain.getSettings();
-  const { optional } = settingsData.data;
-  const enabled = Object.keys(optional)
-    .filter((setting) => optional[setting] === true);
-  return { enabled, optional };
+async function splitSettings() {
+  // const settingsDomain = new SettingsDomain();
+  // const settingsData = await settingsDomain.getSettings();
+  // const { optional } = settingsData.data;
+  const all = await getSettings();
+  const enabled = Object.keys(all)
+    .filter((setting) => all[setting] === true);
+  return { enabled, all };
 }
 
 export {
@@ -117,6 +121,6 @@ export {
   handleButtons,
   addWordDifficulty,
   addWordToVocabulary,
-  getSettings,
+  splitSettings,
   getTrueWords,
 };
