@@ -70,7 +70,7 @@ class LearningWords extends BaseComponent {
         tag: 'button',
         className: 'button button-check-word',
         content: 'Check',
-        data: {
+        dataset: {
           button: 'check',
         },
       },

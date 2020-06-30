@@ -29,7 +29,7 @@ function createDifficultyButtons(root) {
     tag: 'div',
     className: 'swiper-slide__difficulty-buttons',
     id: 'card-difficulty',
-    data: {
+    dataset: {
       settings: SETTINGS.DIFFICULTY_BUTTONS,
     },
   };
@@ -50,7 +50,7 @@ function createVocabularyButtons(root) {
     tag: 'div',
     className: 'swiper-slide__vocabulary-buttons',
     id: 'card-vocabulary',
-    data: {
+    dataset: {
       settings: SETTINGS.VOCABULARY_BUTTONS,
     },
   };
@@ -69,7 +69,7 @@ function createTrueWordBtn(root) {
     tag: 'button',
     className: 'button button-true-word',
     content: 'I don\'t know',
-    data: {
+    dataset: {
       settings: SETTINGS.ANSWER_BUTTON,
       button: 'trueWord',
     },
@@ -86,7 +86,7 @@ function createExample(root, textExample) {
   const parameters = {
     tag: 'div',
     className: 'swiper-slide__example',
-    data: {
+    dataset: {
       settings: SETTINGS.EXAMPLE,
       translation: TRANSLATIONS.EXAMPLE,
     },
@@ -103,7 +103,7 @@ function createTranscription(root, transcription) {
     tag: 'div',
     className: 'swiper-slide__word',
     id: 'card-word',
-    data: {
+    dataset: {
       settings: SETTINGS.TRANSCRIPTION,
       translation: TRANSLATIONS.WORD,
     },
@@ -117,7 +117,7 @@ function createMeaning(root, textMeaning) {
   const parameters = {
     tag: 'div',
     className: 'swiper-slide__meaning',
-    data: {
+    dataset: {
       settings: SETTINGS.MEANING,
       translation: TRANSLATIONS.MEANING,
     },
