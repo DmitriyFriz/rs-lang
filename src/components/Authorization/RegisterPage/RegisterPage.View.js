@@ -3,9 +3,9 @@ import User from 'domainModels/User/User';
 import getRegisterPageLayout from 'components/Authorization/RegisterPage/RegisterPage.Layout';
 import { onRouteChangeEvent } from 'router/RouteHandler';
 import { ROUTERS } from 'router/Router.Constants';
+import { regEmailRegExp, regPasswordRegEx } from 'components/Authorization/RegisterPage/RegisterPage.Data';
 import './RegisterPage.scss';
 import '../Authorization.scss';
-import { regEmailRegExp, regPasswordRegEx } from 'components/Authorization/RegisterPage/RegisterPage.Data';
 
 export default class RegisterPage extends BaseComponent {
   constructor(parent, tagName) {
@@ -56,9 +56,9 @@ export default class RegisterPage extends BaseComponent {
     event.preventDefault();
     if (email && password && confirmPassword) {
       if (this.isPasswordMatch(password, confirmPassword)) {
-        console.log('Match');
+        console.log('Match = ', this.isPasswordMatch(password, confirmPassword));
       } else {
-        console.log('Not Match');
+        console.log('Not Match = ', this.isPasswordMatch(password, confirmPassword));
       }
     }
   }
@@ -87,7 +87,9 @@ export default class RegisterPage extends BaseComponent {
       this.fieldSetEmails.classList.add('confirmed');
       emailLegend.textContent = 'Success!';
 
-      if (this.isPasswordMatch(password, passwordConfirm)) {
+      if (password
+        && passwordConfirm
+        && this.isPasswordMatch(password, passwordConfirm)) {
         this.submitBtn.disabled = false;
       }
     }

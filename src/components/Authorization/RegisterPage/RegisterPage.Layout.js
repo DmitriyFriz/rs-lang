@@ -7,9 +7,8 @@ export default function getRegisterPageLayout() {
     tag: 'form',
     className: regClassName.regForm,
   });
-  formReg.autocomplete = 'off';
 
-  const inputDataEmail = regPageLayout.inputRegEmail.map((element) => {
+  const inputRegEmail = regPageLayout.inputRegEmail.map((element) => {
     if (element.type === 'email') {
       const input = BaseComponent.createElement({
         tag: 'input',
@@ -22,18 +21,17 @@ export default function getRegisterPageLayout() {
     }
 
     if (element.type === 'legend') {
-      const label = BaseComponent.createElement({
+      return BaseComponent.createElement({
         tag: element.type,
         content: element.content,
         id: element.id,
         className: element.nameClass,
       });
-      label.style.visibility = element.visibility;
-      return label;
     }
+    return null;
   });
 
-  const inputDataPassword = regPageLayout.inputRegPassword.map((element) => {
+  const inputRegPassword = regPageLayout.inputRegPassword.map((element) => {
     if (element.type === 'password') {
       const input = BaseComponent.createElement({
         tag: 'input',
@@ -55,15 +53,14 @@ export default function getRegisterPageLayout() {
     }
 
     if (element.type === 'legend') {
-      const label = BaseComponent.createElement({
+      return BaseComponent.createElement({
         tag: element.type,
         content: element.content,
         id: element.id,
         className: element.nameClass,
       });
-      label.style.visibility = element.visibility;
-      return label;
     }
+    return null;
   });
 
   const fieldSetEmails = BaseComponent.createElement({
@@ -95,8 +92,8 @@ export default function getRegisterPageLayout() {
     destination: regPageLayout.button.destination,
   });
 
-  fieldSetEmails.append(...inputDataEmail);
-  fieldSetPasswords.append(...inputDataPassword);
+  fieldSetEmails.append(...inputRegEmail);
+  fieldSetPasswords.append(...inputRegPassword);
 
   formReg.append(fieldSetEmails, fieldSetPasswords, submitBtn);
 

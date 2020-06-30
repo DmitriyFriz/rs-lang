@@ -7,7 +7,6 @@ const regPageLayout = {
       id: 'emailLegend',
       nameClass: 'legend-form',
       content: 'Email',
-      visibility: 'visible',
     },
     {
       type: 'email',
@@ -21,7 +20,6 @@ const regPageLayout = {
       id: 'passwordLegend',
       nameClass: 'legend-form',
       content: 'Password',
-      visibility: 'visible',
     },
     {
       type: 'password',
