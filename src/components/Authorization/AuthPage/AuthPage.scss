@@ -1,27 +1,31 @@
-.auth {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+@import "src/style/base/basicStyle";
 
-  input[type = 'email'], input[type = 'password'] {
+.authorization {
+  margin: 3rem auto;
 
+  fieldset {
+    input
+    {
+      margin-top: 1rem;
+      height: 2rem;
+      width: 27rem;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  input:disabled {
+    opacity: .4;
   }
 }
 
-.confirmed {
-  border: 1px solid #2cd62c;
+.authorization, .auth {
 
-  &:focus {
-    outline-color: #2cd62c;
+  .button {
+    margin: .5rem 0 1rem 0;
+    color: $fontColor;
   }
+
 }
-
-.unconfirmed {
-  border: 1px solid #ee1632;
-
-  &:focus {
-    outline-color: #ee1632;
-  }
-}
-
-

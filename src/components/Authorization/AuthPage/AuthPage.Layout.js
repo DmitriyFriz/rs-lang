@@ -1,23 +1,68 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-
-import { authPageLayout, authClassName } from './AuthPage.Data';
+import { authClassName, authPageLayout } from './AuthPage.Data';
 
 export default function getAuthPageLayout() {
   const formAuth = BaseComponent.createElement({
     tag: 'form',
     className: authClassName.authForm,
   });
-  formAuth.autocomplete = 'off';
 
-  const inputData = authPageLayout.inputAuth.map((element) => {
-    const input = BaseComponent.createElement({
-      tag: 'input',
-      className: authClassName.authInput,
-      id: element.id,
-    });
-    input.type = element.type;
-    input.placeholder = element.placeholder;
-    return input;
+  const inputAuthEmail = authPageLayout.inputAuthEmail.map((element) => {
+    if (element.type === 'email') {
+      const input = BaseComponent.createElement({
+        tag: 'input',
+        className: authClassName.authInput,
+        id: element.id,
+      });
+      input.type = element.type;
+      input.placeholder = element.placeholder;
+      return input;
+    }
+
+    if (element.type === 'legend') {
+      return BaseComponent.createElement({
+        tag: element.type,
+        content: element.content,
+        id: element.id,
+        className: element.nameClass,
+      });
+    }
+    return null;
+  });
+
+  const inputAuthPassword = authPageLayout.inputAuthPassword.map((element) => {
+    if (element.type === 'password') {
+      const input = BaseComponent.createElement({
+        tag: 'input',
+        className: authClassName.authInput,
+        id: element.id,
+      });
+      input.type = element.type;
+      input.placeholder = element.placeholder;
+      return input;
+    }
+
+    if (element.type === 'legend') {
+      return BaseComponent.createElement({
+        tag: element.type,
+        content: element.content,
+        id: element.id,
+        className: element.nameClass,
+      });
+    }
+    return null;
+  });
+
+  const fieldSetEmails = BaseComponent.createElement({
+    tag: authPageLayout.fieldSetEmail.type,
+    className: authPageLayout.fieldSetEmail.nameClass,
+    id: authPageLayout.fieldSetEmail.id,
+  });
+
+  const fieldSetPasswords = BaseComponent.createElement({
+    tag: authPageLayout.fieldSetPassword.type,
+    className: authPageLayout.fieldSetPassword.nameClass,
+    id: authPageLayout.fieldSetPassword.id,
   });
 
   const submitBtn = BaseComponent.createElement({
@@ -37,7 +82,10 @@ export default function getAuthPageLayout() {
     destination: authPageLayout.button.destination,
   });
 
-  formAuth.append(...inputData, submitBtn);
+  fieldSetEmails.append(...inputAuthEmail);
+  fieldSetPasswords.append(...inputAuthPassword);
 
-  return [formAuth, backToMainPageBtn, submitBtn];
+  formAuth.append(fieldSetEmails, fieldSetPasswords, submitBtn);
+
+  return [formAuth, backToMainPageBtn, submitBtn, fieldSetEmails, fieldSetPasswords];
 }
