@@ -29,13 +29,17 @@
 .auth, .reg {
   text-align: center;
 
+  input {
+    border: none;
+  }
+
   fieldset {
     padding: 1rem;
     border: 1.4px solid rgba(91, 91, 91, 0.4);
 
     margin-bottom: 1rem;
 
-
+// rgba(91, 91, 91, 0.4)
     legend {
       font-family: $mainFont;
       color: rgba(91, 91, 91, 0.4);
@@ -48,8 +52,11 @@
 }
 
 .reg-fieldsetEmail, .reg-fieldsetPassword {
-  transition: all 1s;
   display: flex;
+
+  input {
+  border-bottom: 1.4px solid $basicColor3
+  }
 }
 
 .reg-fieldsetEmail {

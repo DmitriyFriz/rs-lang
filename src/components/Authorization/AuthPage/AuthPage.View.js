@@ -62,37 +62,23 @@ export default class AuthPage extends BaseComponent {
         this.user.signIn({ email, password })
           .then((request) => {
             submitBtn.disabled = false;
-            console.log(request);
-
-            if (request.statusText === 'OK') {
-              submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;
-              onRouteChangeEvent(event, ROUTERS.HEADER);
-
-              submitBtn.dataset.destination = MAIN_ROUTES.MAIN_PAGE;
-              onRouteChangeEvent(event, ROUTERS.MAIN);
-            }
+            this.requestHandler(request, event);
           });
       }
     }
   }
 
   handlerEmailInputConfirmation() {
-    const { legendEmail } = this;
-    this.fieldSetEmails.classList.add('unconfirmed');
-    this.fieldSetEmails.classList.remove('confirmed');
-    legendEmail.textContent = 'Enter correct Email!';
+    const tag = 'email';
+    this.changeFieldSet(false, tag, 'Enter correct Email!');
     this.submitBtn.disabled = true;
 
     if (!this.authEmail.value) {
-      this.fieldSetEmails.classList.add('unconfirmed');
-      this.fieldSetEmails.classList.remove('confirmed');
-      legendEmail.textContent = 'Enter Email!';
+      this.changeFieldSet(false, tag, 'Enter Email!');
     }
 
     if (this.isEmail(this.authEmail.value)) {
-      this.fieldSetEmails.classList.remove('unconfirmed');
-      this.fieldSetEmails.classList.add('confirmed');
-      legendEmail.textContent = 'Success!';
+      this.changeFieldSet(true, tag, 'Success!');
 
       if (this.isCorrectPassword(this.authPassword.value)) {
         this.submitBtn.disabled = false;
@@ -102,25 +88,73 @@ export default class AuthPage extends BaseComponent {
 
   handlerPasswordInputConfirmation() {
     const { legendPassword } = this;
+    const tag = 'password';
     this.submitBtn.disabled = true;
 
     if (!this.isCorrectPassword(this.authPassword.value)) {
-      this.fieldSetPasswords.classList.remove('confirmed');
-      this.fieldSetPasswords.classList.add('unconfirmed');
-      legendPassword.textContent = 'Enter correct Password!';
+      this.changeFieldSet(false, tag, 'Enter correct Password!');
 
       if (!this.authPassword.value) {
         legendPassword.textContent = 'Enter Password!';
       }
     } else {
-      this.fieldSetPasswords.classList.remove('unconfirmed');
-      this.fieldSetPasswords.classList.add('confirmed');
-      legendPassword.textContent = 'Success!';
+      this.changeFieldSet(true, tag, 'Success!');
     }
 
     if (this.isEmail(this.authEmail.value)
       && this.isCorrectPassword(this.authPassword.value)) {
       this.submitBtn.disabled = false;
+    }
+  }
+
+  requestHandler(request, event) {
+    const { submitBtn, authEmail } = this;
+    console.log(request);
+
+    if (request.status === 200) {
+      submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;
+      onRouteChangeEvent(event, ROUTERS.HEADER);
+
+      submitBtn.dataset.destination = MAIN_ROUTES.MAIN_PAGE;
+      onRouteChangeEvent(event, ROUTERS.MAIN);
+    }
+
+    if (request.status === 404) {
+      this.changeFieldSet(false, 'email', `User ${authEmail.value} - ${request.statusText}`);
+    }
+
+    if (request.status === 403) {
+      this.changeFieldSet(false, 'password', 'Wrong password!');
+    }
+  }
+
+  changeFieldSet(action, tag, message) {
+    if (action) {
+      if (tag === 'password') {
+        this.fieldSetPasswords.classList.add('confirmed');
+        this.fieldSetPasswords.classList.remove('unconfirmed');
+        if (message) { this.legendPassword.textContent = message; }
+      }
+
+      if (tag === 'email') {
+        this.fieldSetEmails.classList.add('confirmed');
+        this.fieldSetEmails.classList.remove('unconfirmed');
+        if (message) { this.legendEmail.textContent = message; }
+      }
+    }
+
+    if (!action) {
+      if (tag === 'password') {
+        this.fieldSetPasswords.classList.add('unconfirmed');
+        this.fieldSetPasswords.classList.remove('confirmed');
+        if (message) { this.legendPassword.textContent = message; }
+      }
+
+      if (tag === 'email') {
+        this.fieldSetEmails.classList.add('unconfirmed');
+        this.fieldSetEmails.classList.remove('confirmed');
+        if (message) { this.legendEmail.textContent = message; }
+      }
     }
   }
 
