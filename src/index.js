@@ -1,6 +1,9 @@
 import './style/main.scss';
 
 // router
+import User from 'domainModels/User/User';
+import AuthPage from 'components/Authorization/AuthPage/AuthPage.View';
+import RegisterPage from 'components/Authorization/RegisterPage/RegisterPage.View';
 import Router from './router/Router';
 import { registerRouter } from './router/RouteHandler';
 
