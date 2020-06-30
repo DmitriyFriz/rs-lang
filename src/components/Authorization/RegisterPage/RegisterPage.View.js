@@ -48,12 +48,11 @@ export default class RegisterPage extends BaseComponent {
     onRouteChangeEvent(event, ROUTERS.MAIN);
   }
 
-  handlerRegistration(event) {
-    event.preventDefault();
+  handlerRegistration() {
     const email = this.regEmail;
     const password = this.regPassword;
     const confirmPassword = this.regConfirmPassword;
-    event.preventDefault();
+
     if (email && password && confirmPassword) {
       if (this.isPasswordMatch(password, confirmPassword)) {
         console.log('Match = ', this.isPasswordMatch(password, confirmPassword));
@@ -65,27 +64,19 @@ export default class RegisterPage extends BaseComponent {
 
   handlerConfirmEmailInput(event) {
     const email = event.target.value;
-    const emailLegend = this.legendEmail;
+    const tag = 'email';
     const password = this.regPassword.value;
     const passwordConfirm = this.regConfirmPassword.value;
     this.submitBtn.disabled = true;
 
     if (!email) {
-      this.fieldSetEmails.classList.add('unconfirmed');
-      this.fieldSetEmails.classList.remove('confirmed');
-
-      emailLegend.textContent = 'Enter Email!';
+      this.changeFieldSet(false, tag, 'Enter Email!');
     } else {
-      this.fieldSetEmails.classList.remove('confirmed');
-      this.fieldSetEmails.classList.add('unconfirmed');
-
-      emailLegend.textContent = 'Enter correct Email!';
+      this.changeFieldSet(false, tag, 'Enter correct Email!');
     }
 
     if (this.isEmail(email)) {
-      this.fieldSetEmails.classList.remove('unconfirmed');
-      this.fieldSetEmails.classList.add('confirmed');
-      emailLegend.textContent = 'Success!';
+      this.changeFieldSet(true, tag, 'Success!');
 
       if (password
         && passwordConfirm
@@ -96,6 +87,7 @@ export default class RegisterPage extends BaseComponent {
   }
 
   handlerPasswordInput() {
+    const tag = 'password';
     const password = this.regPassword.value;
     const passwordConfirm = this.regConfirmPassword;
     const email = this.regEmail.value;
@@ -103,8 +95,7 @@ export default class RegisterPage extends BaseComponent {
     this.submitBtn.disabled = true;
 
     if (!password) {
-      this.fieldSetPasswords.classList.remove('confirmed');
-      this.fieldSetPasswords.classList.add('unconfirmed');
+      this.changeFieldSet(false, tag, '');
 
       if (passwordConfirm.value) {
         passwordLegend.textContent = 'Confirm Password!';
@@ -112,17 +103,13 @@ export default class RegisterPage extends BaseComponent {
         passwordLegend.textContent = 'Enter Password!';
       }
     } else {
-      this.fieldSetPasswords.classList.remove('confirmed');
-      this.fieldSetPasswords.classList.add('unconfirmed');
-
-      passwordLegend.textContent = 'Enter correct Password!';
+      this.changeFieldSet(false, tag, 'Enter correct Password!');
     }
 
     if (this.isCorrectPassword(password)) {
       if (this.isPasswordMatch(password, passwordConfirm.value)) {
-        this.fieldSetPasswords.classList.remove('unconfirmed');
-        this.fieldSetPasswords.classList.add('confirmed');
-        passwordLegend.textContent = 'Success!';
+        this.changeFieldSet(true, tag, 'Success!');
+
         if (this.isEmail(email)) {
           this.submitBtn.disabled = false;
         }
@@ -133,33 +120,57 @@ export default class RegisterPage extends BaseComponent {
   }
 
   handlerConfirmPasswordInput() {
+    const tag = 'password';
     const password = this.regPassword;
     const passwordConfirm = this.regConfirmPassword.value;
     const email = this.regEmail.value;
-    const passwordLegend = this.legendPassword;
     this.submitBtn.disabled = true;
 
     if (!password.value) {
-      this.fieldSetPasswords.classList.add('unconfirmed');
-      this.fieldSetPasswords.classList.remove('confirmed');
-      passwordLegend.textContent = 'Enter Password!';
+      this.changeFieldSet(false, tag, 'Enter Password!');
     }
 
     if (this.isCorrectPassword(password.value)
       && !this.isPasswordMatch(password.value, passwordConfirm)) {
-      this.fieldSetPasswords.classList.add('unconfirmed');
-      this.fieldSetPasswords.classList.remove('confirmed');
-
-      passwordLegend.textContent = 'Passwords doesn\'t match!';
+      this.changeFieldSet(false, tag, 'Passwords doesn\'t match!');
     }
 
     if (this.isPasswordMatch(password.value, passwordConfirm)
       && this.isCorrectPassword(password.value)) {
-      this.fieldSetPasswords.classList.remove('unconfirmed');
-      this.fieldSetPasswords.classList.add('confirmed');
-      passwordLegend.textContent = 'Success!';
+      this.changeFieldSet(true, tag, 'Success!');
+
       if (this.isEmail(email)) {
         this.submitBtn.disabled = false;
+      }
+    }
+  }
+
+  changeFieldSet(action, tag, message) {
+    if (action) {
+      if (tag === 'password') {
+        this.fieldSetPasswords.classList.add('confirmed');
+        this.fieldSetPasswords.classList.remove('unconfirmed');
+        if (message) { this.legendPassword.textContent = message; }
+      }
+
+      if (tag === 'email') {
+        this.fieldSetEmails.classList.add('confirmed');
+        this.fieldSetEmails.classList.remove('unconfirmed');
+        if (message) { this.legendEmail.textContent = message; }
+      }
+    }
+
+    if (!action) {
+      if (tag === 'password') {
+        this.fieldSetPasswords.classList.add('unconfirmed');
+        this.fieldSetPasswords.classList.remove('confirmed');
+        if (message) { this.legendPassword.textContent = message; }
+      }
+
+      if (tag === 'email') {
+        this.fieldSetEmails.classList.add('unconfirmed');
+        this.fieldSetEmails.classList.remove('confirmed');
+        if (message) { this.legendEmail.textContent = message; }
       }
     }
   }
