@@ -1,25 +1,26 @@
-.button {
-  color: red;
-}
+header{
+  .menu {
+    background-color: gray;
+  }
 
-.menu {
-  background-color: gray;
-}
+  .button {
+    color: red;
+  }
+  .menu-item {
+    color: red;
+  }
 
-.menu-item {
-  color: red;
-}
+  .user-email {
+    color: green;
+  }
 
-.user-email {
-  color: green;
-}
+  .header-button {
+    background-color: gray;
+  }
 
-.header-button {
-  background-color: gray;
-}
-
-.logo {
-  width: 100px;
-  height: 100px;
-  background-color: blue;
+  .logo {
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+  }
 }

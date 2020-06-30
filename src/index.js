@@ -1,18 +1,18 @@
 import './style/main.scss';
 
+// router
+import Router from './router/Router';
+import { registerRouter } from './router/RouteHandler';
+
 // components
-import AuthPage from 'components/Authorization/AuthPage/AuthPage.View';
-import RegisterPage from 'components/Authorization/RegisterPage/RegisterPage.View';
-import User from 'domainModels/User/User';
-import Games from './components/Games/Games.View';
 import HeaderAuthorized from './components/Header/Header.View.Authorized';
 import HeaderGuest from './components/Header/Header.View.Guest';
 import MainPage from './components/MainPage/MainPage.View';
+import Games from './components/Games/Games.View';
+import Team from './components/Team/Team.View';
 
-// router
-import Router from './router/Router';
-import { registerRouter } from 'router/RouteHandler';
-import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from 'router/Router.Constants';
+// constants
+import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
 
 const header = document.querySelector('#header');
 const root = document.querySelector('#root');
@@ -32,6 +32,7 @@ const mainRoutes = {
   [MAIN_ROUTES.SIGN_IN]: AuthPage,
   [MAIN_ROUTES.SIGN_UP]: RegisterPage,
   [MAIN_ROUTES.GAMES]: Games,
+  [MAIN_ROUTES.ABOUT_TEAM]: Team,
   // other endpoints should be added here,
 };
 

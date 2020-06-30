@@ -1,7 +1,11 @@
 /* eslint-disable no-console */
 import Words from './Words';
 
-const wordsDomainModel = new Words();
+// new Words (group);
+
+const wordsDomainModel = new Words(0);
+
+// init wordsDomain
 
 /*
   if you use an authorized user method and the user is not authorized,
@@ -74,19 +78,12 @@ wordsDomainModel.getChunk(page, group).then((res) => console.log(res));
  }
 */
 
-// ============ createUserWord(wordId, parameters)  =============
+// ============ createUserWord(wordId, difficulty, vocabulary)  =============
 
 {
   const wordId = '5e9f5ee35eb9e72bc21af70c';
-  const parameters = {
-    difficulty: 'easy',
-    optional: {
-      testFieldString: 'test',
-      testFieldBoolean: true,
-    },
-  };
 
-  wordsDomainModel.createUserWord(wordId, parameters).then((res) => console.log(res));
+  wordsDomainModel.createUserWord(wordId, 'easy', 'removed').then((res) => console.log(res));
 }
 
 /*
@@ -96,8 +93,11 @@ wordsDomainModel.getChunk(page, group).then((res) => console.log(res));
     difficulty: "easy",
     id: "5eef81545a08ac00171d8db9",
     optional: {
-      testFieldBoolean: true,
-      testFieldString: "test",
+      amount: 44,
+      date: 1593111591269,
+      repeat:
+        date: 1593112191269,
+        status: false,
     }
     wordId: "5e9f5ee35eb9e72bc21af70c",
   },
@@ -106,30 +106,26 @@ wordsDomainModel.getChunk(page, group).then((res) => console.log(res));
  }
 */
 
-// ============ updateUserWord(wordId, parameters)  =============
+// ============ updateUserWord(wordId, difficulty, vocabulary)  =============
 
 {
   const wordId = '5e9f5ee35eb9e72bc21af70c';
-  const parameters = {
-    difficulty: 'medium',
-    optional: {
-      testFieldString: 'test2',
-      testFieldBoolean: false,
-    },
-  };
 
-  wordsDomainModel.updateUserWord(wordId, parameters).then((res) => console.log(res));
+  wordsDomainModel.updateUserWord(wordId, 'hard').then((res) => console.log(res));
 }
 
 /*
   console log:
  {
   data: {
-    difficulty: "medium",
+    difficulty: "hard",
     id: "5eef81545a08ac00171d8db9",
     optional: {
-      testFieldBoolean: false,
-      testFieldString: "test2",
+      amount: 44,
+      date: 1593111591355,
+      repeat:
+        date: 1593111591355,
+        status: false,
     }
     wordId: "5e9f5ee35eb9e72bc21af70c",
   },
@@ -206,3 +202,31 @@ wordsDomainModel.getAllUserWords().then((res) => console.log(res));
 */
 
 // Success delete
+
+
+// ============ getAllUserWords()  =============
+
+wordsDomainModel.getAllUserWords().then((res) => console.log(res));
+
+/*
+  console log:
+ {
+  data:
+    [
+      {
+        difficulty: "medium",
+        id: "5eef81545a08ac00171d8db9",
+        optional: {
+          testFieldBoolean: false,
+          testFieldString: "test2",
+        }
+        wordId: "5e9f5ee35eb9e72bc21af70c",
+      },
+      ...
+    ],
+  status: 200,
+  statusText: "OK"
+ }
+*/
+
+// ============ deleteUserWords()  =============
