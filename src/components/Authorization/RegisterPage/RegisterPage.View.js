@@ -2,7 +2,7 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 import User from 'domainModels/User/User';
 import getRegisterPageLayout from 'components/Authorization/RegisterPage/RegisterPage.Layout';
 import { onRouteChangeEvent } from 'router/RouteHandler';
-import { ROUTERS } from 'router/Router.Constants';
+import { HEADER_ROUTES, MAIN_ROUTES, ROUTERS } from 'router/Router.Constants';
 import { regEmailRegExp, regPasswordRegEx } from 'components/Authorization/RegisterPage/RegisterPage.Data';
 import './RegisterPage.scss';
 import '../Authorization.scss';
@@ -48,16 +48,21 @@ export default class RegisterPage extends BaseComponent {
     onRouteChangeEvent(event, ROUTERS.MAIN);
   }
 
-  handlerRegistration() {
-    const email = this.regEmail;
-    const password = this.regPassword;
-    const confirmPassword = this.regConfirmPassword;
+  handlerRegistration(event) {
+    event.preventDefault();
+    const email = this.regEmail.value;
+    const password = this.regPassword.value;
+    const confirmPassword = this.regConfirmPassword.value;
+    const { submitBtn } = this;
 
     if (email && password && confirmPassword) {
       if (this.isPasswordMatch(password, confirmPassword)) {
-        console.log('Match = ', this.isPasswordMatch(password, confirmPassword));
-      } else {
-        console.log('Not Match = ', this.isPasswordMatch(password, confirmPassword));
+        submitBtn.disabled = true;
+
+        this.user.register({ email, password })
+          .then((request) => {
+            this.requestHandler(request, event, email, password);
+          });
       }
     }
   }
@@ -142,6 +147,26 @@ export default class RegisterPage extends BaseComponent {
       if (this.isEmail(email)) {
         this.submitBtn.disabled = false;
       }
+    }
+  }
+
+  requestHandler(request, event, email, password) {
+    const { submitBtn } = this;
+
+    if (request.status === 200) {
+      this.user.signIn({ email, password })
+        .then(() => {
+          submitBtn.disabled = false;
+          submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;
+          onRouteChangeEvent(event, ROUTERS.HEADER);
+
+          submitBtn.dataset.destination = MAIN_ROUTES.MAIN_PAGE;
+          onRouteChangeEvent(event, ROUTERS.MAIN);
+        });
+    }
+
+    if (request.status === 417) {
+      this.changeFieldSet(false, 'email', 'That Email address is taken. Try another.');
     }
   }
 

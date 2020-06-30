@@ -27,6 +27,10 @@
   input:disabled {
     opacity: .4;
   }
+
+  .password-requirement {
+    color: rgba(91, 91, 91, 0.4);
+  }
 }
 
 .registration, .reg {
