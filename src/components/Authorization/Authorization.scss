@@ -1,5 +1,10 @@
 @import "src/style/base/basicStyle";
 
+.form {
+  box-shadow: 0 0 4px 0 transparentize($color: $basicColor3, $amount: 0.5);
+  border: none;
+}
+
 .confirmed:not(legend) {
   border-color: rgba(53, 221, 53, .6) !important;
 
@@ -30,7 +35,7 @@
   text-align: center;
 
   input {
-    border: none;
+    //border: none;
   }
 
   fieldset {
@@ -55,7 +60,7 @@
   display: flex;
 
   input {
-  border-bottom: 1.4px solid $basicColor3
+  //border-bottom: 1.4px solid $basicColor3
   }
 }
 

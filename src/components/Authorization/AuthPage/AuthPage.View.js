@@ -51,6 +51,7 @@ export default class AuthPage extends BaseComponent {
    * */
 
   handlerAuthorize(event) {
+    event.preventDefault();
     const email = this.authEmail.value;
     const password = this.authPassword.value;
     const { submitBtn } = this;
@@ -109,7 +110,6 @@ export default class AuthPage extends BaseComponent {
 
   requestHandler(request, event) {
     const { submitBtn, authEmail } = this;
-    console.log(request);
 
     if (request.status === 200) {
       submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;
