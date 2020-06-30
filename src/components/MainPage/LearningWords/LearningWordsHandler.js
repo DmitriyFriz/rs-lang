@@ -1,6 +1,12 @@
+// lodash
 import get from 'lodash.get';
 import shuffle from 'lodash.shuffle';
+
+// domains
+import SettingsDomain from '../../../domain-models/Settings/Settings';
 import WordsDomain from '../../../domain-models/Words/Words';
+
+// ===================== words =============================
 
 const wordsDomain = new WordsDomain();
 const { getFileLink } = wordsDomain;
@@ -59,39 +65,58 @@ async function getDayWordsCollection(optional) {
     const additionalWords = shuffle(wordsDomain.groupWords)
       .slice(0, amount);
     allWords = allWords.concat(additionalWords);
-    console.log(allWords);
   }
 
   return shuffle(handleWords(allWords));
 }
 
+function getTrueWords(collection) {
+  return collection.map((wordData) => {
+    const { word, cutWords } = wordData;
+    return { word, cutWords };
+  })
+    .reverse();
+}
+
+// ===================== buttons =============================
+
 async function handleButtons(event, functionsList) {
   const buttonFunction = get(event, 'target.dataset.button');
   if (!buttonFunction) { return; }
   functionsList[buttonFunction]();
-  // const activeSlide = document.querySelector('.swiper-slide-active');
-  // const wordId = activeSlide.id;
-
-  // const { data } = await wordsDomain.createUserWord(wordId, difficulty, vocabulary);
-  // console.log(data);
 }
 
 async function addWordDifficulty(event, wordId) {
   const difficulty = get(event, 'target.dataset.difficulty');
   if (!difficulty) { return; }
-
-  const { data } = await wordsDomain.createUserWord(wordId, difficulty);
-  console.log(data);
+  await wordsDomain.createUserWord(wordId, difficulty);
 }
 
 async function addWordToVocabulary(event, wordId) {
   const vocabulary = get(event, 'target.dataset.vocabulary');
   if (!vocabulary) { return; }
+  await wordsDomain.createUserWord(wordId, null, vocabulary);
+}
 
-  const { data } = await wordsDomain.createUserWord(wordId, null, vocabulary);
-  console.log(data);
+// ===================== settings =============================
+
+async function getSettings() {
+  const settingsDomain = new SettingsDomain();
+  const settingsData = await settingsDomain.getSettings();
+  const { optional } = settingsData.data;
+  const enabled = Object.keys(optional)
+    .filter((setting) => optional[setting] === true);
+  return { enabled, optional };
 }
 
 export {
-  handleWords, getDayWordsCollection, getFileLink, replaceWord, handleButtons, addWordDifficulty, addWordToVocabulary,
+  handleWords,
+  getDayWordsCollection,
+  getFileLink,
+  replaceWord,
+  handleButtons,
+  addWordDifficulty,
+  addWordToVocabulary,
+  getSettings,
+  getTrueWords,
 };

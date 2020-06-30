@@ -22,10 +22,13 @@ function getMainLayout() {
   `;
 }
 
+// ========================== buttons ==========================
+
 function createDifficultyButtons(root) {
   const parameters = {
     tag: 'div',
     className: 'swiper-slide__difficulty-buttons',
+    id: 'card-difficulty',
     data: {
       settings: SETTINGS.DIFFICULTY_BUTTONS,
     },
@@ -46,6 +49,7 @@ function createVocabularyButtons(root) {
   const parameters = {
     tag: 'div',
     className: 'swiper-slide__vocabulary-buttons',
+    id: 'card-vocabulary',
     data: {
       settings: SETTINGS.VOCABULARY_BUTTONS,
     },
@@ -76,21 +80,7 @@ function createTrueWordBtn(root) {
   return block;
 }
 
-function createAssociativeImg(root, image) {
-  const parameters = {
-    tag: 'div',
-    className: 'swiper-slide__associative',
-    data: {
-      settings: SETTINGS.IMAGE,
-    },
-  };
-  const block = createElement(parameters);
-
-  block.innerHTML = `<img src="${image}"
-      onerror="this.src = 'assets/default.svg'">`;
-  root.append(block);
-  return block;
-}
+// ========================== text ==========================
 
 function createExample(root, textExample) {
   const parameters = {
@@ -112,6 +102,7 @@ function createTranscription(root, transcription) {
   const block = createElement({
     tag: 'div',
     className: 'swiper-slide__word',
+    id: 'card-word',
     data: {
       settings: SETTINGS.TRANSCRIPTION,
       translation: TRANSLATIONS.WORD,
@@ -142,18 +133,21 @@ const translationsList = {
   [TRANSLATIONS.MEANING]: ({ textMeaningTranslate }) => createElement({
     tag: 'p',
     className: 'translation',
+    id: 'card-meaning-translation',
     content: textMeaningTranslate,
   }),
 
   [TRANSLATIONS.EXAMPLE]: ({ textExampleTranslate }) => createElement({
     tag: 'p',
     className: 'translation',
+    id: 'card-example-translation',
     content: textExampleTranslate,
   }),
 
   [TRANSLATIONS.WORD]: ({ wordTranslate }) => createElement({
     tag: 'p',
     className: 'translation',
+    id: 'card-word-translation',
     content: wordTranslate,
   }),
 };
@@ -166,6 +160,26 @@ function createTranslations(root, parameters) {
     block.append(translationsList[translation](parameters));
   });
 }
+
+// ========================== images ==========================
+
+function createAssociativeImg(root, image) {
+  const parameters = {
+    tag: 'div',
+    className: 'swiper-slide__associative',
+    data: {
+      settings: SETTINGS.IMAGE,
+    },
+  };
+  const block = createElement(parameters);
+
+  block.innerHTML = `<img src="${image}"
+      onerror="this.src = 'assets/default.svg'">`;
+  root.append(block);
+  return block;
+}
+
+// ========================== card ==========================
 
 const cardLayout = {
   [SETTINGS.DIFFICULTY_BUTTONS]: (root) => createDifficultyButtons(root),
