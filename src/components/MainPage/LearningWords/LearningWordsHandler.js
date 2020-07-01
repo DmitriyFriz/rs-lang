@@ -55,6 +55,10 @@ function handleWords(data) {
   return res;
 }
 
+function getRandomWords(amount) {
+  return shuffle(wordsDomain.groupWords).slice(0, amount);
+}
+
 async function getDayWordsCollection(optional) {
   const {
     newWords,
@@ -77,8 +81,12 @@ async function getDayWordsCollection(optional) {
       allWords = newWordsList;
       break;
 
-    default:
+    case 'repeated':
       allWords = repeatWordList;
+      break;
+
+    default:
+      allWords = getRandomWords(+wordsPerDay);
       break;
   }
 
@@ -142,4 +150,5 @@ export {
   addWordToVocabulary,
   splitSettings,
   getTrueWords,
+  getRandomWords,
 };

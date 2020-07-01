@@ -13,7 +13,7 @@ import swiperOptions from './Swiper.Options';
 import 'swiper/css/swiper.min.css';
 
 // layout
-import { getMainLayout, createWordCard } from './Layout/LearningWords.Layout';
+import { getMainLayout, createWordCard, createCompletionNotice } from './Layout/LearningWords.Layout';
 
 // handler
 import {
@@ -32,9 +32,7 @@ class LearningWords extends BaseComponent {
 
   async prepareData() {
     this.settings = await splitSettings();
-    await this.createWordsCollection();
-    console.log(this.wordsCollection);
-    this.trueWords = getTrueWords(this.wordsCollection);
+    await this.initWordsCollection();
 
     this.hiddenElementsList = [
       '#card-meaning-translation',
@@ -50,6 +48,7 @@ class LearningWords extends BaseComponent {
       vocabulary: (event) => addWordToVocabulary(event, this.currentSlide.id),
       trueWord: () => this.showTrueWord(),
       check: () => this.checkInputWord(),
+      additional: () => this.createAdditionalTraining(),
     };
   }
 
@@ -92,7 +91,8 @@ class LearningWords extends BaseComponent {
     await super.show();
     this.initSwiper();
     if (this.isEnd) {
-      alert('i have not words');
+      this.completionNotice = createCompletionNotice();
+      this.component.append(this.completionNotice);
       return;
     }
 
@@ -102,8 +102,8 @@ class LearningWords extends BaseComponent {
   hide() {
     super.hide();
     this.swiper.destroy(true, true);
-    this.savedWordsCollection = this.wordsCollection;
-    console.log(this.savedWordsCollection);
+    this.savedWords = this.wordsCollection;
+    console.log(this.savedWords);
   }
 
   // ========================== swiper ==================================
@@ -115,7 +115,7 @@ class LearningWords extends BaseComponent {
         this.currentInput.focus();
       }
     });
-    // this.swiper.virtual.removeAllSlides();
+    this.swiper.virtual.removeAllSlides();
   }
 
   addWordToSwiper() {
@@ -175,12 +175,23 @@ class LearningWords extends BaseComponent {
 
   // ========================== words ==================================
 
-  async createWordsCollection() {
-    if (this.savedWordsCollection) {
-      this.wordsCollection = this.savedWordsCollection;
+  async initWordsCollection() {
+    if (this.savedWords) {
+      this.getSavedWords();
       return;
     }
+    await this.createWordsCollection();
+  }
+
+  async createWordsCollection() {
     this.wordsCollection = await getDayWordsCollection(this.settings.all);
+    this.trueWords = getTrueWords(this.wordsCollection);
+    console.log(this.wordsCollection, this.trueWords);
+  }
+
+  getSavedWords() {
+    this.wordsCollection = this.savedWords; console.log(this.savedWords);
+    this.trueWords = getTrueWords(this.wordsCollection);
   }
 
   checkInputWord() {
@@ -197,12 +208,12 @@ class LearningWords extends BaseComponent {
     return !this.wordsCollection.length;
   }
 
-  get savedWordsCollection() {
-    return JSON.parse(localStorage.getItem('savedWordsCollection'));
+  get savedWords() {
+    return JSON.parse(localStorage.getItem('savedWords'));
   }
 
-  set savedWordsCollection(value) {
-    localStorage.setItem('savedWordsCollection', JSON.stringify(value));
+  set savedWords(value) {
+    localStorage.setItem('savedWords', JSON.stringify(value));
   }
 
   // ========================== other ==================================
@@ -211,6 +222,12 @@ class LearningWords extends BaseComponent {
     const buttonFunction = get(event, 'target.dataset.button');
     if (!buttonFunction) { return; }
     this.functionListForButtons[buttonFunction](event);
+  }
+
+  async createAdditionalTraining() {
+    this.component.removeChild(this.completionNotice);
+    await this.createWordsCollection();
+    this.addWordToSwiper();
   }
 }
 

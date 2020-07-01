@@ -213,7 +213,27 @@ function createWordCard(elementList, { _id, word, ...param }) {
   return card;
 }
 
+// ========================== completion notice ==========================
+
+function createCompletionNotice() {
+  const block = createElement({
+    tag: 'div',
+    className: 'completion-notice',
+  });
+  block.innerHTML = `
+    <div class="completion-notice__wrapper">
+      <div class="completion-notice__content">
+        <p>There are no words for today. You can continue training by clicking "Additional"</p>
+        <button class="button button-close-training" data-destination="START_MENU">OK</button>
+        <button class="button button-additional" data-button="additional">Additional</button>
+      </div>
+    </div>
+  `;
+  return block;
+}
+
 export {
   getMainLayout,
   createWordCard,
+  createCompletionNotice,
 };
