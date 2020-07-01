@@ -21,9 +21,12 @@ export default class RegisterPage extends BaseComponent {
   createLayout() {
     [this.formReg, this.backToMainPageBtn, this.submitBtn,
       this.fieldSetEmails, this.fieldSetPasswords] = getRegisterPageLayout();
+
     [this.legendEmail, this.regEmail] = this.fieldSetEmails.childNodes;
+
     [this.legendPassword, this.regPassword, ,
       this.regConfirmPassword] = this.fieldSetPasswords.childNodes;
+
     this.component.classList.add('reg');
     this.component.append(this.formReg, this.backToMainPageBtn);
   }
@@ -55,7 +58,11 @@ export default class RegisterPage extends BaseComponent {
     const confirmPassword = this.regConfirmPassword.value;
     const { submitBtn } = this;
 
-    if (email && password && confirmPassword) {
+    if (
+      email
+      && password
+      && confirmPassword
+    ) {
       if (this.isPasswordMatch(password, confirmPassword)) {
         submitBtn.disabled = true;
 
@@ -83,9 +90,11 @@ export default class RegisterPage extends BaseComponent {
     if (this.isEmail(email)) {
       this.changeFieldSet(true, tag, 'Success!');
 
-      if (password
+      if (
+        password
         && passwordConfirm
-        && this.isPasswordMatch(password, passwordConfirm)) {
+        && this.isPasswordMatch(password, passwordConfirm)
+      ) {
         this.submitBtn.disabled = false;
       }
     }
@@ -135,13 +144,17 @@ export default class RegisterPage extends BaseComponent {
       this.changeFieldSet(false, tag, 'Enter Password!');
     }
 
-    if (this.isCorrectPassword(password.value)
-      && !this.isPasswordMatch(password.value, passwordConfirm)) {
+    if (
+      this.isCorrectPassword(password.value)
+      && !this.isPasswordMatch(password.value, passwordConfirm)
+    ) {
       this.changeFieldSet(false, tag, 'Passwords doesn\'t match!');
     }
 
-    if (this.isPasswordMatch(password.value, passwordConfirm)
-      && this.isCorrectPassword(password.value)) {
+    if (
+      this.isPasswordMatch(password.value, passwordConfirm)
+      && this.isCorrectPassword(password.value)
+    ) {
       this.changeFieldSet(true, tag, 'Success!');
 
       if (this.isEmail(email)) {
@@ -175,13 +188,19 @@ export default class RegisterPage extends BaseComponent {
       if (tag === 'password') {
         this.fieldSetPasswords.classList.add('confirmed');
         this.fieldSetPasswords.classList.remove('unconfirmed');
-        if (message) { this.legendPassword.textContent = message; }
+
+        if (message) {
+          this.legendPassword.textContent = message;
+        }
       }
 
       if (tag === 'email') {
         this.fieldSetEmails.classList.add('confirmed');
         this.fieldSetEmails.classList.remove('unconfirmed');
-        if (message) { this.legendEmail.textContent = message; }
+
+        if (message) {
+          this.legendEmail.textContent = message;
+        }
       }
     }
 
@@ -189,13 +208,19 @@ export default class RegisterPage extends BaseComponent {
       if (tag === 'password') {
         this.fieldSetPasswords.classList.add('unconfirmed');
         this.fieldSetPasswords.classList.remove('confirmed');
-        if (message) { this.legendPassword.textContent = message; }
+
+        if (message) {
+          this.legendPassword.textContent = message;
+        }
       }
 
       if (tag === 'email') {
         this.fieldSetEmails.classList.add('unconfirmed');
         this.fieldSetEmails.classList.remove('confirmed');
-        if (message) { this.legendEmail.textContent = message; }
+
+        if (message) {
+          this.legendEmail.textContent = message;
+        }
       }
     }
   }

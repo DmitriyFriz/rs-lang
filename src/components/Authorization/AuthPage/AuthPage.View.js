@@ -20,8 +20,11 @@ export default class AuthPage extends BaseComponent {
   createLayout() {
     [this.formAuth, this.backToMainPageBtn, this.submitBtn,
       this.fieldSetEmails, this.fieldSetPasswords] = getAuthPageLayout();
+
     [this.legendEmail, this.authEmail] = this.fieldSetEmails.childNodes;
+
     [this.legendPassword, this.authPassword] = this.fieldSetPasswords.childNodes;
+
     this.component.classList.add('auth');
     this.component.append(this.formAuth, this.backToMainPageBtn);
   }
@@ -56,10 +59,15 @@ export default class AuthPage extends BaseComponent {
     const password = this.authPassword.value;
     const { submitBtn } = this;
 
-    if (email && password) {
-      if (this.isEmail(email) && this.isCorrectPassword(password)) {
+    if (
+      email
+      && password
+    ) {
+      if (
+        this.isEmail(email)
+        && this.isCorrectPassword(password)
+      ) {
         submitBtn.disabled = true;
-
         this.user.signIn({ email, password })
           .then((request) => {
             submitBtn.disabled = false;
@@ -102,8 +110,10 @@ export default class AuthPage extends BaseComponent {
       this.changeFieldSet(true, tag, 'Success!');
     }
 
-    if (this.isEmail(this.authEmail.value)
-      && this.isCorrectPassword(this.authPassword.value)) {
+    if (
+      this.isEmail(this.authEmail.value)
+      && this.isCorrectPassword(this.authPassword.value)
+    ) {
       this.submitBtn.disabled = false;
     }
   }
@@ -133,13 +143,19 @@ export default class AuthPage extends BaseComponent {
       if (tag === 'password') {
         this.fieldSetPasswords.classList.add('confirmed');
         this.fieldSetPasswords.classList.remove('unconfirmed');
-        if (message) { this.legendPassword.textContent = message; }
+
+        if (message) {
+          this.legendPassword.textContent = message;
+        }
       }
 
       if (tag === 'email') {
         this.fieldSetEmails.classList.add('confirmed');
         this.fieldSetEmails.classList.remove('unconfirmed');
-        if (message) { this.legendEmail.textContent = message; }
+
+        if (message) {
+          this.legendEmail.textContent = message;
+        }
       }
     }
 
@@ -147,13 +163,19 @@ export default class AuthPage extends BaseComponent {
       if (tag === 'password') {
         this.fieldSetPasswords.classList.add('unconfirmed');
         this.fieldSetPasswords.classList.remove('confirmed');
-        if (message) { this.legendPassword.textContent = message; }
+
+        if (message) {
+          this.legendPassword.textContent = message;
+        }
       }
 
       if (tag === 'email') {
         this.fieldSetEmails.classList.add('unconfirmed');
         this.fieldSetEmails.classList.remove('confirmed');
-        if (message) { this.legendEmail.textContent = message; }
+
+        if (message) {
+          this.legendEmail.textContent = message;
+        }
       }
     }
   }
