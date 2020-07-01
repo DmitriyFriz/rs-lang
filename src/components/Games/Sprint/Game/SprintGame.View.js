@@ -34,6 +34,8 @@ class SprintGame extends BaseComponent {
     this.basePoints = 10;
     this.awardedPoints = this.basePoints;
     this.keyUserWord = 'userWord';
+    this.keyDifficulty = 'difficulty';
+    this.repeatParameter = 'again';
 
     this.setTimer = this.setTimer.bind(this);
     this.handleFalseButton = this.handleFalseButton.bind(this);
@@ -55,6 +57,7 @@ class SprintGame extends BaseComponent {
     console.log(this.repeatWords, this.newWords, this.group);
     console.log(this.gameArray);
     console.log(this.level);
+    wordsDomainModel.getAllUserWords().then((res) => console.log(res));
   }
 
   static get name() {
@@ -84,7 +87,6 @@ class SprintGame extends BaseComponent {
   setTimer() {
     let currentTime = +this.time.textContent;
     currentTime -= 1;
-
     if (currentTime < 10) {
       this.time.textContent = `0${currentTime}`;
     } else {
@@ -146,6 +148,7 @@ class SprintGame extends BaseComponent {
     this.trueButton.removeEventListener('click', this.handleTrueButton);
     document.removeEventListener('keydown', this.handleKeyDown);
     document.removeEventListener('keyup', this.handleKeyUp);
+    clearInterval(this.intervalID);
   }
 
   handleFalseButton() {
@@ -212,8 +215,9 @@ class SprintGame extends BaseComponent {
     this.streakWinning = 0;
     this.awardedPoints = this.basePoints;
     this.resultIcon.style.backgroundImage = `url(${incorrectIcon})`;
-    if (this.keyUserWord in this.currentWord) {
-
+    if (this.keyUserWord in this.currentWord &&
+      ! (this.currentWord[this.keyUserWord][this.keyDifficulty] == this.repeatParameter)) {
+      wordsDomainModel.updateUserWord(this.currentWord._id, this.repeatParameter);
     }
   }
 

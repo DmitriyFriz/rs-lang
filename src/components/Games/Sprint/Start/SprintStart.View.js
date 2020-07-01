@@ -30,7 +30,7 @@ class SprintStart extends BaseComponent {
   }
 
   addListeners() {
-    this.levelGroup = document.getElementsByName(name);
+    this.levelGroup = document.getElementsByName('chapter');
 
     this.component.addEventListener('click', this.handleClick);
   }
