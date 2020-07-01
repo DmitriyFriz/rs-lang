@@ -6,19 +6,19 @@ const settingsDomain = new SettingsDomain();
 
 async function getSettings() {
   const { data } = await settingsDomain.getSettings();
-  const settings = get(data, 'optional');
+  const settings = get(data, 'optional.main');
   return settings || DEFAULT_SETTINGS;
 }
 
 async function saveSettings(settingsList) {
-  const optional = [...settingsList].reduce((accumulator, setting) => {
+  const settings = [...settingsList].reduce((accumulator, setting) => {
     const data = accumulator;
     const settingName = setting.dataset.settings;
     data[settingName] = setting.type === 'checkbox'
       ? setting.checked : +setting.value;
     return data;
   }, {});
-  await settingsDomain.updateSettings({ optional });
+  await settingsDomain.updateSettings('main', settings);
 }
 
 async function loadSettings(settingsList) {

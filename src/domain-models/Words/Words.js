@@ -57,7 +57,7 @@ class Words extends BaseDomainModel {
 
   async updateUserWord(wordId, newDifficulty, newVocabulary) {
     const { data, status, statusText } = await this.getUserWordById(wordId);
-    if (status === STATUSES.UNAUTHORIZED) {
+    if (!data) {
       return { status, statusText };
     }
 
