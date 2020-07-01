@@ -32,11 +32,7 @@ class LearningWords extends BaseComponent {
 
   async prepareData() {
     this.settings = await splitSettings();
-    this.wordsCollection = this.savedWordsCollection;
-    if (!this.wordsCollection) {
-      console.log("!")
-      this.wordsCollection = await getDayWordsCollection(this.settings.all);
-    }
+    await this.createWordsCollection();
     console.log(this.wordsCollection);
     this.trueWords = getTrueWords(this.wordsCollection);
 
@@ -95,6 +91,11 @@ class LearningWords extends BaseComponent {
   async show() {
     await super.show();
     this.initSwiper();
+    if (this.isEnd) {
+      alert('i have not words');
+      return;
+    }
+
     this.addWordToSwiper();
   }
 
@@ -102,8 +103,10 @@ class LearningWords extends BaseComponent {
     super.hide();
     this.swiper.destroy(true, true);
     this.savedWordsCollection = this.wordsCollection;
-    console.log(this.savedWordsCollection)
+    console.log(this.savedWordsCollection);
   }
+
+  // ========================== swiper ==================================
 
   initSwiper() {
     this.swiper = new Swiper('.swiper__container', swiperOptions);
@@ -112,17 +115,7 @@ class LearningWords extends BaseComponent {
         this.currentInput.focus();
       }
     });
-    this.swiper.virtual.removeAllSlides();
-  }
-
-  checkInputWord() {
-    const { word, cutWords } = this.trueWords[this.currentIndex];
-
-    if (this.currentInput.value === word) {
-      this.addWordToSwiper();
-      this.pasteWordsToTexts(cutWords);
-      this.showElementsForTrueWord();
-    }
+    // this.swiper.virtual.removeAllSlides();
   }
 
   addWordToSwiper() {
@@ -152,17 +145,7 @@ class LearningWords extends BaseComponent {
     return this.swiper.virtual.slides[this.currentIndex];
   }
 
-  get isEnd() {
-    return !this.wordsCollection.length;
-  }
-
-  get savedWordsCollection() {
-    return JSON.parse(localStorage.getItem('savedWordsCollection'));
-  }
-
-  set savedWordsCollection(value) {
-    localStorage.setItem('savedWordsCollection', JSON.stringify(value));
-  }
+  // ========================== layout ==================================
 
   pasteWordsToTexts(words) {
     const texts = this.currentSlide.querySelectorAll('[data-cut]');
@@ -185,6 +168,44 @@ class LearningWords extends BaseComponent {
     this.currentInput = this.trueWords[this.currentIndex].word;
     this.checkInputWord();
   }
+
+  get header() {
+    return document.querySelector('header');
+  }
+
+  // ========================== words ==================================
+
+  async createWordsCollection() {
+    if (this.savedWordsCollection) {
+      this.wordsCollection = this.savedWordsCollection;
+      return;
+    }
+    this.wordsCollection = await getDayWordsCollection(this.settings.all);
+  }
+
+  checkInputWord() {
+    const { word, cutWords } = this.trueWords[this.currentIndex];
+
+    if (this.currentInput.value === word) {
+      this.addWordToSwiper();
+      this.pasteWordsToTexts(cutWords);
+      this.showElementsForTrueWord();
+    }
+  }
+
+  get isEnd() {
+    return !this.wordsCollection.length;
+  }
+
+  get savedWordsCollection() {
+    return JSON.parse(localStorage.getItem('savedWordsCollection'));
+  }
+
+  set savedWordsCollection(value) {
+    localStorage.setItem('savedWordsCollection', JSON.stringify(value));
+  }
+
+  // ========================== other ==================================
 
   async handleButtons(event) {
     const buttonFunction = get(event, 'target.dataset.button');
