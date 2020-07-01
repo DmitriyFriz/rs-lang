@@ -7,7 +7,7 @@ import shuffle from 'lodash.shuffle';
 import WordsDomain from '../../../domain-models/Words/Words';
 
 // Settings
-import { getSettings } from '../../Settings/SettingsHandler'
+import { getSettings } from '../../Settings/SettingsHandler';
 
 // ===================== words =============================
 
@@ -56,19 +56,38 @@ function handleWords(data) {
 }
 
 async function getDayWordsCollection(optional) {
-  const { newWords = 5, level = 0, wordsPerDay = 20 } = optional;
-  await wordsDomain.selectGroupWords(level);
+  const {
+    newWords,
+    level,
+    wordsPerDay,
+    collectionWordsMode,
+  } = optional;
+  await wordsDomain.selectGroupWords(+level);
 
-  const newWordsList = wordsDomain.newWords.slice(0, newWords);
-  const repeatWordList = wordsDomain.repeatWords.slice(0, (wordsPerDay - newWords));
+  const newWordsList = wordsDomain.newWords.slice(0, +newWords);
+  const repeatWordList = wordsDomain.repeatWords.slice(0, (+wordsPerDay - +newWords));// !!!!
   let allWords = newWordsList.concat(repeatWordList);
 
-  if (allWords.length < wordsPerDay) {
-    const amount = wordsPerDay - allWords.length;
-    const additionalWords = shuffle(wordsDomain.groupWords)
-      .slice(0, amount);
-    allWords = allWords.concat(additionalWords);
+  switch (collectionWordsMode) {
+    case 'shuffle':
+      allWords = newWordsList.concat(repeatWordList);
+      break;
+
+    case 'new':
+      allWords = newWordsList;
+      break;
+
+    default:
+      allWords = repeatWordList;
+      break;
   }
+
+  // if (allWords.length < +wordsPerDay) {
+  //   const amount = +wordsPerDay - allWords.length;
+  //   const additionalWords = shuffle(wordsDomain.groupWords)
+  //     .slice(0, amount);
+  //   allWords = allWords.concat(additionalWords);
+  // }
 
   return shuffle(handleWords(allWords));
 }

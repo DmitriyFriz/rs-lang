@@ -10,15 +10,22 @@ function getLayout() {
     <input type="range" id="new-words" name="new-words" data-settings="${SETTINGS.NEW_WORDS}" min="3" max="20" step="1">
     <label for="image">New words per day</label>
 
+    <p>Collection words mode</p>
+      <select id="words-mode" data-settings="${SETTINGS.COLLECTION_WORDS_MODE}">
+        <option value="shuffle">Shuffle</option>
+        <option value="new">Only new words</option>
+        <option value="repeated">Only repeated words</option>
+      </select>
+
   </div>
   <p>Level</p>
   <select id="level" data-settings="${SETTINGS.LEVEL}">
-    <option value="0">level 0</option>
-    <option value="1">level 1</option>
-    <option value="2">level 2</option>
-    <option value="3">level 3</option>
-    <option value="4">level 4</option>
-    <option value="5">level 5</option>
+    <option value=0>level 0</option>
+    <option value=1>level 1</option>
+    <option value=2>level 2</option>
+    <option value=3>level 3</option>
+    <option value=4>level 4</option>
+    <option value=5>level 5</option>
   </select>
 
   <div class="settings__cards">

@@ -32,7 +32,12 @@ class LearningWords extends BaseComponent {
 
   async prepareData() {
     this.settings = await splitSettings();
-    this.wordsCollection = await getDayWordsCollection(this.settings.all);
+    this.wordsCollection = this.savedWordsCollection;
+    if (!this.wordsCollection) {
+      console.log("!")
+      this.wordsCollection = await getDayWordsCollection(this.settings.all);
+    }
+    console.log(this.wordsCollection);
     this.trueWords = getTrueWords(this.wordsCollection);
 
     this.hiddenElementsList = [
@@ -96,6 +101,8 @@ class LearningWords extends BaseComponent {
   hide() {
     super.hide();
     this.swiper.destroy(true, true);
+    this.savedWordsCollection = this.wordsCollection;
+    console.log(this.savedWordsCollection)
   }
 
   initSwiper() {
@@ -119,6 +126,7 @@ class LearningWords extends BaseComponent {
   }
 
   addWordToSwiper() {
+    if (this.isEnd) { return; }
     const wordData = this.wordsCollection.pop();
     this.swiper.virtual.appendSlide(
       createWordCard(this.settings.enabled, wordData),
@@ -142,6 +150,18 @@ class LearningWords extends BaseComponent {
 
   get currentSlide() {
     return this.swiper.virtual.slides[this.currentIndex];
+  }
+
+  get isEnd() {
+    return !this.wordsCollection.length;
+  }
+
+  get savedWordsCollection() {
+    return JSON.parse(localStorage.getItem('savedWordsCollection'));
+  }
+
+  set savedWordsCollection(value) {
+    localStorage.setItem('savedWordsCollection', JSON.stringify(value));
   }
 
   pasteWordsToTexts(words) {

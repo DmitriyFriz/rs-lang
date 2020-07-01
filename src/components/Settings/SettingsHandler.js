@@ -15,14 +15,14 @@ async function saveSettings(settingsList) {
     const data = accumulator;
     const settingName = setting.dataset.settings;
     data[settingName] = setting.type === 'checkbox'
-      ? setting.checked : +setting.value;
+      ? setting.checked : setting.value;
     return data;
-  }, {});
+  }, {}); console.log(settings);
   await settingsDomain.updateSettings('main', settings);
 }
 
 async function loadSettings(settingsList) {
-  const settings = await getSettings();
+  const settings = await getSettings(); console.log(settings);
 
   [...settingsList].forEach((item) => {
     const setting = item;
