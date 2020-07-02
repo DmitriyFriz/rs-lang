@@ -41,10 +41,17 @@ const mainRoutes = {
   // other endpoints should be added here,
 };
 
-const currentHeaderRoute = isAuthorized
-  ? HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
-const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);
-registerRouter(headerRouter);
+async function init() {
+  await user.checkAuthStatus();
 
-const mainRouter = new Router(ROUTERS.MAIN, root, mainRoutes, MAIN_ROUTES.MAIN_PAGE);
-registerRouter(mainRouter);
+  const currentHeaderRoute = isAuthorized
+    ? HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
+
+  const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);
+  registerRouter(headerRouter);
+
+  const mainRouter = new Router(ROUTERS.MAIN, root, mainRoutes, MAIN_ROUTES.PROMO);
+  registerRouter(mainRouter);
+}
+
+init();
