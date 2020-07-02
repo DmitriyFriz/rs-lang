@@ -24,8 +24,9 @@ class HeaderAuthorized extends BaseComponent {
   }
 
   createLayout() {
-    [this.logo, this.menu, this.emailContainer, this.buttonOut] = getLayout(this.isAuthorized);
-    this.component.append(this.logo, this.menu, this.emailContainer, this.buttonOut);
+    [this.menu, this.logo, this.emailContainer, this.buttonOut, this.buttonBurgerMenu] = getLayout(this.isAuthorized);
+    this.component.className = 'header-authorized';
+    this.component.append(this.logo, this.menu, this.emailContainer, this.buttonOut, this.buttonBurgerMenu);
   }
 
   addListeners() {

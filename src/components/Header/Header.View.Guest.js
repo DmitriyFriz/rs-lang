@@ -24,6 +24,7 @@ class HeaderGuest extends BaseComponent {
 
   createLayout() {
     [this.menu, this.buttonUp, this.buttonIn] = getLayout(this.isAuthorized);
+    this.component.className = 'header-guest';
     this.component.append(this.menu, this.buttonUp, this.buttonIn);
   }
 

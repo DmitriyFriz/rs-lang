@@ -68,10 +68,11 @@ const HeaderLayout = {
 
 const HeaderClassName = {
   menu: 'menu',
-  menuItem: 'menu-item',
+  menuItem: 'button menu-item',
   logo: 'logo',
   email: 'user-email',
   button: 'header-button',
+  burgerMenuButton: 'header__burger-menu',
 };
 
 export { HeaderLayout, HeaderClassName };

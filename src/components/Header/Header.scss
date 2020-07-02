@@ -1,18 +1,21 @@
 header{
+  font-size: $headerFontSize;
+
   .menu {
-    background-color: gray;
+    // position: absolute;
+    // left: 0;
+    // top: 0;
+    // width: 200px;
+    // height: 100vh;
   }
 
   .button {
-    color: red;
-  }
-  .menu-item {
-    color: red;
+    font-size: 0.65em;
   }
 
-  .user-email {
-    color: green;
-  }
+  // .user-email {
+  //   color: green;
+  // }
 
   .header-button {
     background-color: gray;
@@ -21,6 +24,129 @@ header{
   .logo {
     width: 100px;
     height: 100px;
-    background-color: blue;
+    background-image: url("../../assets/logo.svg");
+    background-size: contain;
   }
+}
+
+.header-authorized {
+
+}
+
+// ======================== Burger button ================================
+
+.header__burger-menu {
+  width: 50px;
+  height: 50px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+  height: 1px;
+  width: 1px;
+  padding: 0;
+}
+
+.hamburger {
+  position: relative;
+  z-index: 9999;
+  transition-duration: 1s;
+  margin: 0 auto;
+  margin-top: 5px;
+  width: 20px;
+  height: 30px;
+}
+
+.hamburger:hover {
+  // filter: invert(100%);
+  cursor: pointer;
+}
+
+.hamburger::before {
+  content: "";
+  position: absolute;
+  top: -6.5px;
+  left: -9.5px;
+  border: 2px solid $basicColor4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.hamburger .bar {
+  position: absolute;
+  display: block;
+  transition: all 0.4s ease-in-out;
+  width: 23px;
+  height: 3px;
+  background-color: $basicColor4;
+}
+
+.bar1 {
+  top: 5px;
+}
+
+.bar2,
+.bar3 {
+  top: 13.5px;
+}
+
+.bar3 {
+  right: 0;
+}
+
+.bar4 {
+  bottom: 0;
+}
+
+.hamburger .bar4 {
+  top: 13.5px;
+}
+
+.hamburger .bar5 {
+  bottom: 5px;
+}
+
+.hamburger .bar {
+  transition: all 0.4s ease-in-out, transform 0.4s ease-in-out 0.4s;
+}
+
+.hamburger .bar2 {
+  left: 13.5px;
+  transform: rotate(90deg);
+  width: 1px;
+}
+
+.hamburger .bar3 {
+  left: 13.5px;
+  width: 1px;
+}
+
+.checkbox:checked + label > .hamburger > .bar1 {
+  top: 13.5px;
+  background-color: transparent;
+}
+
+.checkbox:checked + label > .hamburger > .bar2 {
+  left: 0px;
+  transform: rotate(45deg);
+  width: 25px;
+}
+
+.checkbox:checked + label > .hamburger > .bar3 {
+  left: 0;
+  transform: rotate(-45deg);
+  width: 25px;
+}
+
+.checkbox:checked + label > .hamburger > .bar4 {
+  background-color: transparent;
+}
+
+.checkbox:checked + label > .hamburger > .bar5 {
+  bottom: 13.5px;
+  background-color: transparent;
 }
