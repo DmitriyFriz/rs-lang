@@ -13,6 +13,7 @@ import HeaderGuest from './components/Header/Header.View.Guest';
 import MainPage from './components/MainPage/MainPage.View';
 import Games from './components/Games/Games.View';
 import Team from './components/Team/Team.View';
+import Promo from './components/Promo/Promo.View';
 
 // constants
 import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
@@ -36,6 +37,7 @@ const mainRoutes = {
   [MAIN_ROUTES.SIGN_UP]: RegisterPage,
   [MAIN_ROUTES.GAMES]: Games,
   [MAIN_ROUTES.ABOUT_TEAM]: Team,
+  [MAIN_ROUTES.PROMO]: Promo,
   // other endpoints should be added here,
 };
 
