@@ -47,11 +47,6 @@ class MainPage extends BaseComponent {
 
     unregisterRouter(this.mainPageRouter);
   }
-
-  hide() {
-    this.mainPageRouter.currentRoute.hide();
-    super.hide();
-  }
 }
 
 export default MainPage;
