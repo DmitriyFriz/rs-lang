@@ -28,6 +28,7 @@ function registerRouter(router) {
  * @param {object} router
  */
 function unregisterRouter(router) {
+  router.currentRoute.hide();
   delete routers[router.name];
 }
 
