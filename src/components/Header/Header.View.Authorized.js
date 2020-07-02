@@ -13,6 +13,9 @@ import getLayout from './Header.Layout';
 // styles
 import './Header.scss';
 
+// burger
+import handleBurgerButton from './Header.BurgerMenu';
+
 class HeaderAuthorized extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
@@ -24,14 +27,26 @@ class HeaderAuthorized extends BaseComponent {
   }
 
   createLayout() {
-    [this.menu, this.logo, this.emailContainer, this.buttonOut, this.buttonBurgerMenu] = getLayout(this.isAuthorized);
+    [
+      this.menu,
+      this.logo,
+      this.emailContainer,
+      this.buttonOut,
+      this.buttonBurgerMenu] = getLayout(this.isAuthorized);
+
     this.component.className = 'header-authorized';
-    this.component.append(this.logo, this.menu, this.emailContainer, this.buttonOut, this.buttonBurgerMenu);
+
+    this.component.append(
+      this.logo, this.menu, this.emailContainer, this.buttonOut, this.buttonBurgerMenu,
+    );
   }
 
   addListeners() {
-    this.component.addEventListener('click', this.handleMenuClick);
+    this.menu.addEventListener('click', this.handleMenuClick);
     this.buttonOut.addEventListener('click', this.handleButtonOutClick);
+    this.buttonBurgerMenu.addEventListener(
+      'input', (event) => handleBurgerButton(event, this.menu),
+    );
   }
 
   removeListeners() {

@@ -22,14 +22,17 @@ import starImage from '../images/star-win.svg';
 import './SpeakItMain.scss';
 
 const wordsDomainModel = new Words();
+let recognition;
 
 // Speech Recognition Mode
-window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
+if (!/Mozilla/.test(navigator.userAgent)) {
+  window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+  recognition = new SpeechRecognition();
 
-recognition.lang = 'en-US';
-recognition.interimResults = true;
-recognition.maxAlternatives = 7;
+  recognition.lang = 'en-US';
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 7;
+}
 
 class SpeakItMain extends BaseComponent {
   constructor(parent, tagName) {
