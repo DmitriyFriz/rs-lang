@@ -4,8 +4,8 @@ $burgerMenuWidth: 220px;
 
 header {
   padding-bottom: 5px;
-  border-bottom: 2px solid $basicColor4;
-  background-color: #eafbfd;
+  border-bottom: 2px solid $fontColor;
+  background-color: $basicColor1;
   font-size: $headerFontSize;
 
   .button {
@@ -13,7 +13,7 @@ header {
     background-color: initial;
     font-family: $mainFont2;
     font-size: 0.45em;
-    color: $basicColor4;
+    // color: $basicColor4;
   }
 
   .logo {
@@ -38,7 +38,7 @@ header {
   animation-fill-mode: forwards;
   width: $burgerMenuWidth;
   height: 100vh;
-  background-color: #68c2e8e8;
+  background-color: #68c2e8f3;
 }
 
 .to-left {
