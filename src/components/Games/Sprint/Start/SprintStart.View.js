@@ -11,7 +11,7 @@ import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 import getLayout from './SprintStart.Layout';
 
 // styles
-import './SprintStart.scss';
+import '../../GameStart.scss';
 
 class SprintStart extends BaseComponent {
   constructor(parent, tagName) {

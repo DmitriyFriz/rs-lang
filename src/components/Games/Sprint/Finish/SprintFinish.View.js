@@ -5,7 +5,8 @@ import SprintStart from '../Start/SprintStart.View';
 import getLayout from './SprintFinish.Layout';
 
 // styles
-import './SprintFinish.scss';
+import '../../GameStart.scss';
+import './SprintFinish.scss'
 
 class SprintFinish extends SprintStart {
   createLayout() {

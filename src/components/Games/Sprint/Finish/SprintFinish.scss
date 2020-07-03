@@ -1,5 +1,37 @@
-.start-message {
-  margin: auto;
-  max-width: 80%;
-  text-align: center;
+.game-message {
+
+  &__result {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    max-width: 400px;
+    margin-bottom: 20px;
+
+    @media (min-width: 768px) {
+      max-width: 500px;
+    }
+  }
+
+  &__score-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    margin-left: 10px;
+  }
+
+  &__score-icon {
+    width: 30px;
+    height: 30px;
+
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-image: url('../../../../assets/mini-games/img/score-icon.svg');
+  }
+
+  &__score {
+    margin-left: 10px;
+    color: gold;
+  }
 }
