@@ -8,6 +8,15 @@ const {
 const { get } = endPoints.settings;
 
 class User extends BaseDomainModel {
+  get userName() {
+    return localStorage.getItem('userName') || '';
+  }
+
+  set userName(value) {
+    const name = value.replace(/@.*$/, '');
+    localStorage.setItem('userName', name);
+  }
+
   async signIn(user) {
     const { status, statusText, data } = await this.getData(signIn, user);
 

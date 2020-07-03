@@ -61,6 +61,7 @@ class HeaderAuthorized extends BaseComponent {
   }
 
   handleButtonOutClick(event) {
+    user.logOut();
     onRouteChangeEvent(event, ROUTERS.HEADER);
   }
 }
