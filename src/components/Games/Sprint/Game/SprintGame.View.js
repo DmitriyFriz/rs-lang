@@ -96,7 +96,7 @@ class SprintGame extends BaseComponent {
 
     if (currentTime === 0) {
       clearInterval(this.intervalID);
-      // setTimeout(this.handleFinish, 500);
+      setTimeout(this.handleFinish, 500);
     }
   }
 

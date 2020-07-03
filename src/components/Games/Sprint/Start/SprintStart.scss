@@ -1,5 +1,119 @@
-.start-message {
-  margin: auto;
-  max-width: 80%;
+.game-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  padding: 10px;
+
+  font-size: $fontSize;
   text-align: center;
+  text-transform: uppercase;
+
+  @media (min-width: 768px) {
+    font-size: $headerFontSize;
+  };
+
+  &__logo {
+    width: 100%;
+    max-width: 550px;
+  }
+
+  &__title {
+    line-height: 2;
+    font-family: $headerFont;
+  }
+
+  &__description {
+    max-width: 400px;
+    margin-bottom: 20px;
+
+    @media (min-width: 768px) {
+      max-width: 500px;
+    };
+  }
+
+  .fieldset {
+    margin-bottom: 20px;
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    max-width: 200px;
+
+    @media (min-width: 768px) {
+      max-width: 300px;
+    };
+  }
+
+  &__button {
+    height: 40px;
+    width: 80px;
+
+    transition: 0.1s;
+
+    border: $lightBorder;
+    outline: none;
+
+    cursor: pointer;
+
+    background-color: $basicColor3;
+
+    font-size: $fontSize;
+    font-family: $mainFont;
+    color: $fontColor;
+    text-transform: uppercase;
+
+    @media (min-width: 768px) {
+      width: 120px;
+    };
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+
+.fieldset {
+  font-size: $fontSize;
+
+  &__legend {
+    margin-bottom: 10px;
+  }
+
+  &__control-inline {
+    display: inline-flex;
+  }
+
+  &__radio {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    margin: 10px 0 0 7px;
+  }
+
+  &__radio + &__label {
+    position: relative;
+    padding: 0 0 0 30px;
+    cursor: pointer;
+  }
+
+  &__radio + &__label:before {
+    content: '';
+    position: absolute;
+    left: 5px;
+
+    width: 15px;
+    height: 15px;
+
+    border: 2px solid $basicColor4;
+    border-radius: 4px;
+  }
+
+  &__radio:checked + &__label:before {
+    background-color: $basicColor3;
+  }
 }
