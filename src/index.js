@@ -1,6 +1,9 @@
 import './style/main.scss';
 
 // router
+import User from 'domainModels/User/User';
+import AuthPage from 'components/Authorization/AuthPage/AuthPage.View';
+import RegisterPage from 'components/Authorization/RegisterPage/RegisterPage.View';
 import Router from './router/Router';
 import { registerRouter } from './router/RouteHandler';
 
@@ -17,9 +20,10 @@ import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
 
 const header = document.querySelector('#header');
 const root = document.querySelector('#root');
+const user = new User();
 
-//get from localStorage
-const isAuthorized = true;
+// get from localStorage
+const { isAuthorized } = user;
 
 const headerRoutes = {
   [HEADER_ROUTES.SIGN_UP]: HeaderAuthorized,
@@ -29,14 +33,16 @@ const headerRoutes = {
 
 const mainRoutes = {
   [MAIN_ROUTES.MAIN_PAGE]: MainPage,
+  [MAIN_ROUTES.SIGN_IN]: AuthPage,
+  [MAIN_ROUTES.SIGN_UP]: RegisterPage,
   [MAIN_ROUTES.GAMES]: Games,
   [MAIN_ROUTES.VOCABULARY]: Vocabulary,
   [MAIN_ROUTES.ABOUT_TEAM]: Team,
   // other endpoints should be added here,
 };
 
-const currentHeaderRoute = isAuthorized ?
-  HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
+const currentHeaderRoute = isAuthorized
+  ? HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
 const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);
 registerRouter(headerRouter);
 
