@@ -1,3 +1,6 @@
+// lodash
+import get from 'lodash.get';
+
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
@@ -57,7 +60,21 @@ class HeaderAuthorized extends BaseComponent {
   }
 
   handleMenuClick(event) {
+    const route = get(event, 'target.dataset.destination');
+    if (!route) { return; }
+
+    const items = this.menu.querySelectorAll('[data-destination]');
+    [...items].forEach((item) => item.classList.remove('active'));
+
+    event.target.classList.add('active');
     onRouteChangeEvent(event, ROUTERS.MAIN);
+  }
+
+  switchActiveItemInMenu(menu, target) {
+    const items = menu.querySelectorAll('[data-destination]');
+    [...items].forEach((item) => item.classList.remove('active'));
+
+    target.classList.add('active');
   }
 
   handleButtonOutClick(event) {

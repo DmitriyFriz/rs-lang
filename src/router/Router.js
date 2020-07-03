@@ -30,11 +30,10 @@ class Router {
   changeRoute(routeName) {
     if (
       this.routes[routeName]
-      && routeName !== this.currentRoute.name
+      && routeName !== this.currentRoute.routeName
     ) {
       this.currentRoute.hide();
-
-      this.showRoute(routeName);
+      this.showRoute(routeName, this.currentRoute.routeName);
     }
   }
 
@@ -43,10 +42,21 @@ class Router {
    * Calls show() lifecycle method of route (if available)
    * @param {string} routeName
    */
-  showRoute(routeName) {
+  async showRoute(routeName, previousRouteName) {
     if (routeName && this.routes[routeName]) {
       this.currentRoute = new this.routes[routeName](this.root, this.routeTag);
-      this.currentRoute.show();
+      this.currentRoute.routeName = routeName;
+      await this.currentRoute.show();
+
+      const event = new CustomEvent('changeRoute', {
+        bubbles: true,
+        detail: {
+          routeName,
+          previousRouteName,
+        },
+      });
+
+      this.currentRoute.component.dispatchEvent(event);
     }
   }
 }
