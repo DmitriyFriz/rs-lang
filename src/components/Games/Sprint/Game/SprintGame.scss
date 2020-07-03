@@ -1,36 +1,106 @@
 .sprint-container {
-  margin: auto;
-  max-width: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  padding: 15px 10px;
+
+  font-size: $fontSize;
 }
 
 .sprint-card {
-  width: 500px;
-  height: 500px;
-  background-color: $basicColor3;
-  border: $lightBorder;
-  border-radius: 4px;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
   flex-direction: column;
-}
-
-.key {
-  display: inline-flex;
-  height: 35px;
-  width: 45px;
-  border: $lightBorder;
-  border-radius: 4px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background-color: yellow;
+
+  width: 100%;
+  max-width: 300px;
+  height: 450px;
+
+  box-shadow: 0 0 4px $basicColor3;
+  border-radius: 4px;
+
+  padding: 15px 10px;
+  box-sizing: border-box;
+
+  @media (min-width: 768px){
+    max-width: 600px;
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    max-width: 250px;
+  }
+
+  &__button {
+    height: 40px;
+    width: 100px;
+
+    transition: 0.1s;
+
+    box-shadow: 0 0 7px $basicColor4;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+
+    cursor: pointer;
+
+    font-size: inherit;
+    color: $fontColor;
+    text-transform: capitalize;
+
+    &:active {
+      opacity: 0.8;
+      box-shadow: 0 0 3px $basicColor4;
+    }
+
+    &_incorrect {
+      background-color: red;
+    }
+
+    &_correct {
+      background-color: green;
+    }
+  }
+
+  &__score-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  &__score-icon, &__result-icon {
+    width: 30px;
+    height: 30px;
+
+    background-size: 30px;
+    background-repeat: no-repeat;
+  }
+
+  &__score-icon {
+    background-image: url('../../../../assets/mini-games/img/score-icon.svg');
+  }
+
+  &__score {
+    margin-left: 10px;
+    color: gold;
+  }
+
+  &__word {
+    font-weight: 700;
+    text-align: center;
+  }
+
 }
 
-.time {
+.timer {
+  position: relative;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,52 +108,72 @@
 	animation-name: timer;
 	animation-duration: 1s;
 	animation-iteration-count: infinite;
-	animation-timing-function: linear;
-	border: 4px solid green;
-	border-radius: 50%;
+  animation-timing-function: linear;
+
 	box-sizing: border-box;
-	height: 50px;
-	position: relative;
   width: 50px;
+	height: 50px;
+
+  border: 4px solid $basicColor3;
+  box-shadow: 0 0 8px $basicColor3;
+  border-radius: 50%;
+
+  color: $basicColor3;
+
+  @keyframes timer {
+    from {
+      transform: scale(1.0);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+
+    to {
+      transform: scale(1.0);
+    }
+  }
 }
 
-.score-icon, .result-icon {
-  width: 30px;
-  height: 30px;
-  background-size: 30px 30px;
+.key-container {
+  display: none;
+
+  @media (min-width: 1024px) {
+    display: flex;
+    justify-content: space-between;
+
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 250px;
+    padding: 20px;
+  }
+}
+
+.key {
+  height: 35px;
+  width: 45px;
+
+  transition: 0.1s;
+
+  box-shadow: 0 0 7px $basicColor4;
+  border-radius: 4px;
+
+  background-size: 20px;
+  background-position: center;
   background-repeat: no-repeat;
-}
+  background-image: url('../../../../assets/mini-games/img/arrow-icon.svg');
 
-.score-icon {
-  background-image: url('../../../../assets/mini-games/img/score-icon.svg');
-}
+  &_incorrect {
+    background-color: red;
+  }
 
-.score {
-  margin-left: 10px;
-  color: gold;
-  font-size: 20px;
-}
+  &_correct {
+    transform: rotate(180deg);
+    background-color: green;
+  }
 
-.score-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-@keyframes timer {
-	from {
-		transform: scale(1.0);
-	}
-
-	50% {
-		transform: scale(1.2);
-	}
-
-	to {
-		transform: scale(1.0);
-	}
-}
-
-.work-key {
-  background-color: orange;
+  &_active{
+    opacity: 0.8;
+    box-shadow: 0 0 3px $basicColor4;
+  }
 }

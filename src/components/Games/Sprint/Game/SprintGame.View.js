@@ -36,6 +36,7 @@ class SprintGame extends BaseComponent {
     this.keyUserWord = 'userWord';
     this.keyDifficulty = 'difficulty';
     this.repeatParameter = 'again';
+    this.keyActiveClassName = 'key_active';
 
     this.setTimer = this.setTimer.bind(this);
     this.handleFalseButton = this.handleFalseButton.bind(this);
@@ -95,7 +96,7 @@ class SprintGame extends BaseComponent {
 
     if (currentTime === 0) {
       clearInterval(this.intervalID);
-      setTimeout(this.handleFinish, 500);
+      // setTimeout(this.handleFinish, 500);
     }
   }
 
@@ -164,13 +165,13 @@ class SprintGame extends BaseComponent {
   handleKeyDown(event) {
     if (event.code === 'ArrowLeft') {
       if (event.repeat) return;
-      this.leftKey.classList.add('work-key');
+      this.leftKey.classList.add(this.keyActiveClassName);
       this.handleAnswer(false);
       this.getNewWord();
     }
     if (event.code === 'ArrowRight') {
       if (event.repeat) return;
-      this.rightKey.classList.add('work-key');
+      this.rightKey.classList.add(this.keyActiveClassName);
       this.handleAnswer(true);
       this.getNewWord();
     }
@@ -178,10 +179,10 @@ class SprintGame extends BaseComponent {
 
   handleKeyUp(event) {
     if (event.code === 'ArrowRight') {
-      this.rightKey.classList.remove('work-key');
+      this.rightKey.classList.remove(this.keyActiveClassName);
     }
     if (event.code === 'ArrowLeft') {
-      this.leftKey.classList.remove('work-key');
+      this.leftKey.classList.remove(this.keyActiveClassName);
     }
   }
 
