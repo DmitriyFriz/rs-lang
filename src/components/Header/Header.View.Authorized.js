@@ -1,6 +1,3 @@
-// lodash
-import get from 'lodash.get';
-
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
@@ -52,6 +49,7 @@ class HeaderAuthorized extends BaseComponent {
     this.buttonBurgerMenu.addEventListener(
       'input', (event) => handleBurgerButton(event, this.menu),
     );
+    document.body.addEventListener('route', (event) => this.switchActive(event));
   }
 
   removeListeners() {
@@ -60,21 +58,20 @@ class HeaderAuthorized extends BaseComponent {
   }
 
   handleMenuClick(event) {
-    const route = get(event, 'target.dataset.destination');
-    if (!route) { return; }
-
-    const items = this.menu.querySelectorAll('[data-destination]');
-    [...items].forEach((item) => item.classList.remove('active'));
-
-    event.target.classList.add('active');
     onRouteChangeEvent(event, ROUTERS.MAIN);
   }
 
-  switchActiveItemInMenu(menu, target) {
-    const items = menu.querySelectorAll('[data-destination]');
-    [...items].forEach((item) => item.classList.remove('active'));
-
-    target.classList.add('active');
+  switchActive(event) {
+    const previousItem = this.menu
+      .querySelector(`button[data-destination="${event.detail.previous}"]`);
+    if (previousItem) {
+      previousItem.classList.remove('active');
+    }
+    const currentItem = this.menu
+      .querySelector(`button[data-destination="${event.detail.current}"]`);
+    if (currentItem) {
+      currentItem.classList.add('active');
+    }
   }
 
   handleButtonOutClick(event) {

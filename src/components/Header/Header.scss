@@ -14,13 +14,6 @@ header {
     background-color: initial;
     font-family: $mainFont2;
     font-size: 0.4em;
-
-    &:hover {
-      color: $basicColor3;
-    }
-    &.active {
-      color: $basicColor3;
-    }
   }
 
   .logo {
@@ -112,6 +105,24 @@ header {
   .menu {
     grid-template-areas: "logo";
     grid-template-rows: 4fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr;
+
+    .button {
+      &:hover {
+        color: $basicColor1;
+      }
+      &.active {
+        color: $basicColor1;
+      }
+
+      @media screen and (min-width: $laptops) {
+        &:hover {
+          color: $basicColor3;
+        }
+        &.active {
+          color: $basicColor3;
+        }
+      }
+    }
 
     @media screen and (min-width: $laptops) {
       grid-template-rows: none;

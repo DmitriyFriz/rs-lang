@@ -48,11 +48,11 @@ class Router {
       this.currentRoute.routeName = routeName;
       await this.currentRoute.show();
 
-      const event = new CustomEvent('changeRoute', {
+      const event = new CustomEvent('route', {
         bubbles: true,
         detail: {
-          routeName,
-          previousRouteName,
+          current: routeName,
+          previous: previousRouteName,
         },
       });
 
