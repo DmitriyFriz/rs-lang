@@ -16,6 +16,9 @@ import './Header.scss';
 // burger
 import handleBurgerButton from './Header.BurgerMenu';
 
+// user domain
+import user from '../../domain-models/User/User';
+
 class HeaderAuthorized extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
@@ -29,15 +32,14 @@ class HeaderAuthorized extends BaseComponent {
   createLayout() {
     [
       this.menu,
-      this.logo,
       this.emailContainer,
       this.buttonOut,
-      this.buttonBurgerMenu] = getLayout(this.isAuthorized);
+      this.buttonBurgerMenu] = getLayout(this.isAuthorized, user.userName);
 
     this.component.className = 'header-authorized';
 
     this.component.append(
-      this.logo, this.menu, this.emailContainer, this.buttonOut, this.buttonBurgerMenu,
+      this.menu, this.emailContainer, this.buttonOut, this.buttonBurgerMenu,
     );
   }
 

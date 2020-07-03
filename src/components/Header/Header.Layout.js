@@ -5,17 +5,16 @@ const { createElement } = BaseComponent;
 
 // ====================== Authorized =============================
 
-function getAuthorizedLayout() {
-  const logoContainer = createElement({
-    tag: 'div',
-    className: HeaderClassName.logo,
-    destination: HeaderLayout.authorized.logo.destination,
-  });
+function getAuthorizedLayout(userName) {
+  // const logoContainer = createElement({
+  //   tag: 'div',
+  //   className: HeaderClassName.logo,
+  //   destination: HeaderLayout.authorized.logo.destination,
+  // });
 
-  const userEmail = 'Petrov';
   const emailContainer = createElement({
     tag: 'div',
-    content: userEmail,
+    content: userName,
     className: HeaderClassName.email,
   });
 
@@ -43,7 +42,7 @@ function getAuthorizedLayout() {
     `,
   });
 
-  return [logoContainer, emailContainer, buttonOut, buttonBurgerMenu];
+  return [emailContainer, buttonOut, buttonBurgerMenu];
 }
 
 // ====================== Guest =============================
@@ -58,16 +57,18 @@ function getGuestLayout() {
   return guestButtons;
 }
 
-export default function getLayout(isAuthorized) {
+// ====================== General =============================
+
+export default function getLayout(isAuthorized, userName) {
   const menu = createElement({ tag: 'div', className: HeaderClassName.menu });
   const menuElementsData = isAuthorized
     ? HeaderLayout.authorized.menuElements : HeaderLayout.guest.MenuElements;
 
   const menuElements = menuElementsData.map((element) => {
     const elementButton = createElement({
-      tag: 'button',
+      tag: element.tag || 'button',
       content: element.title,
-      className: HeaderClassName.menuItem,
+      className: element.class || HeaderClassName.menuItem,
       destination: element.destination,
     });
     return elementButton;
@@ -77,7 +78,7 @@ export default function getLayout(isAuthorized) {
 
   let layoutElements = getGuestLayout();
   if (isAuthorized) {
-    layoutElements = getAuthorizedLayout();
+    layoutElements = getAuthorizedLayout(userName);
   }
   return [menu, ...layoutElements];
 

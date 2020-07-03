@@ -1,7 +1,7 @@
 import './style/main.scss';
 
 // router
-import User from 'domainModels/User/User';
+import user from 'domainModels/User/User';
 import AuthPage from 'components/Authorization/AuthPage/AuthPage.View';
 import RegisterPage from 'components/Authorization/RegisterPage/RegisterPage.View';
 import Router from './router/Router';
@@ -20,10 +20,7 @@ import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
 
 const header = document.querySelector('#header');
 const root = document.querySelector('#root');
-const user = new User();
-
-// get from localStorage
-const { isAuthorized } = user;
+// const user = new User();
 
 const headerRoutes = {
   [HEADER_ROUTES.SIGN_UP]: HeaderAuthorized,
@@ -44,7 +41,7 @@ const mainRoutes = {
 async function init() {
   await user.checkAuthStatus();
 
-  const currentHeaderRoute = isAuthorized
+  const currentHeaderRoute = user.isAuthorized
     ? HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
 
   const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);

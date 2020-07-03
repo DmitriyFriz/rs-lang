@@ -1,5 +1,5 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-import User from 'domainModels/User/User';
+import user from 'domainModels/User/User';
 import getRegisterPageLayout from 'components/Authorization/RegisterPage/RegisterPage.Layout';
 import { onRouteChangeEvent } from 'router/RouteHandler';
 import { HEADER_ROUTES, MAIN_ROUTES, ROUTERS } from 'router/Router.Constants';
@@ -10,7 +10,7 @@ import '../Authorization.scss';
 export default class RegisterPage extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.user = new User();
+    // this.user = new User();
     this.handlerRegPage = this.handlerRegPage.bind(this);
     this.handlerRegistration = this.handlerRegistration.bind(this);
     this.handlerConfirmEmailInput = this.handlerConfirmEmailInput.bind(this);
@@ -66,7 +66,7 @@ export default class RegisterPage extends BaseComponent {
       if (this.isPasswordMatch(password, confirmPassword)) {
         submitBtn.disabled = true;
 
-        this.user.register({ email, password })
+        user.register({ email, password })
           .then((request) => {
             this.requestHandler(request, event, email, password);
           });
@@ -167,7 +167,7 @@ export default class RegisterPage extends BaseComponent {
     const { submitBtn } = this;
 
     if (request.status === 200) {
-      this.user.signIn({ email, password })
+      user.signIn({ email, password })
         .then(() => {
           submitBtn.disabled = false;
           submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;

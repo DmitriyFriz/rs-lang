@@ -1,5 +1,5 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-import User from 'domainModels/User/User';
+import user from 'domainModels/User/User';
 import { HEADER_ROUTES, MAIN_ROUTES, ROUTERS } from 'router/Router.Constants';
 import { onRouteChangeEvent } from 'router/RouteHandler';
 import getAuthPageLayout from './AuthPage.Layout';
@@ -10,7 +10,7 @@ import '../Authorization.scss';
 export default class AuthPage extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.user = new User();
+    // this.user = new User();
     this.handlerAuthPage = this.handlerAuthPage.bind(this);
     this.handlerAuthorize = this.handlerAuthorize.bind(this);
     this.handlerEmailInputConfirmation = this.handlerEmailInputConfirmation.bind(this);
@@ -68,7 +68,7 @@ export default class AuthPage extends BaseComponent {
         && this.isCorrectPassword(password)
       ) {
         submitBtn.disabled = true;
-        this.user.signIn({ email, password })
+        user.signIn({ email, password })
           .then((request) => {
             submitBtn.disabled = false;
             this.requestHandler(request, event);

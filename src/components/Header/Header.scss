@@ -1,25 +1,29 @@
 $burgerMenuWidth: 220px;
 
-header{
+header {
+  padding-bottom: 5px;
+  border-bottom: 2px solid $basicColor4;
+  background-color: #eafbfd;
   font-size: $headerFontSize;
 
   .button {
-    font-size: 0.65em;
+    border: none;
+    background-color: initial;
+    font-family: $mainFont2;
+    font-size: 0.5em;
+    color: $basicColor4;
   }
 
-  // .user-email {
-  //   color: green;
-  // }
-
-  .header-button {
-    background-color: gray;
-  }
+/*   .user-email {
+    display: none;
+  } */
 
   .logo {
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 100%;
     background-image: url("../../assets/logo.svg");
     background-size: contain;
+    background-repeat: no-repeat;
   }
 }
 
@@ -62,17 +66,40 @@ header{
   }
 }
 
-// .header-authorized {
+.header-authorized {
+  display: grid;
+  grid-template-areas: "burger-button user-name log-out";
+  grid-template-columns: 1fr 2fr 1fr;
+  height: 60px;
 
-// }
+  .header__burger-menu {
+    grid-area: burger-button;
+    justify-self: center;
+    align-self: center;
+  }
 
+  .logo {
+    grid-area: logo;
+    justify-self: center;
+  }
+
+  .user-email {
+    grid-area: user-name;
+    justify-self: center;
+    align-self: center;
+    font-size: 0.5em;
+  }
+
+  .header-button {
+    grid-area: log-out;
+  }
+}
 
 // ======================== Burger button ================================
 
 .header__burger-menu {
   z-index: 10;
   width: 50px;
-  height: 50px;
 
   label {
     width: 100%;

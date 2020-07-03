@@ -5,6 +5,11 @@ const HeaderLayout = {
   authorized: {
     menuElements: [
       {
+        tag: 'div',
+        destination: MAIN_ROUTES.MAIN_PAGE,
+        class: 'logo menu-item',
+      },
+      {
         title: 'Main page',
         destination: MAIN_ROUTES.MAIN_PAGE,
       },
@@ -33,10 +38,6 @@ const HeaderLayout = {
     buttons: {
       title: 'Log out',
       destination: MAIN_ROUTES.LOG_OUT,
-    },
-
-    logo: {
-      destination: MAIN_ROUTES.MAIN_PAGE,
     },
   },
 
@@ -71,7 +72,7 @@ const HeaderClassName = {
   menuItem: 'button menu-item',
   logo: 'logo',
   email: 'user-email',
-  button: 'header-button',
+  button: 'button header-button',
   burgerMenuButton: 'header__burger-menu',
 };
 
