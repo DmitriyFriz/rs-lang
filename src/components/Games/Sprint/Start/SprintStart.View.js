@@ -10,16 +10,12 @@ import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 // layout
 import getLayout from './SprintStart.Layout';
 
-// styles
-import '../../GameStart.scss';
-
 class SprintStart extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
 
     this.handleClick = this.handleClick.bind(this);
   }
-
 
   static get name() {
     return GAMES_ROUTES.SPRINT;
@@ -40,11 +36,11 @@ class SprintStart extends BaseComponent {
   }
 
   handleClick(event) {
-    this.levelGroup.forEach(level => {
+    this.levelGroup.forEach((level) => {
       if (level.checked) {
         localStorage.setItem('sprint-level', level.value);
       }
-    })
+    });
 
     onRouteChangeEvent(event, ROUTERS.GAMES);
   }

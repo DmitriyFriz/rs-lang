@@ -20,6 +20,12 @@ import './SprintGame.scss';
 import correctIcon from '../../../../assets/mini-games/img/correct-icon.svg';
 import incorrectIcon from '../../../../assets/mini-games/img/incorrect-icon.svg';
 
+// audio
+import startGameAudio from '../../../../assets/mini-games/audio/start-game.mp3';
+import correctAudio from '../../../../assets/mini-games/audio/correct.mp3';
+import errorAudio from '../../../../assets/mini-games/audio/error.mp3';
+import supersetAudio from '../../../../assets/mini-games/audio/superset.mp3';
+
 const wordsDomainModel = new Words();
 
 class SprintGame extends BaseComponent {
@@ -37,6 +43,7 @@ class SprintGame extends BaseComponent {
     this.keyDifficulty = 'difficulty';
     this.repeatParameter = 'again';
     this.keyActiveClassName = 'key_active';
+    this.keyId = '_id';
 
     this.setTimer = this.setTimer.bind(this);
     this.handleFalseButton = this.handleFalseButton.bind(this);
@@ -55,10 +62,6 @@ class SprintGame extends BaseComponent {
     this.shuffleWords(this.newWords);
     this.gameArray = [];
     this.gameArray.push(...this.repeatWords, ...this.newWords, ...this.group);
-    console.log(this.repeatWords, this.newWords, this.group);
-    console.log(this.gameArray);
-    console.log(this.level);
-    wordsDomainModel.getAllUserWords().then((res) => console.log(res));
   }
 
   static get name() {
@@ -83,6 +86,7 @@ class SprintGame extends BaseComponent {
 
     this.component.append(this.container);
     this.intervalID = setInterval(this.setTimer, 1000);
+    this.playAudio(startGameAudio);
   }
 
   setTimer() {
@@ -135,6 +139,13 @@ class SprintGame extends BaseComponent {
       const j = Math.floor(Math.random() * (array.length));
       [array[i], array[j]] = [array[j], array[i]];
     }
+  }
+
+  playAudio(src) {
+    const audio = new Audio();
+    audio.preload = 'auto';
+    audio.src = `${src}`;
+    audio.play();
   }
 
   addListeners() {
@@ -197,28 +208,30 @@ class SprintGame extends BaseComponent {
   }
 
   handleCorrectAnswer() {
+    this.playAudio(correctAudio);
     this.streakWinning += 1;
 
     if (this.streakWinning === this.superWinning) {
+      this.playAudio(supersetAudio);
       this.awardedPoints *= 2;
-      this.score += this.awardedPoints;
       this.streakWinning = 0;
-    } else {
-      this.score += this.awardedPoints;
     }
 
+    this.score += this.awardedPoints;
     this.scoreContainer.textContent = this.score;
 
     this.resultIcon.style.backgroundImage = `url(${correctIcon})`;
   }
 
   handleIncorrectAnswer() {
+    this.playAudio(errorAudio);
     this.streakWinning = 0;
     this.awardedPoints = this.basePoints;
     this.resultIcon.style.backgroundImage = `url(${incorrectIcon})`;
-    if (this.keyUserWord in this.currentWord &&
-      ! (this.currentWord[this.keyUserWord][this.keyDifficulty] == this.repeatParameter)) {
-      wordsDomainModel.updateUserWord(this.currentWord._id, this.repeatParameter);
+
+    if (this.keyUserWord in this.currentWord
+      && !(this.currentWord[this.keyUserWord][this.keyDifficulty] === this.repeatParameter)) {
+      wordsDomainModel.updateUserWord(this.currentWord[this.keyId], this.repeatParameter);
     }
   }
 

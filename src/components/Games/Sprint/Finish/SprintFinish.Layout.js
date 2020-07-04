@@ -1,7 +1,6 @@
 // constants
 import { GAMES_ROUTES } from 'router/Router.Constants';
 
-
 export default function getLayout() {
   const score = localStorage.getItem('sprint-score');
   return `
@@ -46,5 +45,5 @@ export default function getLayout() {
       <button class="game-message__button" data-destination=${GAMES_ROUTES.SPRINT_GAME}>Repeat</button>
     </div>
   </div>
-  `
+  `;
 }

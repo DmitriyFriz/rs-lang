@@ -42,5 +42,5 @@ export default function getLayout() {
         <button class="game-message__button" data-destination=${GAMES_ROUTES.SPRINT_GAME}>Play</button>
       </div>
     </div>
-  `
+  `;
 }
