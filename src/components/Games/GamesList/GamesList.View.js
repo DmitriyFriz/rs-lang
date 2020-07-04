@@ -39,8 +39,6 @@ class GamesList extends BaseComponent {
     super(parent, tagName);
 
     this.games = data;
-
-    // this.handleGameOpen = this.handleGameOpen.bind(this);
   }
 
   createLayout() {
