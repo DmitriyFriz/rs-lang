@@ -37,13 +37,7 @@ class Games extends BaseComponent {
     registerRouter(this.gamesRouter);
   }
 
-  addListeners() {
-    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
-  }
-
   removeListeners() {
-    this.component.removeEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
-
     unregisterRouter(this.gamesRouter);
   }
 }

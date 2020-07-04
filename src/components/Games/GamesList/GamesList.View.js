@@ -40,7 +40,7 @@ class GamesList extends BaseComponent {
 
     this.games = data;
 
-    this.handleGameOpen = this.handleGameOpen.bind(this);
+    // this.handleGameOpen = this.handleGameOpen.bind(this);
   }
 
   createLayout() {

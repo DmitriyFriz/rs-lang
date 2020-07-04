@@ -78,14 +78,14 @@ function getLayout(isAuthorized, userName) {
 }
 
 function switchActive(event) {
+  const nextItem = this.menu
+    .querySelector(`button[data-destination="${event.detail.next}"]`);
+  if (!nextItem) { return; }
+
   const items = this.menu.querySelectorAll('[data-destination]');
   [...items].forEach((item) => item.classList.remove('active'));
 
-  const nextItem = this.menu
-    .querySelector(`button[data-destination="${event.detail.next}"]`);
-  if (nextItem) {
-    nextItem.classList.add('active');
-  }
+  nextItem.classList.add('active');
 }
 
 export { getLayout, switchActive };
