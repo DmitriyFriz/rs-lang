@@ -11,6 +11,7 @@
   }
 
   legend {
+    transition: $basicTransition;
     color: $fontColor !important;
     background-color: rgba(53, 221, 53, .8);
   }
@@ -32,22 +33,17 @@
 .auth, .reg {
   text-align: center;
 
-  input {
-    //border: none;
-  }
-
   fieldset {
+    transition: $basicTransition;
     padding: 1rem;
     border: 1.4px solid rgba(91, 91, 91, 0.4);
-
     margin-bottom: 1rem;
 
-// rgba(91, 91, 91, 0.4)
     legend {
       font-family: $mainFont;
       color: rgba(91, 91, 91, 0.4);
       font-size: .9rem;
-      padding: .3rem;
+      padding: .5rem;
       text-align: left;
       margin-left: 2rem;
     }
@@ -56,10 +52,6 @@
 
 .reg-fieldsetEmail, .reg-fieldsetPassword {
   display: flex;
-
-  input {
-  //border-bottom: 1.4px solid $basicColor3
-  }
 }
 
 .reg-fieldsetEmail {

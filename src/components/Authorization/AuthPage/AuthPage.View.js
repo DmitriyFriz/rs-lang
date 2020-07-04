@@ -11,8 +11,6 @@ import '../Authorization.scss';
 export default class AuthPage extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    // this.user = new User();
-    this.handlerAuthPage = this.handlerAuthPage.bind(this);
     this.handlerAuthorize = this.handlerAuthorize.bind(this);
     this.handlerEmailInputConfirmation = this.handlerEmailInputConfirmation.bind(this);
     this.handlerPasswordInputConfirmation = this.handlerPasswordInputConfirmation.bind(this);
@@ -20,7 +18,7 @@ export default class AuthPage extends BaseComponent {
 
   createLayout() {
     [this.formAuth, this.backToMainPageBtn, this.submitBtn,
-      this.fieldSetEmails, this.fieldSetPasswords] = getAuthPageLayout();
+    this.fieldSetEmails, this.fieldSetPasswords] = getAuthPageLayout();
 
     [this.legendEmail, this.authEmail] = this.fieldSetEmails.childNodes;
 
@@ -31,21 +29,15 @@ export default class AuthPage extends BaseComponent {
   }
 
   addListeners() {
-    this.component.addEventListener('click', this.handlerAuthPage);
     this.submitBtn.addEventListener('click', this.handlerAuthorize);
     this.authEmail.addEventListener('input', this.handlerEmailInputConfirmation);
     this.authPassword.addEventListener('input', this.handlerPasswordInputConfirmation);
   }
 
   removeListeners() {
-    this.component.removeEventListener('click', this.handlerAuthPage);
     this.submitBtn.removeEventListener('click', this.handlerAuthorize);
     this.authEmail.removeEventListener('input', this.handlerEmailInputConfirmation);
     this.authPassword.removeEventListener('input', this.handlerPasswordInputConfirmation);
-  }
-
-  handlerAuthPage(event) {
-    onRouteChangeEvent(event, ROUTERS.MAIN);
   }
 
   /** Test User
@@ -60,39 +52,36 @@ export default class AuthPage extends BaseComponent {
     const password = this.authPassword.value;
     const { submitBtn } = this;
 
+    if (!email || !password) { return; }
+
     if (
-      email
-      && password
+      this.isEmail(email)
+      && this.isCorrectPassword(password)
     ) {
-      if (
-        this.isEmail(email)
-        && this.isCorrectPassword(password)
-      ) {
-        submitBtn.disabled = true;
-        user.signIn({ email, password })
-          .then((request) => {
-            submitBtn.disabled = false;
-            this.requestHandler(request, event);
-          });
-      }
+      submitBtn.disabled = true;
+      user.signIn({ email, password })
+        .then((request) => {
+          submitBtn.disabled = false;
+          this.requestHandler(request, event);
+        });
     }
   }
 
-  handlerEmailInputConfirmation() { // !!!!!!!!!!!!!!!!!!!!!!!!! using lodash
+  handlerEmailInputConfirmation() {
     const tag = 'email';
-    this.changeFieldSet(false, tag, 'Enter correct Email!');
+    this.changeFieldSet(false, tag, 'Enter correct Email');
     this.submitBtn.disabled = true;
 
     if (!this.authEmail.value) {
-      this.changeFieldSet(false, tag, 'Enter Email!');
+      this.changeFieldSet(false, tag, 'Enter Email');
     }
 
-    if (this.isEmail(this.authEmail.value)) {
-      this.changeFieldSet(true, tag, 'Success!');
+    if (!this.isEmail(this.authEmail.value)) { return; }
 
-      if (this.isCorrectPassword(this.authPassword.value)) {
-        this.submitBtn.disabled = false;
-      }
+    this.changeFieldSet(true, tag, 'Success');
+
+    if (this.isCorrectPassword(this.authPassword.value)) {
+      this.submitBtn.disabled = false;
     }
   }
 
@@ -102,13 +91,13 @@ export default class AuthPage extends BaseComponent {
     this.submitBtn.disabled = true;
 
     if (!this.isCorrectPassword(this.authPassword.value)) {
-      this.changeFieldSet(false, tag, 'Enter correct Password!');
+      this.changeFieldSet(false, tag, 'Enter correct Password');
 
       if (!this.authPassword.value) {
-        legendPassword.textContent = 'Enter Password!';
+        legendPassword.textContent = 'Enter Password';
       }
     } else {
-      this.changeFieldSet(true, tag, 'Success!');
+      this.changeFieldSet(true, tag, 'Success');
     }
 
     if (
@@ -132,7 +121,7 @@ export default class AuthPage extends BaseComponent {
     }
 
     if (request.status === STATUSES.FORBIDDEN) {
-      this.changeFieldSet(false, 'password', 'Wrong password!');
+      this.changeFieldSet(false, 'password', 'Wrong password');
     }
   }
 
