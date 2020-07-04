@@ -9,10 +9,8 @@
 }
 
 body {
-  // background-color: $basicColor1; /* black theme */
   background-color: #f6f3f1;
   font-family: "Montserrat Regular";
-  // color: $fontColor; /* black theme */
 
   &::after {
     content: "";
@@ -28,3 +26,36 @@ body {
     background-repeat: no-repeat;
   }
 }
+
+// ====================== transition between routes =====================
+
+.hide {
+  animation-name: hide;
+  animation-duration: 0.4s;
+
+  @keyframes hide {
+    from {
+      opacity: 1;
+    };
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+.show {
+  animation-name: show;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+
+  @keyframes show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+

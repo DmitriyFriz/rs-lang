@@ -38,7 +38,7 @@ const HeaderLayout = {
 
     buttons: {
       title: 'Log out',
-      destination: MAIN_ROUTES.PROMO, // HEADER_ROUTES.HEADER_GUEST,
+      destination: MAIN_ROUTES.PROMO,
     },
   },
 

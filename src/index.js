@@ -20,11 +20,9 @@ import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
 
 const header = document.querySelector('#header');
 const root = document.querySelector('#root');
-// const user = new User();
 
 const headerRoutes = {
   [HEADER_ROUTES.HEADER_AUTHORIZED]: HeaderAuthorized,
-  // [HEADER_ROUTES.SIGN_IN]: HeaderAuthorized,
   [HEADER_ROUTES.HEADER_GUEST]: HeaderGuest,
 };
 
