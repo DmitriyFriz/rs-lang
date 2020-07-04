@@ -60,13 +60,6 @@ const regPageLayout = {
     id: 'regSignIn',
     destination: MAIN_ROUTES.MAIN_PAGE,
   },
-
-  button: {
-    tag: 'button',
-    className: 'button_',
-    content: 'Main page',
-    destination: MAIN_ROUTES.MAIN_PAGE,
-  },
 };
 
 const regClassName = {

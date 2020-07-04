@@ -17,15 +17,16 @@ export default class AuthPage extends BaseComponent {
   }
 
   createLayout() {
-    [this.formAuth, this.backToMainPageBtn, this.submitBtn,
-    this.fieldSetEmails, this.fieldSetPasswords] = getAuthPageLayout();
+    [
+      this.formAuth, this.submitBtn,
+      this.fieldSetEmails, this.fieldSetPasswords] = getAuthPageLayout();
 
     [this.legendEmail, this.authEmail] = this.fieldSetEmails.childNodes;
 
     [this.legendPassword, this.authPassword] = this.fieldSetPasswords.childNodes;
 
     this.component.classList.add('auth');
-    this.component.append(this.formAuth, this.backToMainPageBtn);
+    this.component.append(this.formAuth);
   }
 
   addListeners() {
@@ -109,7 +110,7 @@ export default class AuthPage extends BaseComponent {
   }
 
   requestHandler(request, event) {
-    const { submitBtn} = this;
+    const { submitBtn } = this;
 
     if (request.status === STATUSES.OK) {
       submitBtn.dataset.destination = HEADER_ROUTES.HEADER_AUTHORIZED;

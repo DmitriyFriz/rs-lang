@@ -3,6 +3,11 @@
 @import "./base/basicStyle.scss";
 @import "./style-book/style-book.scss";
 
+#root {
+  position: relative;
+  top: 80px;
+}
+
 body {
   // background-color: $basicColor1; /* black theme */
   font-family: "Montserrat Regular";

@@ -50,13 +50,6 @@ const authPageLayout = {
     id: 'authSignIn',
     destination: MAIN_ROUTES.MAIN_PAGE,
   },
-
-  button: {
-    tag: 'button',
-    className: 'button_',
-    content: 'Main page',
-    destination: MAIN_ROUTES.MAIN_PAGE,
-  },
 };
 
 const authClassName = {

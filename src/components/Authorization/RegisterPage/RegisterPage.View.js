@@ -18,7 +18,7 @@ export default class RegisterPage extends BaseComponent {
   }
 
   createLayout() {
-    [this.formReg, this.backToMainPageBtn, this.submitBtn,
+    [this.formReg, this.submitBtn,
       this.fieldSetEmails, this.fieldSetPasswords] = getRegisterPageLayout();
 
     [this.legendEmail, this.regEmail] = this.fieldSetEmails.childNodes;
@@ -27,7 +27,7 @@ export default class RegisterPage extends BaseComponent {
       this.regConfirmPassword] = this.fieldSetPasswords.childNodes;
 
     this.component.classList.add('reg');
-    this.component.append(this.formReg, this.backToMainPageBtn);
+    this.component.append(this.formReg);
   }
 
   addListeners() {

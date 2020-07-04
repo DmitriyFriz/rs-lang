@@ -28,6 +28,10 @@
 
 .auth,
 .reg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
   text-align: center;
 
   fieldset {
