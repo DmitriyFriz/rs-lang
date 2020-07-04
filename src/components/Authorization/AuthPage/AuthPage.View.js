@@ -1,7 +1,8 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 import user from 'domainModels/User/User';
-import { HEADER_ROUTES, MAIN_ROUTES, ROUTERS } from 'router/Router.Constants';
+import { HEADER_ROUTES, ROUTERS } from 'router/Router.Constants';
 import { onRouteChangeEvent } from 'router/RouteHandler';
+import STATUSES from '../../../services/requestHandler.Statuses';
 import getAuthPageLayout from './AuthPage.Layout';
 import { authEmailRegExp, authPasswordRegEx } from './AuthPage.Data';
 import './AuthPage.scss';
@@ -77,7 +78,7 @@ export default class AuthPage extends BaseComponent {
     }
   }
 
-  handlerEmailInputConfirmation() {
+  handlerEmailInputConfirmation() { // !!!!!!!!!!!!!!!!!!!!!!!!! using lodash
     const tag = 'email';
     this.changeFieldSet(false, tag, 'Enter correct Email!');
     this.submitBtn.disabled = true;
@@ -121,19 +122,16 @@ export default class AuthPage extends BaseComponent {
   requestHandler(request, event) {
     const { submitBtn, authEmail } = this;
 
-    if (request.status === 200) {
-      submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;
-      onRouteChangeEvent(event, ROUTERS.HEADER);
-
-      submitBtn.dataset.destination = MAIN_ROUTES.MAIN_PAGE;
-      onRouteChangeEvent(event, ROUTERS.MAIN);
+    if (request.status === STATUSES.OK) {
+      submitBtn.dataset.destination = HEADER_ROUTES.HEADER_AUTHORIZED;
+      onRouteChangeEvent(event, ROUTERS.MAIN, ROUTERS.HEADER);
     }
 
-    if (request.status === 404) {
+    if (request.status === STATUSES.NOT_FOUND) {
       this.changeFieldSet(false, 'email', `User ${authEmail.value} - ${request.statusText}`);
     }
 
-    if (request.status === 403) {
+    if (request.status === STATUSES.FORBIDDEN) {
       this.changeFieldSet(false, 'password', 'Wrong password!');
     }
   }

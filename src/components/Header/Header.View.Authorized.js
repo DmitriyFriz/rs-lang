@@ -2,10 +2,10 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // router
-import { onRouteChangeEvent, routers } from 'router/RouteHandler';
+import { onRouteChangeEvent } from 'router/RouteHandler';
 
 // constants
-import { ROUTERS, MAIN_ROUTES } from 'router/Router.Constants';
+import { ROUTERS } from 'router/Router.Constants';
 
 // layout
 import { getLayout, switchActive } from './Header.Layout';
@@ -65,8 +65,8 @@ class HeaderAuthorized extends BaseComponent {
 
   handleButtonOutClick(event) {
     user.logOut();
-    onRouteChangeEvent(event, ROUTERS.HEADER);
-    routers[ROUTERS.MAIN].changeRoute(MAIN_ROUTES.PROMO);
+    onRouteChangeEvent(event, ROUTERS.HEADER, ROUTERS.MAIN);
+    // routers[ROUTERS.MAIN].changeRoute(MAIN_ROUTES.PROMO);
   }
 }
 

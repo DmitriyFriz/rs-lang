@@ -48,7 +48,7 @@ const authPageLayout = {
     type: 'submit',
     value: 'sign in',
     id: 'authSignIn',
-    destination: '',
+    destination: MAIN_ROUTES.MAIN_PAGE,
   },
 
   button: {

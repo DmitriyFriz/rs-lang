@@ -58,7 +58,7 @@ const regPageLayout = {
     type: 'submit',
     value: 'sign up',
     id: 'regSignIn',
-    destination: '',
+    destination: MAIN_ROUTES.MAIN_PAGE,
   },
 
   button: {

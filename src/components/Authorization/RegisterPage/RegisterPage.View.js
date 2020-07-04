@@ -170,8 +170,10 @@ export default class RegisterPage extends BaseComponent {
       user.signIn({ email, password })
         .then(() => {
           submitBtn.disabled = false;
-          submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;
-          onRouteChangeEvent(event, ROUTERS.HEADER);
+          // submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;
+          // onRouteChangeEvent(event, ROUTERS.HEADER);
+          submitBtn.dataset.destination = HEADER_ROUTES.HEADER_AUTHORIZED;
+          onRouteChangeEvent(event, ROUTERS.MAIN, ROUTERS.HEADER);
 
           submitBtn.dataset.destination = MAIN_ROUTES.MAIN_PAGE;
           onRouteChangeEvent(event, ROUTERS.MAIN);

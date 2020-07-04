@@ -1,4 +1,4 @@
-import { MAIN_ROUTES, HEADER_ROUTES } from 'router/Router.Constants';
+import { MAIN_ROUTES } from 'router/Router.Constants';
 
 const HeaderLayout = {
 
@@ -38,7 +38,7 @@ const HeaderLayout = {
 
     buttons: {
       title: 'Log out',
-      destination: HEADER_ROUTES.HEADER_GUEST,
+      destination: MAIN_ROUTES.PROMO, // HEADER_ROUTES.HEADER_GUEST,
     },
   },
 
