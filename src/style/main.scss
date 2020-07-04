@@ -4,9 +4,9 @@
 @import "./style-book/style-book.scss";
 
 body {
-  background-color: $basicColor1;
+  // background-color: $basicColor1; /* black theme */
   font-family: "Montserrat Regular";
-  color: $fontColor;
+  // color: $fontColor; /* black theme */
 
   &::after {
     content: "";

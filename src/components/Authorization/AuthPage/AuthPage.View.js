@@ -109,7 +109,7 @@ export default class AuthPage extends BaseComponent {
   }
 
   requestHandler(request, event) {
-    const { submitBtn, authEmail } = this;
+    const { submitBtn} = this;
 
     if (request.status === STATUSES.OK) {
       submitBtn.dataset.destination = HEADER_ROUTES.HEADER_AUTHORIZED;
@@ -117,7 +117,7 @@ export default class AuthPage extends BaseComponent {
     }
 
     if (request.status === STATUSES.NOT_FOUND) {
-      this.changeFieldSet(false, 'email', `User ${authEmail.value} - ${request.statusText}`);
+      this.changeFieldSet(false, 'email', 'User not found');
     }
 
     if (request.status === STATUSES.FORBIDDEN) {

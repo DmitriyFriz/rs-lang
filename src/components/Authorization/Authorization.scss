@@ -1,36 +1,33 @@
 .form {
   box-shadow: 0 0 4px 0 transparentize($color: $basicColor3, $amount: 0.5);
-  border: none;
+  padding: 10px;
+  width: 90%;
+  max-width: 700px;
+  border: $lightBorder;
+  background-color: $basicColor5;
 }
 
 .confirmed:not(legend) {
-  border-color: rgba(53, 221, 53, .6) !important;
-
-  input {
-    border-color: rgba(53, 221, 53, .8);
-  }
+  border-color: rgba(53, 221, 53, 0.6) !important;
 
   legend {
     transition: $basicTransition;
     color: $fontColor !important;
-    background-color: rgba(53, 221, 53, .8);
+    background-color: rgba(53, 221, 53, 0.8);
   }
 }
 
 .unconfirmed:not(legend) {
-  border-color: rgba(238, 22, 50, .6) !important;
-
-  input {
-    border-color: rgba(238, 22, 50, .6);
-  }
+  border-color: rgba(238, 22, 50, 0.6) !important;
 
   legend {
     color: $fontColor !important;
-    background-color: rgba(238, 22, 50, .6);
+    background-color: rgba(238, 22, 50, 0.6);
   }
 }
 
-.auth, .reg {
+.auth,
+.reg {
   text-align: center;
 
   fieldset {
@@ -42,15 +39,16 @@
     legend {
       font-family: $mainFont;
       color: rgba(91, 91, 91, 0.4);
-      font-size: .9rem;
-      padding: .5rem;
+      font-size: 0.9rem;
+      padding: 0.5rem;
       text-align: left;
       margin-left: 2rem;
     }
   }
 }
 
-.reg-fieldsetEmail, .reg-fieldsetPassword {
+.reg-fieldsetEmail,
+.reg-fieldsetPassword {
   display: flex;
 }
 

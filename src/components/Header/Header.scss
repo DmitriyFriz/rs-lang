@@ -4,8 +4,9 @@ $burgerMenuWidth: 220px;
 
 header {
   padding: 5px;
-  border-bottom: 2px solid $fontColor;
-  background-color: $basicColor1;
+  border-bottom: 2px solid $basicColor1;
+  // background-color: $basicColor1; /* black theme */
+  background-color: $basicColor5;
   font-size: $headerFontSize;
 
   .button {
@@ -14,20 +15,24 @@ header {
     background-color: initial;
     font-family: $mainFont2;
     font-size: 0.4em;
+    color: #000;
 
     &:hover {
-      color: $basicColor1;
+      background-color: $basicColor3;
+      color: $fontColor;
     }
     &.active {
-      color: $basicColor1;
+      color: $fontColor;
     }
 
     @media screen and (min-width: $laptops) {
       &:hover {
-        color: $basicColor3;
+        background-color: $basicColor3;
+        color: $fontColor;
       }
       &.active {
-        color: $basicColor3;
+        color: $basicColor1;
+        border-bottom: 1px solid $basicColor1;
       }
     }
   }
@@ -122,24 +127,6 @@ header {
     grid-template-areas: "logo";
     grid-template-rows: 4fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr;
 
-    // .button {
-    //   &:hover {
-    //     color: $basicColor1;
-    //   }
-    //   &.active {
-    //     color: $basicColor1;
-    //   }
-
-    //   @media screen and (min-width: $laptops) {
-    //     &:hover {
-    //       color: $basicColor3;
-    //     }
-    //     &.active {
-    //       color: $basicColor3;
-    //     }
-    //   }
-    // }
-
     @media screen and (min-width: $laptops) {
       grid-template-rows: none;
       grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -171,7 +158,7 @@ header {
 .header-guest {
   display: grid;
   grid-template-areas: "burger-button sign-up sign-in";
-  grid-template-columns: 1.5fr 2fr 1.5fr;
+  grid-template-columns: 2fr 1fr 1fr;
   height: 60px;
 
   .menu {
@@ -196,9 +183,12 @@ header {
   .sign-up-button {
     grid-area: sign-up;
   }
+  @media screen and (min-width: $tablets) {
+    grid-template-columns: 5fr 1fr 1fr;;
+  }
 
   @media screen and (min-width: $laptops) {
     grid-template-areas: "menu sign-up sign-in";
-    grid-template-columns: 5fr 2fr 1fr;
+    grid-template-columns: 10fr 1fr 1fr;;
   }
 }
