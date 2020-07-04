@@ -18,19 +18,19 @@ function hideMenu(event) {
   }
 }
 
-export default function handleBurgerButton(event, menu) {
+export default function handleBurgerButton(event) {
   burgerMenuButton = event.target;
 
   if (burgerMenuButton.checked) {
-    menu.classList.add('to-right');
+    this.menu.classList.add('to-right');
     document.body.addEventListener('click', hideMenu);
     return;
   }
 
-  shiftMenuToLeft(menu);
+  shiftMenuToLeft(this.menu);
   document.body.removeEventListener('click', hideMenu);
 
-  menu.addEventListener('animationend', () => {
-    menu.classList.remove('to-left');
+  this.menu.addEventListener('animationend', () => {
+    this.menu.classList.remove('to-left');
   }, { once: true });
 }

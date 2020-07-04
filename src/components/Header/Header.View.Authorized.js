@@ -2,19 +2,19 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // router
-import { onRouteChangeEvent } from 'router/RouteHandler';
+import { onRouteChangeEvent, routers } from 'router/RouteHandler';
 
 // constants
-import { ROUTERS } from 'router/Router.Constants';
+import { ROUTERS, MAIN_ROUTES } from 'router/Router.Constants';
 
 // layout
-import getLayout from './Header.Layout';
+import { getLayout, switchActive } from './Header.Layout';
 
 // styles
 import './Header.scss';
 
-// burger
-import handleBurgerButton from './Header.BurgerMenu';
+// burger-menu
+import handleBurgerButton from './Header.BurgerMenuHandler';
 
 // user domain
 import user from '../../domain-models/User/User';
@@ -27,6 +27,8 @@ class HeaderAuthorized extends BaseComponent {
 
     this.handleMenuClick = this.handleMenuClick.bind(this);
     this.handleButtonOutClick = this.handleButtonOutClick.bind(this);
+    this.handleBurgerButton = handleBurgerButton.bind(this);
+    this.switchActive = switchActive.bind(this);
   }
 
   createLayout() {
@@ -46,37 +48,25 @@ class HeaderAuthorized extends BaseComponent {
   addListeners() {
     this.menu.addEventListener('click', this.handleMenuClick);
     this.buttonOut.addEventListener('click', this.handleButtonOutClick);
-    this.buttonBurgerMenu.addEventListener(
-      'input', (event) => handleBurgerButton(event, this.menu),
-    );
-    document.body.addEventListener('route', (event) => this.switchActive(event));
+    this.buttonBurgerMenu.addEventListener('input', this.handleBurgerButton);
+    document.body.addEventListener('changeRoute', this.switchActive);
   }
 
   removeListeners() {
     this.menu.removeEventListener('click', this.handleMenuClick);
     this.buttonOut.removeEventListener('click', this.handleButtonOutClick);
+    this.buttonBurgerMenu.removeEventListener('input', this.handleBurgerButton);
+    document.body.removeEventListener('changeRoute', this.switchActive);
   }
 
   handleMenuClick(event) {
     onRouteChangeEvent(event, ROUTERS.MAIN);
   }
 
-  switchActive(event) {
-    const previousItem = this.menu
-      .querySelector(`button[data-destination="${event.detail.previous}"]`);
-    if (previousItem) {
-      previousItem.classList.remove('active');
-    }
-    const currentItem = this.menu
-      .querySelector(`button[data-destination="${event.detail.current}"]`);
-    if (currentItem) {
-      currentItem.classList.add('active');
-    }
-  }
-
   handleButtonOutClick(event) {
     user.logOut();
     onRouteChangeEvent(event, ROUTERS.HEADER);
+    routers[ROUTERS.MAIN].changeRoute(MAIN_ROUTES.PROMO);
   }
 }
 

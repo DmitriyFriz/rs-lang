@@ -23,9 +23,9 @@ const root = document.querySelector('#root');
 // const user = new User();
 
 const headerRoutes = {
-  [HEADER_ROUTES.SIGN_UP]: HeaderAuthorized,
-  [HEADER_ROUTES.SIGN_IN]: HeaderAuthorized,
-  [HEADER_ROUTES.LOG_OUT]: HeaderGuest,
+  [HEADER_ROUTES.HEADER_AUTHORIZED]: HeaderAuthorized,
+  // [HEADER_ROUTES.SIGN_IN]: HeaderAuthorized,
+  [HEADER_ROUTES.HEADER_GUEST]: HeaderGuest,
 };
 
 const mainRoutes = {
@@ -42,7 +42,7 @@ async function init() {
   await user.checkAuthStatus();
 
   const currentHeaderRoute = user.isAuthorized
-    ? HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
+    ? HEADER_ROUTES.HEADER_AUTHORIZED : HEADER_ROUTES.HEADER_GUEST;
 
   const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);
   registerRouter(headerRouter);

@@ -1,4 +1,4 @@
-import { MAIN_ROUTES } from 'router/Router.Constants';
+import { MAIN_ROUTES, HEADER_ROUTES } from 'router/Router.Constants';
 
 const HeaderLayout = {
 
@@ -12,6 +12,7 @@ const HeaderLayout = {
       {
         title: 'Main page',
         destination: MAIN_ROUTES.MAIN_PAGE,
+        class: 'button menu-item active',
       },
       {
         title: 'Games',
@@ -37,15 +38,21 @@ const HeaderLayout = {
 
     buttons: {
       title: 'Log out',
-      destination: MAIN_ROUTES.LOG_OUT,
+      destination: HEADER_ROUTES.HEADER_GUEST,
     },
   },
 
   guest: {
     MenuElements: [
       {
+        tag: 'div',
+        destination: MAIN_ROUTES.PROMO,
+        class: 'logo menu-item',
+      },
+      {
         title: 'Promo page',
         destination: MAIN_ROUTES.PROMO,
+        class: 'button menu-item active',
       },
       {
         title: 'About Us',
@@ -57,10 +64,12 @@ const HeaderLayout = {
       {
         title: 'Sign up',
         destination: MAIN_ROUTES.SIGN_UP,
+        class: 'button sign-up-button',
       },
       {
         title: 'Sign in',
         destination: MAIN_ROUTES.SIGN_IN,
+        class: 'button sign-in-button',
       },
     ],
   },
