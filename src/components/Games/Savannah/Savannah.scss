@@ -1,0 +1,10 @@
+.game-savanna {
+  position: static;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("./images/background.jpg");
+
+  h3 {
+    color: $fontColor;
+  }
+}
