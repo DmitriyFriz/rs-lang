@@ -11,20 +11,20 @@ import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 import Words from 'domainModels/Words/Words';
 
 // layout
-import getLayout from './SprintGame.Layout';
 
 // styles
 import './SprintGame.scss';
 
 // icons
-import correctIcon from '../../../../assets/mini-games/img/correct-icon.svg';
-import incorrectIcon from '../../../../assets/mini-games/img/incorrect-icon.svg';
+import correctIcon from 'assets/mini-games/img/correct-icon.svg';
+import incorrectIcon from 'assets/mini-games/img/incorrect-icon.svg';
 
 // audio
-import startGameAudio from '../../../../assets/mini-games/audio/start-game.mp3';
-import correctAudio from '../../../../assets/mini-games/audio/correct.mp3';
-import errorAudio from '../../../../assets/mini-games/audio/error.mp3';
-import supersetAudio from '../../../../assets/mini-games/audio/superset.mp3';
+import startGameAudio from 'assets/mini-games/audio/start-game.mp3';
+import correctAudio from 'assets/mini-games/audio/correct.mp3';
+import errorAudio from 'assets/mini-games/audio/error.mp3';
+import supersetAudio from 'assets/mini-games/audio/superset.mp3';
+import getLayout from './SprintGame.Layout';
 
 const wordsDomainModel = new Words();
 
@@ -55,13 +55,13 @@ class SprintGame extends BaseComponent {
 
   async prepareData() {
     this.group = await wordsDomainModel.selectGroupWords(this.level);
-    this.repeatWords = wordsDomainModel.repeatWords;
-    this.newWords = wordsDomainModel.newWords;
+    const { repeatWords } = wordsDomainModel;
+    const { newWords } = wordsDomainModel;
     this.shuffleWords(this.group);
-    this.shuffleWords(this.repeatWords);
-    this.shuffleWords(this.newWords);
+    this.shuffleWords(repeatWords);
+    this.shuffleWords(newWords);
     this.gameArray = [];
-    this.gameArray.push(...this.repeatWords, ...this.newWords, ...this.group);
+    this.gameArray.push(...repeatWords, ...newWords, ...this.group);
   }
 
   createLayout() {
@@ -129,6 +129,11 @@ class SprintGame extends BaseComponent {
     return Math.round(Math.random() * number);
   }
 
+  /**
+   * Fisher–Yates shuffle algorithm
+   * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+   * @param {Array} words
+   */
   shuffleWords(words) {
     const array = words;
     for (let i = array.length - 1; i > 0; i -= 1) {
@@ -170,14 +175,14 @@ class SprintGame extends BaseComponent {
   }
 
   handleKeyDown(event) {
+    if (event.repeat) return;
+
     if (event.code === 'ArrowLeft') {
-      if (event.repeat) return;
       this.leftKey.classList.add(this.keyActiveClassName);
       this.handleAnswer(false);
       this.getNewWord();
     }
     if (event.code === 'ArrowRight') {
-      if (event.repeat) return;
       this.rightKey.classList.add(this.keyActiveClassName);
       this.handleAnswer(true);
       this.getNewWord();
@@ -225,8 +230,10 @@ class SprintGame extends BaseComponent {
     this.awardedPoints = this.basePoints;
     this.resultIcon.style.backgroundImage = `url(${incorrectIcon})`;
 
-    if (this.keyUserWord in this.currentWord
-      && !(this.currentWord[this.keyUserWord][this.keyDifficulty] === this.repeatParameter)) {
+    if (
+      this.keyUserWord in this.currentWord
+      && (!(this.currentWord[this.keyUserWord][this.keyDifficulty] === this.repeatParameter))
+    ) {
       wordsDomainModel.updateUserWord(this.currentWord[this.keyId], this.repeatParameter);
     }
   }

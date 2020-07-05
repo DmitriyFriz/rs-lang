@@ -39,6 +39,7 @@ module.exports = {
       services: path.resolve(__dirname, 'src/services/'),
       domainModels: path.resolve(__dirname, 'src/domain-models/'),
       styles: path.resolve(__dirname, 'src/style'),
+      assets: path.resolve(__dirname, 'src/assets'),
     },
   },
   devtool: 'module-source-map',

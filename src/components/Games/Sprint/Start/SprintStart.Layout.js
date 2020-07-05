@@ -2,7 +2,7 @@
 import { GAMES_ROUTES } from 'router/Router.Constants';
 
 // icons
-import logo from '../../../../assets/mini-games-logo/sprinterLogo.svg';
+import logo from 'assets/mini-games-logo/sprinterLogo.svg';
 
 export default function getLayout() {
   return `

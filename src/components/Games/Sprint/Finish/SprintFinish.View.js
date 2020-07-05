@@ -1,14 +1,14 @@
+// styles
+import './SprintFinish.scss';
+
+// audio
+import finishGameAudio from 'assets/mini-games/audio/finish-game.mp3';
+
 // views
 import SprintStart from '../Start/SprintStart.View';
 
 // layout
 import getLayout from './SprintFinish.Layout';
-
-// styles
-import './SprintFinish.scss';
-
-// audio
-import finishGameAudio from '../../../../assets/mini-games/audio/finish-game.mp3';
 
 class SprintFinish extends SprintStart {
   createLayout() {
