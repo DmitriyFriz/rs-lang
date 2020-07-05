@@ -1,5 +1,6 @@
 // lodash
 import get from 'lodash.get';
+import isEqual from 'lodash.isequal';
 
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
@@ -15,13 +16,16 @@ import 'swiper/css/swiper.min.css';
 // layout
 import { getMainLayout, createWordCard, createCompletionNotice } from './Layout/LearningWords.Layout';
 
+// Settings
+import { getSettings } from '../../Settings/SettingsHandler';
+import { SETTINGS } from '../../Settings/Settings.Constants';
+
 // handler
 import {
   getDayWordsCollection,
   replaceWord,
   addWordDifficulty,
   addWordToVocabulary,
-  splitSettings,
   getTrueWords,
 } from './LearningWordsHandler';
 
@@ -31,7 +35,8 @@ class LearningWords extends BaseComponent {
   }
 
   async prepareData() {
-    this.settings = await splitSettings();
+    this.isRandomMode = false;
+    this.settings = await this.handleSettings();
     await this.initWordsCollection();
 
     this.hiddenElementsList = [
@@ -49,6 +54,7 @@ class LearningWords extends BaseComponent {
       trueWord: () => this.showTrueWord(),
       check: () => this.checkInputWord(),
       additional: () => this.createAdditionalTraining(),
+      randomWords: () => this.createRandomWordsTraining(),
     };
   }
 
@@ -102,7 +108,7 @@ class LearningWords extends BaseComponent {
   hide() {
     super.hide();
     this.swiper.destroy(true, true);
-    this.savedWords = this.wordsCollection;
+    if (!this.isRandomMode) { this.savedWords = this.wordsCollection; }
     console.log(this.savedWords);
   }
 
@@ -176,15 +182,15 @@ class LearningWords extends BaseComponent {
   // ========================== words ==================================
 
   async initWordsCollection() {
-    if (this.savedWords) {
+    if (this.savedWords && !this.settings.isNew) {
       this.getSavedWords();
       return;
     }
     await this.createWordsCollection();
   }
 
-  async createWordsCollection() {
-    this.wordsCollection = await getDayWordsCollection(this.settings.all);
+  async createWordsCollection(settings = this.settings.all) {
+    this.wordsCollection = await getDayWordsCollection(settings);
     this.trueWords = getTrueWords(this.wordsCollection);
     console.log(this.wordsCollection, this.trueWords);
   }
@@ -216,6 +222,28 @@ class LearningWords extends BaseComponent {
     localStorage.setItem('savedWords', JSON.stringify(value));
   }
 
+  // ========================== settings ===============================
+
+  async handleSettings() {
+    const all = await getSettings();
+    const enabled = Object.keys(all)
+      .filter((setting) => all[setting] === true);
+
+    if (!this.savedSettings) { this.savedSettings = all; }
+    const isNew = !isEqual(all, this.savedSettings);
+
+    if (isNew) { console.log('SAVED SETTINGS!!!!'); this.savedSettings = all; }
+    return { enabled, all, isNew };
+  }
+
+  get savedSettings() {
+    return JSON.parse(localStorage.getItem('savedSettings'));
+  }
+
+  set savedSettings(value) {
+    localStorage.setItem('savedSettings', JSON.stringify(value));
+  }
+
   // ========================== other ==================================
 
   async handleButtons(event) {
@@ -227,6 +255,16 @@ class LearningWords extends BaseComponent {
   async createAdditionalTraining() {
     this.component.removeChild(this.completionNotice);
     await this.createWordsCollection();
+    this.addWordToSwiper();
+  }
+
+  async createRandomWordsTraining() {
+    this.component.removeChild(this.completionNotice);
+    const settings = this.settings.all;
+    settings[SETTINGS.COLLECTION_WORDS_MODE] = 'random';
+    this.isRandomMode = true;
+
+    await this.createWordsCollection(settings);
     this.addWordToSwiper();
   }
 }

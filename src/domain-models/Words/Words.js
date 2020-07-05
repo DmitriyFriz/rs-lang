@@ -115,7 +115,8 @@ class Words extends BaseDomainModel {
   get repeatWords() {
     return this.groupWords.filter((word) => {
       const status = get(word, 'userWord.optional.repeat.status');
-      return !!status;
+      const vocabulary = get(word, 'userWord.optional.vocabulary');
+      return !!status && !vocabulary;
     });
   }
 

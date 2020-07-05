@@ -10,6 +10,7 @@ const SETTINGS = {
   LEVEL: 'level',
   WORDS_PER_DAY: 'wordsPerDay',
   NEW_WORDS: 'newWords',
+  COLLECTION_WORDS_MODE: 'wordsMode',
 };
 
 const DEFAULT_SETTINGS = {
@@ -24,6 +25,7 @@ const DEFAULT_SETTINGS = {
   [SETTINGS.LEVEL]: 0,
   [SETTINGS.WORDS_PER_DAY]: 20,
   [SETTINGS.NEW_WORDS]: 5,
+  [SETTINGS.COLLECTION_WORDS_MODE]: 'shuffle',
 };
 
 export { DEFAULT_SETTINGS, SETTINGS };

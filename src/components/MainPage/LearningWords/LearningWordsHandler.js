@@ -2,12 +2,7 @@
 import get from 'lodash.get';
 import shuffle from 'lodash.shuffle';
 
-// domains
-// import SettingsDomain from '../../../domain-models/Settings/Settings';
 import WordsDomain from '../../../domain-models/Words/Words';
-
-// Settings
-import { getSettings } from '../../Settings/SettingsHandler';
 
 // ===================== words =============================
 
@@ -64,7 +59,7 @@ async function getDayWordsCollection(optional) {
     newWords,
     level,
     wordsPerDay,
-    collectionWordsMode,
+    wordsMode,
   } = optional;
   await wordsDomain.selectGroupWords(+level);
 
@@ -72,7 +67,7 @@ async function getDayWordsCollection(optional) {
   const repeatWordList = wordsDomain.repeatWords.slice(0, (+wordsPerDay - +newWords));// !!!!
   let allWords = newWordsList.concat(repeatWordList);
 
-  switch (collectionWordsMode) {
+  switch (wordsMode) {
     case 'shuffle':
       allWords = newWordsList.concat(repeatWordList);
       break;
@@ -89,13 +84,6 @@ async function getDayWordsCollection(optional) {
       allWords = getRandomWords(+wordsPerDay);
       break;
   }
-
-  // if (allWords.length < +wordsPerDay) {
-  //   const amount = +wordsPerDay - allWords.length;
-  //   const additionalWords = shuffle(wordsDomain.groupWords)
-  //     .slice(0, amount);
-  //   allWords = allWords.concat(additionalWords);
-  // }
 
   return shuffle(handleWords(allWords));
 }
@@ -128,18 +116,6 @@ async function addWordToVocabulary(event, wordId) {
   await wordsDomain.createUserWord(wordId, null, vocabulary);
 }
 
-// ===================== settings =============================
-
-async function splitSettings() {
-  // const settingsDomain = new SettingsDomain();
-  // const settingsData = await settingsDomain.getSettings();
-  // const { optional } = settingsData.data;
-  const all = await getSettings();
-  const enabled = Object.keys(all)
-    .filter((setting) => all[setting] === true);
-  return { enabled, all };
-}
-
 export {
   handleWords,
   getDayWordsCollection,
@@ -148,7 +124,6 @@ export {
   handleButtons,
   addWordDifficulty,
   addWordToVocabulary,
-  splitSettings,
   getTrueWords,
   getRandomWords,
 };

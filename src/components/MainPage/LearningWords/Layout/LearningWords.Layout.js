@@ -226,6 +226,7 @@ function createCompletionNotice() {
         <p>There are no words for today. You can continue training by clicking "Additional"</p>
         <button class="button button-close-training" data-destination="START_MENU">OK</button>
         <button class="button button-additional" data-button="additional">Additional</button>
+        <button class="button button-random-words" data-button="randomWords">Random words training</button>
       </div>
     </div>
   `;
