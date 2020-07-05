@@ -23,7 +23,6 @@ import { SETTINGS } from '../../Settings/Settings.Constants';
 // handler
 import {
   getDayWordsCollection,
-  replaceWord,
   addWordDifficulty,
   addWordToVocabulary,
   getTrueWords,
@@ -109,7 +108,7 @@ class LearningWords extends BaseComponent {
     super.hide();
     this.swiper.destroy(true, true);
     if (!this.isRandomMode) { this.savedWords = this.wordsCollection; }
-    console.log(this.savedWords);
+    console.log('SAVED WORDS', this.savedWords);
   }
 
   // ========================== swiper ==================================
@@ -159,7 +158,7 @@ class LearningWords extends BaseComponent {
     [...texts].forEach((item) => {
       const text = item;
       const { cut } = text.dataset;
-      text.innerHTML = replaceWord(text.innerHTML, words[cut]).text;
+      text.innerHTML = text.innerHTML.replace(/\.{3}/, words[cut]);
     });
   }
 
@@ -192,11 +191,10 @@ class LearningWords extends BaseComponent {
   async createWordsCollection(settings = this.settings.all) {
     this.wordsCollection = await getDayWordsCollection(settings);
     this.trueWords = getTrueWords(this.wordsCollection);
-    console.log(this.wordsCollection, this.trueWords);
   }
 
   getSavedWords() {
-    this.wordsCollection = this.savedWords; console.log(this.savedWords);
+    this.wordsCollection = this.savedWords;
     this.trueWords = getTrueWords(this.wordsCollection);
   }
 
@@ -232,7 +230,7 @@ class LearningWords extends BaseComponent {
     if (!this.savedSettings) { this.savedSettings = all; }
     const isNew = !isEqual(all, this.savedSettings);
 
-    if (isNew) { console.log('SAVED SETTINGS!!!!'); this.savedSettings = all; }
+    if (isNew) { console.log('SAVED SETTINGS!'); this.savedSettings = all; }
     return { enabled, all, isNew };
   }
 

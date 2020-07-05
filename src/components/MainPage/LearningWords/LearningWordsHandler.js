@@ -8,11 +8,12 @@ import WordsDomain from '../../../domain-models/Words/Words';
 
 const wordsDomain = new WordsDomain();
 const { getFileLink } = wordsDomain;
+const HIDE_WORD = ' ... ';
 
 function replaceWord(targetText, value) {
   const regExp = /(?<=<(b|i)>)(.*)(?=<\/(b|i)>)/g;
   const [word] = targetText.match(regExp);
-  const text = targetText.replace(regExp, value);
+  const text = targetText.replace(/<(b|i)>(.*)<\/(b|i)>/g, value);
   return { word, text };
 }
 
@@ -32,11 +33,11 @@ function handleWords(data) {
 
     return {
       image: getFileLink(image),
-      textExample: replaceWord(textExample, ' ... ').text,
+      textExample: replaceWord(textExample, HIDE_WORD).text,
       textExampleTranslate,
       transcription,
       wordTranslate,
-      textMeaning: replaceWord(textMeaning, ' ... ').text,
+      textMeaning: replaceWord(textMeaning, HIDE_WORD).text,
       textMeaningTranslate,
       _id,
       word,
