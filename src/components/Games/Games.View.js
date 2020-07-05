@@ -6,15 +6,18 @@ import SpeakIt from './SpeakIt/SpeakIt.View';
 import SpeakItMain from './SpeakIt/components/SpeakItMain.View';
 
 // router
-import Router from '../../router/Router';
+import Router from 'router/Router';
 import {
   registerRouter,
   onRouteChangeEvent,
   unregisterRouter,
-} from '../../router/RouteHandler';
+} from 'router/RouteHandler';
 
 // constants
-import { MAIN_ROUTES, ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS } from '../../router/Router.Constants';
+import {
+  MAIN_ROUTES, ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS
+} from 'router/Router.Constants';
+import Savannah from 'components/Games/Savannah/Savannah';
 
 class Games extends BaseComponent {
   static get name() {
@@ -25,6 +28,7 @@ class Games extends BaseComponent {
     const gamesRoutes = {
       [GAMES_ROUTES.GAMES_LIST]: GamesList,
       [GAMES_ROUTES.SPEAK_IT]: SpeakIt,
+      [GAMES_ROUTES.SAVANNAH]: Savannah,
       [SPEAK_IT_ROUTERS.SPEAK_IT_MAIN]: SpeakItMain,
     };
 
