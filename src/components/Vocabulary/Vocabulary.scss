@@ -23,7 +23,9 @@
   &__tab {
     width: calc(100% / 3);
     padding: 0.5rem;
+    cursor: pointer;
     text-align: center;
+    text-transform: uppercase;
 
     &--active {
       background-color: $basicColor3;
@@ -50,8 +52,10 @@
 
   &__list {
     @media screen and (min-width: 768px) {
+      overflow-y: auto;
       width: calc(100% - 20vw);
       margin-left: 20vw;
+      max-height: 100vh;
     }
   }
 
