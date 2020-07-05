@@ -17,10 +17,6 @@ class SprintStart extends BaseComponent {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  static get name() {
-    return GAMES_ROUTES.SPRINT;
-  }
-
   createLayout() {
     this.component.innerHTML = getLayout();
   }

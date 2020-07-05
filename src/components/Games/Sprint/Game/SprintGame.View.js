@@ -64,10 +64,6 @@ class SprintGame extends BaseComponent {
     this.gameArray.push(...this.repeatWords, ...this.newWords, ...this.group);
   }
 
-  static get name() {
-    return GAMES_ROUTES.SPRINT_GAME;
-  }
-
   createLayout() {
     [
       this.container,
