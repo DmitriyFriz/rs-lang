@@ -2,6 +2,7 @@ const ROUTERS = {
   HEADER: 'HEADER',
   MAIN: 'MAIN',
   GAMES: 'GAMES',
+  VOCABULARY: 'VOCABULARY',
 };
 
 const HEADER_ROUTES = {

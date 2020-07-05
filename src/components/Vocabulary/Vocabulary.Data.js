@@ -79,10 +79,15 @@ const navTabsLayout = [
 const constants = {
   wordsPerPage: 10,
   group: 0,
+  pageType: {
+    learning: 'learning',
+    difficult: 'difficult',
+    deleted: 'deleted',
+  },
 };
 
 const filterQuery = {
-  learned: {
+  learning: {
     $and: [
       { 'userWord.optional.vocabulary': { $ne: 'removed' } },
       {

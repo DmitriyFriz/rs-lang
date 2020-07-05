@@ -1,86 +1,37 @@
-import STATUSES from 'services/requestHandler.Statuses';
-import BaseComponent from '../BaseComponent/BaseComponent';
-import Words from '../../domain-models/Words/Words';
-import getPageLayout from './Vocabulary.Layout';
-import { pageLayout, constants, filterQuery } from './Vocabulary.Data';
+// router
+import Router from 'router/Router';
+import { registerRouter, unregisterRouter } from 'router/RouteHandler';
 
-import './vocabulary.scss';
+// constants
+import { ROUTERS, MAIN_ROUTES, VOCABULARY_ROUTERS } from 'router/Router.Constants';
 
-class Vocabulary extends BaseComponent {
-  constructor(parent, tagName) {
-    super(parent, tagName);
-    this.wordsDomainModel = new Words(0);
-    this.categoryWordsAmount = 0;
-    this.todayWordsAmount = 0;
-  }
+// views
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 
-  createLayout() {
-    this.component.className = pageLayout.container.className;
-    [
-      this.info,
-      this.nav,
-      [
-        this.wordsContainer,
-        this.words,
-      ],
-      this.pagination,
-    ] = getPageLayout({
-      allWordsNum: this.categoryWordsAmount,
-      todayWordsNum: this.todayWordsAmount,
-      words: this.words,
-    });
+import VocabularyLearning from './Vocabulary.View.Learning';
+import VocabularyDifficult from './Vocabulary.View.Difficult';
+import VocabularyDeleted from './Vocabulary.View.Deleted';
 
-    this.component.append(
-      this.info,
-      this.nav,
-      this.wordsContainer,
-      this.pagination,
+class Games extends BaseComponent {
+  prepareData() {
+    const vocabularyRoutes = {
+      [MAIN_ROUTES.VOCABULARY]: VocabularyLearning,
+      [VOCABULARY_ROUTERS.VOCABULARY_DIFFICULT]: VocabularyDifficult,
+      [VOCABULARY_ROUTERS.VOCABULARY_DELETED]: VocabularyDeleted,
+    };
+
+    this.vocabularyRouter = new Router(
+      ROUTERS.VOCABULARY,
+      this.component,
+      vocabularyRoutes,
+      MAIN_ROUTES.VOCABULARY,
     );
+    registerRouter(this.vocabularyRouter);
   }
 
-  async prepareData() {
-    const filter = JSON.stringify(filterQuery.learned);
-
-    const wordsData = await this.wordsDomainModel.getAggregatedWords({
-      group: constants.group,
-      wordsPerPage: constants.wordsPerPage,
-      filter,
-    });
-    if (
-      STATUSES.isSuccess(wordsData.status)
-        && wordsData.data[0].totalCount[0]
-        && wordsData.data[0].totalCount[0].count
-    ) {
-      this.categoryWordsAmount = wordsData.data[0].totalCount[0].count;
-
-      this.words = wordsData.data[0].paginatedResults;
-      this.words.forEach((element) => {
-        // eslint-disable-next-line no-param-reassign
-        element.image = this.wordsDomainModel.getFileLink(element.image);
-      });
-    } else {
-      this.categoryWordsAmount = 0;
-      this.words = null;
-    }
-    console.log(wordsData);
-  }
-
-  playAudio(src) {
-    const audio = new Audio();
-    audio.preload = 'auto';
-    audio.src = this.wordsDomainModel.getFileLink(src.replace(/['"]+/g, ''));
-    audio.play();
-  }
-
-  addListeners() {
-    if (this.categoryWordsAmount) {
-      this.words.forEach((element) => element.addEventListener('click', (event) => {
-        if (event.target.dataset && event.target.dataset.audio) {
-          this.playAudio(event.target.dataset.audio);
-        }
-      }));
-    }
+  removeListeners() {
+    unregisterRouter(this.vocabularyRouter);
   }
 }
 
-export default Vocabulary;
+export default Games;
