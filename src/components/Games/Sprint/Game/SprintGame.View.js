@@ -10,8 +10,6 @@ import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 // domain
 import Words from 'domainModels/Words/Words';
 
-// layout
-
 // styles
 import './SprintGame.scss';
 
@@ -24,6 +22,8 @@ import startGameAudio from 'assets/mini-games/audio/start-game.mp3';
 import correctAudio from 'assets/mini-games/audio/correct.mp3';
 import errorAudio from 'assets/mini-games/audio/error.mp3';
 import supersetAudio from 'assets/mini-games/audio/superset.mp3';
+
+// layout
 import getLayout from './SprintGame.Layout';
 
 const wordsDomainModel = new Words();
