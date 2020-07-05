@@ -5,7 +5,7 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 import { onRouteChangeEvent } from 'router/RouteHandler';
 
 // constants
-import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
+import { ROUTERS } from 'router/Router.Constants';
 
 // layout
 import getLayout from './SprintStart.Layout';
