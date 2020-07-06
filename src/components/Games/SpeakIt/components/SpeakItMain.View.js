@@ -55,6 +55,7 @@ class SpeakItMain extends BaseComponent {
   }
 
   createLayout() {
+    this.component.className = 'speak-it';
     this.component.innerHTML = getLayout();
     this.wordsContainer = document.createElement('div');
     this.wordsContainer.className = 'words-container';

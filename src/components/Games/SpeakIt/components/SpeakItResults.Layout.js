@@ -38,6 +38,7 @@ export default function createResults(learnedWords, words) {
     tag: 'button',
     content: 'Back',
     id: 'back',
+    className: 'button',
   });
   message.appendChild(back);
 
@@ -45,6 +46,7 @@ export default function createResults(learnedWords, words) {
     tag: 'button',
     content: 'New Game',
     id: 'modal-reset',
+    className: 'button',
   });
   message.appendChild(newGame);
 
