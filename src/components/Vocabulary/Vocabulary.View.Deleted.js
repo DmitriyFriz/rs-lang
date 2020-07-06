@@ -13,16 +13,13 @@ class VocabularyDeleted extends Vocabulary {
     this.pageType = constants.pageType.deleted;
   }
 
-  handleRemove(wordId, difficulty) {
-    this
-      .wordsDomainModel
-      .updateUserWord(wordId, difficulty, constants.pageType.learning) // ???? optional.repeat ????
-      .then((res) => {
-        if (STATUSES.isSuccess(res.status)) {
-          console.log(res);
-          this.hideWord(wordId);
-        }
-      });
+  handleRemove(wordId) {
+    this.wordsDomainModel.updateUserWord(wordId, null).then((res) => {
+      if (STATUSES.isSuccess(res.status)) {
+        console.log(res);
+        this.hideWord(wordId);
+      }
+    });
   }
 }
 

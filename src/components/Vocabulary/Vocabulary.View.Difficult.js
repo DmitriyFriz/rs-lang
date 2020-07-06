@@ -9,6 +9,15 @@ class VocabularyDifficult extends Vocabulary {
     super(parent, tagName);
     this.pageType = constants.pageType.difficult;
   }
+
+  handleRemove(wordId) {
+    this.wordsDomainModel.updateUserWord(wordId, null).then((res) => {
+      if (STATUSES.isSuccess(res.status)) {
+        console.log(res);
+        this.hideWord(wordId);
+      }
+    });
+  }
 }
 
 export default VocabularyDifficult;

@@ -31,7 +31,6 @@ function getWordLayout(wordData) {
   const {
     _id: id,
     word: wordText,
-    userWord: { difficulty },
     audio,
     image,
     wordTranslate,
@@ -94,10 +93,7 @@ function getWordLayout(wordData) {
     tag: 'button',
     content: pageLayout.remove.content,
     className: pageLayout.remove.className,
-    dataset: {
-      id,
-      difficulty,
-    },
+    dataset: { id },
   });
 
   item.append(img, word, audioButton, translation, transcription, meaning, example, removeButton);

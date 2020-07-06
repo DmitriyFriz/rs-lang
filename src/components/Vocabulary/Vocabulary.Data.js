@@ -91,20 +91,10 @@ const filterQuery = {
   learning: {
     $and: [
       { 'userWord.optional.vocabulary': { $ne: 'removed' } },
-      {
-        $or: [
-          { 'userWord.difficulty': 'easy' },
-          { 'userWord.difficulty': 'medium' },
-        ],
-      },
-    ],
-  },
-  difficult: {
-    $and: [
       { 'userWord.optional.vocabulary': { $ne: 'removed' } },
-      { 'userWord.difficulty': 'hard' },
     ],
   },
+  difficult: { 'userWord.optional.vocabulary': 'difficult' },
   deleted: { 'userWord.optional.vocabulary': 'removed' },
 };
 

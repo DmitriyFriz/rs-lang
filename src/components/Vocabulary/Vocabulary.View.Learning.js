@@ -114,14 +114,14 @@ class VocabularyLearning extends BaseComponent {
     }
 
     if (target.classList.contains(pageLayout.remove.className)) {
-      this.handleRemove(target.dataset.id, target.dataset.difficulty);
+      this.handleRemove(target.dataset.id);
     }
   }
 
-  handleRemove(wordId, difficulty) {
+  handleRemove(wordId) {
     this
       .wordsDomainModel
-      .updateUserWord(wordId, difficulty, 'removed')
+      .updateUserWord(wordId, null, 'removed')
       .then((res) => {
         if (STATUSES.isSuccess(res.status)) {
           console.log(res);
