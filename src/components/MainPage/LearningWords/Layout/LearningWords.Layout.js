@@ -4,19 +4,6 @@ import { data, translationsList } from './LearningWords.Data';
 
 const { createElement } = BaseComponent;
 
-function getMainLayout() {
-  return `
-  <div class='swiper'>
-    <div class="swiper__container">
-      <div class="swiper-wrapper">
-      </div>
-    </div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-  </div>
-  `;
-}
-
 function createBlock(blockName, content) {
   const parent = createElement(data[blockName].parent);
   const { children } = data[blockName];
@@ -112,7 +99,7 @@ function createCompletionNotice() {
 }
 
 export {
-  getMainLayout,
   createWordCard,
   createCompletionNotice,
+  createBlock,
 };

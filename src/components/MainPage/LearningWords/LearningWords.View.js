@@ -14,7 +14,10 @@ import swiperOptions from './Swiper.Options';
 import 'swiper/css/swiper.min.css';
 
 // layout
-import { getMainLayout, createWordCard, createCompletionNotice } from './Layout/LearningWords.Layout';
+import {
+  createWordCard, createCompletionNotice, createBlock,
+} from './Layout/LearningWords.Layout';
+import { data } from './Layout/LearningWords.Data';
 
 // Settings
 import { getSettings } from '../../Settings/SettingsHandler';
@@ -27,6 +30,8 @@ import {
   addWordToVocabulary,
   getTrueWords,
 } from './LearningWordsHandler';
+
+const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
   static get name() {
@@ -59,29 +64,7 @@ class LearningWords extends BaseComponent {
 
   createLayout() {
     this.component.className = 'learning-words';
-    this.component.innerHTML = getMainLayout();
-
-    this.exitBtn = BaseComponent.createElement(
-      {
-        tag: 'button',
-        className: 'button button-finish',
-        id: 'exit',
-        destination: 'START_MENU',
-        content: 'Finish training',
-      },
-    );
-    this.checkBtn = BaseComponent.createElement(
-      {
-        tag: 'button',
-        className: 'button button-check-word',
-        content: 'Check',
-        dataset: {
-          button: 'check',
-        },
-      },
-    );
-
-    this.component.append(this.exitBtn, this.checkBtn);
+    this.swiperLayout = createBlock('swiper');
   }
 
   addListeners() {
@@ -94,26 +77,21 @@ class LearningWords extends BaseComponent {
 
   async show() {
     await super.show();
-    this.initSwiper();
-    if (this.isEnd) {
-      this.completionNotice = createCompletionNotice();
-      this.component.append(this.completionNotice);
-      return;
-    }
-
-    this.addWordToSwiper();
+    this.initTraining();
   }
 
   hide() {
     super.hide();
-    this.swiper.destroy(true, true);
-    if (!this.isRandomMode) { this.savedWords = this.wordsCollection; }
+    if (!this.isEnd) {
+      this.endTraining();
+    }
     console.log('SAVED WORDS', this.savedWords);
   }
 
   // ========================== swiper ==================================
 
   initSwiper() {
+    this.component.append(this.swiperLayout);
     this.swiper = new Swiper('.swiper__container', swiperOptions);
     this.swiper.on('transitionEnd', () => {
       if (this.swiper.progress === 1) {
@@ -121,6 +99,11 @@ class LearningWords extends BaseComponent {
       }
     });
     this.swiper.virtual.removeAllSlides();
+  }
+
+  destroySwiper() {
+    this.swiper.destroy(true, true);
+    this.swiperLayout.remove();
   }
 
   addWordToSwiper() {
@@ -172,6 +155,11 @@ class LearningWords extends BaseComponent {
   showTrueWord() {
     this.currentInput = this.trueWords[this.currentIndex].word;
     this.checkInputWord();
+  }
+
+  addCompletionNotice() {
+    this.completionNotice = createCompletionNotice();
+    this.component.append(this.completionNotice);
   }
 
   get header() {
@@ -244,6 +232,28 @@ class LearningWords extends BaseComponent {
 
   // ========================== other ==================================
 
+  initTraining() {
+    if (this.isEnd) {
+      this.addCompletionNotice();
+      return;
+    }
+
+    this.exitBtn = createElement(data.finishTraining.parent);
+    this.checkBtn = createElement(data.checkWord.parent);
+    this.component.append(this.exitBtn, this.checkBtn);
+    this.initSwiper();
+    this.addWordToSwiper();
+  }
+
+  endTraining() {
+    this.destroySwiper();
+    this.exitBtn.remove();
+    this.checkBtn.remove();
+    if (!this.isRandomMode) {
+      this.savedWords = this.wordsCollection;
+    }
+  }
+
   async handleButtons(event) {
     const buttonFunction = get(event, 'target.dataset.button');
     if (!buttonFunction) { return; }
@@ -253,7 +263,7 @@ class LearningWords extends BaseComponent {
   async createAdditionalTraining() {
     this.component.removeChild(this.completionNotice);
     await this.createWordsCollection();
-    this.addWordToSwiper();
+    this.initTraining();
   }
 
   async createRandomWordsTraining() {
@@ -263,7 +273,7 @@ class LearningWords extends BaseComponent {
     this.isRandomMode = true;
 
     await this.createWordsCollection(settings);
-    this.addWordToSwiper();
+    this.initTraining();
   }
 }
 

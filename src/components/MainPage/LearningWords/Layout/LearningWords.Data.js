@@ -8,6 +8,31 @@ const TRANSLATIONS = {
 };
 
 const data = {
+  // ======================== swiper ===========================
+
+  swiper: {
+    parent: {
+      tag: 'div',
+      className: 'swiper',
+    },
+
+    children: [
+      {
+        tag: 'div',
+        className: 'swiper__container',
+        innerHTML: '<div class="swiper-wrapper"></div>',
+      },
+      {
+        tag: 'div',
+        className: 'swiper-button-next',
+      },
+      {
+        tag: 'div',
+        className: 'swiper-button-prev',
+      },
+    ],
+  },
+
   // ======================== buttons ==========================
 
   [SETTINGS.DIFFICULTY_BUTTONS]: {
@@ -76,7 +101,7 @@ const data = {
         tag: 'button',
         className: 'button button-hard-vocabulary',
         dataset: {
-          vocabulary: 'hard',
+          vocabulary: 'difficult',
           button: 'vocabulary',
         },
         content: 'Add to hard',
@@ -101,6 +126,31 @@ const data = {
       dataset: {
         settings: SETTINGS.ANSWER_BUTTON,
         button: 'trueWord',
+      },
+    },
+
+    children: [],
+  },
+
+  finishTraining: {
+    parent: {
+      tag: 'button',
+      className: 'button button-finish',
+      id: 'exit',
+      destination: 'START_MENU',
+      content: 'Finish training',
+    },
+
+    children: [],
+  },
+
+  checkWord: {
+    parent: {
+      tag: 'button',
+      className: 'button button-check-word',
+      content: 'Check',
+      dataset: {
+        button: 'check',
       },
     },
 
@@ -194,6 +244,11 @@ const data = {
     },
 
     children: [
+      {
+        tag: 'h2',
+        className: 'completion-notice__title',
+        content: 'Congratulations!',
+      },
       {
         tag: 'p',
         className: 'completion-notice__description',
