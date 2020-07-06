@@ -13,7 +13,6 @@ class Notification extends BaseComponent {
     this.component.id = 'notification';
 
     this.isShow = false;
-    this.isDrop = false;
     this.queue = [];
     this.maxQueueLength = maxQueueLength;
   }
@@ -56,13 +55,9 @@ class Notification extends BaseComponent {
   }
 
   drop() {
-    if (this.isDrop || !this.isShow) { return; }
-
-    this.isDrop = true;
     this.component.classList.remove('up');
     this.component.addEventListener('animationend', () => {
       this.isShow = false;
-      this.isDrop = false;
       this.remove();
     }, { once: true });
   }

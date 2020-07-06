@@ -4,17 +4,18 @@
   text-align: center;
   align-items: center;
   align-content: center;
+  padding: 1%;
   background-color: #f6f3f1;
   width: 100%;
   height: 100vh;
 
   .logo-of-game {
+    width: 100%;
     margin: 2%;
-    width: 450px;
     height: auto;
 
-    @media screen and (max-width: 550px) {
-      width: 100%;
+    @media (min-width: 768px) {
+      width: 450px;
     }
   }
 
@@ -26,7 +27,7 @@
   }
 
   .description-of-game {
-    margin-top: 0.5%;
+    margin: 0.5%;
     color: $basicColor4;
     font-family: $mainFont;
     font-size: $fontSize;
@@ -34,15 +35,20 @@
   }
 
   .button-for-game {
+    display: flex;
     margin: 2%;
-    flex-direction: row;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
   }
 
   .button {
     overflow: hidden;
     text-align: center;
-    margin-right: 20px;
     padding: 10px 0;
+    margin: 2%;
     outline: none;
     border: $lightBorder;
     cursor: pointer;
@@ -54,8 +60,8 @@
     width: 265px;
     height: auto;
 
-    @media screen and (max-width: 600px) {
-      margin: 2%;
+    @media (min-width: 768px) {
+      margin-right: 20px;
     }
   }
 }

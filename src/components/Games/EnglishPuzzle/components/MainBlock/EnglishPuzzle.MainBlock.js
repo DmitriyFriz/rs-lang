@@ -43,7 +43,7 @@ const CreateMainBlock = () => (
         </div>
     </div>
 
-    <div class="game-screen__puzzle-pieces" /> `
+    <div class="game-screen__puzzle-pieces"></div> `
 );
 
 export default CreateMainBlock;

@@ -5,7 +5,6 @@ $burgerMenuWidth: 220px;
 header {
   position: fixed;
   z-index: 10;
-  box-sizing: border-box;
   padding: 5px;
   width: 100vw;
   border-bottom: 2px solid $basicColor1;
@@ -128,7 +127,7 @@ header {
 
   .menu {
     grid-template-areas: "logo";
-    grid-template-rows: 4fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr;
+    grid-template-rows: 4fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr;
 
     @media screen and (min-width: $laptops) {
       grid-template-rows: none;
