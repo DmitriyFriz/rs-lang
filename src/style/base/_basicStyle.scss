@@ -7,10 +7,19 @@ $headerFontSize: 30px;
 
 $fontColor: #fff;
 $basicColor1: #000;
-$basicColor2: #00ffff;
+$basicColor2: #b1efff;
 $basicColor3: #68c2e8;
 $basicColor4: #0e1e40;
+$basicColor5: #edfcfdef;
 
 $lightBorder: 1px solid $basicColor4;
 
+// ============= breakpoints ============
 
+$phones: 320px;
+$tablets: 768px;
+$laptops: 1200px;
+
+// ============= animations ============
+
+$basicTransition: all 0.5s;

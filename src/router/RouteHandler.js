@@ -28,6 +28,7 @@ function registerRouter(router) {
  * @param {object} router
  */
 function unregisterRouter(router) {
+  router.currentRoute.hide();
   delete routers[router.name];
 }
 
@@ -37,15 +38,17 @@ function getRouter(routerName) {
 
 /**
  * Asks router to change route
- * @param {striing} route
+ * @param {string} route
  * @param {string} routerName
  */
-function changeRoute(route, routerName) {
-  const router = getRouter(routerName);
+function changeRoute(route, ...routerNames) {
+  routerNames.forEach((routerName) => {
+    const router = getRouter(routerName);
 
-  if (route && router) {
-    router.changeRoute(route);
-  }
+    if (route && router) {
+      router.changeRoute(route);
+    }
+  });
 }
 
 /**
@@ -53,13 +56,14 @@ function changeRoute(route, routerName) {
  * @param {object} event - DOM event
  * @param {string} routerName - indicates needed router
  */
-function onRouteChangeEvent(event, routerName) {
+function onRouteChangeEvent(event, ...routerNames) {
   const destination = get(event, 'target.dataset.destination');
-  changeRoute(destination, routerName);
+  changeRoute(destination, ...routerNames);
 }
 
 export {
   registerRouter,
   unregisterRouter,
   onRouteChangeEvent,
+  changeRoute,
 };

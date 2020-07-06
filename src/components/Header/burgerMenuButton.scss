@@ -1,0 +1,121 @@
+.header__burger-menu {
+  position: relative;
+  z-index: 10;
+  width: 25px;
+  height: 25px;
+
+  label {
+    width: 100%;
+    height: 100%;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -30%;
+    left: -35%;
+    box-sizing: border-box;
+    border: 2px solid $basicColor1;
+    border-radius: 50%;
+    width: 170%;
+    height: 170%;
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+  height: 1px;
+  width: 1px;
+  padding: 0;
+}
+
+.hamburger {
+  position: relative;
+  z-index: 9999;
+  transition-duration: 1s;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+.hamburger:hover {
+  cursor: pointer;
+}
+
+.hamburger .bar {
+  position: absolute;
+  display: block;
+  transition: all 0.4s ease-in-out;
+  width: 100%;
+  height: 6%;
+  background-color: $basicColor1;
+}
+
+.bar1 {
+  top: 25%;
+}
+
+.bar2,
+.bar3 {
+  top: 50%;
+}
+
+.bar3 {
+  right: 0;
+}
+
+.bar4 {
+  bottom: 0;
+}
+
+.hamburger .bar4 {
+  top: 50%;
+}
+
+.hamburger .bar5 {
+  bottom: 20%;
+}
+
+.hamburger .bar {
+  transition: all 0.4s ease-in-out, transform 0.4s ease-in-out 0.4s;
+}
+
+.hamburger .bar2 {
+  transform: rotate(90deg);
+  left: 50%;
+  width: 0%;
+}
+
+.hamburger .bar3 {
+  left: 50%;
+  width: 0%;
+}
+
+.checkbox:checked + label > .hamburger > .bar1 {
+  top: 50%;
+  background-color: transparent;
+}
+
+.checkbox:checked + label > .hamburger > .bar2 {
+  left: 0;
+  transform: rotate(45deg);
+  width: 100%;
+}
+
+.checkbox:checked + label > .hamburger > .bar3 {
+  left: 0;
+  transform: rotate(-45deg);
+  width: 100%;
+}
+
+.checkbox:checked + label > .hamburger > .bar4 {
+  background-color: transparent;
+}
+
+.checkbox:checked + label > .hamburger > .bar5 {
+  bottom: 50%;
+  background-color: transparent;
+}

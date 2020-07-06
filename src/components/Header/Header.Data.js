@@ -5,8 +5,14 @@ const HeaderLayout = {
   authorized: {
     menuElements: [
       {
+        tag: 'div',
+        destination: MAIN_ROUTES.MAIN_PAGE,
+        class: 'logo menu-item',
+      },
+      {
         title: 'Main page',
         destination: MAIN_ROUTES.MAIN_PAGE,
+        class: 'button menu-item active',
       },
       {
         title: 'Games',
@@ -32,19 +38,21 @@ const HeaderLayout = {
 
     buttons: {
       title: 'Log out',
-      destination: MAIN_ROUTES.LOG_OUT,
-    },
-
-    logo: {
-      destination: MAIN_ROUTES.MAIN_PAGE,
+      destination: MAIN_ROUTES.PROMO,
     },
   },
 
   guest: {
     MenuElements: [
       {
+        tag: 'div',
+        destination: MAIN_ROUTES.PROMO,
+        class: 'logo menu-item',
+      },
+      {
         title: 'Promo page',
         destination: MAIN_ROUTES.PROMO,
+        class: 'button menu-item active',
       },
       {
         title: 'About Us',
@@ -56,10 +64,12 @@ const HeaderLayout = {
       {
         title: 'Sign up',
         destination: MAIN_ROUTES.SIGN_UP,
+        class: 'button sign-up-button',
       },
       {
         title: 'Sign in',
         destination: MAIN_ROUTES.SIGN_IN,
+        class: 'button sign-in-button',
       },
     ],
   },
@@ -68,10 +78,11 @@ const HeaderLayout = {
 
 const HeaderClassName = {
   menu: 'menu',
-  menuItem: 'menu-item',
+  menuItem: 'button menu-item',
   logo: 'logo',
   email: 'user-email',
-  button: 'header-button',
+  button: 'button header-button',
+  burgerMenuButton: 'header__burger-menu',
 };
 
 export { HeaderLayout, HeaderClassName };

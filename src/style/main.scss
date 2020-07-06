@@ -3,6 +3,59 @@
 @import "./base/basicStyle.scss";
 @import "./style-book/style-book.scss";
 
-body {
-  font-family: "Montserrat Regular";
+#root {
+  position: relative;
+  top: 80px;
 }
+
+body {
+  background-color: #f6f3f1;
+  font-family: "Montserrat Regular";
+
+  &::after {
+    content: "";
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    opacity: 0.4;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/background.svg");
+    background-size: auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+}
+
+// ====================== transition between routes =====================
+
+.hide {
+  animation-name: hide;
+  animation-duration: 0.4s;
+
+  @keyframes hide {
+    from {
+      opacity: 1;
+    };
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+.show {
+  animation-name: show;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+
+  @keyframes show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+

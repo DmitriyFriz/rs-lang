@@ -85,17 +85,10 @@ export default function getRegisterPageLayout() {
   submitBtn.value = regPageLayout.submit.value;
   submitBtn.disabled = true;
 
-  const backToMainPageBtn = BaseComponent.createElement({
-    tag: regPageLayout.button.tag,
-    content: regPageLayout.button.content,
-    className: regPageLayout.button.className,
-    destination: regPageLayout.button.destination,
-  });
-
   fieldSetEmails.append(...inputRegEmail);
   fieldSetPasswords.append(...inputRegPassword);
 
   formReg.append(fieldSetEmails, fieldSetPasswords, submitBtn);
 
-  return [formReg, backToMainPageBtn, submitBtn, fieldSetEmails, fieldSetPasswords];
+  return [formReg, submitBtn, fieldSetEmails, fieldSetPasswords];
 }
