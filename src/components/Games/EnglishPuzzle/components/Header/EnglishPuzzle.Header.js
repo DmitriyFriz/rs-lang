@@ -1,14 +1,16 @@
 // image
-import speaker from '../../../../../assets/EnglishPuzzle/speaker.svg';
-import sound from '../../../../../assets/EnglishPuzzle/sound.svg';
-import background from '../../../../../assets/EnglishPuzzle/background.svg';
-import translate from '../../../../../assets/EnglishPuzzle/translate.svg';
+import speaker from 'assets/EnglishPuzzle/speaker.svg';
+import sound from 'assets/EnglishPuzzle/sound.svg';
+import background from 'assets/EnglishPuzzle/background.svg';
+import translate from 'assets/EnglishPuzzle/translate.svg';
+import mute from 'assets/EnglishPuzzle/mute.svg';
 
 const CreateHeader = () => (
   `<div class="game-screen__header game-screen-header">
     <div class="game-screen-header__left">
         <div class="game-screen-header__lvl">
-            <span>Level:</span> <select name="" id="">
+            <span>Level:</span>
+            <select name="" id="level">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -18,7 +20,8 @@ const CreateHeader = () => (
             </select>
         </div>
         <div class="game-screen-header__page">
-            <span>Page:</span> <select name="" id="pages">
+            <span>Page:</span>
+            <select name="" id="page">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -48,7 +51,11 @@ const CreateHeader = () => (
         </div>
     </div>
    </div>
-   <div class="game-screen__sentence" />
+   <div class="game-screen-panel">
+    <img src="${mute}" alt="" class="button-mute button__mute button-img hidden">
+    <img src="${sound}" alt="" class="button-for-sound button__sound button-img">
+   <div class="game-screen__sentence"></div>
+  </div>
   `
 );
 

@@ -34,10 +34,6 @@ const HeaderLayout = {
         title: 'About Us',
         destination: MAIN_ROUTES.ABOUT_TEAM,
       },
-      {
-        title: 'Settings',
-        destination: MAIN_ROUTES.SETTINGS,
-      },
     ],
 
     buttons: {

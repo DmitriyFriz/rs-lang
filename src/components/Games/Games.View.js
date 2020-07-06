@@ -1,15 +1,15 @@
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
-import EnglishPuzzleGame from 'components/Games/EnglishPuzzle/EnglishPuzzle';
+import EnglishPuzzleGame from 'components/Games/EnglishPuzzle/EnglishPuzzleGame.View';
 import GamesList from './GamesList/GamesList.View';
 import SpeakIt from './SpeakIt/SpeakIt.View';
-import EnglishPuzzle from './EnglishPuzzle/EnglishPuzzle.View';
+import EnglishPuzzle from './EnglishPuzzle/EnglishPuzzleMenu.View';
 import SpeakItMain from './SpeakIt/components/SpeakItMain.View';
 import SprintStart from './Sprint/Start/SprintStart.View';
 import SprintGame from './Sprint/Game/SprintGame.View';
 import SprintFinish from './Sprint/Finish/SprintFinish.View';
-import EnglishPuzzleHeader from './EnglishPuzzle/components/Header/EnglishPuzzle.Header';
+import EnglishPuzzleMainStatisticsView from './EnglishPuzzle/EnglishPuzzleMainStatistics.View';
 
 // router
 import Router from '../../router/Router';
@@ -34,11 +34,11 @@ class Games extends BaseComponent {
       [GAMES_ROUTES.SPEAK_IT]: SpeakIt,
       [SPEAK_IT_ROUTERS.SPEAK_IT_MAIN]: SpeakItMain,
       [GAMES_ROUTES.ENGLISH_PUZZLE]: EnglishPuzzle,
-      [ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_GAME]: EnglishPuzzleHeader,
       [GAMES_ROUTES.SPRINT]: SprintStart,
       [GAMES_ROUTES.SPRINT_GAME]: SprintGame,
       [GAMES_ROUTES.SPRINT_FINISH]: SprintFinish,
       [ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_GAME]: EnglishPuzzleGame,
+      [ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_MAIN_STATISTICS]: EnglishPuzzleMainStatisticsView,
     };
 
     this.gamesRouter = new Router(
