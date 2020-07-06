@@ -11,9 +11,9 @@ import '../Authorization.scss';
 export default class AuthPage extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.handlerAuthorize = this.handlerAuthorize.bind(this);
-    this.handlerEmailInputConfirmation = this.handlerEmailInputConfirmation.bind(this);
-    this.handlerPasswordInputConfirmation = this.handlerPasswordInputConfirmation.bind(this);
+    this.handleAuthorize = this.handleAuthorize.bind(this);
+    this.handleEmailInputConfirmation = this.handleEmailInputConfirmation.bind(this);
+    this.handlePasswordInputConfirmation = this.handlePasswordInputConfirmation.bind(this);
   }
 
   createLayout() {
@@ -30,15 +30,15 @@ export default class AuthPage extends BaseComponent {
   }
 
   addListeners() {
-    this.submitBtn.addEventListener('click', this.handlerAuthorize);
-    this.authEmail.addEventListener('input', this.handlerEmailInputConfirmation);
-    this.authPassword.addEventListener('input', this.handlerPasswordInputConfirmation);
+    this.submitBtn.addEventListener('click', this.handleAuthorize);
+    this.authEmail.addEventListener('input', this.handleEmailInputConfirmation);
+    this.authPassword.addEventListener('input', this.handlePasswordInputConfirmation);
   }
 
   removeListeners() {
-    this.submitBtn.removeEventListener('click', this.handlerAuthorize);
-    this.authEmail.removeEventListener('input', this.handlerEmailInputConfirmation);
-    this.authPassword.removeEventListener('input', this.handlerPasswordInputConfirmation);
+    this.submitBtn.removeEventListener('click', this.handleAuthorize);
+    this.authEmail.removeEventListener('input', this.handleEmailInputConfirmation);
+    this.authPassword.removeEventListener('input', this.handlePasswordInputConfirmation);
   }
 
   /** Test User
@@ -47,7 +47,7 @@ export default class AuthPage extends BaseComponent {
    * password: Qwerty_123,
    * */
 
-  handlerAuthorize(event) {
+  handleAuthorize(event) {
     event.preventDefault();
     const email = this.authEmail.value;
     const password = this.authPassword.value;
@@ -63,12 +63,12 @@ export default class AuthPage extends BaseComponent {
       user.signIn({ email, password })
         .then((request) => {
           submitBtn.disabled = false;
-          this.requestHandler(request, event);
+          this.handleRequest(request, event);
         });
     }
   }
 
-  handlerEmailInputConfirmation() {
+  handleEmailInputConfirmation() {
     const tag = 'email';
     this.changeFieldSet(false, tag, 'Enter correct Email');
     this.submitBtn.disabled = true;
@@ -86,7 +86,7 @@ export default class AuthPage extends BaseComponent {
     }
   }
 
-  handlerPasswordInputConfirmation() {
+  handlePasswordInputConfirmation() {
     const { legendPassword } = this;
     const tag = 'password';
     this.submitBtn.disabled = true;
@@ -109,7 +109,7 @@ export default class AuthPage extends BaseComponent {
     }
   }
 
-  requestHandler(request, event) {
+  handleRequest(request, event) {
     const { submitBtn } = this;
 
     if (request.status === STATUSES.OK) {

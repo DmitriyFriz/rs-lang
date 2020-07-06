@@ -11,19 +11,21 @@ import '../Authorization.scss';
 export default class RegisterPage extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.handlerRegistration = this.handlerRegistration.bind(this);
-    this.handlerConfirmEmailInput = this.handlerConfirmEmailInput.bind(this);
-    this.handlerPasswordInput = this.handlerPasswordInput.bind(this);
-    this.handlerConfirmPasswordInput = this.handlerConfirmPasswordInput.bind(this);
+    this.handleRegistration = this.handleRegistration.bind(this);
+    this.handleConfirmEmailInput = this.handleConfirmEmailInput.bind(this);
+    this.handlePasswordInput = this.handlePasswordInput.bind(this);
+    this.handleConfirmPasswordInput = this.handleConfirmPasswordInput.bind(this);
   }
 
   createLayout() {
-    [this.formReg, this.submitBtn,
+    [
+      this.formReg, this.submitBtn,
       this.fieldSetEmails, this.fieldSetPasswords] = getRegisterPageLayout();
 
     [this.legendEmail, this.regEmail] = this.fieldSetEmails.childNodes;
 
-    [this.legendPassword, this.regPassword, ,
+    [
+      this.legendPassword, this.regPassword, ,
       this.regConfirmPassword] = this.fieldSetPasswords.childNodes;
 
     this.component.classList.add('reg');
@@ -31,20 +33,20 @@ export default class RegisterPage extends BaseComponent {
   }
 
   addListeners() {
-    this.submitBtn.addEventListener('click', this.handlerRegistration);
-    this.regEmail.addEventListener('input', this.handlerConfirmEmailInput);
-    this.regPassword.addEventListener('input', this.handlerPasswordInput);
-    this.regConfirmPassword.addEventListener('input', this.handlerConfirmPasswordInput);
+    this.submitBtn.addEventListener('click', this.handleRegistration);
+    this.regEmail.addEventListener('input', this.handleConfirmEmailInput);
+    this.regPassword.addEventListener('input', this.handlePasswordInput);
+    this.regConfirmPassword.addEventListener('input', this.handleConfirmPasswordInput);
   }
 
   removeListeners() {
-    this.submitBtn.removeEventListener('click', this.handlerRegistration);
-    this.regEmail.removeEventListener('input', this.handlerConfirmEmailInput);
-    this.regPassword.removeEventListener('input', this.handlerPasswordInput);
-    this.regConfirmPassword.removeEventListener('input', this.handlerConfirmPasswordInput);
+    this.submitBtn.removeEventListener('click', this.handleRegistration);
+    this.regEmail.removeEventListener('input', this.handleConfirmEmailInput);
+    this.regPassword.removeEventListener('input', this.handlePasswordInput);
+    this.regConfirmPassword.removeEventListener('input', this.handleConfirmPasswordInput);
   }
 
-  handlerRegistration(event) {
+  handleRegistration(event) {
     event.preventDefault();
     const email = this.regEmail.value;
     const password = this.regPassword.value;
@@ -61,13 +63,13 @@ export default class RegisterPage extends BaseComponent {
 
         user.register({ email, password })
           .then((request) => {
-            this.requestHandler(request, event, email, password);
+            this.handleRequest(request, event, email, password);
           });
       }
     }
   }
 
-  handlerConfirmEmailInput(event) {
+  handleConfirmEmailInput(event) {
     const email = event.target.value;
     const tag = 'email';
     const password = this.regPassword.value;
@@ -93,7 +95,7 @@ export default class RegisterPage extends BaseComponent {
     }
   }
 
-  handlerPasswordInput() {
+  handlePasswordInput() {
     const tag = 'password';
     const password = this.regPassword.value;
     const passwordConfirm = this.regConfirmPassword;
@@ -126,7 +128,7 @@ export default class RegisterPage extends BaseComponent {
     }
   }
 
-  handlerConfirmPasswordInput() {
+  handleConfirmPasswordInput() {
     const tag = 'password';
     const password = this.regPassword;
     const passwordConfirm = this.regConfirmPassword.value;
@@ -156,7 +158,7 @@ export default class RegisterPage extends BaseComponent {
     }
   }
 
-  requestHandler(request, event, email, password) {
+  handleRequest(request, event, email, password) {
     const { submitBtn } = this;
 
     if (request.status === STATUSES.OK) {

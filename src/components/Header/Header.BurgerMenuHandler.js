@@ -10,8 +10,10 @@ function shiftMenuToLeft(menu) {
 function hideMenu(event) {
   const { classList } = event.target;
 
-  if (!event.target.closest(`.${HeaderClassName.burgerMenuButton}`)
-    && !classList.contains(HeaderClassName.menu)) {
+  if (
+    !event.target.closest(`.${HeaderClassName.burgerMenuButton}`)
+    && !classList.contains(HeaderClassName.menu)
+  ) {
     const inputEvent = new Event('input', { bubbles: true });
     burgerMenuButton.checked = false;
     burgerMenuButton.dispatchEvent(inputEvent);

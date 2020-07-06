@@ -73,7 +73,7 @@ class SpeakItMain extends BaseComponent {
     this.reset();
   }
 
-  wordClickHandler(event) {
+  handleWordClick(event) {
     const card = event.target.closest('.card');
     const { words, isGameActive } = this.state;
     if (isGameActive) {
@@ -141,7 +141,7 @@ class SpeakItMain extends BaseComponent {
     container.appendChild(img);
   }
 
-  recognitionResultHandler(event) {
+  handleRecognitionResult(event) {
     const alternatives = event.results[0];
     if (alternatives.isFinal) {
       const translationElement = document.getElementById('translation');
@@ -157,10 +157,10 @@ class SpeakItMain extends BaseComponent {
   showResults() {
     this.modal = createResults(this.state.learnedWords, this.state.words);
     this.component.appendChild(this.modal);
-    this.modal.addEventListener('click', (event) => this.modalHandler(event));
+    this.modal.addEventListener('click', (event) => this.handleModal(event));
   }
 
-  modalHandler(event) {
+  handleModal(event) {
     if (event.target.id === 'back') {
       this.component.removeChild(this.modal);
     }
@@ -192,11 +192,11 @@ class SpeakItMain extends BaseComponent {
   addListeners() {
     this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
     document.querySelector('fieldset').addEventListener('click', (event) => this.switchLevels(event));
-    this.wordsContainer.addEventListener('click', (event) => this.wordClickHandler(event));
+    this.wordsContainer.addEventListener('click', (event) => this.handleWordClick(event));
     document.getElementById('speak-button').addEventListener('click', () => this.startGame());
     document.getElementById('results-button').addEventListener('click', () => this.showResults());
     document.getElementById('reset-button').addEventListener('click', () => this.reset());
-    recognition.addEventListener('result', (event) => this.recognitionResultHandler(event));
+    recognition.addEventListener('result', (event) => this.handleRecognitionResult(event));
 
     recognition.addEventListener('end', () => {
       if (this.state.isGameActive) {
