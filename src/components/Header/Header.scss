@@ -1,26 +1,196 @@
-header{
-  .menu {
-    background-color: gray;
-  }
+@import "./burgerMenuButton.scss";
+
+$burgerMenuWidth: 220px;
+
+header {
+  position: fixed;
+  z-index: 10;
+  padding: 5px;
+  width: 100vw;
+  border-bottom: 2px solid $basicColor1;
+  background-color: $basicColor5;
+  font-size: $headerFontSize;
 
   .button {
-    color: red;
-  }
-  .menu-item {
-    color: red;
-  }
+    transition-duration: 0.5s;
+    border: none;
+    background-color: initial;
+    font-family: $mainFont2;
+    font-size: 0.4em;
+    color: #000;
 
-  .user-email {
-    color: green;
-  }
+    &:hover {
+      background-color: $basicColor3;
+      color: $fontColor;
+    }
+    &.active {
+      color: $fontColor;
+    }
 
-  .header-button {
-    background-color: gray;
+    @media screen and (min-width: $laptops) {
+      &:hover {
+        background-color: $basicColor3;
+        color: $fontColor;
+      }
+      &.active {
+        color: $basicColor1;
+        border-bottom: 1px solid $basicColor1;
+      }
+    }
   }
 
   .logo {
-    width: 100px;
-    height: 100px;
-    background-color: blue;
+    width: 80px;
+    height: 100%;
+    background-image: url("../../assets/favicon.ico");
+    background-size: contain;
+    background-position-y: 70%;
+    background-repeat: no-repeat;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    @media screen and (min-width: $laptops) {
+      align-self: center;
+      background-image: url("../../assets/background.svg");
+      background-position-x: 60%;
+      width: 80px;
+      height: 90%;
+    }
+  }
+
+  .menu {
+    position: fixed;
+    z-index: 10;
+    left: -$burgerMenuWidth;
+    top: 0;
+    display: grid;
+    grid-area: menu;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    width: $burgerMenuWidth;
+    height: 100vh;
+    background-color: #68c2e8f3;
+  }
+
+  .header__burger-menu {
+    grid-area: burger-button;
+    justify-self: left;
+    align-self: center;
+    margin-left: 20px;
+
+    @media screen and (min-width: $laptops) {
+      display: none;
+    }
+  }
+
+  .logo {
+    grid-area: logo;
+    justify-self: center;
+  }
+}
+
+.to-left {
+  animation-name: to-left;
+}
+
+.to-right {
+  animation-name: to-right;
+}
+
+@keyframes to-right {
+  from {
+    display: none;
+    left: -$burgerMenuWidth;
+  }
+  to {
+    left: 0;
+  }
+}
+
+@keyframes to-left {
+  from {
+    left: 0;
+  }
+  to {
+    left: -$burgerMenuWidth;
+    display: none;
+  }
+}
+
+.header-authorized {
+  display: grid;
+  grid-template-areas: "burger-button user-name log-out";
+  grid-template-columns: 1.5fr 2fr 1.5fr;
+  height: 60px;
+
+  .menu {
+    grid-template-areas: "logo";
+    grid-template-rows: 4fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr;
+
+    @media screen and (min-width: $laptops) {
+      grid-template-rows: none;
+      grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      position: inherit;
+      z-index: inherit;
+      width: 100%;
+      height: 100%;
+      background-color: inherit;
+    }
+  }
+
+  .user-email {
+    grid-area: user-name;
+    justify-self: center;
+    align-self: center;
+    font-size: 0.5em;
+  }
+
+  .header-button {
+    grid-area: log-out;
+  }
+
+  @media screen and (min-width: $laptops) {
+    grid-template-areas: "menu user-name log-out";
+    grid-template-columns: 5fr 2fr 1fr;
+  }
+}
+
+.header-guest {
+  display: grid;
+  grid-template-areas: "burger-button sign-up sign-in";
+  grid-template-columns: 2fr 1fr 1fr;
+  height: 60px;
+
+  .menu {
+    grid-template-areas: "logo";
+    grid-template-rows: 4fr 1fr 1fr 4fr;
+
+    @media screen and (min-width: $laptops) {
+      grid-template-rows: none;
+      grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+      position: inherit;
+      z-index: inherit;
+      width: 100%;
+      height: 100%;
+      background-color: inherit;
+    }
+  }
+
+  .sign-in-button {
+    grid-area: sign-in;
+  }
+
+  .sign-up-button {
+    grid-area: sign-up;
+  }
+  @media screen and (min-width: $tablets) {
+    grid-template-columns: 5fr 1fr 1fr;;
+  }
+
+  @media screen and (min-width: $laptops) {
+    grid-template-areas: "menu sign-up sign-in";
+    grid-template-columns: 10fr 1fr 1fr;;
   }
 }

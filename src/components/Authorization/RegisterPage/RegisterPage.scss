@@ -1,0 +1,35 @@
+.registration {
+  fieldset {
+    input {
+      margin-top: 1rem;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  span {
+    padding-top: 0.5rem;
+    font-size: 0.7rem;
+    font-family: $mainFont;
+    font-weight: bold;
+  }
+
+  input:disabled {
+    opacity: 0.4;
+  }
+
+  .password-requirement {
+    max-width: 250px;
+    color: rgba(91, 91, 91, 0.4);
+  }
+}
+
+.registration,
+.reg {
+  .button {
+    margin: 0.5rem 0 1rem 0;
+    color: $fontColor;
+  }
+}

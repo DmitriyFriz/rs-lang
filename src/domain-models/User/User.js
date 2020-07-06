@@ -8,6 +8,15 @@ const {
 const { get } = endPoints.settings;
 
 class User extends BaseDomainModel {
+  get userName() {
+    return localStorage.getItem('userName') || '';
+  }
+
+  set userName(value) {
+    const name = value.replace(/@.*$/, '');
+    localStorage.setItem('userName', name);
+  }
+
   async signIn(user) {
     const { status, statusText, data } = await this.getData(signIn, user);
 
@@ -15,6 +24,7 @@ class User extends BaseDomainModel {
       this.token = data.token;
       this.userId = data.userId;
       this.isAuthorized = true;
+      this.userName = user.email;
     }
 
     return { status, statusText };
@@ -34,6 +44,7 @@ class User extends BaseDomainModel {
     const res = await this.getDataOfAuthorizedUser(
       update, this.userId, this.token, user,
     );
+    this.userName = user.email || this.userName;
     return res;
   }
 
@@ -75,4 +86,4 @@ class User extends BaseDomainModel {
   }
 }
 
-export default User;
+export default new User();
