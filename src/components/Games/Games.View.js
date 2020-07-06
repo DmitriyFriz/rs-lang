@@ -9,12 +9,13 @@ import SpeakItMain from './SpeakIt/components/SpeakItMain.View';
 import Router from '../../router/Router';
 import {
   registerRouter,
-  onRouteChangeEvent,
   unregisterRouter,
 } from '../../router/RouteHandler';
 
 // constants
-import { MAIN_ROUTES, ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS } from '../../router/Router.Constants';
+import {
+  MAIN_ROUTES, ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS,
+} from '../../router/Router.Constants';
 
 class Games extends BaseComponent {
   static get name() {
@@ -37,13 +38,7 @@ class Games extends BaseComponent {
     registerRouter(this.gamesRouter);
   }
 
-  addListeners() {
-    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
-  }
-
   removeListeners() {
-    this.component.removeEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
-
     unregisterRouter(this.gamesRouter);
   }
 }

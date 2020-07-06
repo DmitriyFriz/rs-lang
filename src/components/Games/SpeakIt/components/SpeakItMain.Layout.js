@@ -30,7 +30,7 @@ export default function createLayout() {
     <label class="custom-control-label" for="defaultInline6">6</label>
   </div>
 </fieldset>
-<button id="stats-btn"><i class="fas fa-list-ol"></i> statistics</button>
+<button class="button" id="stats-btn"><i class="fas fa-list-ol"></i> statistics</button>
 <div id="picture-card" class="card">
   <img class="card-img" src=${defaultImage} alt="picture">
   <p id="translation">translation</p>

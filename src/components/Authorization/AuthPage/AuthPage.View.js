@@ -1,7 +1,8 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-import User from 'domainModels/User/User';
-import { HEADER_ROUTES, MAIN_ROUTES, ROUTERS } from 'router/Router.Constants';
+import user from 'domainModels/User/User';
+import { HEADER_ROUTES, ROUTERS } from 'router/Router.Constants';
 import { onRouteChangeEvent } from 'router/RouteHandler';
+import STATUSES from '../../../services/requestHandler.Statuses';
 import getAuthPageLayout from './AuthPage.Layout';
 import { authEmailRegExp, authPasswordRegEx } from './AuthPage.Data';
 import './AuthPage.scss';
@@ -10,15 +11,14 @@ import '../Authorization.scss';
 export default class AuthPage extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.user = new User();
-    this.handlerAuthPage = this.handlerAuthPage.bind(this);
-    this.handlerAuthorize = this.handlerAuthorize.bind(this);
-    this.handlerEmailInputConfirmation = this.handlerEmailInputConfirmation.bind(this);
-    this.handlerPasswordInputConfirmation = this.handlerPasswordInputConfirmation.bind(this);
+    this.handleAuthorize = this.handleAuthorize.bind(this);
+    this.handleEmailInputConfirmation = this.handleEmailInputConfirmation.bind(this);
+    this.handlePasswordInputConfirmation = this.handlePasswordInputConfirmation.bind(this);
   }
 
   createLayout() {
-    [this.formAuth, this.backToMainPageBtn, this.submitBtn,
+    [
+      this.formAuth, this.submitBtn,
       this.fieldSetEmails, this.fieldSetPasswords] = getAuthPageLayout();
 
     [this.legendEmail, this.authEmail] = this.fieldSetEmails.childNodes;
@@ -26,25 +26,19 @@ export default class AuthPage extends BaseComponent {
     [this.legendPassword, this.authPassword] = this.fieldSetPasswords.childNodes;
 
     this.component.classList.add('auth');
-    this.component.append(this.formAuth, this.backToMainPageBtn);
+    this.component.append(this.formAuth);
   }
 
   addListeners() {
-    this.component.addEventListener('click', this.handlerAuthPage);
-    this.submitBtn.addEventListener('click', this.handlerAuthorize);
-    this.authEmail.addEventListener('input', this.handlerEmailInputConfirmation);
-    this.authPassword.addEventListener('input', this.handlerPasswordInputConfirmation);
+    this.submitBtn.addEventListener('click', this.handleAuthorize);
+    this.authEmail.addEventListener('input', this.handleEmailInputConfirmation);
+    this.authPassword.addEventListener('input', this.handlePasswordInputConfirmation);
   }
 
   removeListeners() {
-    this.component.removeEventListener('click', this.handlerAuthPage);
-    this.submitBtn.removeEventListener('click', this.handlerAuthorize);
-    this.authEmail.removeEventListener('input', this.handlerEmailInputConfirmation);
-    this.authPassword.removeEventListener('input', this.handlerPasswordInputConfirmation);
-  }
-
-  handlerAuthPage(event) {
-    onRouteChangeEvent(event, ROUTERS.MAIN);
+    this.submitBtn.removeEventListener('click', this.handleAuthorize);
+    this.authEmail.removeEventListener('input', this.handleEmailInputConfirmation);
+    this.authPassword.removeEventListener('input', this.handlePasswordInputConfirmation);
   }
 
   /** Test User
@@ -53,61 +47,58 @@ export default class AuthPage extends BaseComponent {
    * password: Qwerty_123,
    * */
 
-  handlerAuthorize(event) {
+  handleAuthorize(event) {
     event.preventDefault();
     const email = this.authEmail.value;
     const password = this.authPassword.value;
     const { submitBtn } = this;
 
+    if (!email || !password) { return; }
+
     if (
-      email
-      && password
+      this.isEmail(email)
+      && this.isCorrectPassword(password)
     ) {
-      if (
-        this.isEmail(email)
-        && this.isCorrectPassword(password)
-      ) {
-        submitBtn.disabled = true;
-        this.user.signIn({ email, password })
-          .then((request) => {
-            submitBtn.disabled = false;
-            this.requestHandler(request, event);
-          });
-      }
+      submitBtn.disabled = true;
+      user.signIn({ email, password })
+        .then((request) => {
+          submitBtn.disabled = false;
+          this.handleRequest(request, event);
+        });
     }
   }
 
-  handlerEmailInputConfirmation() {
+  handleEmailInputConfirmation() {
     const tag = 'email';
-    this.changeFieldSet(false, tag, 'Enter correct Email!');
+    this.changeFieldSet(false, tag, 'Enter correct Email');
     this.submitBtn.disabled = true;
 
     if (!this.authEmail.value) {
-      this.changeFieldSet(false, tag, 'Enter Email!');
+      this.changeFieldSet(false, tag, 'Enter Email');
     }
 
-    if (this.isEmail(this.authEmail.value)) {
-      this.changeFieldSet(true, tag, 'Success!');
+    if (!this.isEmail(this.authEmail.value)) { return; }
 
-      if (this.isCorrectPassword(this.authPassword.value)) {
-        this.submitBtn.disabled = false;
-      }
+    this.changeFieldSet(true, tag, 'Success');
+
+    if (this.isCorrectPassword(this.authPassword.value)) {
+      this.submitBtn.disabled = false;
     }
   }
 
-  handlerPasswordInputConfirmation() {
+  handlePasswordInputConfirmation() {
     const { legendPassword } = this;
     const tag = 'password';
     this.submitBtn.disabled = true;
 
     if (!this.isCorrectPassword(this.authPassword.value)) {
-      this.changeFieldSet(false, tag, 'Enter correct Password!');
+      this.changeFieldSet(false, tag, 'Enter correct Password');
 
       if (!this.authPassword.value) {
-        legendPassword.textContent = 'Enter Password!';
+        legendPassword.textContent = 'Enter Password';
       }
     } else {
-      this.changeFieldSet(true, tag, 'Success!');
+      this.changeFieldSet(true, tag, 'Success');
     }
 
     if (
@@ -118,23 +109,20 @@ export default class AuthPage extends BaseComponent {
     }
   }
 
-  requestHandler(request, event) {
-    const { submitBtn, authEmail } = this;
+  handleRequest(request, event) {
+    const { submitBtn } = this;
 
-    if (request.status === 200) {
-      submitBtn.dataset.destination = HEADER_ROUTES.SIGN_IN;
-      onRouteChangeEvent(event, ROUTERS.HEADER);
-
-      submitBtn.dataset.destination = MAIN_ROUTES.MAIN_PAGE;
-      onRouteChangeEvent(event, ROUTERS.MAIN);
+    if (request.status === STATUSES.OK) {
+      submitBtn.dataset.destination = HEADER_ROUTES.HEADER_AUTHORIZED;
+      onRouteChangeEvent(event, ROUTERS.MAIN, ROUTERS.HEADER);
     }
 
-    if (request.status === 404) {
-      this.changeFieldSet(false, 'email', `User ${authEmail.value} - ${request.statusText}`);
+    if (request.status === STATUSES.NOT_FOUND) {
+      this.changeFieldSet(false, 'email', 'User not found');
     }
 
-    if (request.status === 403) {
-      this.changeFieldSet(false, 'password', 'Wrong password!');
+    if (request.status === STATUSES.FORBIDDEN) {
+      this.changeFieldSet(false, 'password', 'Wrong password');
     }
   }
 

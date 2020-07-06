@@ -19,6 +19,10 @@ const createCard = (game) => {
   element.id = game.id;
   element.dataset.destination = game.destination;
 
+  const logo = document.createElement('img');
+  logo.src = `assets/mini-games-logo/${game.logo}`;
+  element.appendChild(logo);
+
   const title = document.createElement('h3');
   title.innerText = game.name;
   element.appendChild(title);
@@ -35,8 +39,6 @@ class GamesList extends BaseComponent {
     super(parent, tagName);
 
     this.games = data;
-
-    this.handleGameOpen = this.handleGameOpen.bind(this);
   }
 
   createLayout() {

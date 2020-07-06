@@ -1,7 +1,7 @@
 import './style/main.scss';
 
 // router
-import User from 'domainModels/User/User';
+import user from 'domainModels/User/User';
 import AuthPage from 'components/Authorization/AuthPage/AuthPage.View';
 import RegisterPage from 'components/Authorization/RegisterPage/RegisterPage.View';
 import Router from './router/Router';
@@ -13,21 +13,17 @@ import HeaderGuest from './components/Header/Header.View.Guest';
 import MainPage from './components/MainPage/MainPage.View';
 import Games from './components/Games/Games.View';
 import Team from './components/Team/Team.View';
+import Promo from './components/Promo/Promo.View';
 
 // constants
 import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
 
 const header = document.querySelector('#header');
 const root = document.querySelector('#root');
-const user = new User();
-
-// get from localStorage
-const { isAuthorized } = user;
 
 const headerRoutes = {
-  [HEADER_ROUTES.SIGN_UP]: HeaderAuthorized,
-  [HEADER_ROUTES.SIGN_IN]: HeaderAuthorized,
-  [HEADER_ROUTES.LOG_OUT]: HeaderGuest,
+  [HEADER_ROUTES.HEADER_AUTHORIZED]: HeaderAuthorized,
+  [HEADER_ROUTES.HEADER_GUEST]: HeaderGuest,
 };
 
 const mainRoutes = {
@@ -36,13 +32,21 @@ const mainRoutes = {
   [MAIN_ROUTES.SIGN_UP]: RegisterPage,
   [MAIN_ROUTES.GAMES]: Games,
   [MAIN_ROUTES.ABOUT_TEAM]: Team,
+  [MAIN_ROUTES.PROMO]: Promo,
   // other endpoints should be added here,
 };
 
-const currentHeaderRoute = isAuthorized
-  ? HEADER_ROUTES.SIGN_IN : HEADER_ROUTES.LOG_OUT;
-const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);
-registerRouter(headerRouter);
+async function init() {
+  await user.checkAuthStatus();
 
-const mainRouter = new Router(ROUTERS.MAIN, root, mainRoutes, MAIN_ROUTES.MAIN_PAGE);
-registerRouter(mainRouter);
+  const currentHeaderRoute = user.isAuthorized
+    ? HEADER_ROUTES.HEADER_AUTHORIZED : HEADER_ROUTES.HEADER_GUEST;
+
+  const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);
+  registerRouter(headerRouter);
+
+  const mainRouter = new Router(ROUTERS.MAIN, root, mainRoutes, MAIN_ROUTES.PROMO);
+  registerRouter(mainRouter);
+}
+
+init();
