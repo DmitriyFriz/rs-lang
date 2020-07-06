@@ -27,6 +27,7 @@ class VocabularyLearning extends BaseComponent {
     this.categoryWordsAmount = 0;
     this.todayWordsAmount = 0;
     this.pageType = constants.pageType.learning;
+    this.handleWordButtons = this.handleWordButtons.bind(this);
   }
 
   createLayout() {
@@ -90,20 +91,27 @@ class VocabularyLearning extends BaseComponent {
   addListeners() {
     this.component.addEventListener('click', this.handleSwitchTab);
 
-    if (this.categoryWordsAmount) {
-      this.words.forEach((element) => element.addEventListener('click', (event) => {
-        if (event.target.dataset && event.target.dataset.audio) {
-          const src = this
-            .wordsDomainModel
-            .getFileLink(event.target.dataset.audio.replace(/['"]+/g, ''));
-          this.playAudio(src);
-        }
-      }));
-    }
+    this.component.addEventListener('click', this.handleWordButtons);
+  }
+
+  removeListeners() {
+    this.component.removeEventListener('click', this.handleSwitchTab);
+
+    this.component.removeEventListener('click', this.handleWordButtons);
   }
 
   handleSwitchTab(event) {
     onRouteChangeEvent(event, ROUTERS.VOCABULARY);
+  }
+
+  handleWordButtons(event) {
+    const { target } = event;
+    if (target.dataset && target.dataset.audio) {
+      const src = this
+        .wordsDomainModel
+        .getFileLink(target.dataset.audio.replace(/['"]+/g, ''));
+      this.playAudio(src);
+    }
   }
 }
 
