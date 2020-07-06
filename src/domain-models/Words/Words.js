@@ -3,6 +3,7 @@ import endPoints from 'services/endPoints/endPoints.main';
 import STATUSES from 'services/requestHandler.Statuses';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
 import { checkGroupWordsStatus, registrationWord } from './WordsHandler';
+import { VOCABULARY } from './Words.Constants';
 
 const {
   getChunk,
@@ -116,7 +117,10 @@ class Words extends BaseDomainModel {
     return this.groupWords.filter((word) => {
       const status = get(word, 'userWord.optional.repeat.status');
       const vocabulary = get(word, 'userWord.optional.vocabulary');
-      return !!status && !vocabulary;
+      return (
+        !!status
+        && (!vocabulary || vocabulary === VOCABULARY.RESTORED)
+      );
     });
   }
 

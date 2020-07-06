@@ -1,10 +1,11 @@
 import get from 'lodash.get';
+import { DIFFICULTY, VOCABULARY } from './Words.Constants';
 
-const DIFFICULTY = {
-  EASY: 7776000000,
-  MEDIUM: 3888000000,
-  HARD: 1123200000,
-  AGAIN: 600000,
+const TIMERS = {
+  [DIFFICULTY.EASY]: 7776000000,
+  [DIFFICULTY.MEDIUM]: 3888000000,
+  [DIFFICULTY.HARD]: 1123200000,
+  [DIFFICULTY.AGAIN]: 600000,
 };
 
 function checkWordStatus(repeatDate) {
@@ -32,13 +33,13 @@ function registrationWord(data, difficulty, vocabulary) {
   }
   parameters.optional.amount += 1;
 
-  if (difficulty) {
+  if (DIFFICULTY[difficulty]) {
     parameters.difficulty = difficulty;
     parameters.optional.repeat = {};
-    parameters.optional.repeat.date = Date.now() + DIFFICULTY[difficulty.toUpperCase()];
+    parameters.optional.repeat.date = Date.now() + TIMERS[difficulty];
     parameters.optional.repeat.status = false;
   }
-  if (vocabulary) {
+  if (VOCABULARY[vocabulary]) {
     parameters.optional.vocabulary = vocabulary;
   }
 
