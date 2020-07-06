@@ -17,7 +17,7 @@ class Header extends BaseComponent {
     };
 
     // Possible solution for a long operations.
-    // If needed it can be moved to the BaseComponent 
+    // If needed it can be moved to the BaseComponent
     this.loader = new Loader(parent, 'div');
     this.loader.show();
 
@@ -43,7 +43,7 @@ class Header extends BaseComponent {
 
   async prepareData() {
     console.log('prepareData');
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         console.log('prepareData finish');
         this.data = 'It\'s not a real data but it shows the component lifecycle';

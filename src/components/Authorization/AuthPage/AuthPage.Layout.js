@@ -74,18 +74,10 @@ export default function getAuthPageLayout() {
   submitBtn.type = authPageLayout.submit.type;
   submitBtn.value = authPageLayout.submit.value;
   submitBtn.disabled = true;
-
-  const backToMainPageBtn = BaseComponent.createElement({
-    tag: authPageLayout.button.tag,
-    content: authPageLayout.button.content,
-    className: authPageLayout.button.className,
-    destination: authPageLayout.button.destination,
-  });
-
   fieldSetEmails.append(...inputAuthEmail);
   fieldSetPasswords.append(...inputAuthPassword);
 
   formAuth.append(fieldSetEmails, fieldSetPasswords, submitBtn);
 
-  return [formAuth, backToMainPageBtn, submitBtn, fieldSetEmails, fieldSetPasswords];
+  return [formAuth, submitBtn, fieldSetEmails, fieldSetPasswords];
 }

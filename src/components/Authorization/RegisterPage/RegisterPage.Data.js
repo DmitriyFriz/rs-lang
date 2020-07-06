@@ -58,13 +58,6 @@ const regPageLayout = {
     type: 'submit',
     value: 'sign up',
     id: 'regSignIn',
-    destination: '',
-  },
-
-  button: {
-    tag: 'button',
-    className: 'button_',
-    content: 'Main page',
     destination: MAIN_ROUTES.MAIN_PAGE,
   },
 };
