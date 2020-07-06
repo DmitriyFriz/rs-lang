@@ -83,7 +83,7 @@ const constants = {
   pageType: {
     learning: 'learning',
     difficult: 'difficult',
-    deleted: 'deleted',
+    deleted: 'removed',
   },
 };
 
@@ -92,10 +92,11 @@ const filterQuery = {
     $and: [
       { 'userWord.optional.vocabulary': { $ne: 'removed' } },
       { 'userWord.optional.vocabulary': { $ne: 'removed' } },
+      { 'userWord': { $ne: null} },
     ],
   },
   difficult: { 'userWord.optional.vocabulary': 'difficult' },
-  deleted: { 'userWord.optional.vocabulary': 'removed' },
+  removed: { 'userWord.optional.vocabulary': 'removed' },
 };
 
 export {

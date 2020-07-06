@@ -14,7 +14,9 @@ class VocabularyDeleted extends Vocabulary {
   }
 
   handleRemove(wordId) {
-    this.wordsDomainModel.updateUserWord(wordId, null).then((res) => {
+    this
+      .wordsDomainModel
+      .updateUserWord(wordId, null, constants.pageType.learning).then((res) => {
       if (STATUSES.isSuccess(res.status)) {
         console.log(res);
         this.hideWord(wordId);

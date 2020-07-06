@@ -56,7 +56,7 @@ class VocabularyLearning extends BaseComponent {
 
   async prepareData() {
     const filter = JSON.stringify(filterQuery[this.pageType]);
-
+    console.group('vocabulary: ', this.pageType);
     const wordsData = await this.wordsDomainModel.getAggregatedWords({
       group: constants.group,
       wordsPerPage: constants.wordsPerPage,
@@ -98,6 +98,8 @@ class VocabularyLearning extends BaseComponent {
     this.component.removeEventListener('click', this.handleSwitchTab);
 
     this.component.removeEventListener('click', this.handleWordButtons);
+
+    console.groupEnd('vocabulary: ', this.pageType);
   }
 
   handleSwitchTab(event) {
@@ -121,7 +123,7 @@ class VocabularyLearning extends BaseComponent {
   handleRemove(wordId) {
     this
       .wordsDomainModel
-      .updateUserWord(wordId, null, 'removed')
+      .updateUserWord(wordId, null, constants.pageType.difficult)
       .then((res) => {
         if (STATUSES.isSuccess(res.status)) {
           console.log(res);
