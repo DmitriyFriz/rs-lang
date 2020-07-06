@@ -64,8 +64,10 @@ async function getDayWordsCollection(optional) {
   } = optional;
   await wordsDomain.selectGroupWords(+level);
 
-  const newWordsList = wordsDomain.newWords.slice(0, +newWords);
-  const repeatWordList = wordsDomain.repeatWords.slice(0, (+wordsPerDay - +newWords));// !!!!
+  const newWordsList = shuffle(wordsDomain.newWords)
+    .slice(0, +newWords);
+  const repeatWordList = shuffle(wordsDomain.repeatWords)
+    .slice(0, (+wordsPerDay - +newWords));// !!!!
   let allWords = newWordsList.concat(repeatWordList);
 
   switch (wordsMode) {
@@ -86,7 +88,7 @@ async function getDayWordsCollection(optional) {
       break;
   }
 
-  return shuffle(handleWords(allWords));
+  return handleWords(allWords);
 }
 
 function getTrueWords(collection) {

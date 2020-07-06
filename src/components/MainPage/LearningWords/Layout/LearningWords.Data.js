@@ -1,13 +1,17 @@
 import { SETTINGS } from '../../../Settings/Settings.Constants';
 import { MAIN_PAGE_ROUTES } from '../../../../router/Router.Constants';
-
-const TRANSLATIONS = {
-  MEANING: 'meaning',
-  EXAMPLE: 'example',
-  WORD: 'word',
-};
+import { TRANSLATIONS, BUTTONS } from '../LearningWords.Constants';
 
 const data = {
+  training: {
+    parent: {
+      tag: 'div',
+      className: 'training',
+    },
+
+    children: [],
+  },
+
   // ======================== swiper ===========================
 
   swiper: {
@@ -51,7 +55,7 @@ const data = {
         className: 'button button-hard',
         dataset: {
           difficulty: 'hard',
-          button: 'difficulty',
+          button: BUTTONS.DIFFICULTY,
         },
         content: 'Hard',
       },
@@ -60,7 +64,7 @@ const data = {
         className: 'button button-medium',
         dataset: {
           difficulty: 'medium',
-          button: 'difficulty',
+          button: BUTTONS.DIFFICULTY,
         },
         content: 'Medium',
       },
@@ -69,7 +73,7 @@ const data = {
         className: 'button button-easy',
         dataset: {
           difficulty: 'easy',
-          button: 'difficulty',
+          button: BUTTONS.DIFFICULTY,
         },
         content: 'Easy',
       },
@@ -78,7 +82,7 @@ const data = {
         className: 'button button-again',
         dataset: {
           difficulty: 'again',
-          button: 'difficulty',
+          button: BUTTONS.DIFFICULTY,
         },
         content: 'Again',
       },
@@ -102,7 +106,7 @@ const data = {
         className: 'button button-hard-vocabulary',
         dataset: {
           vocabulary: 'difficult',
-          button: 'vocabulary',
+          button: BUTTONS.VOCABULARY,
         },
         content: 'Add to hard',
       },
@@ -111,7 +115,7 @@ const data = {
         className: 'button button-removed-vocabulary',
         dataset: {
           vocabulary: 'removed',
-          button: 'vocabulary',
+          button: BUTTONS.VOCABULARY,
         },
         content: 'Add to removed',
       },
@@ -125,7 +129,7 @@ const data = {
       content: 'I don\'t know',
       dataset: {
         settings: SETTINGS.ANSWER_BUTTON,
-        button: 'trueWord',
+        button: BUTTONS.TRUE_WORD,
       },
     },
 
@@ -136,9 +140,22 @@ const data = {
     parent: {
       tag: 'button',
       className: 'button button-finish',
+      dataset: {
+        button: BUTTONS.FINISH,
+      },
+      content: 'Finish',
+    },
+
+    children: [],
+  },
+
+  closeTraining: {
+    parent: {
+      tag: 'button',
+      className: 'button button-close',
       id: 'exit',
       destination: 'START_MENU',
-      content: 'Finish training',
+      content: 'Close',
     },
 
     children: [],
@@ -150,7 +167,7 @@ const data = {
       className: 'button button-check-word',
       content: 'Check',
       dataset: {
-        button: 'check',
+        button: BUTTONS.CHECK,
       },
     },
 
@@ -267,7 +284,7 @@ const data = {
         className: 'button button-additional',
         content: 'Additional',
         dataset: {
-          button: 'additional',
+          button: BUTTONS.ADDITIONAL,
         },
       },
       {
@@ -275,7 +292,7 @@ const data = {
         className: 'button button-random-words',
         content: 'Random words training',
         dataset: {
-          button: 'randomWords',
+          button: BUTTONS.RANDOM_WORDS,
         },
       },
     ],

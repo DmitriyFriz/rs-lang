@@ -5,13 +5,14 @@ import isEqual from 'lodash.isequal';
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
+// Swiper
+import 'swiper/css/swiper.min.css';
+import Swiper from 'swiper';
+import swiperOptions from 'components/MainPage/LearningWords/Swiper.Options';
+
 // constants
 import { MAIN_PAGE_ROUTES } from 'router/Router.Constants';
-
-// Swiper
-import Swiper from 'swiper';
-import swiperOptions from './Swiper.Options';
-import 'swiper/css/swiper.min.css';
+import { BUTTONS, HIDDEN_ELEMENTS_LIST } from './LearningWords.Constants';
 
 // layout
 import {
@@ -43,27 +44,20 @@ class LearningWords extends BaseComponent {
     this.settings = await this.handleSettings();
     await this.initWordsCollection();
 
-    this.hiddenElementsList = [
-      '#card-meaning-translation',
-      '#card-example-translation',
-      '#card-word-translation',
-      '#card-word',
-      '#card-difficulty',
-      '#card-vocabulary',
-    ];
-
     this.functionListForButtons = {
-      difficulty: (event) => addWordDifficulty(event, this.currentSlide.id),
-      vocabulary: (event) => addWordToVocabulary(event, this.currentSlide.id),
-      trueWord: () => this.showTrueWord(),
-      check: () => this.checkInputWord(),
-      additional: () => this.createAdditionalTraining(),
-      randomWords: () => this.createRandomWordsTraining(),
+      [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(event, this.currentSlide.id),
+      [BUTTONS.VOCABULARY]: (event) => addWordToVocabulary(event, this.currentSlide.id),
+      [BUTTONS.TRUE_WORD]: () => this.showTrueWord(),
+      [BUTTONS.CHECK]: () => this.checkInputWord(),
+      [BUTTONS.ADDITIONAL]: () => this.createAdditionalTraining(),
+      [BUTTONS.RANDOM_WORDS]: () => this.createRandomWordsTraining(),
+      [BUTTONS.FINISH]: () => this.finishTraining(),
     };
   }
 
   createLayout() {
     this.component.className = 'learning-words';
+    this.training = createElement(data.training.parent);
     this.swiperLayout = createBlock('swiper');
   }
 
@@ -91,7 +85,7 @@ class LearningWords extends BaseComponent {
   // ========================== swiper ==================================
 
   initSwiper() {
-    this.component.append(this.swiperLayout);
+    this.training.append(this.swiperLayout);
     this.swiper = new Swiper('.swiper__container', swiperOptions);
     this.swiper.on('transitionEnd', () => {
       if (this.swiper.progress === 1) {
@@ -116,7 +110,7 @@ class LearningWords extends BaseComponent {
   }
 
   get currentIndex() {
-    return this.swiper.activeIndex;
+    return get(this, 'swiper.activeIndex') || 0;
   }
 
   get currentInput() {
@@ -146,7 +140,7 @@ class LearningWords extends BaseComponent {
   }
 
   showElementsForTrueWord() {
-    this.hiddenElementsList.forEach((selector) => {
+    HIDDEN_ELEMENTS_LIST.forEach((selector) => {
       const elem = this.currentSlide.querySelector(selector);
       if (elem) { elem.classList.add('show'); }
     });
@@ -178,7 +172,7 @@ class LearningWords extends BaseComponent {
 
   async createWordsCollection(settings = this.settings.all) {
     this.wordsCollection = await getDayWordsCollection(settings);
-    this.trueWords = getTrueWords(this.wordsCollection);
+    this.trueWords = getTrueWords(this.wordsCollection); console.log(this.wordsCollection);
   }
 
   getSavedWords() {
@@ -194,10 +188,13 @@ class LearningWords extends BaseComponent {
       this.pasteWordsToTexts(cutWords);
       this.showElementsForTrueWord();
     }
-  }
 
-  get isEnd() {
-    return !this.wordsCollection.length;
+    if (
+      this.isEnd
+      && this.currentIndex === (this.trueWords.length - 1)
+    ) {
+      this.checkBtn.replaceWith(this.finishBtn);
+    }
   }
 
   get savedWords() {
@@ -230,35 +227,7 @@ class LearningWords extends BaseComponent {
     localStorage.setItem('savedSettings', JSON.stringify(value));
   }
 
-  // ========================== other ==================================
-
-  initTraining() {
-    if (this.isEnd) {
-      this.addCompletionNotice();
-      return;
-    }
-
-    this.exitBtn = createElement(data.finishTraining.parent);
-    this.checkBtn = createElement(data.checkWord.parent);
-    this.component.append(this.exitBtn, this.checkBtn);
-    this.initSwiper();
-    this.addWordToSwiper();
-  }
-
-  endTraining() {
-    this.destroySwiper();
-    this.exitBtn.remove();
-    this.checkBtn.remove();
-    if (!this.isRandomMode) {
-      this.savedWords = this.wordsCollection;
-    }
-  }
-
-  async handleButtons(event) {
-    const buttonFunction = get(event, 'target.dataset.button');
-    if (!buttonFunction) { return; }
-    this.functionListForButtons[buttonFunction](event);
-  }
+  // ========================== modes ==================================
 
   async createAdditionalTraining() {
     this.component.removeChild(this.completionNotice);
@@ -274,6 +243,48 @@ class LearningWords extends BaseComponent {
 
     await this.createWordsCollection(settings);
     this.initTraining();
+  }
+
+  // ========================== other ==================================
+
+  initTraining() {
+    if (this.isEnd) {
+      this.addCompletionNotice();
+      return;
+    }
+
+    this.exitBtn = createElement(data.closeTraining.parent);
+    this.checkBtn = createElement(data.checkWord.parent);
+    this.finishBtn = createElement(data.finishTraining.parent);
+    this.training.append(this.exitBtn, this.checkBtn);
+    this.component.append(this.training);
+    this.initSwiper();
+    this.addWordToSwiper();
+  }
+
+  endTraining() {
+    this.destroySwiper();
+    this.exitBtn.remove();
+    this.training.remove();
+    if (!this.isRandomMode) {
+      this.savedWords = this.wordsCollection;
+    }
+  }
+
+  finishTraining() {
+    this.finishBtn.remove();
+    this.endTraining();
+    this.addCompletionNotice();
+  }
+
+  get isEnd() {
+    return !this.wordsCollection.length;
+  }
+
+  async handleButtons(event) {
+    const buttonFunction = get(event, 'target.dataset.button');
+    if (!buttonFunction) { return; }
+    this.functionListForButtons[buttonFunction](event);
   }
 }
 
