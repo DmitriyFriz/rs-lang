@@ -112,6 +112,28 @@ class VocabularyLearning extends BaseComponent {
         .getFileLink(target.dataset.audio.replace(/['"]+/g, ''));
       this.playAudio(src);
     }
+
+    if (target.classList.contains(pageLayout.remove.className)) {
+      this.handleRemove(target.dataset.id, target.dataset.difficulty);
+    }
+  }
+
+  handleRemove(wordId, difficulty) {
+    this
+      .wordsDomainModel
+      .updateUserWord(wordId, difficulty, 'removed')
+      .then((res) => {
+        if (STATUSES.isSuccess(res.status)) {
+          console.log(res);
+          this.hideWord(wordId);
+        }
+      });
+  }
+
+  hideWord(id) {
+    const wordItem = document.getElementById(id);
+    wordItem.classList.add(pageLayout.hidden);
+    this.wordsContainer.removeChild(wordItem);
   }
 }
 

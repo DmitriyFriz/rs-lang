@@ -62,11 +62,28 @@
   &__item {
     padding: 1rem 0;
     border-bottom: $lightBorder;
+    transition: all 300ms;
+    &.hidden {
+      overflow: hidden;
+      height: 0;
+      padding: 0;
+      opacity: 0;
+    }
+  }
+
+  &__image {
+    display: block;
+    margin: auto;
+    width: 300px;
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
   }
 
   &__word {
     font-size: $fontSize;
     font-family: $headerFont;
+    color: $basicColor4;
   }
 
   &__pagination {

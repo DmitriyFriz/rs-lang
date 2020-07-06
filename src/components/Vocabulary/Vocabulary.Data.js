@@ -56,6 +56,7 @@ const pageLayout = {
     content: '>>',
     className: 'vocabulary__next',
   },
+  hidden: 'hidden',
 };
 
 const navTabsLayout = [
