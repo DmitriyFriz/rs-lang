@@ -79,13 +79,13 @@ function getWordLayout(wordData) {
 
   const meaning = BaseComponent.createElement({
     tag: 'div',
-    content: textMeaning,
+    innerHTML: textMeaning,
     className: pageLayout.meaning.className,
   });
 
   const example = BaseComponent.createElement({
     tag: 'div',
-    content: textExample,
+    innerHTML: textExample,
     className: pageLayout.example.className,
   });
 
