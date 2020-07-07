@@ -298,6 +298,36 @@ const data = {
       },
     ],
   },
+
+  // ============================ progress bar ============================
+
+  progressBar: {
+    tag: 'div',
+    className: 'progress-bar',
+  },
+
+  learnedWordsAmount: {
+    tag: 'span',
+    className: 'progress-bar__learned-words',
+    content: '0',
+  },
+
+  progressContainer: {
+    tag: 'div',
+    className: 'progress-container',
+  },
+
+  progress: {
+    tag: 'div',
+    className: 'progress-container__progress',
+    id: 'progress',
+  },
+
+  totalWords: {
+    tag: 'span',
+    className: 'progress-bar__total-words',
+    content: '0',
+  },
 };
 
 const translationsList = {

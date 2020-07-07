@@ -158,6 +158,30 @@ class LearningWords extends BaseComponent {
     this.component.append(this.completionNotice);
   }
 
+  createProgressBar() {
+    this.progressBar = createElement(data.progressBar);
+    const progressContainer = createElement(data.progressContainer);
+
+    this.learnedWordsAmount = createElement(data.learnedWordsAmount);
+    this.progress = createElement(data.progress);
+    this.totalWords = createElement(data.totalWords);
+
+    progressContainer.append(this.progress);
+    this.progressBar.append(this.learnedWordsAmount, progressContainer, this.totalWords);
+    return this.progressBar;
+  }
+
+  updateProgress() {
+    this.learnedWordsAmount.textContent = this.learnedWords.length;
+    this.totalWords.textContent = this.allWordsCollection;
+    const progress = (
+      (this.allWordsCollection - this.learnedWords.length)
+      / this.allWordsCollection
+    );
+    this.progress.style.width = `${(1 - progress) * 100}%`;
+    this.progress.style.backgroundColor = `rgb(${progress * 255}, 194, 232)`;
+  }
+
   get header() {
     return document.querySelector('header');
   }
@@ -192,6 +216,7 @@ class LearningWords extends BaseComponent {
       this.addWordToSwiper();
       this.pasteWordsToTexts(cutWords);
       this.showElementsForTrueWord();
+      this.updateProgress();
     } else {
       const trueWord = this.trueWords[this.currentIndex];
       this.addWordToCollection(this.currentSlideData, trueWord);
@@ -228,6 +253,9 @@ class LearningWords extends BaseComponent {
     localStorage.setItem('savedWords', JSON.stringify(value));
   }
 
+  get allWordsCollection() {
+    return this.trueWords.length;
+  }
   // ========================== settings ===============================
 
   async handleSettings() {
@@ -279,16 +307,19 @@ class LearningWords extends BaseComponent {
     this.exitBtn = createElement(data.closeTraining.parent);
     this.checkBtn = createElement(data.checkWord.parent);
     this.finishBtn = createElement(data.finishTraining.parent);
-    this.training.append(this.exitBtn, this.checkBtn);
+    this.training.append(this.exitBtn, this.checkBtn, this.createProgressBar());
     this.component.append(this.training);
     this.initSwiper();
     this.addWordToSwiper();
+    this.updateProgress();
   }
 
   endTraining() {
     this.destroySwiper();
     this.exitBtn.remove();
     this.training.remove();
+    this.progressBar.remove();
+    this.learnedWords = [];
     if (!this.isRandomMode) {
       this.savedWords = this.wordsCollection;
     }
