@@ -1,6 +1,7 @@
 import { SETTINGS } from '../../../Settings/Settings.Constants';
 import { MAIN_PAGE_ROUTES } from '../../../../router/Router.Constants';
 import { TRANSLATIONS, BUTTONS } from '../LearningWords.Constants';
+import { DIFFICULTY, VOCABULARY } from '../../../../domain-models/Words/Words.Constants';
 
 const data = {
   training: {
@@ -54,7 +55,7 @@ const data = {
         tag: 'button',
         className: 'button button-hard',
         dataset: {
-          difficulty: 'hard',
+          difficulty: DIFFICULTY.HARD,
           button: BUTTONS.DIFFICULTY,
         },
         content: 'Hard',
@@ -63,7 +64,7 @@ const data = {
         tag: 'button',
         className: 'button button-medium',
         dataset: {
-          difficulty: 'medium',
+          difficulty: DIFFICULTY.MEDIUM,
           button: BUTTONS.DIFFICULTY,
         },
         content: 'Medium',
@@ -72,7 +73,7 @@ const data = {
         tag: 'button',
         className: 'button button-easy',
         dataset: {
-          difficulty: 'easy',
+          difficulty: DIFFICULTY.EASY,
           button: BUTTONS.DIFFICULTY,
         },
         content: 'Easy',
@@ -81,7 +82,7 @@ const data = {
         tag: 'button',
         className: 'button button-again',
         dataset: {
-          difficulty: 'again',
+          difficulty: DIFFICULTY.AGAIN,
           button: BUTTONS.DIFFICULTY,
         },
         content: 'Again',
@@ -105,7 +106,7 @@ const data = {
         tag: 'button',
         className: 'button button-hard-vocabulary',
         dataset: {
-          vocabulary: 'difficult',
+          vocabulary: VOCABULARY.DIFFICULT,
           button: BUTTONS.VOCABULARY,
         },
         content: 'Add to hard',
@@ -114,7 +115,7 @@ const data = {
         tag: 'button',
         className: 'button button-removed-vocabulary',
         dataset: {
-          vocabulary: 'removed',
+          vocabulary: VOCABULARY.REMOVED,
           button: BUTTONS.VOCABULARY,
         },
         content: 'Add to removed',
@@ -154,7 +155,7 @@ const data = {
       tag: 'button',
       className: 'button button-close',
       id: 'exit',
-      destination: 'START_MENU',
+      destination: MAIN_PAGE_ROUTES.START_MENU,
       content: 'Close',
     },
 

@@ -30,7 +30,7 @@ class Words extends BaseDomainModel {
 
   async createUserWord(wordId, difficulty, vocabulary) {
     const parameters = registrationWord({ optional: {} }, difficulty, vocabulary);
-
+    console.log(parameters)
     let res = await this.getDataOfAuthorizedUser(
       createUserWord, this.userId, this.token, wordId, parameters,
     );
