@@ -72,8 +72,7 @@ const cardLayout = {
 
 function createWordCard(elementList, { _id, word, ...param }) {
   const card = createElement({
-    tag: 'div',
-    className: 'swiper-slide',
+    ...data.slide,
     id: _id,
   });
 
@@ -82,10 +81,12 @@ function createWordCard(elementList, { _id, word, ...param }) {
   });
 
   const wordInput = createElement({
-    tag: 'div',
-    className: 'swiper-slide__word-input',
+    ...data.wordInput,
+    innerHTML: `
+    <p class="word-input__success"></p>
+     <input class="word-input__input" type="text" size=${word.length} maxlength=${word.length}>
+    `,
   });
-  wordInput.innerHTML = `<input type="text" size=${word.length} maxlength=${word.length}>`;
 
   card.append(wordInput);
   return card;

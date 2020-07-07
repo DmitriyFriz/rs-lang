@@ -38,6 +38,11 @@ const data = {
     ],
   },
 
+  slide: {
+    tag: 'div',
+    className: 'swiper-slide',
+  },
+
   // ======================== buttons ==========================
 
   [SETTINGS.DIFFICULTY_BUTTONS]: {
@@ -237,6 +242,11 @@ const data = {
 
       },
     ],
+  },
+
+  wordInput: {
+    tag: 'div',
+    className: 'swiper-slide__word-input',
   },
 
   // ======================== images ==========================

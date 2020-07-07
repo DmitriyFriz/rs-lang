@@ -49,7 +49,7 @@ class LearningWords extends BaseComponent {
       [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(event, this.currentSlide.id),
       [BUTTONS.VOCABULARY]: (event) => addWordToVocabulary(event, this.currentSlide.id),
       [BUTTONS.TRUE_WORD]: () => this.showTrueWord(),
-      [BUTTONS.CHECK]: () => this.checkInputWord(),
+      [BUTTONS.CHECK]: () => this.checkResult(),
       [BUTTONS.ADDITIONAL]: () => this.createAdditionalTraining(),
       [BUTTONS.RANDOM_WORDS]: () => this.createRandomWordsTraining(),
       [BUTTONS.FINISH]: () => this.finishTraining(),
@@ -64,7 +64,7 @@ class LearningWords extends BaseComponent {
   }
 
   addListeners() {
-    this.component.addEventListener('change', () => this.checkInputWord());
+    this.component.addEventListener('change', () => this.checkResult());
     this.component.addEventListener('click', (event) => this.handleButtons(event));
   }
 
@@ -125,6 +125,16 @@ class LearningWords extends BaseComponent {
       .querySelector('.swiper-slide__word-input > input').value = value;
   }
 
+  get errorsBlock() {
+    return this.swiper.virtual.slides[this.currentIndex]
+      .querySelector('.word-input__success');
+  }
+
+  set errorsBlock(text) {
+    this.swiper.virtual.slides[this.currentIndex]
+      .querySelector('.word-input__success').innerHTML = text;
+  }
+
   get currentSlide() {
     return this.swiper.virtual.slides[this.currentIndex];
   }
@@ -150,7 +160,7 @@ class LearningWords extends BaseComponent {
 
   showTrueWord() {
     this.currentInput = this.trueWords[this.currentIndex].word;
-    this.checkInputWord();
+    this.checkResult();
   }
 
   addCompletionNotice() {
@@ -178,8 +188,27 @@ class LearningWords extends BaseComponent {
       (this.allWordsCollection - this.learnedWords.length)
       / this.allWordsCollection
     );
+    const RED = 255;
+    const GREEN = 194;
+    const BLUE = 232;
     this.progress.style.width = `${(1 - progress) * 100}%`;
-    this.progress.style.backgroundColor = `rgb(${progress * 255}, 194, 232)`;
+    this.progress.style.backgroundColor = `rgb(${progress * RED}, ${GREEN}, ${BLUE})`;
+  }
+
+  hideInput() {
+    this.currentInput.classList.add('hide-input');
+  }
+
+  showInput() {
+    this.currentInput.classList.remove('hide-input');
+  }
+
+  showLetterErrors() {
+    const trueWord = this.trueWords[this.currentIndex];
+    this.errorsBlock = this.getLetterErrors(this.currentInput.value, trueWord.word);
+    this.hideInput();
+    this.currentInput = '';
+    this.currentInput.addEventListener('input', () => this.showInput(), { once: true });
   }
 
   get header() {
@@ -207,33 +236,9 @@ class LearningWords extends BaseComponent {
     this.trueWords = getTrueWords(this.wordsCollection);
   }
 
-  checkInputWord() {
-    const { word, cutWords } = this.trueWords[this.currentIndex];
-
-    if (this.currentInput.value === word) {
-      this.learnedWords.push(this.currentSlideData);
-      registrationWord(this.currentSlideData._id);
-      this.addWordToSwiper();
-      this.pasteWordsToTexts(cutWords);
-      this.showElementsForTrueWord();
-      this.updateProgress();
-    } else {
-      const trueWord = this.trueWords[this.currentIndex];
-      this.addWordToCollection(this.currentSlideData, trueWord);
-    }
-
-    if (
-      this.isEnd
-      && this.currentIndex === (this.trueWords.length - 1)
-    ) {
-      this.checkBtn.replaceWith(this.finishBtn);
-    }
-  }
-
-  repeatWord() {
+  repeatWord(word = this.learnedWords[this.learnedWords.length - 1]) {
     const trueWord = this.trueWords[this.currentIndex];
-    const againWord = this.learnedWords[this.learnedWords.length - 1];
-    this.addWordToCollection(againWord, trueWord);
+    this.addWordToCollection(word, trueWord);
   }
 
   addWordToCollection(wordData, trueWord) {
@@ -243,6 +248,19 @@ class LearningWords extends BaseComponent {
     if (isRepeated) { return; }
     this.wordsCollection.unshift(wordData);
     this.trueWords.push(trueWord);
+  }
+
+  getLetterErrors(word, trueWord) {
+    let res = '';
+    Array.from(trueWord).forEach((trueLetter, index) => {
+      const letter = word[index];
+      if (trueLetter === letter) {
+        res += `<span class="success">${trueLetter}</span>`;
+        return;
+      }
+      res += `<span class="fail">${trueLetter}</span>`;
+    });
+    return res;
   }
 
   get savedWords() {
@@ -297,6 +315,29 @@ class LearningWords extends BaseComponent {
   }
 
   // ========================== other ==================================
+
+  checkResult() {
+    const { word, cutWords } = this.trueWords[this.currentIndex];
+
+    if (this.currentInput.value === word) {
+      this.learnedWords.push(this.currentSlideData);
+      registrationWord(this.currentSlideData._id);
+      this.addWordToSwiper();
+      this.pasteWordsToTexts(cutWords);
+      this.showElementsForTrueWord();
+      this.updateProgress();
+    } else {
+      this.showLetterErrors();
+      this.repeatWord(this.currentSlideData);
+    }
+
+    if (
+      this.isEnd
+      && this.currentIndex === (this.trueWords.length - 1)
+    ) {
+      this.checkBtn.replaceWith(this.finishBtn);
+    }
+  }
 
   initTraining() {
     if (this.isEnd) {
