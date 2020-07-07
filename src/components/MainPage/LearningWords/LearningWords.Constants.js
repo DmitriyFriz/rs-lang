@@ -12,6 +12,7 @@ const BUTTONS = {
   ADDITIONAL: 'additional',
   RANDOM_WORDS: 'randomWords',
   FINISH: 'finish',
+  AGAIN: 'again',
 };
 
 const HIDDEN_ELEMENTS_LIST = [

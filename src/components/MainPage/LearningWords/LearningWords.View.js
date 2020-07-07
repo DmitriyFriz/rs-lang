@@ -52,6 +52,7 @@ class LearningWords extends BaseComponent {
       [BUTTONS.ADDITIONAL]: () => this.createAdditionalTraining(),
       [BUTTONS.RANDOM_WORDS]: () => this.createRandomWordsTraining(),
       [BUTTONS.FINISH]: () => this.finishTraining(),
+      [BUTTONS.AGAIN]: () => this.repeatWord(),
     };
   }
 
@@ -102,9 +103,9 @@ class LearningWords extends BaseComponent {
 
   addWordToSwiper() {
     if (this.isEnd) { return; }
-    const wordData = this.wordsCollection.pop();
+    this.currentSlideData = this.wordsCollection.pop();
     this.swiper.virtual.appendSlide(
-      createWordCard(this.settings.enabled, wordData),
+      createWordCard(this.settings.enabled, this.currentSlideData),
     );
     this.swiper.update();
   }
@@ -163,6 +164,7 @@ class LearningWords extends BaseComponent {
   // ========================== words ==================================
 
   async initWordsCollection() {
+    this.learnedWords = [];
     if (this.savedWords && !this.settings.isNew) {
       this.getSavedWords();
       return;
@@ -172,7 +174,7 @@ class LearningWords extends BaseComponent {
 
   async createWordsCollection(settings = this.settings.all) {
     this.wordsCollection = await getDayWordsCollection(settings);
-    this.trueWords = getTrueWords(this.wordsCollection); console.log(this.wordsCollection);
+    this.trueWords = getTrueWords(this.wordsCollection); // console.log(this.wordsCollection);
   }
 
   getSavedWords() {
@@ -184,9 +186,13 @@ class LearningWords extends BaseComponent {
     const { word, cutWords } = this.trueWords[this.currentIndex];
 
     if (this.currentInput.value === word) {
+      this.learnedWords.push(this.currentSlideData);
       this.addWordToSwiper();
       this.pasteWordsToTexts(cutWords);
       this.showElementsForTrueWord();
+    } else {
+      const trueWord = this.trueWords[this.currentIndex];
+      this.addWordToCollection(this.currentSlideData, trueWord);
     }
 
     if (
@@ -195,6 +201,21 @@ class LearningWords extends BaseComponent {
     ) {
       this.checkBtn.replaceWith(this.finishBtn);
     }
+  }
+
+  repeatWord() {
+    const trueWord = this.trueWords[this.currentIndex];
+    const againWord = this.learnedWords[this.learnedWords.length - 1];
+    this.addWordToCollection(againWord, trueWord);
+  }
+
+  addWordToCollection(wordData, trueWord) {
+    const LAST_ELEMENT = 0;
+    const previousWordData = this.wordsCollection[LAST_ELEMENT];
+    const isRepeated = isEqual(wordData, previousWordData);
+    if (isRepeated) { return; }
+    this.wordsCollection.unshift(wordData);
+    this.trueWords.push(trueWord);
   }
 
   get savedWords() {
