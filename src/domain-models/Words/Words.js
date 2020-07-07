@@ -34,7 +34,7 @@ class Words extends BaseDomainModel {
 
   async createUserWord(wordId, difficulty, vocabulary, options = DEFAULT_OPTIONS) {
     const parameters = registrationWord({ optional: {} }, difficulty, vocabulary, options);
-    console.log(parameters);
+
     let res = await this.getDataOfAuthorizedUser(
       createUserWord, this.userId, this.token, wordId, parameters,
     );
