@@ -3,6 +3,9 @@ import endPoints from 'services/endPoints/endPoints.main';
 import STATUSES from 'services/requestHandler.Statuses';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
 import { checkGroupWordsStatus, registrationWord } from './WordsHandler';
+import {
+  VOCABULARY, OPTIONAL, REPEAT, DEFAULT_OPTIONS,
+} from './Words.Constants';
 
 const {
   getChunk,
@@ -16,6 +19,8 @@ const {
   getAggregatedWordData,
 } = endPoints.words;
 
+const pathToWordStatus = `userWord.optional.${OPTIONAL.REPEAT}.${REPEAT.STATUS}`;
+
 class Words extends BaseDomainModel {
   async getChunk(page, group) {
     const res = await this.getData(getChunk, page, group);
@@ -27,15 +32,15 @@ class Words extends BaseDomainModel {
     return res;
   }
 
-  async createUserWord(wordId, difficulty, vocabulary) {
-    const parameters = registrationWord({ optional: {} }, difficulty, vocabulary);
+  async createUserWord(wordId, difficulty, vocabulary, options = DEFAULT_OPTIONS) {
+    const parameters = registrationWord({ optional: {} }, difficulty, vocabulary, options);
 
     let res = await this.getDataOfAuthorizedUser(
       createUserWord, this.userId, this.token, wordId, parameters,
     );
 
     if (res.status === STATUSES.EXPECTATION_FAILED) {
-      res = await this.updateUserWord(wordId, difficulty, vocabulary);
+      res = await this.updateUserWord(wordId, difficulty, vocabulary, options);
     }
 
     return res;
@@ -55,15 +60,15 @@ class Words extends BaseDomainModel {
     return res;
   }
 
-  async updateUserWord(wordId, newDifficulty, newVocabulary) {
+  async updateUserWord(wordId, newDifficulty, newVocabulary, options = DEFAULT_OPTIONS) {
     const { data, status, statusText } = await this.getUserWordById(wordId);
-    if (status === STATUSES.UNAUTHORIZED) {
+    if (!data) {
       return { status, statusText };
     }
 
     const { difficulty, optional } = data;
     const parameters = registrationWord(
-      { difficulty, optional }, newDifficulty, newVocabulary,
+      { difficulty, optional }, newDifficulty, newVocabulary, options,
     );
 
     const res = await this.getDataOfAuthorizedUser(
@@ -90,8 +95,8 @@ class Words extends BaseDomainModel {
     const ALL_WORDS = 600;
     const filter = {
       $or: [
-        { 'userWord.optional.repeat.status': false },
-        { 'userWord.optional.repeat.status': true },
+        { [pathToWordStatus]: false },
+        { [pathToWordStatus]: true },
         { userWord: null }],
     };
 
@@ -113,9 +118,14 @@ class Words extends BaseDomainModel {
   }
 
   get repeatWords() {
+    const pathToVocabulary = `userWord.optional.${OPTIONAL.VOCABULARY}`;
     return this.groupWords.filter((word) => {
-      const status = get(word, 'userWord.optional.repeat.status');
-      return !!status;
+      const status = get(word, pathToWordStatus);
+      const vocabulary = get(word, pathToVocabulary);
+      return (
+        !!status
+        && (!vocabulary || vocabulary === VOCABULARY.RESTORED)
+      );
     });
   }
 

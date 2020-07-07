@@ -16,14 +16,11 @@ const settingsDomainModel = new Settings();
 // ============ updateSettings() - get settings of authorized user =========
 
 const data = {
-  wordsPerDay: 50,
-  optional: {
-    displayExample: true,
-    displayImg: false,
-  },
+  displayExample: true,
+  displayImg: false,
 };
 
-settingsDomainModel.updateSettings(data).then((res) => console.log(res));
+settingsDomainModel.updateSettings('mySettings', data).then((res) => console.log(res));
 
 /*
   console log:
@@ -31,8 +28,10 @@ settingsDomainModel.updateSettings(data).then((res) => console.log(res));
   data:{
     id: "5eefb858b089455bd925c680",
     optional: {
-      displayExample: true,
-      displayImg: false
+      mySettings: {
+        displayExample: true,
+        displayImg: false
+      }
     },
     wordsPerDay: 50,
   }
@@ -47,13 +46,15 @@ settingsDomainModel.updateSettings(data).then((res) => console.log(res));
 settingsDomainModel.getSettings().then((res) => console.log(res));
 
 /*
-  console log:
+ console log:
  {
   data:{
     id: "5eefb858b089455bd925c680",
     optional: {
-      displayExample: true,
-      displayImg: false
+      mySettings: {
+        displayExample: true,
+        displayImg: false
+      }
     },
     wordsPerDay: 50,
   }

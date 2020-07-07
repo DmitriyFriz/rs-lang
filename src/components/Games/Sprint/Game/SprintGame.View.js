@@ -1,6 +1,9 @@
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
+// loader
+import Loader from 'components/Loader/Loader.View';
+
 // router
 import { changeRoute } from 'router/RouteHandler';
 
@@ -45,6 +48,9 @@ class SprintGame extends BaseComponent {
     this.keyActiveClassName = 'key_active';
     this.keyId = '_id';
 
+    this.loader = new Loader();
+    this.loader.show();
+
     this.setTimer = this.setTimer.bind(this);
     this.handleFalseButton = this.handleFalseButton.bind(this);
     this.handleTrueButton = this.handleTrueButton.bind(this);
@@ -62,6 +68,8 @@ class SprintGame extends BaseComponent {
     this.shuffleWords(newWords);
     this.gameArray = [];
     this.gameArray.push(...repeatWords, ...newWords, ...this.group);
+
+    this.loader.hide();
   }
 
   createLayout() {
