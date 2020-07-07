@@ -99,6 +99,10 @@ function getTrueWords(collection) {
     .reverse();
 }
 
+function registrationWord(wordId) {
+  wordsDomain.createUserWord(wordId);
+}
+
 // ===================== buttons =============================
 
 async function handleButtons(event, functionsList) {
@@ -129,4 +133,5 @@ export {
   addWordToVocabulary,
   getTrueWords,
   getRandomWords,
+  registrationWord,
 };

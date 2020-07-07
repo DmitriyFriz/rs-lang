@@ -30,6 +30,7 @@ import {
   addWordDifficulty,
   addWordToVocabulary,
   getTrueWords,
+  registrationWord,
 } from './LearningWordsHandler';
 
 const { createElement } = BaseComponent;
@@ -187,6 +188,7 @@ class LearningWords extends BaseComponent {
 
     if (this.currentInput.value === word) {
       this.learnedWords.push(this.currentSlideData);
+      registrationWord(this.currentSlideData._id);
       this.addWordToSwiper();
       this.pasteWordsToTexts(cutWords);
       this.showElementsForTrueWord();
