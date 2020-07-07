@@ -3,6 +3,7 @@ import endPoints from 'services/endPoints/endPoints.main';
 import STATUSES from 'services/requestHandler.Statuses';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
 import { checkGroupWordsStatus, registrationWord } from './WordsHandler';
+import { VOCABULARY } from './Words.Constants';
 
 const {
   getChunk,
@@ -57,7 +58,7 @@ class Words extends BaseDomainModel {
 
   async updateUserWord(wordId, newDifficulty, newVocabulary) {
     const { data, status, statusText } = await this.getUserWordById(wordId);
-    if (status === STATUSES.UNAUTHORIZED) {
+    if (!data) {
       return { status, statusText };
     }
 
@@ -115,7 +116,11 @@ class Words extends BaseDomainModel {
   get repeatWords() {
     return this.groupWords.filter((word) => {
       const status = get(word, 'userWord.optional.repeat.status');
-      return !!status;
+      const vocabulary = get(word, 'userWord.optional.vocabulary');
+      return (
+        !!status
+        && (!vocabulary || vocabulary === VOCABULARY.RESTORED)
+      );
     });
   }
 

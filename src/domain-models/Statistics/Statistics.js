@@ -1,3 +1,4 @@
+import STATUSES from 'services/requestHandler.Statuses';
 import endPoints from 'services/endPoints/endPoints.main';
 import BaseDomainModel from '../BaseDomainModel/BaseDomainModel';
 
@@ -11,9 +12,31 @@ class Statistics extends BaseDomainModel {
     return res;
   }
 
-  async updateStatistics(data) {
+  async updateStatistics(name, statistics) {
+    const { data, status, statusText } = await this.getStatistics();
+    if (
+      !data
+      && status !== STATUSES.NOT_FOUND
+    ) {
+      return { status, statusText };
+    }
+
+    let updateData;
+
+    if (status === STATUSES.NOT_FOUND) {
+      updateData = {
+        optional: {
+          [name]: statistics,
+        },
+      };
+    } else {
+      const { optional } = data;
+      optional[name] = statistics;
+      updateData = { optional };
+    }
+
     const res = await this.getDataOfAuthorizedUser(
-      update, this.userId, this.token, data,
+      update, this.userId, this.token, updateData,
     );
     return res;
   }

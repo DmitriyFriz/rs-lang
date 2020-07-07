@@ -16,15 +16,12 @@ const statisticsDomainModel = new Statistics();
 // ============ updateStatistics() - get statistics of authorized user =========
 
 const data = {
-  learnedWords: 30,
-  optional: {
-    learnedWordsToday: 12,
-    deletedWords: 3,
-    completedTaskToday: 1,
-  },
+  learnedWordsToday: 12,
+  deletedWords: 3,
+  completedTaskToday: 1,
 };
 
-statisticsDomainModel.updateStatistics(data).then((res) => console.log(res));
+statisticsDomainModel.updateStatistics('myStatistics', data).then((res) => console.log(res));
 
 /*
   console log:
