@@ -42,10 +42,13 @@ async function init() {
   const currentHeaderRoute = user.isAuthorized
     ? HEADER_ROUTES.HEADER_AUTHORIZED : HEADER_ROUTES.HEADER_GUEST;
 
+  const currentMainRoute = user.isAuthorized
+    ? MAIN_ROUTES.MAIN_PAGE : MAIN_ROUTES.PROMO;
+
   const headerRouter = new Router(ROUTERS.HEADER, header, headerRoutes, currentHeaderRoute);
   registerRouter(headerRouter);
 
-  const mainRouter = new Router(ROUTERS.MAIN, root, mainRoutes, MAIN_ROUTES.PROMO);
+  const mainRouter = new Router(ROUTERS.MAIN, root, mainRoutes, currentMainRoute);
   registerRouter(mainRouter);
 }
 
