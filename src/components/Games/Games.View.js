@@ -7,6 +7,7 @@ import SpeakItMain from './SpeakIt/components/SpeakItMain.View';
 import SprintStart from './Sprint/Start/SprintStart.View';
 import SprintGame from './Sprint/Game/SprintGame.View';
 import SprintFinish from './Sprint/Finish/SprintFinish.View';
+import Savannah from 'components/Games/Savannah/Savannah';
 
 // router
 import Router from 'router/Router';
@@ -18,7 +19,7 @@ import {
 // constants
 import {
   MAIN_ROUTES, ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS,
-} from '../../router/Router.Constants';
+} from 'router/Router.Constants';
 
 class Games extends BaseComponent {
   static get name() {

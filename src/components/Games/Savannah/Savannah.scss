@@ -1,10 +1,12 @@
 .game-savanna {
   position: static;
-  width: 100vw;
-  height: 100vh;
-  background-image: url("./images/background.jpg");
+  height: 100%;
+  background: url("./images/background.jpg") no-repeat bottom center fixed;
+  background-size: unset;
+  overflow: hidden;
 
   h3 {
     color: $fontColor;
   }
 }
+

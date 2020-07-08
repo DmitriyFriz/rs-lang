@@ -1,12 +1,11 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-import User from 'domainModels/User/User';
+// import user from 'domainModels/User/User';
 import Words from 'domainModels/Words/Words';
 import './Savannah.scss';
 
 export default class Savannah extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.user = new User();
     this.words = new Words();
     this.handlerCloseBtn = this.handlerCloseBtn.bind(this);
   }
@@ -20,7 +19,6 @@ export default class Savannah extends BaseComponent {
       className: 'button',
     });
     this.component.append(button);
-
     this.button = this.component.querySelector('#closeBtn');
 
     console.log(this.button);
@@ -46,6 +44,6 @@ export default class Savannah extends BaseComponent {
   }
 
   handlerCloseBtn() {
-    this.hide();
+    console.log('close');
   }
 }
