@@ -13,7 +13,8 @@ async function getSettings(name) {
 async function saveSettings({ name, list }) {
   const settings = [...list].reduce((accumulator, setting) => {
     const data = accumulator;
-    const settingName = setting.dataset.settings[name];
+    const [settingName] = setting.dataset.settings.split('.').reverse();
+
     data[settingName] = setting.type === 'checkbox'
       ? setting.checked : setting.value;
     return data;
@@ -29,6 +30,7 @@ async function loadSettings({ name, list }) {
     const setting = item;
     const [settingName] = setting.dataset.settings.split('.').reverse();
     const type = setting.type === 'checkbox' ? 'checked' : 'value';
+
     setting[type] = settings[settingName];
     return setting;
   });
