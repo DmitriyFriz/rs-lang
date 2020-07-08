@@ -21,6 +21,7 @@
       position: relative;
       cursor: help;
       &:hover {
+        color: rgba(91, 91, 91, 0.4);
         &:after {
           content: 'The password must contain 8 characters, one uppercase letter, one lowercase letter, one number and one special character from + -_ @ $!% *? & #.,;: [] {}.';
           text-transform: none;
