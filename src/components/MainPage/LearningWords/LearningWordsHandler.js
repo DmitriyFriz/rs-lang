@@ -97,10 +97,14 @@ async function getDayWordsCollection(optional) {
   return handleWords(allWords);
 }
 
-function getTrueWords(collection) {
+function getTrueWordsData(collection) {
   return collection.map((wordData) => {
-    const { word, cutWords } = wordData;
-    return { word, cutWords };
+    const {
+      word, cutWords, audio, audioExample, audioMeaning,
+    } = wordData;
+    return {
+      word, cutWords, audio, audioExample, audioMeaning,
+    };
   })
     .reverse();
 }
@@ -137,7 +141,7 @@ export {
   handleButtons,
   addWordDifficulty,
   addWordToVocabulary,
-  getTrueWords,
+  getTrueWordsData,
   getRandomWords,
   registrationWord,
 };
