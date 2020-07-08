@@ -180,6 +180,15 @@ const data = {
     children: [],
   },
 
+  playAudioBtn: {
+    tag: 'button',
+    className: 'button button-play-audio',
+    content: 'Play',
+    dataset: {
+      button: BUTTONS.PLAY_AUDIO,
+    },
+  },
+
   // ======================== texts ==========================
 
   [SETTINGS.EXAMPLE]: {

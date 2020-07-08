@@ -17,6 +17,9 @@ function getLayout() {
         <option value="repeated">Only repeated words</option>
       </select>
 
+    <input type="checkbox" id="autoplay" name="autoplay" data-settings="${SETTINGS.AUDIO_AUTOPLAY}">
+    <label for="autoplay">Voice autoplay </label>
+
   </div>
   <p>Level</p>
   <select id="level" data-settings="${SETTINGS.LEVEL}">

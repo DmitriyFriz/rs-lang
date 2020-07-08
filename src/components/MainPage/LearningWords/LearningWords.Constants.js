@@ -13,6 +13,7 @@ const BUTTONS = {
   RANDOM_WORDS: 'randomWords',
   FINISH: 'finish',
   AGAIN: 'again',
+  PLAY_AUDIO: 'playAudio',
 };
 
 const HIDDEN_ELEMENTS_LIST = [

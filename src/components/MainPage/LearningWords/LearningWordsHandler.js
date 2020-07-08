@@ -29,6 +29,9 @@ function handleWords(data) {
       textMeaningTranslate,
       _id,
       word,
+      audio,
+      audioExample,
+      audioMeaning,
     } = wordData;
 
     return {
@@ -41,6 +44,9 @@ function handleWords(data) {
       textMeaningTranslate,
       _id,
       word,
+      audio: getFileLink(audio),
+      audioExample: getFileLink(audioExample),
+      audioMeaning: getFileLink(audioMeaning),
       cutWords: {
         textExample: replaceWord(textExample).word,
         textMeaning: replaceWord(textMeaning).word,
