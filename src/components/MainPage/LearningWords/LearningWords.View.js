@@ -48,7 +48,7 @@ class LearningWords extends BaseComponent {
     this.functionListForButtons = {
       [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(event, this.currentSlide.id),
       [BUTTONS.VOCABULARY]: (event) => addWordToVocabulary(event, this.currentSlide.id),
-      [BUTTONS.TRUE_WORD]: () => this.showTrueWord(),
+      [BUTTONS.TRUE_WORD]: (event) => this.showTrueWord(event),
       [BUTTONS.CHECK]: () => this.checkResult(),
       [BUTTONS.ADDITIONAL]: () => this.createAdditionalTraining(),
       [BUTTONS.RANDOM_WORDS]: () => this.createRandomWordsTraining(),
@@ -158,7 +158,9 @@ class LearningWords extends BaseComponent {
     });
   }
 
-  showTrueWord() {
+  showTrueWord(event) {
+    const trueWordBtn = event.target;
+    trueWordBtn.style.display = 'none';
     this.currentInput = this.trueWords[this.currentIndex].word;
     this.checkResult();
   }
@@ -320,6 +322,7 @@ class LearningWords extends BaseComponent {
     const { word, cutWords } = this.trueWords[this.currentIndex];
 
     if (this.currentInput.value === word) {
+      this.currentInput.disabled = true;
       this.learnedWords.push(this.currentSlideData);
       registrationWord(this.currentSlideData._id);
       this.addWordToSwiper();
