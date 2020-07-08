@@ -169,10 +169,12 @@ export default class AuthPage extends BaseComponent {
   }
 
   isEmail(string) {
-    return string.match(new RegExp(authEmailRegExp));
+    const regExp = new RegExp(authEmailRegExp);
+    return regExp.test(string);
   }
 
   isCorrectPassword(string) {
-    return string.match(new RegExp(authPasswordRegEx));
+    const regExp = new RegExp(authPasswordRegEx);
+    return regExp.test(string);
   }
 }
