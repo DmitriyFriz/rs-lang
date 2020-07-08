@@ -99,16 +99,19 @@ function getLayout() {
     <div class="interval-repetition_other">
       <p>Human memory settings</p>
 
-      <input type="number" id="forgetting-speed"
-      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.FORGETTING_SPEED}">
+      <input type="range" id="forgetting-speed"
+      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.FORGETTING_SPEED}"
+      min=0.5 max=0.6 step=0.01>
       <label for="forgetting-speed">Forgetting speed</label>
 
-      <input type="number" id="memory-rating"
-      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.RATING}">
+      <input type="range" id="memory-rating"
+      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.RATING}"
+      min=0.6 max=0.9 step=0.1>
       <label for="memory-rating">Memory rating</label>
 
-      <input type="number" id="max-amount"
-      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.MAX_AMOUNT}">
+      <input type="range" id="max-amount"
+      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.MAX_AMOUNT}"
+      min=1 max=7 step=1>
       <label for="max-amount">Max number of repetitions after which the rate of forgetting will stop decreasing</label>
     </div>
   </div>

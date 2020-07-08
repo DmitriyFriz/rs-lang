@@ -22,7 +22,7 @@ import { data } from './Layout/LearningWords.Data';
 
 // Settings
 import { getSettings } from '../../Settings/SettingsHandler';
-import { SETTINGS_MAIN } from '../../Settings/Settings.Constants';
+import { SETTINGS_MAIN, SETTINGS } from '../../Settings/Settings.Constants';
 
 // handler
 import {
@@ -43,7 +43,8 @@ class LearningWords extends BaseComponent {
   async prepareData() {
     this.isRandomMode = false;
     this.isPlayAudio = false;
-    this.settings = await this.handleSettings();
+    // this.settings = await this.handleSettings();
+    await this.initSettings();
     await this.initWordsCollection();
 
     this.functionListForButtons = {
@@ -115,7 +116,7 @@ class LearningWords extends BaseComponent {
     if (this.isEnd) { return; }
     this.currentSlideData = this.wordsCollection.pop();
     this.swiper.virtual.appendSlide(
-      createWordCard(this.settings.enabled, this.currentSlideData),
+      createWordCard(this.settings[SETTINGS.MAIN].enabled, this.currentSlideData),
     );
     this.swiper.update();
   }
@@ -235,14 +236,14 @@ class LearningWords extends BaseComponent {
 
   async initWordsCollection() {
     this.learnedWords = [];
-    if (this.savedWords && !this.settings.isNew) {
+    if (this.savedWords && !this.settings[SETTINGS.MAIN].isNew) {
       this.getSavedWords();
       return;
     }
     await this.createWordsCollection();
   }
 
-  async createWordsCollection(settings = this.settings.all) {
+  async createWordsCollection(settings = this.settings[SETTINGS.MAIN].all) {
     this.wordsCollection = await getDayWordsCollection(settings);
     this.trueWordsData = getTrueWordsData(this.wordsCollection);
   }
@@ -292,16 +293,30 @@ class LearningWords extends BaseComponent {
   }
   // ========================== settings ===============================
 
-  async handleSettings() {
-    const all = await getSettings();
+  async handleSettings(name) {
+    const all = await getSettings(name);
     const enabled = Object.keys(all)
       .filter((setting) => all[setting] === true);
 
-    if (!this.savedSettings) { this.savedSettings = all; }
-    const isNew = !isEqual(all, this.savedSettings);
+    if (!this.savedSettings) {
+      this.savedSettings = {};
+      this.savedSettings[name] = all;
+    }
+    const isNew = !isEqual(all, this.savedSettings[name]);
 
-    if (isNew) { console.log('SAVED SETTINGS!'); this.savedSettings = all; }
+    if (isNew) { console.log('SAVED SETTINGS!'); this.savedSettings[name] = all; }
     return { enabled, all, isNew };
+  }
+
+  async initSettings() {
+    this.settings = {};
+    const promises = Object
+      .keys(SETTINGS)
+      .map(async (settingsName) => {
+        this.settings[SETTINGS[settingsName]] = await this.handleSettings(SETTINGS[settingsName]);
+      });
+
+    await Promise.all(promises);
   }
 
   get savedSettings() {
@@ -322,7 +337,7 @@ class LearningWords extends BaseComponent {
 
   async createRandomWordsTraining() {
     this.component.removeChild(this.completionNotice);
-    const settings = this.settings.all;
+    const settings = this.settings[SETTINGS.MAIN].all;
     settings[SETTINGS_MAIN.COLLECTION_WORDS_MODE] = 'random';
     this.isRandomMode = true;
 
@@ -357,11 +372,11 @@ class LearningWords extends BaseComponent {
     }
 
     const { audio, audioExample, audioMeaning } = this.trueWordsData[this.currentIndex];
-    this.audioData = []; console.log(this.settings);
-    if (this.settings.all[SETTINGS_MAIN.MEANING]) {
+    this.audioData = []; console.log(this.settings[SETTINGS.MAIN]);
+    if (this.settings[SETTINGS.MAIN].all[SETTINGS_MAIN.MEANING]) {
       this.audioData.push(audioMeaning);
     }
-    if (this.settings.all[SETTINGS_MAIN.EXAMPLE]) {
+    if (this.settings[SETTINGS.MAIN].all[SETTINGS_MAIN.EXAMPLE]) {
       this.audioData.push(audioExample);
     }
 
@@ -370,7 +385,7 @@ class LearningWords extends BaseComponent {
   }
 
   checkAutoAudioPlay() {
-    if (this.settings.all[SETTINGS_MAIN.AUDIO_AUTOPLAY]) {
+    if (this.settings[SETTINGS.MAIN].all[SETTINGS_MAIN.AUDIO_AUTOPLAY]) {
       this.initAudio();
     }
   }

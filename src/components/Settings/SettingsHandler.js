@@ -4,7 +4,7 @@ import { DEFAULT_SETTINGS_LIST } from './Settings.Constants';
 
 const settingsDomain = new SettingsDomain();
 
-async function getSettings(name) {
+async function getSettings(name = 'main') {
   const { data } = await settingsDomain.getSettings();
   const settings = get(data, `optional.${name}`);
   return settings || DEFAULT_SETTINGS_LIST[name];

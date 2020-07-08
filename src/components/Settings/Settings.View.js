@@ -42,7 +42,7 @@ class Settings extends BaseComponent {
   }
 
   addListeners() {
-    this.saveBtn.addEventListener('click', () => saveSettings(this.settingsData));
+    this.saveBtn.addEventListener('click', () => this.handleSettings('save'));
   }
 
   removeListeners() {
