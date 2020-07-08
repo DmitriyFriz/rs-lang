@@ -22,7 +22,7 @@ import { data } from './Layout/LearningWords.Data';
 
 // Settings
 import { getSettings } from '../../Settings/SettingsHandler';
-import { SETTINGS } from '../../Settings/Settings.Constants';
+import { SETTINGS_MAIN } from '../../Settings/Settings.Constants';
 
 // handler
 import {
@@ -323,7 +323,7 @@ class LearningWords extends BaseComponent {
   async createRandomWordsTraining() {
     this.component.removeChild(this.completionNotice);
     const settings = this.settings.all;
-    settings[SETTINGS.COLLECTION_WORDS_MODE] = 'random';
+    settings[SETTINGS_MAIN.COLLECTION_WORDS_MODE] = 'random';
     this.isRandomMode = true;
 
     await this.createWordsCollection(settings);
@@ -358,10 +358,10 @@ class LearningWords extends BaseComponent {
 
     const { audio, audioExample, audioMeaning } = this.trueWordsData[this.currentIndex];
     this.audioData = []; console.log(this.settings);
-    if (this.settings.all[SETTINGS.MEANING]) {
+    if (this.settings.all[SETTINGS_MAIN.MEANING]) {
       this.audioData.push(audioMeaning);
     }
-    if (this.settings.all[SETTINGS.EXAMPLE]) {
+    if (this.settings.all[SETTINGS_MAIN.EXAMPLE]) {
       this.audioData.push(audioExample);
     }
 
@@ -370,7 +370,7 @@ class LearningWords extends BaseComponent {
   }
 
   checkAutoAudioPlay() {
-    if (this.settings.all[SETTINGS.AUDIO_AUTOPLAY]) {
+    if (this.settings.all[SETTINGS_MAIN.AUDIO_AUTOPLAY]) {
       this.initAudio();
     }
   }

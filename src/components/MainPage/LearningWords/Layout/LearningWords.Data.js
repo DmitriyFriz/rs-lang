@@ -1,4 +1,4 @@
-import { SETTINGS } from '../../../Settings/Settings.Constants';
+import { SETTINGS_MAIN } from '../../../Settings/Settings.Constants';
 import { MAIN_PAGE_ROUTES } from '../../../../router/Router.Constants';
 import { TRANSLATIONS, BUTTONS } from '../LearningWords.Constants';
 import { DIFFICULTY, VOCABULARY } from '../../../../domain-models/Words/Words.Constants';
@@ -45,13 +45,13 @@ const data = {
 
   // ======================== buttons ==========================
 
-  [SETTINGS.DIFFICULTY_BUTTONS]: {
+  [SETTINGS_MAIN.DIFFICULTY_BUTTONS]: {
     parent: {
       tag: 'div',
       className: 'swiper-slide__difficulty-buttons',
       id: 'card-difficulty',
       dataset: {
-        settings: SETTINGS.DIFFICULTY_BUTTONS,
+        settings: SETTINGS_MAIN.DIFFICULTY_BUTTONS,
       },
     },
 
@@ -96,13 +96,13 @@ const data = {
     ],
   },
 
-  [SETTINGS.VOCABULARY_BUTTONS]: {
+  [SETTINGS_MAIN.VOCABULARY_BUTTONS]: {
     parent: {
       tag: 'div',
       className: 'swiper-slide__vocabulary-buttons',
       id: 'card-vocabulary',
       dataset: {
-        settings: SETTINGS.VOCABULARY_BUTTONS,
+        settings: SETTINGS_MAIN.VOCABULARY_BUTTONS,
       },
     },
 
@@ -128,13 +128,13 @@ const data = {
     ],
   },
 
-  [SETTINGS.ANSWER_BUTTON]: {
+  [SETTINGS_MAIN.ANSWER_BUTTON]: {
     parent: {
       tag: 'button',
       className: 'button button-true-word',
       content: 'I don\'t know',
       dataset: {
-        settings: SETTINGS.ANSWER_BUTTON,
+        settings: SETTINGS_MAIN.ANSWER_BUTTON,
         button: BUTTONS.TRUE_WORD,
       },
     },
@@ -191,12 +191,12 @@ const data = {
   },
   // ======================== texts ==========================
 
-  [SETTINGS.EXAMPLE]: {
+  [SETTINGS_MAIN.EXAMPLE]: {
     parent: {
       tag: 'div',
       className: 'swiper-slide__example',
       dataset: {
-        settings: SETTINGS.EXAMPLE,
+        settings: SETTINGS_MAIN.EXAMPLE,
         translation: TRANSLATIONS.EXAMPLE,
       },
     },
@@ -212,13 +212,13 @@ const data = {
     ],
   },
 
-  [SETTINGS.TRANSCRIPTION]: {
+  [SETTINGS_MAIN.TRANSCRIPTION]: {
     parent: {
       tag: 'div',
       className: 'swiper-slide__word',
       id: 'card-word',
       dataset: {
-        settings: SETTINGS.TRANSCRIPTION,
+        settings: SETTINGS_MAIN.TRANSCRIPTION,
         translation: TRANSLATIONS.WORD,
       },
     },
@@ -231,12 +231,12 @@ const data = {
     ],
   },
 
-  [SETTINGS.MEANING]: {
+  [SETTINGS_MAIN.MEANING]: {
     parent: {
       tag: 'div',
       className: 'swiper-slide__meaning',
       dataset: {
-        settings: SETTINGS.MEANING,
+        settings: SETTINGS_MAIN.MEANING,
         translation: TRANSLATIONS.MEANING,
       },
     },
@@ -260,12 +260,12 @@ const data = {
 
   // ======================== images ==========================
 
-  [SETTINGS.IMAGE]: {
+  [SETTINGS_MAIN.IMAGE]: {
     parent: {
       tag: 'div',
       className: 'swiper-slide__associative',
       dataset: {
-        settings: SETTINGS.IMAGE,
+        settings: SETTINGS_MAIN.IMAGE,
       },
     },
 

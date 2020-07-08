@@ -1,5 +1,5 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-import { SETTINGS } from '../../../Settings/Settings.Constants';
+import { SETTINGS_MAIN } from '../../../Settings/Settings.Constants';
 import { data, translationsList } from './LearningWords.Data';
 
 const { createElement } = BaseComponent;
@@ -36,7 +36,7 @@ function createTranslations(root, parameters) {
 }
 
 function createAssociativeImg(root, url) {
-  const block = createElement(data[SETTINGS.IMAGE].parent);
+  const block = createElement(data[SETTINGS_MAIN.IMAGE].parent);
   block.innerHTML = `
     <img src="${url}" onerror="this.src = 'assets/default.svg'">
   `;
@@ -44,29 +44,29 @@ function createAssociativeImg(root, url) {
 }
 
 const cardLayout = {
-  [SETTINGS.DIFFICULTY_BUTTONS](root) {
-    addBlock(root, SETTINGS.DIFFICULTY_BUTTONS);
+  [SETTINGS_MAIN.DIFFICULTY_BUTTONS](root) {
+    addBlock(root, SETTINGS_MAIN.DIFFICULTY_BUTTONS);
   },
-  [SETTINGS.VOCABULARY_BUTTONS](root) {
-    addBlock(root, SETTINGS.VOCABULARY_BUTTONS);
+  [SETTINGS_MAIN.VOCABULARY_BUTTONS](root) {
+    addBlock(root, SETTINGS_MAIN.VOCABULARY_BUTTONS);
   },
-  [SETTINGS.IMAGE](root, { image }) {
+  [SETTINGS_MAIN.IMAGE](root, { image }) {
     createAssociativeImg(root, image);
   },
-  [SETTINGS.EXAMPLE](root, { textExample }) {
-    addBlock(root, SETTINGS.EXAMPLE, textExample);
+  [SETTINGS_MAIN.EXAMPLE](root, { textExample }) {
+    addBlock(root, SETTINGS_MAIN.EXAMPLE, textExample);
   },
-  [SETTINGS.TRANSCRIPTION](root, { transcription }) {
-    addBlock(root, SETTINGS.TRANSCRIPTION, transcription);
+  [SETTINGS_MAIN.TRANSCRIPTION](root, { transcription }) {
+    addBlock(root, SETTINGS_MAIN.TRANSCRIPTION, transcription);
   },
-  [SETTINGS.TRANSLATION](root, parameters) {
+  [SETTINGS_MAIN.TRANSLATION](root, parameters) {
     createTranslations(root, parameters);
   },
-  [SETTINGS.MEANING](root, { textMeaning }) {
-    addBlock(root, SETTINGS.MEANING, textMeaning);
+  [SETTINGS_MAIN.MEANING](root, { textMeaning }) {
+    addBlock(root, SETTINGS_MAIN.MEANING, textMeaning);
   },
-  [SETTINGS.ANSWER_BUTTON](root) {
-    addBlock(root, SETTINGS.ANSWER_BUTTON);
+  [SETTINGS_MAIN.ANSWER_BUTTON](root) {
+    addBlock(root, SETTINGS_MAIN.ANSWER_BUTTON);
   },
 };
 
