@@ -1,17 +1,24 @@
-import { SETTINGS_MAIN, SETTINGS_REPETITION, SETTINGS } from './Settings.Constants';
+import {
+  SETTINGS_MAIN, SETTINGS_REPETITION, SETTINGS, CHECKING_GROUPS,
+} from './Settings.Constants';
 import { } from '../../domain-models/Words/Words.Constants';
 
 function getLayout() {
-  return `
+  return `<form>
   <div class="settings__words">
-    <p>Words</p>
-    <input type="range" id="total-words" name="total-words"
-    data-settings="${SETTINGS.MAIN}.${SETTINGS_MAIN.WORDS_PER_DAY}" min=5 max=50 step=1>
-    <label for="image">Total words per day</label>
 
-    <input type="range" id="new-words" name="new-words"
-    data-settings="${SETTINGS.MAIN}.${SETTINGS_MAIN.NEW_WORDS}" min="3" max="20" step="1">
-    <label for="image">New words per day</label>
+    <p>Words</p>
+    <input type="range" id="${SETTINGS_MAIN.WORDS_PER_DAY}" name="total-words"
+    data-settings="${SETTINGS.MAIN}.${SETTINGS_MAIN.WORDS_PER_DAY}"
+    data-check="${CHECKING_GROUPS.WORDS}"
+    min=5 max=50 step=1>
+    <label for="${SETTINGS_MAIN.NEW_WORDS}">Total words per day</label>
+
+    <input type="range" id="${SETTINGS_MAIN.NEW_WORDS}" name="new-words"
+    data-settings="${SETTINGS.MAIN}.${SETTINGS_MAIN.NEW_WORDS}"
+    data-check="${CHECKING_GROUPS.WORDS}"
+    min="3" max="20" step="1">
+    <label for="${SETTINGS_MAIN.NEW_WORDS}">New words per day</label>
 
     <p>Collection words mode</p>
       <select id="words-mode"
@@ -43,11 +50,13 @@ function getLayout() {
     <label for="image">Associative image</label>
 
     <input type="checkbox" id="example" name="example"
-    data-settings="${SETTINGS.MAIN}.${SETTINGS_MAIN.EXAMPLE}">
+    data-settings="${SETTINGS.MAIN}.${SETTINGS_MAIN.EXAMPLE}"
+    data-check="${CHECKING_GROUPS.DISPLAY}">
     <label for="example">Example</label>
 
     <input type="checkbox" id="meaning" name="meaning"
-    data-settings="${SETTINGS.MAIN}.${SETTINGS_MAIN.MEANING}">
+    data-settings="${SETTINGS.MAIN}.${SETTINGS_MAIN.MEANING}"
+    data-check="${CHECKING_GROUPS.DISPLAY}">
     <label for="meaning">Meaning</label>
 
     <input type="checkbox" id="transcription" name="transcription"
@@ -80,19 +89,23 @@ function getLayout() {
       <p>Difficulty buttons settings</p>
 
       <input type="number" id="timer-easy"
-      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.EASY}">
+      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.EASY}"
+      data-check="${CHECKING_GROUPS.TIMERS}">
       <label for="timer-easy">Easy</label>
 
       <input type="number" id="timer-medium"
-      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.MEDIUM}">
+      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.MEDIUM}"
+      data-check="${CHECKING_GROUPS.TIMERS}">
       <label for="timer-medium">Medium</label>
 
       <input type="number" id="timer-hard"
-      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.HARD}">
+      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.HARD}"
+      data-check="${CHECKING_GROUPS.TIMERS}">
       <label for="timer-hard">Hard</label>
 
       <input type="number" id="timer-again"
-      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.AGAIN}">
+      data-settings="${SETTINGS.REPETITION}.${SETTINGS_REPETITION.AGAIN}"
+      data-check="${CHECKING_GROUPS.TIMERS}">
       <label for="timer-again">Again</label>
     </div>
 
@@ -114,8 +127,10 @@ function getLayout() {
       min=1 max=7 step=1>
       <label for="max-amount">Max number of repetitions after which the rate of forgetting will stop decreasing</label>
     </div>
+    <input type="submit" value="submit">
+
   </div>
-  `;
+  </form>`;
 }
 
 export default getLayout;

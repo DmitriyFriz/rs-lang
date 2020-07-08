@@ -24,9 +24,20 @@ const SETTINGS_MAIN = {
 const SETTINGS_REPETITION = {
   ...DIFFICULTY,
   ...REPEAT_INTERVAL,
-  // FORGETTING_SPEED: REPEAT_INTERVAL.FORGETTING_SPEED,
-  // MEMORY_RATING: REPEAT_INTERVAL.RATING,
-  // MAX_AMOUNT: REPEAT_INTERVAL.MAX_AMOUNT,
+};
+
+const CHECKING_GROUPS = {
+  WORDS: 'WORDS',
+  DISPLAY: 'DISPLAY',
+  TIMERS: 'TIMERS',
+};
+
+const ERRORS_LIST = {
+  [CHECKING_GROUPS.WORDS]: `New words per day should
+  not exceed the Total words per day`,
+  [CHECKING_GROUPS.DISPLAY]: 'Meaning or example should be marked',
+  [CHECKING_GROUPS.TIMERS]: `Data must be in the format <##.##>
+  and must not be less than zero`,
 };
 
 const DEFAULT_SETTINGS_MAIN = {
@@ -59,4 +70,6 @@ export {
   SETTINGS_REPETITION,
   DEFAULT_SETTINGS_REPETITION,
   DEFAULT_SETTINGS_LIST,
+  CHECKING_GROUPS,
+  ERRORS_LIST,
 };

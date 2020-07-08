@@ -1,6 +1,3 @@
-// constants
-import { MAIN_ROUTES } from 'router/Router.Constants';
-
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
@@ -16,22 +13,8 @@ import { saveSettings, loadSettings } from './SettingsHandler';
 import { SETTINGS } from './Settings.Constants';
 
 class Settings extends BaseComponent {
-  static get name() {
-    return MAIN_ROUTES.SETTINGS;
-  }
-
-  // get mainSettingsList() {
-  //   const list = this.component.querySelectorAll(`[data-settings-${SETTINGS.MAIN}]`);
-  //   return { name: SETTINGS_MAIN, list };
-  // }
-
-  // get repetitionSettingsList() {
-  //   const list = this.component.querySelectorAll(`[data-settings-${SETTINGS.REPETITION}]`);
-  //   return { name: SETTINGS_REPETITION, list };
-  // }
-
   createLayout() {
-    this.component.className = 'Settings';
+    this.component.className = 'settings';
     this.component.innerHTML = getLayout();
     this.saveBtn = BaseComponent.createElement({
       tag: 'button',
@@ -65,9 +48,11 @@ class Settings extends BaseComponent {
   handleSettings(mode) {
     Object.keys(SETTINGS).reduce((promise, settingsName) => {
       const settings = this.getSettingsList(SETTINGS[settingsName]);
+
       if (mode === 'save') {
         return promise.then(() => saveSettings(settings));
       }
+
       return promise.then(() => loadSettings(settings));
     }, Promise.resolve());
   }

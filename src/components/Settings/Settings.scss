@@ -9,4 +9,18 @@
     }
   }
 
+  .error {
+      animation-name: error;
+      animation-duration: 3s;
+      animation-fill-mode: forwards;
+
+      @keyframes error {
+        from {
+          background-color: #ff0000;
+        };
+        to {
+          background-color: #ff000000;
+        }
+      }
+  }
 }
