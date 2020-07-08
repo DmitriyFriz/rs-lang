@@ -14,6 +14,31 @@
     font-size: 0.7rem;
     font-family: $mainFont;
     font-weight: bold;
+    text-transform: uppercase;
+
+    i {
+      color: rgba(53, 221, 53, 0.8);
+      position: relative;
+      cursor: help;
+      &:hover {
+        &:after {
+          content: 'The password must contain 8 characters, one uppercase letter, one lowercase letter, one number and one special character from + -_ @ $!% *? & #.,;: [] {}.';
+          text-transform: none;
+          padding: 7px;
+          top: -6.5rem;
+          left: -5.5rem;
+          background-color: $basicColor5;
+          border: 1px solid $basicColor1;
+          box-shadow: 0 .5px 2px black;
+          font-size: .9rem;
+          color: #574c4c;
+          text-shadow: none;
+          width: 200px;
+          height: 85px;
+          position: absolute;
+        }
+      }
+    }
   }
 
   input:disabled {
