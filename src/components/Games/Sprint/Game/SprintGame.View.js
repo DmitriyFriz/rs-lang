@@ -5,13 +5,14 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 import Loader from 'components/Loader/Loader.View';
 
 // router
-import { changeRoute } from 'router/RouteHandler';
+import { onRouteChangeEvent, changeRoute } from 'router/RouteHandler';
 
 // constants
 import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 
 // domain
 import Words from 'domainModels/Words/Words';
+import { DIFFICULTY } from 'domainModels/Words/Words.Constants';
 
 // styles
 import './SprintGame.scss';
@@ -42,16 +43,20 @@ class SprintGame extends BaseComponent {
     this.score = 0;
     this.basePoints = 10;
     this.awardedPoints = this.basePoints;
+    this.sound = true;
     this.keyUserWord = 'userWord';
     this.keyDifficulty = 'difficulty';
-    this.repeatParameter = 'again';
-    this.keyActiveClassName = 'key_active';
+    this.repeatParameter = DIFFICULTY.AGAIN;
     this.keyId = '_id';
+    this.keyActiveClassName = 'key_active';
+    this.soundOffClassName = 'sprint-card__sound-off';
 
     this.loader = new Loader();
     this.loader.show();
 
     this.setTimer = this.setTimer.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleSoundButton = this.handleSoundButton.bind(this);
     this.handleFalseButton = this.handleFalseButton.bind(this);
     this.handleTrueButton = this.handleTrueButton.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -70,6 +75,8 @@ class SprintGame extends BaseComponent {
     this.gameArray.push(...repeatWords, ...newWords, ...this.group);
 
     this.loader.hide();
+    console.log(repeatWords, this.gameArray);
+    wordsDomainModel.getAllUserWords().then((res) => console.log(res));
   }
 
   createLayout() {
@@ -84,6 +91,8 @@ class SprintGame extends BaseComponent {
       this.rightKey,
       this.resultIcon,
       this.scoreContainer,
+      this.soundButton,
+      this.gamesButton
     ] = getLayout();
 
     this.getNewWord();
@@ -151,13 +160,17 @@ class SprintGame extends BaseComponent {
   }
 
   playAudio(src) {
-    const audio = new Audio();
-    audio.preload = 'auto';
-    audio.src = `${src}`;
-    audio.play();
+    if (this.sound) {
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.src = `${src}`;
+      audio.play();
+    }
   }
 
   addListeners() {
+    this.gamesButton.addEventListener('click', this.handleClick);
+    this.soundButton.addEventListener('click', this.handleSoundButton);
     this.falseButton.addEventListener('click', this.handleFalseButton);
     this.trueButton.addEventListener('click', this.handleTrueButton);
     document.addEventListener('keydown', this.handleKeyDown);
@@ -165,11 +178,22 @@ class SprintGame extends BaseComponent {
   }
 
   removeListeners() {
+    this.gamesButton.removeEventListener('click', this.handleClick);
+    this.soundButton.removeEventListener('click', this.handleSoundButton);
     this.falseButton.removeEventListener('click', this.handleFalseButton);
     this.trueButton.removeEventListener('click', this.handleTrueButton);
     document.removeEventListener('keydown', this.handleKeyDown);
     document.removeEventListener('keyup', this.handleKeyUp);
     clearInterval(this.intervalID);
+  }
+
+  handleClick(event) {
+    onRouteChangeEvent(event, ROUTERS.GAMES);
+  }
+
+  handleSoundButton(){
+    this.sound = !this.sound;
+    this.soundButton.classList.toggle(this.soundOffClassName);
   }
 
   handleFalseButton() {

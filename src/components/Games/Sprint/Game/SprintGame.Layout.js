@@ -1,4 +1,8 @@
+// views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
+
+// constants
+import { GAMES_ROUTES } from 'router/Router.Constants';
 
 export default function getLayout() {
   const container = BaseComponent.createElement({ tag: 'div', className: 'sprint-container' });
@@ -33,7 +37,25 @@ export default function getLayout() {
   const rightKey = BaseComponent.createElement({ tag: 'div', className: 'key key_correct' });
   keyContainer.append(leftKey, rightKey);
 
-  card.append(time, resultIcon, scoreWrapper, wordContainer, answerContainer, buttonContainer);
+  const additionalContainer = BaseComponent.createElement({
+    tag: 'div',
+    className: 'sprint-card__button-container sprint-card__additional-container',
+  });
+  const gamesButton = BaseComponent.createElement({
+    tag: 'button',
+    className: 'sprint-card__button',
+    content: 'Games',
+    destination: GAMES_ROUTES.GAMES_LIST
+  });
+  const soundButton = BaseComponent.createElement({
+    tag: 'button',
+    className: 'sprint-card__button',
+    content: 'Sound',
+  });
+  additionalContainer.append(gamesButton, soundButton);
+
+
+  card.append(time, resultIcon, scoreWrapper, wordContainer, answerContainer, buttonContainer, additionalContainer);
   container.append(card, keyContainer);
   return [
     container,
@@ -46,5 +68,7 @@ export default function getLayout() {
     rightKey,
     resultIcon,
     scoreContainer,
+    soundButton,
+    gamesButton
   ];
 }
