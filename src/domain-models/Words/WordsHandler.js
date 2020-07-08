@@ -81,7 +81,7 @@ function registrationWord(
   if (DIFFICULTY[difficulty]) {
     parameters.difficulty = difficulty;
     parameters.optional[OPTIONAL.REPEAT] = updateRepeatParameters(
-      options[REPEAT_INTERVAL.TIMERS][DIFFICULTY[difficulty]],
+      options[DIFFICULTY[difficulty]],
     );
   }
 

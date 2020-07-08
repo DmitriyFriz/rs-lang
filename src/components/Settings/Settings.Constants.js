@@ -14,7 +14,9 @@ const SETTINGS_MAIN = {
   NEW_WORDS: 'newWords',
   COLLECTION_WORDS_MODE: 'wordsMode',
   AUDIO_AUTOPLAY: 'audioAutoplay',
+};
 
+const SETTINGS_REPETITION = {
   TIMER_EASY: 'timerEasy',
   TIMER_MEDIUM: 'timerMedium',
   TIMER_HARD: 'timerHard',
