@@ -62,27 +62,15 @@ class Settings extends BaseComponent {
     return { name, list };
   }
 
-  async handleSettings(mode) {
-    const promises = Object.keys(SETTINGS).map(async (settingsName) => {
+  handleSettings(mode) {
+    Object.keys(SETTINGS).reduce((promise, settingsName) => {
       const settings = this.getSettingsList(SETTINGS[settingsName]);
       if (mode === 'save') {
-        await saveSettings(settings);
-        return;
+        return promise.then(() => saveSettings(settings));
       }
-      await loadSettings(settings);
-    });
-
-    await Promise.all(promises);
+      return promise.then(() => loadSettings(settings));
+    }, Promise.resolve());
   }
-
-  // async handleLoadSettings() {
-  //   const promises = Object.keys(SETTINGS).map(async (settingsName) => {
-  //     const settings = this.getSettingsList(SETTINGS[settingsName]);
-  //     await loadSettings(settings);
-  //   });
-
-  //   await Promise.all(promises);
-  // }
 }
 
 export default Settings;

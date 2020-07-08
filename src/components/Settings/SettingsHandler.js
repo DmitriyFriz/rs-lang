@@ -21,7 +21,6 @@ async function saveSettings({ name, list }) {
   }, {});
 
   await settingsDomain.updateSettings(name, settings);
-  console.log('SAVE COMPLETED');
 }
 
 async function loadSettings({ name, list }) {
