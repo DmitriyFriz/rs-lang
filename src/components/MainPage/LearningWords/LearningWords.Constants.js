@@ -23,6 +23,7 @@ const HIDDEN_ELEMENTS_LIST = [
   '#card-word',
   '#card-difficulty',
   '#card-vocabulary',
+  '#card-play-audio',
 ];
 
 export { TRANSLATIONS, BUTTONS, HIDDEN_ELEMENTS_LIST };

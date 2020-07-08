@@ -77,6 +77,7 @@ function createWordCard(elementList, { _id, word, ...param }) {
   });
 
   elementList.forEach((elem) => {
+    if (!cardLayout[elem]) { return; }
     cardLayout[elem](card, { ...param });
   });
 
@@ -88,7 +89,9 @@ function createWordCard(elementList, { _id, word, ...param }) {
     `,
   });
 
-  card.append(wordInput);
+  const playAudioBtn = createElement(data.playAudioBtn);
+
+  card.append(playAudioBtn, wordInput);
   return card;
 }
 

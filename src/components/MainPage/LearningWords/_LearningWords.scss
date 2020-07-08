@@ -104,7 +104,8 @@
   .translation,
   &__word,
   &__difficulty-buttons,
-  &__vocabulary-buttons {
+  &__vocabulary-buttons,
+  #card-play-audio {
     display: none;
 
     &.show {

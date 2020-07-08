@@ -184,11 +184,11 @@ const data = {
     tag: 'button',
     className: 'button button-play-audio',
     content: 'Play',
+    id: 'card-play-audio',
     dataset: {
       button: BUTTONS.PLAY_AUDIO,
     },
   },
-
   // ======================== texts ==========================
 
   [SETTINGS.EXAMPLE]: {
