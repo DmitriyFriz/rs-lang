@@ -161,17 +161,22 @@ class LearningWords extends BaseComponent {
   }
 
   showElementsForTrueWord() {
+    this.hideTrueWordBtn();
     HIDDEN_ELEMENTS_LIST.forEach((selector) => {
       const elem = this.currentSlide.querySelector(selector);
       if (elem) { elem.classList.add('show'); }
     });
   }
 
-  showTrueWord(event) {
-    const trueWordBtn = event.target;
-    trueWordBtn.style.display = 'none';
+  showTrueWord() {
     this.currentInput = this.trueWordsData[this.currentIndex].word;
     this.checkResult();
+  }
+
+  hideTrueWordBtn() {
+    const trueWordBtn = this.currentSlide
+      .querySelector(`[data-button=${BUTTONS.TRUE_WORD}]`);
+    trueWordBtn.style.display = 'none';
   }
 
   addCompletionNotice() {
