@@ -109,8 +109,8 @@ function getTrueWordsData(collection) {
     .reverse();
 }
 
-function registrationWord(wordId) {
-  wordsDomain.createUserWord(wordId);
+function registrationWord(wordId, repeatedSettings) {
+  wordsDomain.createUserWord(wordId, null, null, repeatedSettings);
 }
 
 // ===================== buttons =============================
@@ -121,10 +121,10 @@ async function handleButtons(event, functionsList) {
   functionsList[buttonFunction]();
 }
 
-async function addWordDifficulty(event, wordId) {
+async function addWordDifficulty(event, wordId, repeatedSettings) {
   const difficulty = get(event, 'target.dataset.difficulty');
   if (!difficulty) { return; }
-  await wordsDomain.createUserWord(wordId, difficulty);
+  await wordsDomain.createUserWord(wordId, difficulty, null, repeatedSettings);
 }
 
 async function addWordToVocabulary(event, wordId) {

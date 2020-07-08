@@ -86,7 +86,7 @@ function registrationWord(
   if (VOCABULARY[vocabulary]) {
     parameters.optional[OPTIONAL.VOCABULARY] = vocabulary;
   }
-
+  console.log(parameters);
   return parameters;
 }
 

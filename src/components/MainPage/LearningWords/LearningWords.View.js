@@ -43,12 +43,13 @@ class LearningWords extends BaseComponent {
   async prepareData() {
     this.isRandomMode = false;
     this.isPlayAudio = false;
-    // this.settings = await this.handleSettings();
     await this.initSettings();
     await this.initWordsCollection();
 
     this.functionListForButtons = {
-      [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(event, this.currentSlide.id),
+      [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(
+        event, this.currentSlide.id, this.settings[SETTINGS.REPETITION].all,
+      ),
       [BUTTONS.VOCABULARY]: (event) => addWordToVocabulary(event, this.currentSlide.id),
       [BUTTONS.TRUE_WORD]: (event) => this.showTrueWord(event),
       [BUTTONS.CHECK]: () => this.checkResult(),
@@ -299,12 +300,17 @@ class LearningWords extends BaseComponent {
       .filter((setting) => all[setting] === true);
 
     if (!this.savedSettings) {
-      this.savedSettings = {};
-      this.savedSettings[name] = all;
+      this.savedSettings = { [name]: all };
     }
-    const isNew = !isEqual(all, this.savedSettings[name]);
 
-    if (isNew) { console.log('SAVED SETTINGS!'); this.savedSettings[name] = all; }
+    const updatedSettings = this.savedSettings;
+    const isNew = !isEqual(all, updatedSettings[name]);
+    console.log(all, updatedSettings[name]);
+    if (isNew) {
+      console.log('SAVE SETTINGS!');
+      updatedSettings[name] = all;
+      this.savedSettings = updatedSettings;
+    }
     return { enabled, all, isNew };
   }
 
@@ -372,7 +378,7 @@ class LearningWords extends BaseComponent {
     }
 
     const { audio, audioExample, audioMeaning } = this.trueWordsData[this.currentIndex];
-    this.audioData = []; console.log(this.settings[SETTINGS.MAIN]);
+    this.audioData = [];
     if (this.settings[SETTINGS.MAIN].all[SETTINGS_MAIN.MEANING]) {
       this.audioData.push(audioMeaning);
     }
@@ -399,7 +405,7 @@ class LearningWords extends BaseComponent {
       this.checkAutoAudioPlay();
       this.currentInput.disabled = true;
       this.learnedWords.push(this.currentSlideData);
-      registrationWord(this.currentSlideData._id);
+      registrationWord(this.currentSlideData._id, this.settings[SETTINGS.REPETITION].all);
       this.addWordToSwiper();
       this.pasteWordsToTexts(cutWords);
       this.showElementsForTrueWord();
