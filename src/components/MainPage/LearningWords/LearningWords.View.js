@@ -31,6 +31,9 @@ import {
   addWordToVocabulary,
   getTrueWordsData,
   registrationWord,
+  getStatistics,
+  sessionStatistics,
+  updateStatistics,
 } from './LearningWordsHandler';
 
 const { createElement } = BaseComponent;
@@ -44,6 +47,7 @@ class LearningWords extends BaseComponent {
     this.isRandomMode = false;
     this.isPlayAudio = false;
     await this.initSettings();
+    await this.initStatistics();
     await this.initWordsCollection();
 
     this.functionListForButtons = {
@@ -61,6 +65,7 @@ class LearningWords extends BaseComponent {
     };
 
     this.handleAudioEvent = this.handleAudioEvent.bind(this);
+    this.checkResult = this.checkResult.bind(this);
   }
 
   createLayout() {
@@ -72,7 +77,7 @@ class LearningWords extends BaseComponent {
   }
 
   addListeners() {
-    this.component.addEventListener('change', () => this.checkResult());
+    this.component.addEventListener('change', this.checkResult);
     this.component.addEventListener('click', (event) => this.handleButtons(event));
     this.audio.addEventListener('ended', this.handleAudioEvent);
   }
@@ -83,7 +88,7 @@ class LearningWords extends BaseComponent {
 
   async show() {
     await super.show();
-    this.initTraining();
+    this.initTraining(); console.log('WORDS COLLECTION ==', this.wordsCollection);
   }
 
   hide() {
@@ -115,7 +120,7 @@ class LearningWords extends BaseComponent {
 
   addWordToSwiper() {
     if (this.isEnd) { return; }
-    this.currentSlideData = this.wordsCollection.pop();
+    this.currentSlideData = this.wordsCollection[this.wordsCollection.length - 1];
     this.swiper.virtual.appendSlide(
       createWordCard(this.settings[SETTINGS.MAIN].enabled, this.currentSlideData),
     );
@@ -128,22 +133,22 @@ class LearningWords extends BaseComponent {
 
   get currentInput() {
     return this.swiper.virtual.slides[this.currentIndex]
-      .querySelector('.swiper-slide__word-input > input');
+      .querySelector(`.${data.wordInputBlock.className} > input`);
   }
 
   set currentInput(value) {
     this.swiper.virtual.slides[this.currentIndex]
-      .querySelector('.swiper-slide__word-input > input').value = value;
+      .querySelector(`.${data.wordInputBlock.className} > input`).value = value;
   }
 
   get errorsBlock() {
     return this.swiper.virtual.slides[this.currentIndex]
-      .querySelector('.word-input__success');
+      .querySelector(`.${data.errorsBlock.className}`);
   }
 
   set errorsBlock(text) {
     this.swiper.virtual.slides[this.currentIndex]
-      .querySelector('.word-input__success').innerHTML = text;
+      .querySelector(`.${data.errorsBlock.className}`).innerHTML = text;
   }
 
   get currentSlide() {
@@ -172,7 +177,7 @@ class LearningWords extends BaseComponent {
 
   showTrueWord() {
     this.currentInput = this.trueWordsData[this.currentIndex].word;
-    this.checkResult();
+    this.handleSuccessResult();
   }
 
   hideTrueWordBtn() {
@@ -256,6 +261,7 @@ class LearningWords extends BaseComponent {
 
   repeatWord(word = this.learnedWords[this.learnedWords.length - 1]) {
     const trueWord = this.trueWordsData[this.currentIndex];
+    trueWord.isRepeated = true;
     this.addWordToCollection(word, trueWord);
   }
 
@@ -305,7 +311,7 @@ class LearningWords extends BaseComponent {
 
     const updatedSettings = this.savedSettings;
     const isNew = !isEqual(all, updatedSettings[name]);
-    console.log(all, updatedSettings[name]);
+
     if (isNew) {
       console.log('SAVE SETTINGS!');
       updatedSettings[name] = all;
@@ -336,6 +342,7 @@ class LearningWords extends BaseComponent {
   // ========================== modes ==================================
 
   async createAdditionalTraining() {
+    this.addNewTrainingToPlan();
     this.component.removeChild(this.completionNotice);
     await this.createWordsCollection();
     this.initTraining();
@@ -396,24 +403,90 @@ class LearningWords extends BaseComponent {
     }
   }
 
+  // ========================= statistics =============================
+
+  async initStatistics() {
+    this.longTermStatistics = await getStatistics();
+
+    [
+      this.lastGameDate = 0,
+      this.words = 0,
+      this.trainingNumber = 0,
+      this.plan = 1] = this.longTermStatistics[this.longTermStatistics.length - 1];
+
+    if (this.isNewDay) {
+      this.lastGameDate = 0;
+      this.words = 0;
+      this.trainingNumber = 0;
+      this.plan = 1;
+    }
+  }
+
+  updateStatistics() {
+    this.lastGameDate = Date.now();
+    this.words += sessionStatistics.newWords;
+    this.trainingNumber += 1;
+  }
+
+  addNewTrainingToPlan() {
+    this.plan += 1;
+  }
+
+  async saveStatistics() {
+    this.updateStatistics();
+    const statistics = [
+      this.lastGameDate,
+      this.words,
+      this.trainingNumber,
+      this.plan,
+    ];
+
+    if (this.isNewDay) {
+      this.longTermStatistics.push(statistics);
+    } else {
+      this.longTermStatistics.pop();
+      this.longTermStatistics.push(statistics);
+    }
+
+    updateStatistics(this.longTermStatistics);
+  }
+
+  get isNewDay() {
+    if (!this.lastGameDate) {
+      return false;
+    }
+
+    const REAL_TIME = new Date();
+    const LAST_GAME_TIME = new Date(this.lastGameDate);
+    return REAL_TIME.getDate() > LAST_GAME_TIME.getDate();
+  }
+
   // ========================== other ==================================
 
   checkResult() {
-    const { word, cutWords } = this.trueWordsData[this.currentIndex];
+    const { word, isNewWord, isRepeated } = this.trueWordsData[this.currentIndex];
 
     if (this.currentInput.value === word) {
-      this.checkAutoAudioPlay();
-      this.currentInput.disabled = true;
-      this.learnedWords.push(this.currentSlideData);
-      registrationWord(this.currentSlideData._id, this.settings[SETTINGS.REPETITION].all);
-      this.addWordToSwiper();
-      this.pasteWordsToTexts(cutWords);
-      this.showElementsForTrueWord();
-      this.updateProgress();
+      sessionStatistics.addSuccess(isNewWord, isRepeated);
+      this.handleSuccessResult();
     } else {
+      sessionStatistics.addFail(isNewWord, isRepeated);
       this.showLetterErrors();
       this.repeatWord(this.currentSlideData);
     }
+  }
+
+  handleSuccessResult() {
+    const { cutWords } = this.trueWordsData[this.currentIndex];
+    this.checkAutoAudioPlay();
+    this.currentInput.disabled = true;
+    this.learnedWords.push(this.currentSlideData);
+    this.wordsCollection.pop();
+    registrationWord(this.currentSlideData._id, this.settings[SETTINGS.REPETITION].all);
+    this.addWordToSwiper();
+    this.pasteWordsToTexts(cutWords);
+    this.showElementsForTrueWord();
+    this.updateProgress();
 
     if (
       this.isEnd
@@ -424,7 +497,10 @@ class LearningWords extends BaseComponent {
   }
 
   initTraining() {
-    if (this.isEnd) {
+    if (
+      this.isEnd
+      && (this.trainingNumber >= this.plan || !this.isNewDay)
+    ) {
       this.addCompletionNotice();
       return;
     }
@@ -441,10 +517,13 @@ class LearningWords extends BaseComponent {
     this.initSwiper();
     this.addWordToSwiper();
     this.updateProgress();
+    sessionStatistics.reset();
   }
 
   endTraining() {
+    console.log('STATISTICS ==== ', sessionStatistics, sessionStatistics.rate());
     this.destroySwiper();
+    this.saveStatistics();
     this.exitBtn.remove();
     this.training.remove();
     this.progressBar.remove();

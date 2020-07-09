@@ -82,9 +82,9 @@ function createWordCard(elementList, { _id, word, ...param }) {
   });
 
   const wordInput = createElement({
-    ...data.wordInput,
+    ...data.wordInputBlock,
     innerHTML: `
-    <p class="word-input__success"></p>
+    <p class="${data.errorsBlock.className}"></p>
      <input class="word-input__input" type="text" size=${word.length} maxlength=${word.length}>
     `,
   });

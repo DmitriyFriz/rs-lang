@@ -253,9 +253,13 @@ const data = {
     ],
   },
 
-  wordInput: {
+  wordInputBlock: {
     tag: 'div',
     className: 'swiper-slide__word-input',
+  },
+
+  errorsBlock: {
+    className: 'word-input__errors',
   },
 
   // ======================== images ==========================
