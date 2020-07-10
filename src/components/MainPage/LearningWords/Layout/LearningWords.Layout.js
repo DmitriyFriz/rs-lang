@@ -43,7 +43,7 @@ function createAssociativeImg(root, url) {
   root.append(block);
 }
 
-const cardLayout = {
+const slideLayout = {
   [SETTINGS_MAIN.DIFFICULTY_BUTTONS](root) {
     addBlock(root, SETTINGS_MAIN.DIFFICULTY_BUTTONS);
   },
@@ -70,15 +70,15 @@ const cardLayout = {
   },
 };
 
-function createWordCard(elementList, { _id, word, ...param }) {
+function createWordSlide(enabledSettings, { _id, word, ...param }) {
   const card = createElement({
     ...data.slide,
     id: _id,
   });
 
-  elementList.forEach((elem) => {
-    if (!cardLayout[elem]) { return; }
-    cardLayout[elem](card, { ...param });
+  enabledSettings.forEach((setting) => {
+    if (!slideLayout[setting]) { return; }
+    slideLayout[setting](card, { ...param });
   });
 
   const wordInput = createElement({
@@ -103,7 +103,7 @@ function createCompletionNotice() {
 }
 
 export {
-  createWordCard,
+  createWordSlide,
   createCompletionNotice,
   createBlock,
 };

@@ -4,7 +4,7 @@ import { TRANSLATIONS, BUTTONS } from '../LearningWords.Constants';
 import { DIFFICULTY, VOCABULARY } from '../../../../domain-models/Words/Words.Constants';
 
 const data = {
-  training: {
+  trainingLayout: {
     parent: {
       tag: 'div',
       className: 'training',
@@ -87,7 +87,6 @@ const data = {
         tag: 'button',
         className: 'button button-again',
         dataset: {
-          // difficulty: DIFFICULTY.AGAIN,
           button: BUTTONS.AGAIN,
         },
         content: 'Again',

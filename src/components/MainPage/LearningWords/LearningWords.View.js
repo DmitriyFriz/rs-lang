@@ -11,18 +11,27 @@ import Swiper from 'swiper';
 import swiperOptions from 'components/MainPage/LearningWords/Swiper.Options';
 
 // constants
-import { MAIN_PAGE_ROUTES } from 'router/Router.Constants';
 import { BUTTONS, HIDDEN_ELEMENTS_LIST } from './LearningWords.Constants';
 
 // layout
 import {
-  createWordCard, createCompletionNotice, createBlock,
+  createWordSlide, createCompletionNotice, createBlock,
 } from './Layout/LearningWords.Layout';
 import { data } from './Layout/LearningWords.Data';
 
 // Settings
 import { getSettings } from '../../Settings/SettingsHandler';
 import { SETTINGS_MAIN, SETTINGS } from '../../Settings/Settings.Constants';
+
+// Statistics
+import {
+  getStatistics,
+  sessionStatistics,
+  updateStatistics,
+} from './LearningWords.Statistics';
+
+// Audio control
+import AudioControl from './LearningWords.AudioControl';
 
 // handler
 import {
@@ -31,24 +40,14 @@ import {
   addWordToVocabulary,
   getTrueWordsData,
   registrationWord,
-  getStatistics,
-  sessionStatistics,
-  updateStatistics,
 } from './LearningWordsHandler';
 
 const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
-  static get name() {
-    return MAIN_PAGE_ROUTES.LEARNING_WORDS;
-  }
-
   async prepareData() {
-    this.isRandomMode = false;
-    this.isPlayAudio = false;
     await this.initSettings();
     await this.initStatistics();
-    await this.initWordsCollection();
 
     this.functionListForButtons = {
       [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(
@@ -60,57 +59,149 @@ class LearningWords extends BaseComponent {
       [BUTTONS.ADDITIONAL]: () => this.createAdditionalTraining(),
       [BUTTONS.RANDOM_WORDS]: () => this.createRandomWordsTraining(),
       [BUTTONS.FINISH]: () => this.finishTraining(),
-      [BUTTONS.AGAIN]: () => this.repeatWord(),
-      [BUTTONS.PLAY_AUDIO]: () => this.initAudio(),
+      [BUTTONS.AGAIN]: () => this.addWordToRepeat(),
+      [BUTTONS.PLAY_AUDIO]: () => this.audioControl.initAudio(
+        this.trueWordsData[this.currentIndex], this.settings[SETTINGS.MAIN].all,
+      ),
     };
 
-    this.handleAudioEvent = this.handleAudioEvent.bind(this);
     this.checkResult = this.checkResult.bind(this);
   }
 
   createLayout() {
     this.component.className = 'learning-words';
-    this.audio = createElement({ tag: 'audio' });
-    this.training = createElement(data.training.parent);
-    this.training.append(this.audio);
     this.swiperLayout = createBlock('swiper');
   }
 
   addListeners() {
     this.component.addEventListener('change', this.checkResult);
     this.component.addEventListener('click', (event) => this.handleButtons(event));
-    this.audio.addEventListener('ended', this.handleAudioEvent);
   }
 
   removeListeners() {
-    this.audio.removeEventListener('ended', this.handleAudioEvent);
   }
 
   async show() {
     await super.show();
-    this.initTraining(); console.log('WORDS COLLECTION ==', this.wordsCollection);
+    await this.initTraining();
   }
 
   hide() {
     super.hide();
-    if (!this.isEnd) {
+    if (this.isTrainingEnabled) {
       this.endTraining();
     }
     console.log('SAVED WORDS', this.savedWords);
   }
 
+  // ========================== main ==================================
+
+  checkResult() {
+    const { word, isNewWord, isRepeated } = this.trueWordsData[this.currentIndex];
+
+    if (this.currentInput.value === word) {
+      sessionStatistics.addSuccess(isNewWord, isRepeated);
+      this.handleSuccessResult();
+    } else {
+      sessionStatistics.addFail(isNewWord, isRepeated);
+      this.showLetterErrors();
+      this.addWordToRepeat(this.currentSlideData);
+    }
+  }
+
+  handleSuccessResult() {
+    const { cutWords } = this.trueWordsData[this.currentIndex];
+    const currentTrueWordData = this.trueWordsData[this.currentIndex];
+    const mainSettings = this.settings[SETTINGS.MAIN].all;
+    const settingsOfRepetitionMethod = this.settings[SETTINGS.REPETITION].all;
+    const currentWordId = this.currentSlideData._id;
+
+    this.audioControl.checkAutoAudioPlay(currentTrueWordData, mainSettings);
+    this.currentInput.disabled = true;
+    this.addWordToLearned();
+    registrationWord(currentWordId, settingsOfRepetitionMethod);
+    this.addWordToSwiper();
+    this.pasteWordsToTexts(cutWords);
+    this.showElementsForTrueWord();
+    this.updateProgress();
+
+    if (
+      this.currentIndex === (this.trueWordsAmount - 1)
+    ) {
+      this.checkBtn.replaceWith(this.finishBtn);
+    }
+  }
+
+  async initTraining() {
+    if (
+      this.dailyPlanCompleted
+      && !this.isNewDay
+      && !this.isNewSettings
+      && !this.isRandomMode
+    ) {
+      console.log('INIT TRAINING === ', this.trainingNumber >= this.plan, 'isNewDate === ', this.isNewDay);
+      this.addCompletionNotice();
+      return;
+    }
+
+    await this.initWordsCollection();
+    this.initTrainingLayout();
+    this.initSwiper();
+    this.addWordToSwiper();
+    this.audioControl = new AudioControl(this.component);
+    this.updateProgress();
+    this.isTrainingEnabled = true;
+    sessionStatistics.reset();
+    console.log('WORDS COLLECTION ==', this.wordsCollection);
+  }
+
+  endTraining() {
+    console.log('STATISTICS ==== ', sessionStatistics, sessionStatistics.rate());
+    this.destroySwiper();
+    this.audioControl.destroy();
+    this.saveStatistics();
+    this.trainingLayout.remove();
+    this.saveWords();
+  }
+
+  finishTraining() {
+    this.isTrainingEnabled = false;
+    this.addCompletedTrainingToStat();
+    this.endTraining();
+    this.addCompletionNotice();
+  }
+
+  get dailyPlanCompleted() {
+    return this.trainingNumber >= this.plan;
+  }
+
+  get isNewSettings() {
+    return this.settings[SETTINGS.MAIN].isNew;
+  }
+
+  async handleButtons(event) {
+    const buttonFunction = get(event, 'target.dataset.button');
+    if (!buttonFunction) { return; }
+    this.functionListForButtons[buttonFunction](event);
+  }
+
   // ========================== swiper ==================================
 
   initSwiper() {
-    this.training.append(this.swiperLayout);
+    this.trainingLayout.append(this.swiperLayout);
     this.swiper = new Swiper('.swiper__container', swiperOptions);
-    this.swiper.on('transitionEnd', () => {
-      this.stopAudio();
-      if (this.swiper.progress === 1) {
-        this.currentInput.focus();
-      }
-    });
+    this.swiper.on('transitionEnd', () => this.handleSwiperTransition());
     this.swiper.virtual.removeAllSlides();
+  }
+
+  handleSwiperTransition() {
+    if (this.audioControl) {
+      this.audioControl.stopAudio();
+    }
+
+    if (this.swiper.progress === 1) {
+      this.currentInput.focus();
+    }
   }
 
   destroySwiper() {
@@ -119,11 +210,11 @@ class LearningWords extends BaseComponent {
   }
 
   addWordToSwiper() {
-    if (this.isEnd) { return; }
-    this.currentSlideData = this.wordsCollection[this.wordsCollection.length - 1];
-    this.swiper.virtual.appendSlide(
-      createWordCard(this.settings[SETTINGS.MAIN].enabled, this.currentSlideData),
-    );
+    if (!this.wordsCollection.length) { return; }
+
+    const enabledSettings = this.settings[SETTINGS.MAIN].enabled;
+    const slide = createWordSlide(enabledSettings, this.currentSlideData);
+    this.swiper.virtual.appendSlide(slide);
     this.swiper.update();
   }
 
@@ -155,7 +246,24 @@ class LearningWords extends BaseComponent {
     return this.swiper.virtual.slides[this.currentIndex];
   }
 
+  get currentSlideData() {
+    return this.wordsCollection[this.wordsCollection.length - 1];
+  }
+
   // ========================== layout ==================================
+
+  initTrainingLayout() {
+    this.trainingLayout = createElement(data.trainingLayout.parent);
+    this.exitBtn = createElement(data.closeTraining.parent);
+    this.checkBtn = createElement(data.checkWord.parent);
+    this.finishBtn = createElement(data.finishTraining.parent);
+    this.trainingLayout.append(
+      this.exitBtn,
+      this.checkBtn,
+      this.createProgressBar(),
+    );
+    this.component.append(this.trainingLayout);
+  }
 
   pasteWordsToTexts(words) {
     const texts = this.currentSlide.querySelectorAll('[data-cut]');
@@ -206,10 +314,10 @@ class LearningWords extends BaseComponent {
 
   updateProgress() {
     this.learnedWordsAmount.textContent = this.learnedWords.length;
-    this.totalWords.textContent = this.allWordsCollection;
+    this.totalWords.textContent = this.trueWordsAmount;
     const progress = (
-      (this.allWordsCollection - this.learnedWords.length)
-      / this.allWordsCollection
+      (this.trueWordsAmount - this.learnedWords.length)
+      / this.trueWordsAmount
     );
     const RED = 255;
     const GREEN = 194;
@@ -242,7 +350,14 @@ class LearningWords extends BaseComponent {
 
   async initWordsCollection() {
     this.learnedWords = [];
-    if (this.savedWords && !this.settings[SETTINGS.MAIN].isNew) {
+    if (
+      !this.dailyPlanCompleted
+      && !this.isNewDay
+      && this.savedWords.length
+    ) {
+      console.log('GETTING SAVED WORDS: ',
+        'SAVED WORDS === ', this.savedWords,
+        'NEW SETTINGS === ', this.settings[SETTINGS.MAIN].isNew);
       this.getSavedWords();
       return;
     }
@@ -259,10 +374,21 @@ class LearningWords extends BaseComponent {
     this.trueWordsData = getTrueWordsData(this.wordsCollection);
   }
 
-  repeatWord(word = this.learnedWords[this.learnedWords.length - 1]) {
+  saveWords() {
+    if (!this.isRandomMode) {
+      this.savedWords = this.wordsCollection;
+    }
+  }
+
+  addWordToRepeat(word = this.learnedWords[this.learnedWords.length - 1]) {
     const trueWord = this.trueWordsData[this.currentIndex];
     trueWord.isRepeated = true;
     this.addWordToCollection(word, trueWord);
+  }
+
+  addWordToLearned() {
+    this.learnedWords.push(this.currentSlideData);
+    this.wordsCollection.pop();
   }
 
   addWordToCollection(wordData, trueWord) {
@@ -295,7 +421,7 @@ class LearningWords extends BaseComponent {
     localStorage.setItem('savedWords', JSON.stringify(value));
   }
 
-  get allWordsCollection() {
+  get trueWordsAmount() {
     return this.trueWordsData.length;
   }
   // ========================== settings ===============================
@@ -343,64 +469,16 @@ class LearningWords extends BaseComponent {
 
   async createAdditionalTraining() {
     this.addNewTrainingToPlan();
-    this.component.removeChild(this.completionNotice);
-    await this.createWordsCollection();
+    this.completionNotice.remove();
     this.initTraining();
   }
 
   async createRandomWordsTraining() {
-    this.component.removeChild(this.completionNotice);
+    this.completionNotice.remove();
     const settings = this.settings[SETTINGS.MAIN].all;
     settings[SETTINGS_MAIN.COLLECTION_WORDS_MODE] = 'random';
     this.isRandomMode = true;
-
-    await this.createWordsCollection(settings);
     this.initTraining();
-  }
-
-  // ========================== audio =================================
-
-  playAudio() {
-    const voice = this.audioData.pop();
-    this.audio.src = voice;
-    this.audio.play();
-    this.isPlayAudio = true;
-  }
-
-  handleAudioEvent() {
-    if (!this.audioData.length) { return; }
-    this.playAudio();
-  }
-
-  stopAudio() {
-    this.audioData = [];
-    this.audio.pause();
-    this.isPlayAudio = false;
-  }
-
-  initAudio() {
-    if (this.isPlayAudio) {
-      this.stopAudio();
-      return;
-    }
-
-    const { audio, audioExample, audioMeaning } = this.trueWordsData[this.currentIndex];
-    this.audioData = [];
-    if (this.settings[SETTINGS.MAIN].all[SETTINGS_MAIN.MEANING]) {
-      this.audioData.push(audioMeaning);
-    }
-    if (this.settings[SETTINGS.MAIN].all[SETTINGS_MAIN.EXAMPLE]) {
-      this.audioData.push(audioExample);
-    }
-
-    this.audioData.push(audio);
-    this.playAudio();
-  }
-
-  checkAutoAudioPlay() {
-    if (this.settings[SETTINGS.MAIN].all[SETTINGS_MAIN.AUDIO_AUTOPLAY]) {
-      this.initAudio();
-    }
   }
 
   // ========================= statistics =============================
@@ -413,23 +491,31 @@ class LearningWords extends BaseComponent {
       this.words = 0,
       this.trainingNumber = 0,
       this.plan = 1] = this.longTermStatistics[this.longTermStatistics.length - 1];
-
+    console.log('LAST GAME ===', this.lastGameDate);
     if (this.isNewDay) {
-      this.lastGameDate = 0;
       this.words = 0;
       this.trainingNumber = 0;
       this.plan = 1;
     }
+
+    console.log('CURRENT STATISTICS:',
+      'LAST GAME === ', new Date(this.lastGameDate),
+      'WORDS === ', this.words,
+      'TRAINING === ', this.trainingNumber,
+      'PLAN === ', this.plan);
   }
 
   updateStatistics() {
     this.lastGameDate = Date.now();
     this.words += sessionStatistics.newWords;
-    this.trainingNumber += 1;
   }
 
   addNewTrainingToPlan() {
     this.plan += 1;
+  }
+
+  addCompletedTrainingToStat() {
+    this.trainingNumber += 1;
   }
 
   async saveStatistics() {
@@ -458,95 +544,8 @@ class LearningWords extends BaseComponent {
 
     const REAL_TIME = new Date();
     const LAST_GAME_TIME = new Date(this.lastGameDate);
+    console.log('isNewDay', REAL_TIME.getDate(), ' > ', LAST_GAME_TIME.getDate(), REAL_TIME.getDate() > LAST_GAME_TIME.getDate());
     return REAL_TIME.getDate() > LAST_GAME_TIME.getDate();
-  }
-
-  // ========================== other ==================================
-
-  checkResult() {
-    const { word, isNewWord, isRepeated } = this.trueWordsData[this.currentIndex];
-
-    if (this.currentInput.value === word) {
-      sessionStatistics.addSuccess(isNewWord, isRepeated);
-      this.handleSuccessResult();
-    } else {
-      sessionStatistics.addFail(isNewWord, isRepeated);
-      this.showLetterErrors();
-      this.repeatWord(this.currentSlideData);
-    }
-  }
-
-  handleSuccessResult() {
-    const { cutWords } = this.trueWordsData[this.currentIndex];
-    this.checkAutoAudioPlay();
-    this.currentInput.disabled = true;
-    this.learnedWords.push(this.currentSlideData);
-    this.wordsCollection.pop();
-    registrationWord(this.currentSlideData._id, this.settings[SETTINGS.REPETITION].all);
-    this.addWordToSwiper();
-    this.pasteWordsToTexts(cutWords);
-    this.showElementsForTrueWord();
-    this.updateProgress();
-
-    if (
-      this.isEnd
-      && this.currentIndex === (this.trueWordsData.length - 1)
-    ) {
-      this.checkBtn.replaceWith(this.finishBtn);
-    }
-  }
-
-  initTraining() {
-    if (
-      this.isEnd
-      && (this.trainingNumber >= this.plan || !this.isNewDay)
-    ) {
-      this.addCompletionNotice();
-      return;
-    }
-
-    this.exitBtn = createElement(data.closeTraining.parent);
-    this.checkBtn = createElement(data.checkWord.parent);
-    this.finishBtn = createElement(data.finishTraining.parent);
-    this.training.append(
-      this.exitBtn,
-      this.checkBtn,
-      this.createProgressBar(),
-    );
-    this.component.append(this.training);
-    this.initSwiper();
-    this.addWordToSwiper();
-    this.updateProgress();
-    sessionStatistics.reset();
-  }
-
-  endTraining() {
-    console.log('STATISTICS ==== ', sessionStatistics, sessionStatistics.rate());
-    this.destroySwiper();
-    this.saveStatistics();
-    this.exitBtn.remove();
-    this.training.remove();
-    this.progressBar.remove();
-    this.learnedWords = [];
-    if (!this.isRandomMode) {
-      this.savedWords = this.wordsCollection;
-    }
-  }
-
-  finishTraining() {
-    this.finishBtn.remove();
-    this.endTraining();
-    this.addCompletionNotice();
-  }
-
-  get isEnd() {
-    return !this.wordsCollection.length;
-  }
-
-  async handleButtons(event) {
-    const buttonFunction = get(event, 'target.dataset.button');
-    if (!buttonFunction) { return; }
-    this.functionListForButtons[buttonFunction](event);
   }
 }
 
