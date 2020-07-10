@@ -23,7 +23,8 @@ import { data } from './Layout/LearningWords.Data';
 import { getSettings } from '../../Settings/SettingsHandler';
 import { SETTINGS_MAIN, SETTINGS } from '../../Settings/Settings.Constants';
 
-import Statistics from './LearningWords.Statistics';
+// import Statistics from './LearningWords.Statistics';
+import statistics from '../MainPage.Statistics';
 
 // Audio control
 import AudioControl from './LearningWords.AudioControl';
@@ -41,10 +42,11 @@ const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
   async prepareData() {
-    this.statistics = new Statistics();
+    // this.statistics = new Statistics();
 
     await this.initSettings();
-    await this.statistics.prepareData();
+    // await this.statistics.prepareData();
+    await statistics.prepareData();
 
     this.functionListForButtons = {
       [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(
@@ -97,12 +99,12 @@ class LearningWords extends BaseComponent {
     const { word, isNewWord, isRepeated } = this.trueWordsData[this.currentIndex];
 
     if (this.currentInput.value === word) {
-      this.statistics
+      statistics
         .addSuccess(isNewWord, isRepeated)
         .addNewWord(isNewWord, isRepeated);
       this.handleSuccessResult();
     } else {
-      this.statistics.addFail(isRepeated);
+      statistics.addFail(isRepeated);
       this.showLetterErrors();
       this.addWordToRepeat(this.currentSlideData);
     }
@@ -133,20 +135,20 @@ class LearningWords extends BaseComponent {
 
   async initTraining() {
     if (
-      this.statistics.todayStat.dailyPlanCompleted
-      && !this.isNewDay
+      statistics.todayStat.dailyPlanCompleted
+      && !statistics.isNewDay
       && !this.isNewSettings
       && !this.isRandomMode
     ) {
       console.log('INIT TRAINING === ',
-        this.statistics.todayStat.trainingNumber >= this.statistics.todayStat.plan,
-        'isNewDate === ', this.statistics.isNewDay);
+        statistics.todayStat.trainingNumber >= statistics.todayStat.plan,
+        'isNewDate === ', statistics.isNewDay);
       this.addCompletionNotice();
       return;
     }
 
     await this.initWordsCollection();
-    this.statistics.initSession();
+    statistics.initSession();
     this.initTrainingLayout();
     this.initSwiper();
     this.addWordToSwiper();
@@ -157,17 +159,17 @@ class LearningWords extends BaseComponent {
   }
 
   endTraining() {
-    console.log('STATISTICS ==== ', this.statistics, this.statistics.successRate);
+    console.log('STATISTICS ==== ', statistics, statistics.successRate);
     this.destroySwiper();
     this.audioControl.destroy();
-    this.statistics.saveToRemoteStat();
+    statistics.saveToRemoteStat();
     this.trainingLayout.remove();
     this.saveWords();
   }
 
   finishTraining() {
     this.isTrainingEnabled = false;
-    this.statistics.todayStat.addCompletedTrainingToStat();
+    statistics.todayStat.addCompletedTrainingToStat();
     this.endTraining();
     this.addCompletionNotice();
   }
@@ -348,8 +350,8 @@ class LearningWords extends BaseComponent {
   async initWordsCollection() {
     this.learnedWords = [];
     if (
-      !this.statistics.todayStat.dailyPlanCompleted
-      && !this.isNewDay
+      !statistics.todayStat.dailyPlanCompleted
+      && !statistics.isNewDay
       && this.savedWords.length
     ) {
       console.log('GETTING SAVED WORDS: ',
@@ -465,7 +467,7 @@ class LearningWords extends BaseComponent {
   // ========================== modes ==================================
 
   async createAdditionalTraining() {
-    this.statistics.todayStat.addNewTrainingToPlan();
+    statistics.todayStat.addNewTrainingToPlan();
     this.completionNotice.remove();
     this.initTraining();
   }

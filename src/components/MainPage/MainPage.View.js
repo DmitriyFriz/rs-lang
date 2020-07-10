@@ -1,5 +1,5 @@
 // constants
-import { ROUTERS, MAIN_ROUTES, MAIN_PAGE_ROUTES } from 'router/Router.Constants';
+import { ROUTERS, MAIN_PAGE_ROUTES } from 'router/Router.Constants';
 
 // router
 import Router from 'router/Router';
@@ -18,11 +18,7 @@ import LearningWords from './LearningWords/LearningWords.View';
 import './MainPage.scss';
 
 class MainPage extends BaseComponent {
-  static get name() {
-    return MAIN_ROUTES.MAIN_PAGE;
-  }
-
-  prepareData() {
+  async prepareData() {
     const mainPageRoutes = {
       [MAIN_PAGE_ROUTES.START_MENU]: StartMenu,
       [MAIN_PAGE_ROUTES.LEARNING_WORDS]: LearningWords,
