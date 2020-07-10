@@ -28,16 +28,22 @@ const regPageLayout = {
     },
     {
       type: 'span',
-      content: 'THE PASSWORD MUST CONTAINS LETTERS OF BOTH REGISTERS AN A DIGIT',
+      content: 'password ',
       nameClass: 'password-requirement',
-      id: 'reqPassword',
+      id: 'reqRequirement',
     },
+
     {
       type: 'password',
       placeholder: 'confirm password',
       id: 'regConfirmPassword',
     },
   ],
+
+  requirements: {
+    type: 'i',
+    content: 'requirements',
+  },
 
   fieldSetEmail:
   {
@@ -71,8 +77,7 @@ const regClassName = {
 // Copied from this source: https://emailregex.com/
 const regEmailRegExp = '^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$';
 
-// Copied from this source: //https://www.thepolyglotdeveloper.com/2015/05/use-regex-to-test-password-strength-in-javascript/
-const regPasswordRegEx = '^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
+const regPasswordRegEx = '^(?=.*[0-9])(?=.*[!_+-}{\\@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!_+-}{@#$%^&*]{8,}';
 
 export {
   regPageLayout, regClassName, regEmailRegExp, regPasswordRegEx,
