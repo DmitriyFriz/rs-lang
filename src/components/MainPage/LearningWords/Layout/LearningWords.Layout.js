@@ -4,9 +4,9 @@ import { data, translationsList } from './LearningWords.Data';
 
 const { createElement } = BaseComponent;
 
-function createBlock(blockName, content) {
-  const parent = createElement(data[blockName].parent);
-  const { children } = data[blockName];
+function createBlock(blocksData, blockName, content) {
+  const parent = createElement(blocksData[blockName].parent);
+  const { children } = blocksData[blockName];
 
   children.forEach((childParameters) => {
     let parameters = childParameters;
@@ -20,8 +20,8 @@ function createBlock(blockName, content) {
   return parent;
 }
 
-function addBlock(root, blockName, content) {
-  const parent = createBlock(blockName, content);
+function addBlock(root, blocksData, blockName, content) {
+  const parent = createBlock(blocksData, blockName, content);
   root.append(parent);
 }
 
@@ -45,28 +45,28 @@ function createAssociativeImg(root, url) {
 
 const slideLayout = {
   [SETTINGS_MAIN.DIFFICULTY_BUTTONS](root) {
-    addBlock(root, SETTINGS_MAIN.DIFFICULTY_BUTTONS);
+    addBlock(root, data, SETTINGS_MAIN.DIFFICULTY_BUTTONS);
   },
   [SETTINGS_MAIN.VOCABULARY_BUTTONS](root) {
-    addBlock(root, SETTINGS_MAIN.VOCABULARY_BUTTONS);
+    addBlock(root, data, SETTINGS_MAIN.VOCABULARY_BUTTONS);
   },
   [SETTINGS_MAIN.IMAGE](root, { image }) {
     createAssociativeImg(root, image);
   },
   [SETTINGS_MAIN.EXAMPLE](root, { textExample }) {
-    addBlock(root, SETTINGS_MAIN.EXAMPLE, textExample);
+    addBlock(root, data, SETTINGS_MAIN.EXAMPLE, textExample);
   },
   [SETTINGS_MAIN.TRANSCRIPTION](root, { transcription }) {
-    addBlock(root, SETTINGS_MAIN.TRANSCRIPTION, transcription);
+    addBlock(root, data, SETTINGS_MAIN.TRANSCRIPTION, transcription);
   },
   [SETTINGS_MAIN.TRANSLATION](root, parameters) {
     createTranslations(root, parameters);
   },
   [SETTINGS_MAIN.MEANING](root, { textMeaning }) {
-    addBlock(root, SETTINGS_MAIN.MEANING, textMeaning);
+    addBlock(root, data, SETTINGS_MAIN.MEANING, textMeaning);
   },
   [SETTINGS_MAIN.ANSWER_BUTTON](root) {
-    addBlock(root, SETTINGS_MAIN.ANSWER_BUTTON);
+    addBlock(root, data, SETTINGS_MAIN.ANSWER_BUTTON);
   },
 };
 
@@ -95,15 +95,7 @@ function createWordSlide(enabledSettings, { _id, word, ...param }) {
   return card;
 }
 
-// ========================== modal blocks ==========================
-
-function createCompletionNotice() {
-  const block = createBlock('completionNotice');
-  return block;
-}
-
 export {
   createWordSlide,
-  createCompletionNotice,
   createBlock,
 };

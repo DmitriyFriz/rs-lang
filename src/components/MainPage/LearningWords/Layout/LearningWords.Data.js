@@ -1,5 +1,4 @@
 import { SETTINGS_MAIN } from '../../../Settings/Settings.Constants';
-import { MAIN_PAGE_ROUTES } from '../../../../router/Router.Constants';
 import { TRANSLATIONS, BUTTONS } from '../LearningWords.Constants';
 import { DIFFICULTY, VOCABULARY } from '../../../../domain-models/Words/Words.Constants';
 
@@ -159,7 +158,9 @@ const data = {
       tag: 'button',
       className: 'button button-close',
       id: 'exit',
-      destination: MAIN_PAGE_ROUTES.START_MENU,
+      dataset: {
+        button: BUTTONS.CLOSE,
+      },
       content: 'Close',
     },
 
@@ -273,52 +274,6 @@ const data = {
     },
 
     children: [],
-  },
-
-  // ======================== modal blocks ====================
-
-  completionNotice: {
-    parent: {
-      tag: 'div',
-      className: 'completion-notice',
-    },
-
-    children: [
-      {
-        tag: 'h2',
-        className: 'completion-notice__title',
-        content: 'Congratulations!',
-      },
-      {
-        tag: 'p',
-        className: 'completion-notice__description',
-        content: 'There are no words for today. You can continue training by clicking "Additional"',
-      },
-      {
-        tag: 'button',
-        className: 'button button-close-training',
-        content: 'OK',
-        dataset: {
-          destination: MAIN_PAGE_ROUTES.START_MENU,
-        },
-      },
-      {
-        tag: 'button',
-        className: 'button button-additional',
-        content: 'Additional',
-        dataset: {
-          button: BUTTONS.ADDITIONAL,
-        },
-      },
-      {
-        tag: 'button',
-        className: 'button button-random-words',
-        content: 'Random words training',
-        dataset: {
-          button: BUTTONS.RANDOM_WORDS,
-        },
-      },
-    ],
   },
 
   // ============================ progress bar ============================

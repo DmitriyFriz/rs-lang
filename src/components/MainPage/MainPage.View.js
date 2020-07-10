@@ -13,6 +13,10 @@ import {
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 import StartMenu from './StartMenu/StartMenu.View';
 import LearningWords from './LearningWords/LearningWords.View';
+import Notification from './Notification/Notification.View';
+
+// statistics
+import statistics from './MainPage.Statistics';
 
 // styles
 import './MainPage.scss';
@@ -22,6 +26,7 @@ class MainPage extends BaseComponent {
     const mainPageRoutes = {
       [MAIN_PAGE_ROUTES.START_MENU]: StartMenu,
       [MAIN_PAGE_ROUTES.LEARNING_WORDS]: LearningWords,
+      [MAIN_PAGE_ROUTES.NOTIFICATION]: Notification,
     };
 
     this.component.className = 'main-page';
@@ -32,6 +37,8 @@ class MainPage extends BaseComponent {
       MAIN_PAGE_ROUTES.START_MENU,
     );
     registerRouter(this.mainPageRouter);
+
+    await statistics.prepareData();
   }
 
   addListeners() {

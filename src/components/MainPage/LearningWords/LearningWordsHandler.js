@@ -4,6 +4,9 @@ import shuffle from 'lodash.shuffle';
 
 import WordsDomain from '../../../domain-models/Words/Words';
 
+// status
+import { status, MODES } from '../MainPage.Status';
+
 // ===================== words =============================
 
 const wordsDomain = new WordsDomain();
@@ -71,6 +74,10 @@ async function getDayWordsCollection(optional) {
     wordsMode,
   } = optional;
   await wordsDomain.selectGroupWords(+level);
+
+  if (status.mode === MODES.RANDOM) {
+    return handleWords(getRandomWords());
+  }
 
   const newWordsList = shuffle(wordsDomain.newWords)
     .slice(0, +newWords);

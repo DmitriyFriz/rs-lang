@@ -9,9 +9,8 @@ const BUTTONS = {
   VOCABULARY: 'vocabulary',
   TRUE_WORD: 'trueWord',
   CHECK: 'check',
-  ADDITIONAL: 'additional',
-  RANDOM_WORDS: 'randomWords',
   FINISH: 'finish',
+  CLOSE: 'close',
   AGAIN: 'again',
   PLAY_AUDIO: 'playAudio',
 };

@@ -2,6 +2,14 @@
 import get from 'lodash.get';
 import isEqual from 'lodash.isequal';
 
+// constants
+import { ROUTERS, MAIN_PAGE_ROUTES } from 'router/Router.Constants';
+
+// route handler
+import {
+  changeRoute,
+} from 'router/RouteHandler';
+
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
@@ -15,19 +23,21 @@ import { BUTTONS, HIDDEN_ELEMENTS_LIST } from './LearningWords.Constants';
 
 // layout
 import {
-  createWordSlide, createCompletionNotice, createBlock,
+  createWordSlide, createBlock,
 } from './Layout/LearningWords.Layout';
 import { data } from './Layout/LearningWords.Data';
 
 // Settings
 import { getSettings } from '../../Settings/SettingsHandler';
-import { SETTINGS_MAIN, SETTINGS } from '../../Settings/Settings.Constants';
+import { SETTINGS } from '../../Settings/Settings.Constants';
 
-// import Statistics from './LearningWords.Statistics';
 import statistics from '../MainPage.Statistics';
 
 // Audio control
 import AudioControl from './LearningWords.AudioControl';
+
+// status
+import { status, MODES } from '../MainPage.Status';
 
 // handler
 import {
@@ -42,11 +52,7 @@ const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
   async prepareData() {
-    // this.statistics = new Statistics();
-
     await this.initSettings();
-    // await this.statistics.prepareData();
-    await statistics.prepareData();
 
     this.functionListForButtons = {
       [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(
@@ -55,9 +61,8 @@ class LearningWords extends BaseComponent {
       [BUTTONS.VOCABULARY]: (event) => addWordToVocabulary(event, this.currentSlide.id),
       [BUTTONS.TRUE_WORD]: (event) => this.showTrueWord(event),
       [BUTTONS.CHECK]: () => this.checkResult(),
-      [BUTTONS.ADDITIONAL]: () => this.createAdditionalTraining(),
-      [BUTTONS.RANDOM_WORDS]: () => this.createRandomWordsTraining(),
       [BUTTONS.FINISH]: () => this.finishTraining(),
+      [BUTTONS.CLOSE]: () => this.closeTraining(),
       [BUTTONS.AGAIN]: () => this.addWordToRepeat(),
       [BUTTONS.PLAY_AUDIO]: () => this.audioControl.initAudio(
         this.trueWordsData[this.currentIndex], this.settings[SETTINGS.MAIN].all,
@@ -69,7 +74,7 @@ class LearningWords extends BaseComponent {
 
   createLayout() {
     this.component.className = 'learning-words';
-    this.swiperLayout = createBlock('swiper');
+    this.swiperLayout = createBlock(data, 'swiper');
   }
 
   addListeners() {
@@ -83,14 +88,6 @@ class LearningWords extends BaseComponent {
   async show() {
     await super.show();
     await this.initTraining();
-  }
-
-  hide() {
-    super.hide();
-    if (this.isTrainingEnabled) {
-      this.endTraining();
-    }
-    console.log('SAVED WORDS', this.savedWords);
   }
 
   // ========================== main ==================================
@@ -134,16 +131,20 @@ class LearningWords extends BaseComponent {
   }
 
   async initTraining() {
+    console.log('PLAN === ', statistics.todayStat.dailyPlanCompleted,
+      'NEW DAY === ', !statistics.isNewDay,
+      'NEW SETTINGS === ', !this.isNewSettings,
+      'MODE RANDOM === ', !(status.mode === MODES.RANDOM));
     if (
       statistics.todayStat.dailyPlanCompleted
       && !statistics.isNewDay
       && !this.isNewSettings
-      && !this.isRandomMode
+      && !(status.mode === MODES.RANDOM)
     ) {
       console.log('INIT TRAINING === ',
         statistics.todayStat.trainingNumber >= statistics.todayStat.plan,
         'isNewDate === ', statistics.isNewDay);
-      this.addCompletionNotice();
+      changeRoute(MAIN_PAGE_ROUTES.NOTIFICATION, ROUTERS.MAIN_PAGE);
       return;
     }
 
@@ -154,7 +155,6 @@ class LearningWords extends BaseComponent {
     this.addWordToSwiper();
     this.audioControl = new AudioControl(this.component);
     this.updateProgress();
-    this.isTrainingEnabled = true;
     console.log('WORDS COLLECTION ==', this.wordsCollection);
   }
 
@@ -164,14 +164,20 @@ class LearningWords extends BaseComponent {
     this.audioControl.destroy();
     statistics.saveToRemoteStat();
     this.trainingLayout.remove();
+    console.log('MODE BEFORE SAVING WORDS=== ', status.mode);
     this.saveWords();
+    status.mode = MODES.DEFAULT;
   }
 
   finishTraining() {
-    this.isTrainingEnabled = false;
     statistics.todayStat.addCompletedTrainingToStat();
     this.endTraining();
-    this.addCompletionNotice();
+    changeRoute(MAIN_PAGE_ROUTES.NOTIFICATION, ROUTERS.MAIN_PAGE);
+  }
+
+  closeTraining() {
+    this.endTraining();
+    changeRoute(MAIN_PAGE_ROUTES.START_MENU, ROUTERS.MAIN_PAGE);
   }
 
   get isNewSettings() {
@@ -293,11 +299,6 @@ class LearningWords extends BaseComponent {
     trueWordBtn.style.display = 'none';
   }
 
-  addCompletionNotice() {
-    this.completionNotice = createCompletionNotice();
-    this.component.append(this.completionNotice);
-  }
-
   createProgressBar() {
     this.progressBar = createElement(data.progressBar);
     const progressContainer = createElement(data.progressContainer);
@@ -374,8 +375,9 @@ class LearningWords extends BaseComponent {
   }
 
   saveWords() {
-    if (!this.isRandomMode) {
+    if (!(status.mode === MODES.RANDOM)) {
       this.savedWords = this.wordsCollection;
+      console.log('SAVED WORDS === ', this.savedWords);
     }
   }
 
@@ -388,6 +390,7 @@ class LearningWords extends BaseComponent {
   addWordToLearned() {
     this.learnedWords.push(this.currentSlideData);
     this.wordsCollection.pop();
+    console.log('WORDS COLLECTION ===', this.wordsCollection);
   }
 
   addWordToCollection(wordData, trueWord) {
@@ -462,22 +465,6 @@ class LearningWords extends BaseComponent {
 
   set savedSettings(value) {
     localStorage.setItem('savedSettings', JSON.stringify(value));
-  }
-
-  // ========================== modes ==================================
-
-  async createAdditionalTraining() {
-    statistics.todayStat.addNewTrainingToPlan();
-    this.completionNotice.remove();
-    this.initTraining();
-  }
-
-  async createRandomWordsTraining() {
-    this.completionNotice.remove();
-    const settings = this.settings[SETTINGS.MAIN].all;
-    settings[SETTINGS_MAIN.COLLECTION_WORDS_MODE] = 'random';
-    this.isRandomMode = true;
-    this.initTraining();
   }
 }
 

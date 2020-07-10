@@ -22,11 +22,12 @@ const statistics = {
 
   handleLastStat() {
     const lastStat = this.longTermStat[this.longTermStat.length - 1];
-    const [lastGameDate, words, trainingNumber, plan] = lastStat;
+    const [lastGameDate = 0, allWords = 0, newWords = 0, trainingNumber = 0, plan = 0] = lastStat;
     this.lastGameDate = lastGameDate;
 
     this.todayStat = {
-      words,
+      allWords,
+      newWords,
       trainingNumber,
       plan,
 
@@ -38,13 +39,15 @@ const statistics = {
         this.trainingNumber += 1;
       },
 
-      updateStat(newWords) {
+      updateStat(all, newWord) {
         this.gameDate = Date.now();
-        this.words += newWords;
+        this.allWords += all;
+        this.newWords += newWord;
       },
 
       reset() {
-        this.words = 0;
+        this.allWords = 0;
+        this.newWords = 0;
         this.trainingNumber = 0;
         this.plan = 1;
       },
@@ -82,10 +85,14 @@ const statistics = {
   },
 
   async saveToRemoteStat() {
-    this.todayStat.updateStat(this.newWords);
+    if (this.isNewDay) {
+      this.todayStat.reset();
+    }
+    this.todayStat.updateStat(this.allWords, this.newWords);
     const preparedStat = [
       this.todayStat.gameDate,
-      this.todayStat.words,
+      this.todayStat.allWords,
+      this.todayStat.newWords,
       this.todayStat.trainingNumber,
       this.todayStat.plan,
     ];
