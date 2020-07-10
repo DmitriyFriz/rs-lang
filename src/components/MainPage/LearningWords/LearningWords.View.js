@@ -23,12 +23,7 @@ import { data } from './Layout/LearningWords.Data';
 import { getSettings } from '../../Settings/SettingsHandler';
 import { SETTINGS_MAIN, SETTINGS } from '../../Settings/Settings.Constants';
 
-// Statistics
-import {
-  getStatistics,
-  sessionStatistics,
-  updateStatistics,
-} from './LearningWords.Statistics';
+import Statistics from './LearningWords.Statistics';
 
 // Audio control
 import AudioControl from './LearningWords.AudioControl';
@@ -46,8 +41,10 @@ const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
   async prepareData() {
+    this.statistics = new Statistics();
+
     await this.initSettings();
-    await this.initStatistics();
+    await this.statistics.prepareData();
 
     this.functionListForButtons = {
       [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(
@@ -100,10 +97,12 @@ class LearningWords extends BaseComponent {
     const { word, isNewWord, isRepeated } = this.trueWordsData[this.currentIndex];
 
     if (this.currentInput.value === word) {
-      sessionStatistics.addSuccess(isNewWord, isRepeated);
+      this.statistics
+        .addSuccess(isNewWord, isRepeated)
+        .addNewWord(isNewWord, isRepeated);
       this.handleSuccessResult();
     } else {
-      sessionStatistics.addFail(isNewWord, isRepeated);
+      this.statistics.addFail(isRepeated);
       this.showLetterErrors();
       this.addWordToRepeat(this.currentSlideData);
     }
@@ -134,45 +133,43 @@ class LearningWords extends BaseComponent {
 
   async initTraining() {
     if (
-      this.dailyPlanCompleted
+      this.statistics.todayStat.dailyPlanCompleted
       && !this.isNewDay
       && !this.isNewSettings
       && !this.isRandomMode
     ) {
-      console.log('INIT TRAINING === ', this.trainingNumber >= this.plan, 'isNewDate === ', this.isNewDay);
+      console.log('INIT TRAINING === ',
+        this.statistics.todayStat.trainingNumber >= this.statistics.todayStat.plan,
+        'isNewDate === ', this.statistics.isNewDay);
       this.addCompletionNotice();
       return;
     }
 
     await this.initWordsCollection();
+    this.statistics.initSession();
     this.initTrainingLayout();
     this.initSwiper();
     this.addWordToSwiper();
     this.audioControl = new AudioControl(this.component);
     this.updateProgress();
     this.isTrainingEnabled = true;
-    sessionStatistics.reset();
     console.log('WORDS COLLECTION ==', this.wordsCollection);
   }
 
   endTraining() {
-    console.log('STATISTICS ==== ', sessionStatistics, sessionStatistics.rate());
+    console.log('STATISTICS ==== ', this.statistics, this.statistics.successRate);
     this.destroySwiper();
     this.audioControl.destroy();
-    this.saveStatistics();
+    this.statistics.saveToRemoteStat();
     this.trainingLayout.remove();
     this.saveWords();
   }
 
   finishTraining() {
     this.isTrainingEnabled = false;
-    this.addCompletedTrainingToStat();
+    this.statistics.todayStat.addCompletedTrainingToStat();
     this.endTraining();
     this.addCompletionNotice();
-  }
-
-  get dailyPlanCompleted() {
-    return this.trainingNumber >= this.plan;
   }
 
   get isNewSettings() {
@@ -351,7 +348,7 @@ class LearningWords extends BaseComponent {
   async initWordsCollection() {
     this.learnedWords = [];
     if (
-      !this.dailyPlanCompleted
+      !this.statistics.todayStat.dailyPlanCompleted
       && !this.isNewDay
       && this.savedWords.length
     ) {
@@ -468,7 +465,7 @@ class LearningWords extends BaseComponent {
   // ========================== modes ==================================
 
   async createAdditionalTraining() {
-    this.addNewTrainingToPlan();
+    this.statistics.todayStat.addNewTrainingToPlan();
     this.completionNotice.remove();
     this.initTraining();
   }
@@ -479,73 +476,6 @@ class LearningWords extends BaseComponent {
     settings[SETTINGS_MAIN.COLLECTION_WORDS_MODE] = 'random';
     this.isRandomMode = true;
     this.initTraining();
-  }
-
-  // ========================= statistics =============================
-
-  async initStatistics() {
-    this.longTermStatistics = await getStatistics();
-
-    [
-      this.lastGameDate = 0,
-      this.words = 0,
-      this.trainingNumber = 0,
-      this.plan = 1] = this.longTermStatistics[this.longTermStatistics.length - 1];
-    console.log('LAST GAME ===', this.lastGameDate);
-    if (this.isNewDay) {
-      this.words = 0;
-      this.trainingNumber = 0;
-      this.plan = 1;
-    }
-
-    console.log('CURRENT STATISTICS:',
-      'LAST GAME === ', new Date(this.lastGameDate),
-      'WORDS === ', this.words,
-      'TRAINING === ', this.trainingNumber,
-      'PLAN === ', this.plan);
-  }
-
-  updateStatistics() {
-    this.lastGameDate = Date.now();
-    this.words += sessionStatistics.newWords;
-  }
-
-  addNewTrainingToPlan() {
-    this.plan += 1;
-  }
-
-  addCompletedTrainingToStat() {
-    this.trainingNumber += 1;
-  }
-
-  async saveStatistics() {
-    this.updateStatistics();
-    const statistics = [
-      this.lastGameDate,
-      this.words,
-      this.trainingNumber,
-      this.plan,
-    ];
-
-    if (this.isNewDay) {
-      this.longTermStatistics.push(statistics);
-    } else {
-      this.longTermStatistics.pop();
-      this.longTermStatistics.push(statistics);
-    }
-
-    updateStatistics(this.longTermStatistics);
-  }
-
-  get isNewDay() {
-    if (!this.lastGameDate) {
-      return false;
-    }
-
-    const REAL_TIME = new Date();
-    const LAST_GAME_TIME = new Date(this.lastGameDate);
-    console.log('isNewDay', REAL_TIME.getDate(), ' > ', LAST_GAME_TIME.getDate(), REAL_TIME.getDate() > LAST_GAME_TIME.getDate());
-    return REAL_TIME.getDate() > LAST_GAME_TIME.getDate();
   }
 }
 

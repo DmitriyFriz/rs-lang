@@ -1,93 +1,156 @@
+// lodash
+import get from 'lodash.get';
+
 import { MAIN_PAGE_ROUTES } from '../../../router/Router.Constants';
 
 import StatisticsDomain from '../../../domain-models/Statistics/Statistics';
-import STATUSES from '../../../services/requestHandler.Statuses';
 
 const statisticsDomain = new StatisticsDomain();
+const nameStat = MAIN_PAGE_ROUTES.LEARNING_WORDS;
 
-async function getStatistics() {
-  const { data, status } = await statisticsDomain.getStatistics();
+class LearningWordsStatistics {
+  async prepareData() {
+    await this.getRemoteStat();
+    this.handleLastStat();
 
-  if (
-    status === STATUSES.NOT_FOUND
-    || !data.optional[MAIN_PAGE_ROUTES.LEARNING_WORDS]
-  ) {
-    return [[]];
+    console.log('CURRENT STATISTICS:',
+      'LAST GAME === ', new Date(this.lastGameDate),
+      'WORDS === ', this.todayStat.words,
+      'TRAINING === ', this.todayStat.trainingNumber,
+      'PLAN === ', this.todayStat.plan);
   }
 
-  const statistics = data.optional[MAIN_PAGE_ROUTES.LEARNING_WORDS];
-  return statistics;
-}
+  handleLastStat() {
+    const lastStat = this.longTermStat[this.longTermStat.length - 1];
+    const [lastGameDate, words, trainingNumber, plan] = lastStat;
+    this.lastGameDate = lastGameDate;
 
-async function updateStatistics(statistics) {
-  console.log('LONG TERM STAT ====', statistics);
-  await statisticsDomain
-    .updateStatistics(MAIN_PAGE_ROUTES.LEARNING_WORDS, statistics);
-}
+    this.todayStat = {
+      words,
+      trainingNumber,
+      plan,
 
-const sessionStatistics = {
-  newWords: 0,
-  allWords: 0,
-  successSeries: 0,
-  fails: 0,
-  success: 0,
+      addNewTrainingToPlan() {
+        this.plan += 1;
+      },
 
-  rate() {
+      addCompletedTrainingToStat() {
+        this.trainingNumber += 1;
+      },
+
+      updateStat(newWords) {
+        this.gameDate = Date.now();
+        this.words += newWords;
+      },
+
+      reset() {
+        this.words = 0;
+        this.trainingNumber = 0;
+        this.plan = 1;
+      },
+
+      get dailyPlanCompleted() {
+        return this.trainingNumber >= this.plan;
+      },
+    };
+
+    console.log('LAST GAME ===', this.lastGameDate);
+
+    if (this.isNewDay) {
+      this.todayStat.reset();
+    }
+  }
+
+  get isNewDay() {
+    if (!this.lastGameDate) {
+      return false;
+    }
+
+    const REAL_TIME = new Date();
+    const LAST_GAME_TIME = new Date(this.lastGameDate);
+    console.log('isNewDay', REAL_TIME.getDate(), ' > ', LAST_GAME_TIME.getDate(), REAL_TIME.getDate() > LAST_GAME_TIME.getDate());
+    return REAL_TIME.getDate() > LAST_GAME_TIME.getDate();
+  }
+
+  async getRemoteStat() {
+    const { data } = await statisticsDomain.getStatistics();
+    let statistics = get(data, `optional.${nameStat}`);
+
+    if (!statistics) {
+      statistics = [[]];
+    }
+
+    this.longTermStat = statistics;
+  }
+
+  async saveToRemoteStat() {
+    this.todayStat.updateStat(this.newWords);
+    const statistics = [
+      this.todayStat.gameDate,
+      this.todayStat.words,
+      this.todayStat.trainingNumber,
+      this.todayStat.plan,
+    ];
+
+    if (this.isNewDay) {
+      this.longTermStat.push(statistics);
+    } else {
+      this.longTermStat.pop();
+      this.longTermStat.push(statistics);
+    }
+
+    this.updateRemoteStat();
+  }
+
+  async updateRemoteStat() {
+    console.log('LONG TERM STAT ====', this.longTermStat);
+    await statisticsDomain.updateStatistics(nameStat, this.longTermStat);
+  }
+
+  // ================================= session statistics ==============================
+
+  initSession() {
+    this.newWords = 0;
+    this.allWords = 0;
+    this.successSeries = 0;
+    this.fails = 0;
+    this.success = 0;
+  }
+
+  get successRate() {
     const rate = 100 - Math.floor((this.fails / (this.fails + this.success)) * 100);
     return rate || 0;
-  },
+  }
 
-  addSuccess(isNewWord, isRepeated) {
-    if (isRepeated) {
-      return this;
-    }
+  addSuccess(isRepeated) {
+    if (isRepeated) { return this; }
     console.log('ADD SUCCESS');
     this.successSeries += 1;
     this.success += 1;
     this.addWord();
-
-    if (isNewWord) {
-      console.log('ADD NEW WORD');
-      this.addNewWord();
-    }
-
     return this;
-  },
+  }
 
-  addFail(isNewWord, isRepeated) {
-    if (isRepeated) {
-      return this;
-    }
+  addFail(isRepeated) {
+    if (isRepeated) { return this; }
     console.log('ADD FAIL');
     this.fails += 1;
     this.successSeries = 0;
     this.addWord();
-
-    if (isNewWord) {
-      console.log('ADD NEW WORD');
-      this.addNewWord();
-    }
     return this;
-  },
+  }
 
-  addNewWord() {
+  addNewWord(isNewWord, isRepeated) {
+    if (!isNewWord || isRepeated) { return this; }
+    console.log('ADD NEW WORD');
     this.newWords += 1;
     return this;
-  },
+  }
 
   addWord() {
     this.allWords += 1;
     return this;
-  },
+  }
+}
 
-  reset() {
-    Object.keys(this).forEach((key) => {
-      if (typeof this[key] !== 'function') {
-        this[key] = 0;
-      }
-    });
-    return this;
-  },
-};
-
-export { sessionStatistics, getStatistics, updateStatistics };
+export default LearningWordsStatistics;
