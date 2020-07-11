@@ -13,6 +13,7 @@ import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 // domain
 import Words from 'domainModels/Words/Words';
 import { DIFFICULTY } from 'domainModels/Words/Words.Constants';
+import Statistics from 'domainModels/Statistics/Statistics';
 
 // styles
 import './SprintGame.scss';
@@ -31,6 +32,7 @@ import supersetAudio from 'assets/mini-games/audio/superset.mp3';
 import getLayout from './SprintGame.Layout';
 
 const wordsDomainModel = new Words();
+const statisticsDomainModel = new Statistics();
 
 class SprintGame extends BaseComponent {
   constructor(parent, tagName) {
@@ -50,6 +52,10 @@ class SprintGame extends BaseComponent {
     this.keyId = '_id';
     this.keyActiveClassName = 'key_active';
     this.soundOffClassName = 'sprint-card__sound-off';
+    this.shortStatistic = {
+      incorrect: [],
+      correct: [],
+    };
 
     this.loader = new Loader();
     this.loader.show();
@@ -74,9 +80,11 @@ class SprintGame extends BaseComponent {
     this.gameArray = [];
     this.gameArray.push(...repeatWords, ...newWords, ...this.group);
 
+    this.allStatistic = await statisticsDomainModel.getStatistics();
+    this.statistic = this.allStatistic.data.optional[GAMES_ROUTES.SPRINT];
+    this.statisticTotal = this.statistic ? this.statistic[2] : 0;
+
     this.loader.hide();
-    console.log(repeatWords, this.gameArray);
-    wordsDomainModel.getAllUserWords().then((res) => console.log(res));
   }
 
   createLayout() {
@@ -92,7 +100,7 @@ class SprintGame extends BaseComponent {
       this.resultIcon,
       this.scoreContainer,
       this.soundButton,
-      this.gamesButton
+      this.gamesButton,
     ] = getLayout();
 
     this.getNewWord();
@@ -191,7 +199,7 @@ class SprintGame extends BaseComponent {
     onRouteChangeEvent(event, ROUTERS.GAMES);
   }
 
-  handleSoundButton(){
+  handleSoundButton() {
     this.sound = !this.sound;
     this.soundButton.classList.toggle(this.soundOffClassName);
   }
@@ -254,6 +262,7 @@ class SprintGame extends BaseComponent {
     this.scoreContainer.textContent = this.score;
 
     this.resultIcon.style.backgroundImage = `url(${correctIcon})`;
+    this.shortStatistic.correct.push(this.currentWord);
   }
 
   handleIncorrectAnswer() {
@@ -261,6 +270,7 @@ class SprintGame extends BaseComponent {
     this.streakWinning = 0;
     this.awardedPoints = this.basePoints;
     this.resultIcon.style.backgroundImage = `url(${incorrectIcon})`;
+    this.shortStatistic.incorrect.push(this.currentWord);
 
     if (
       this.keyUserWord in this.currentWord
@@ -272,7 +282,17 @@ class SprintGame extends BaseComponent {
 
   handleFinish() {
     localStorage.setItem('sprint-score', this.score);
+    localStorage.setItem('sprint-shortStatistic', JSON.stringify(this.shortStatistic));
+    this.statisticFinish();
     changeRoute(GAMES_ROUTES.SPRINT_FINISH, ROUTERS.GAMES);
+  }
+
+  statisticFinish() {
+    const date = Date.now();
+    const res = this.score;
+    const total = this.statisticTotal + 1;
+    const data = [date, res, total];
+    statisticsDomainModel.updateStatistics(GAMES_ROUTES.SPRINT, data);
   }
 }
 

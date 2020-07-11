@@ -45,7 +45,7 @@ export default function getLayout() {
     tag: 'button',
     className: 'sprint-card__button',
     content: 'Games',
-    destination: GAMES_ROUTES.GAMES_LIST
+    destination: GAMES_ROUTES.GAMES_LIST,
   });
   const soundButton = BaseComponent.createElement({
     tag: 'button',
@@ -54,9 +54,12 @@ export default function getLayout() {
   });
   additionalContainer.append(gamesButton, soundButton);
 
-
-  card.append(time, resultIcon, scoreWrapper, wordContainer, answerContainer, buttonContainer, additionalContainer);
+  card.append(
+    time, resultIcon, scoreWrapper, wordContainer,
+    answerContainer, buttonContainer, additionalContainer,
+  );
   container.append(card, keyContainer);
+
   return [
     container,
     time,
@@ -69,6 +72,6 @@ export default function getLayout() {
     resultIcon,
     scoreContainer,
     soundButton,
-    gamesButton
+    gamesButton,
   ];
 }
