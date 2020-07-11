@@ -1,27 +1,13 @@
 // constants
-import STATUSES from 'services/requestHandler.Statuses';
+import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
 
 // views
 import Vocabulary from './Vocabulary.View.Learning';
 
-// data
-import { constants } from './Vocabulary.Data';
-
 class VocabularyDeleted extends Vocabulary {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.pageType = constants.pageType.deleted;
-  }
-
-  handleRemove(wordId) {
-    this
-      .wordsDomainModel
-      .updateUserWord(wordId, null, constants.pageType.learning).then((res) => {
-      if (STATUSES.isSuccess(res.status)) {
-        console.log(res);
-        this.hideWord(wordId);
-      }
-    });
+    this.vocabularyType = VOCABULARY.REMOVED;
   }
 }
 

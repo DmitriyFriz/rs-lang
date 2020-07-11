@@ -4,6 +4,7 @@ import { onRouteChangeEvent } from 'router/RouteHandler';
 // constants
 import STATUSES from 'services/requestHandler.Statuses';
 import { ROUTERS } from 'router/Router.Constants';
+import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
 
 // view
 import BaseComponent from '../BaseComponent/BaseComponent';
@@ -26,7 +27,7 @@ class VocabularyLearning extends BaseComponent {
     this.wordsDomainModel = new Words(0);
     this.categoryWordsAmount = 0;
     this.todayWordsAmount = 0;
-    this.pageType = constants.pageType.learning;
+    this.vocabularyType = VOCABULARY.RESTORED;
     this.handleWordButtons = this.handleWordButtons.bind(this);
   }
 
@@ -47,16 +48,17 @@ class VocabularyLearning extends BaseComponent {
     });
 
     this.component.append(
-      this.info,
       this.nav,
+      this.info,
       this.wordsContainer,
       this.pagination,
     );
   }
 
   async prepareData() {
-    const filter = JSON.stringify(filterQuery[this.pageType]);
-    console.group('vocabulary: ', this.pageType);
+    const filter = JSON.stringify(filterQuery[this.vocabularyType]);
+    console.group('vocabulary: ', this.vocabularyType);
+
     const wordsData = await this.wordsDomainModel.getAggregatedWords({
       group: constants.group,
       wordsPerPage: constants.wordsPerPage,
@@ -99,7 +101,7 @@ class VocabularyLearning extends BaseComponent {
 
     this.component.removeEventListener('click', this.handleWordButtons);
 
-    console.groupEnd('vocabulary: ', this.pageType);
+    console.groupEnd('vocabulary: ', this.vocabularyType);
   }
 
   handleSwitchTab(event) {
@@ -121,9 +123,13 @@ class VocabularyLearning extends BaseComponent {
   }
 
   handleRemove(wordId) {
+    const removeType = this.vocabularyType !== VOCABULARY.RESTORED
+      ? VOCABULARY.RESTORED
+      : VOCABULARY.REMOVED;
+
     this
       .wordsDomainModel
-      .updateUserWord(wordId, null, constants.pageType.difficult)
+      .updateUserWord(wordId, null, removeType)
       .then((res) => {
         if (STATUSES.isSuccess(res.status)) {
           console.log(res);

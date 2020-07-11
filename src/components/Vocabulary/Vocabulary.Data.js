@@ -1,4 +1,5 @@
 import { VOCABULARY_ROUTERS, MAIN_ROUTES } from '../../router/Router.Constants';
+import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
 
 const pageLayout = {
   container: {
@@ -80,23 +81,18 @@ const navTabsLayout = [
 const constants = {
   wordsPerPage: 10,
   group: 0,
-  pageType: {
-    learning: 'learning',
-    difficult: 'difficult',
-    deleted: 'removed',
-  },
 };
 
 const filterQuery = {
-  learning: {
+  RESTORED: {
     $and: [
-      { 'userWord.optional.vocabulary': { $ne: 'removed' } },
-      { 'userWord.optional.vocabulary': { $ne: 'removed' } },
-      { 'userWord': { $ne: null} },
+      { 'userWord.optional.VOCABULARY': { $ne: `${VOCABULARY.REMOVED}` } },
+      { 'userWord.optional.VOCABULARY': { $ne: `${VOCABULARY.DIFFICULT}` } },
+      { userWord: { $ne: null } },
     ],
   },
-  difficult: { 'userWord.optional.vocabulary': 'difficult' },
-  removed: { 'userWord.optional.vocabulary': 'removed' },
+  DIFFICULT: { 'userWord.optional.VOCABULARY': `${VOCABULARY.DIFFICULT}` },
+  REMOVED: { 'userWord.optional.VOCABULARY': `${VOCABULARY.REMOVED}` },
 };
 
 export {
