@@ -1,12 +1,49 @@
+.savannah-wrapper {
+  margin: auto;
+  width: fit-content;
+  background: rgba(246, 243, 241, 0.7);
+  box-shadow: 0 0 10px 1px white;
+  animation: showAnimation .4s ease;
+}
+
 .game-savanna {
-  position: static;
-  height: 100%;
-  background: url("./images/background.jpg") no-repeat bottom center fixed;
-  background-size: unset;
-  overflow: hidden;
+  position: relative;
+
+  &::after {
+    background-image: url("./images/SnavannaBGR.svg");
+    background-size: cover;
+    background-position-y: 100%;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    opacity: 1;
+  }
 
   h3 {
     color: $fontColor;
   }
 }
 
+//.move {
+//  transition: all 1s ease;
+//}
+
+@keyframes showAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hideAnimation {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
