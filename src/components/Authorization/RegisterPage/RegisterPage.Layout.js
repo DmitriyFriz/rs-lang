@@ -63,6 +63,17 @@ export default function getRegisterPageLayout() {
     return null;
   });
 
+  const requirements = BaseComponent.createElement({
+    tag: 'i',
+    content: regPageLayout.requirements.content,
+  });
+
+  inputRegPassword.forEach((value) => {
+    if (value.id === 'reqRequirement') {
+      value.append(requirements);
+    }
+  });
+
   const fieldSetEmails = BaseComponent.createElement({
     tag: regPageLayout.fieldSetEmail.type,
     className: regPageLayout.fieldSetEmail.nameClass,

@@ -221,11 +221,13 @@ export default class RegisterPage extends BaseComponent {
   }
 
   isEmail(string) {
-    return string.match(new RegExp(regEmailRegExp));
+    const regExp = new RegExp(regEmailRegExp);
+    return regExp.test(string);
   }
 
   isCorrectPassword(string) {
-    return string.match(new RegExp(regPasswordRegEx));
+    const regExp = new RegExp(regPasswordRegEx);
+    return regExp.test(string);
   }
 
   isPasswordMatch(pass, passConfirm) {
