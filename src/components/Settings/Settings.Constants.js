@@ -38,9 +38,15 @@ const VALIDATOR_GROUPS = {
 const ERRORS_LIST = {
   [VALIDATOR_GROUPS.WORDS]: `New words per day should
   not exceed the Total words per day`,
-  [VALIDATOR_GROUPS.DISPLAY]: 'Meaning or example should be marked',
+  [VALIDATOR_GROUPS.DISPLAYING]: 'Meaning or example should be marked',
   [VALIDATOR_GROUPS.TIMERS]: `Data must be in the format <##.##>
   and must not be less than zero`,
+  [VALIDATOR_GROUPS.EMAIL]: 'Incorrect email',
+  [VALIDATOR_GROUPS.PASSWORD]: `Incorrect password.
+   The password must contain 8 characters, one uppercase letter,
+   one lowercase letter, one number
+   and one special character from + -_ @ $!% *? & #.,;: [] {}`,
+  [VALIDATOR_GROUPS.CONFIRM_PASSWORD]: 'Passwords doesn\'t match',
 };
 
 const DEFAULT_SETTINGS_MAIN = {

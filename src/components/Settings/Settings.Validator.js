@@ -5,6 +5,8 @@ import {
   SETTINGS_MAIN,
 } from './Settings.Constants';
 
+import { regEmailRegExp, regPasswordRegEx } from '../Authorization/RegisterPage/RegisterPage.Data';
+
 function checkWords(data) {
   if (+data[SETTINGS_MAIN.NEW_WORDS] > +data[SETTINGS_MAIN.WORDS_PER_DAY]) {
     return false;
@@ -38,10 +40,28 @@ function checkTimers(data) {
   return !isFail;
 }
 
+function checkEmail(email) {
+  const regExp = new RegExp(regEmailRegExp);
+  return regExp.test(email);
+}
+
+function checkPassword(password) {
+  const regExp = new RegExp(regPasswordRegEx);
+  return regExp.test(password);
+}
+
+function checkConfirmedPassword({ password, confirmedPassword }) {
+  return password === confirmedPassword;
+}
+
 const validatorList = {
   [VALIDATOR_GROUPS.WORDS]: (data) => checkWords(data),
   [VALIDATOR_GROUPS.DISPLAYING]: (data) => checkDisplaying(data),
   [VALIDATOR_GROUPS.TIMERS]: (data) => checkTimers(data),
+  [VALIDATOR_GROUPS.EMAIL]: (email) => checkEmail(email),
+  [VALIDATOR_GROUPS.PASSWORD]: (password) => checkPassword(password),
+  [VALIDATOR_GROUPS.CONFIRM_PASSWORD]:
+    (data) => checkConfirmedPassword(data),
 };
 
 function checkValidation(validationName, data) {
