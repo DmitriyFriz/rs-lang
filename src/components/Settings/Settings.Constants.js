@@ -74,6 +74,8 @@ const DEFAULT_SETTINGS_LIST = {
 
 const BUTTONS = {
   DELETE_ACCOUNT: 'deleteAccount',
+  CONFIRM_DELETE_ACCOUNT: 'confirmDeleteAccount',
+  CANCEL_DELETE_ACCOUNT: 'cancelDeleteAccount',
   SAVE_MAIN: 'saveMain',
   SAVE_USER: 'saveUser',
 };
