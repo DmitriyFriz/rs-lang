@@ -52,4 +52,32 @@ function getLayoutOfConfirmDelete() {
   return layout;
 }
 
-export { getLayout, getLayoutOfConfirmDelete };
+function getNotificationLayout(root, content) {
+  const html = `
+  <div class="wrapper">
+    <div class="content">
+      <p class="notification__description">${content}</p>
+    </div>
+  </div>`;
+
+  const layout = createElement(
+    {
+      tag: 'div',
+      className: 'notifications',
+      innerHTML: html,
+    },
+  );
+
+  root.append(layout);
+
+  layout.addEventListener('animationend', () => {
+    console.log('REMOVE NOTIFICATION');
+    layout.remove();
+  }, { once: true });
+}
+
+export {
+  getLayout,
+  getLayoutOfConfirmDelete,
+  getNotificationLayout,
+};

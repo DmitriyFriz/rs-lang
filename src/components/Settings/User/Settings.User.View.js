@@ -6,12 +6,13 @@ import { changeRoute } from 'router/RouteHandler';
 
 // constants
 import { ROUTERS, SETTINGS_ROUTES } from 'router/Router.Constants';
+import STATUSES from 'services/requestHandler.Statuses';
 
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // layout
-import { getLayout, getLayoutOfConfirmDelete } from './Settings.User.Layout';
+import { getLayout, getLayoutOfConfirmDelete, getNotificationLayout } from './Settings.User.Layout';
 import { addErrorToLayout } from '../Settings.Layout';
 
 // validator
@@ -19,7 +20,10 @@ import checkValidation from '../Settings.Validator';
 
 // constants
 import { BUTTONS, VALIDATOR_GROUPS } from '../Settings.Constants';
-import { MAIN_ROUTES } from '../../../router/Router.Constants';
+import { MAIN_ROUTES, HEADER_ROUTES } from '../../../router/Router.Constants';
+
+// User
+import UserDomain from '../../../domain-models/User/User';
 
 class SettingsUser extends BaseComponent {
   prepareData() {
@@ -46,8 +50,9 @@ class SettingsUser extends BaseComponent {
     this.functionListForButtons[buttonFunction](event);
   }
 
-  saveUserSettings(event) {
+  async saveUserSettings(event) {
     event.preventDefault();
+
     this.email = document.forms
       .updatedUserData
       .updatedEmail
@@ -61,12 +66,21 @@ class SettingsUser extends BaseComponent {
       .updatedConfirmPassword
       .value;
 
-    this.checkData();
+    const isValid = this.checkData();
+    if (!isValid) { return; }
 
-    console.log('SAVE USER PROFILE');
+    const { status, statusText } = await UserDomain.update({
+      email: this.email,
+      password: this.password,
+    });
+
+    if (status !== STATUSES.OK) {
+      getNotificationLayout(this.component, statusText);
+    }
+    console.log('UPDATE COMPLETED === ', status);
   }
 
-  deleteAccount(event) {
+  deleteAccount() {
     this.layoutOfConfirmDelete = getLayoutOfConfirmDelete();
     this.component.append(this.layoutOfConfirmDelete);
     console.log('DELETE ACCOUNT');
@@ -76,8 +90,10 @@ class SettingsUser extends BaseComponent {
     this.layoutOfConfirmDelete.remove();
   }
 
-  confirmDeleteAccount() {
-    changeRoute(MAIN_ROUTES.PROMO, ROUTERS.MAIN);
+  async confirmDeleteAccount() {
+    await UserDomain.remove();
+    console.log('USER DELETED');
+    changeRoute(MAIN_ROUTES.PROMO, ROUTERS.MAIN, ROUTERS.HEADER);
   }
 
   checkData() {
