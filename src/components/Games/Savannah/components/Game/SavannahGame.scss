@@ -1,0 +1,23 @@
+.savannah__game-wrapper {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  font-family: $mainFont;
+  font-size: $fontSize;
+
+  .savannah-game__word {
+    position: absolute;
+    top: 0;
+    margin: auto;
+  }
+
+  .keyboard-info{
+    justify-content: flex-end;
+  }
+
+  .hide-word {
+    opacity: 0;
+    animation: hideAnimation 1.2s ease;
+  }
+
+}
