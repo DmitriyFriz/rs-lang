@@ -28,7 +28,7 @@ import {
 import { data } from './Layout/LearningWords.Data';
 
 // Settings
-import { getSettings } from '../../Settings/SettingsHandler';
+import { getSettings } from '../../Settings/Main/Settings.Main.Handler';
 import { SETTINGS } from '../../Settings/Settings.Constants';
 
 import statistics from '../MainPage.Statistics';

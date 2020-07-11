@@ -26,17 +26,20 @@ const SETTINGS_REPETITION = {
   ...REPEAT_INTERVAL,
 };
 
-const CHECKING_GROUPS = {
+const VALIDATOR_GROUPS = {
   WORDS: 'WORDS',
-  DISPLAY: 'DISPLAY',
+  DISPLAYING: 'DISPLAYING',
   TIMERS: 'TIMERS',
+  EMAIL: 'EMAIL',
+  PASSWORD: 'PASSWORD',
+  CONFIRM_PASSWORD: 'CONFIRM_PASSWORD',
 };
 
 const ERRORS_LIST = {
-  [CHECKING_GROUPS.WORDS]: `New words per day should
+  [VALIDATOR_GROUPS.WORDS]: `New words per day should
   not exceed the Total words per day`,
-  [CHECKING_GROUPS.DISPLAY]: 'Meaning or example should be marked',
-  [CHECKING_GROUPS.TIMERS]: `Data must be in the format <##.##>
+  [VALIDATOR_GROUPS.DISPLAY]: 'Meaning or example should be marked',
+  [VALIDATOR_GROUPS.TIMERS]: `Data must be in the format <##.##>
   and must not be less than zero`,
 };
 
@@ -63,6 +66,12 @@ const DEFAULT_SETTINGS_LIST = {
   [SETTINGS.REPETITION]: DEFAULT_SETTINGS_REPETITION,
 };
 
+const BUTTONS = {
+  DELETE_ACCOUNT: 'deleteAccount',
+  SAVE_MAIN: 'saveMain',
+  SAVE_USER: 'saveUser',
+};
+
 export {
   SETTINGS,
   SETTINGS_MAIN,
@@ -70,6 +79,7 @@ export {
   SETTINGS_REPETITION,
   DEFAULT_SETTINGS_REPETITION,
   DEFAULT_SETTINGS_LIST,
-  CHECKING_GROUPS,
+  VALIDATOR_GROUPS,
   ERRORS_LIST,
+  BUTTONS,
 };

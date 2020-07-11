@@ -1,60 +1,72 @@
+// constants
+import { ROUTERS, SETTINGS_ROUTES } from 'router/Router.Constants';
+
+// router
+import Router from 'router/Router';
+import {
+  registerRouter,
+  onRouteChangeEvent,
+  unregisterRouter,
+} from 'router/RouteHandler';
+
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
+import SettingsMain from './Main/Settings.Main.View';
+import SettingsUser from './User/Settings.User.View';
 
 // styles
 import './Settings.scss';
 
 // layout
-import getLayout from './Settings.Layout';
+import { getLayout } from './Settings.Layout';
 
-// handler
-import { saveSettings, loadSettings } from './SettingsHandler';
-
-import { SETTINGS } from './Settings.Constants';
+const { createElement } = BaseComponent;
 
 class Settings extends BaseComponent {
+  async prepareData() {
+    const settingsRoutes = {
+      [SETTINGS_ROUTES.MAIN]: SettingsMain,
+      [SETTINGS_ROUTES.USER]: SettingsUser,
+    };
+
+    this.component.className = 'settings-page';
+    this.root = createElement(
+      {
+        tag: 'div',
+        className: 'settings-page__root',
+        id: 'settings-root',
+      },
+    );
+    this.component.append(this.root);
+
+    this.settingsRouter = new Router(
+      ROUTERS.SETTINGS,
+      this.root,
+      settingsRoutes,
+      SETTINGS_ROUTES.MAIN,
+    );
+    registerRouter(this.settingsRouter);
+  }
+
   createLayout() {
-    this.component.className = 'settings';
-    this.component.innerHTML = getLayout();
-    this.saveBtn = BaseComponent.createElement({
-      tag: 'button',
-      className: 'button button-save-settings',
-      content: 'Save',
-    });
-    this.component.append(this.saveBtn);
+    this.header = createElement(
+      {
+        tag: 'div',
+        className: 'settings-page__header',
+        innerHTML: getLayout(),
+      },
+    );
+    this.component.append(this.header);
   }
 
   addListeners() {
-    this.saveBtn.addEventListener('click', () => this.handleSettings('save'));
+    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.SETTINGS));
   }
 
   removeListeners() {
-  }
+    this.component.removeEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.SETTINGS));
 
-  async show() {
-    await super.show();
-    await this.handleSettings();
-  }
-
-  getSettingsList(name) {
-    let list = this.component.querySelectorAll('[data-settings]');
-    list = [...list].filter((setting) => {
-      const [nameSettings] = setting.dataset.settings.split('.');
-      return nameSettings === name;
-    });
-    return { name, list };
-  }
-
-  handleSettings(mode) {
-    Object.keys(SETTINGS).reduce((promise, settingsName) => {
-      const settings = this.getSettingsList(SETTINGS[settingsName]);
-
-      if (mode === 'save') {
-        return promise.then(() => saveSettings(settings));
-      }
-
-      return promise.then(() => loadSettings(settings));
-    }, Promise.resolve());
+    unregisterRouter(this.settingsRouter);
   }
 }
 
