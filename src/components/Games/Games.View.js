@@ -8,6 +8,7 @@ import SprintStart from './Sprint/Start/SprintStart.View';
 import SprintGame from './Sprint/Game/SprintGame.View';
 import SprintFinish from './Sprint/Finish/SprintFinish.View';
 import Savannah from 'components/Games/Savannah/Savannah';
+import SavannahGame from 'components/Games/Savannah/components/Game/Savannah.Game.View';
 
 // router
 import Router from 'router/Router';
@@ -31,6 +32,7 @@ class Games extends BaseComponent {
       [GAMES_ROUTES.GAMES_LIST]: GamesList,
       [GAMES_ROUTES.SPEAK_IT]: SpeakIt,
       [GAMES_ROUTES.SAVANNAH]: Savannah,
+      [GAMES_ROUTES.SAVANNAH_GAME]: SavannahGame,
       [SPEAK_IT_ROUTERS.SPEAK_IT_MAIN]: SpeakItMain,
       [GAMES_ROUTES.SPRINT]: SprintStart,
       [GAMES_ROUTES.SPRINT_GAME]: SprintGame,
