@@ -1,9 +1,15 @@
-import { VOCABULARY_ROUTERS, MAIN_ROUTES } from '../../router/Router.Constants';
+import { VOCABULARY_ROUTERS } from '../../router/Router.Constants';
 import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
 
 const pageLayout = {
-  container: {
+  component: {
     className: 'vocabulary',
+  },
+  container: {
+    className: 'vocabulary__container',
+  },
+  inner: {
+    className: 'vocabulary__inner',
   },
   info: {
     content1: 'AMOUNT OF WORDS:',
@@ -70,7 +76,7 @@ const navTabsLayout = [
   {
     content: 'Learning words',
     className: 'vocabulary__tab vocabulary__tab--active',
-    destination: MAIN_ROUTES.VOCABULARY,
+    destination: VOCABULARY_ROUTERS.VOCABULARY_LEARNING,
   },
   {
     content: 'Difficult words',

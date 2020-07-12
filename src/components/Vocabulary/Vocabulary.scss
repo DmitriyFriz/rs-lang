@@ -66,6 +66,17 @@
     }
   }
 
+  &__container {
+    @media screen and (min-width: $tablets) {
+      @include main-content-width();
+      max-height: 100%;
+    }
+  }
+
+  &__inner {
+    height: 100%;
+  }
+
   &__info {
     text-transform: uppercase;
     border: $lightBorder;
@@ -73,26 +84,25 @@
     border-radius: 4px;
     padding: 0.5em 1em;
     background-color: $basicColor5;
-    @media screen and (min-width: $tablets) {
-      @include main-content-width();
-    }
   }
 
   &__list {
     margin-top: 0.5em;
-      margin-bottom: 0.5em;
-      @media screen and (min-width: $tablets) {
-      @include main-content-width();
+    margin-bottom: 0.5em;
+    @media screen and (min-width: $tablets) {
+      width: 100%;
       padding-right: 0.5em;
       overflow-y: auto;
 
       scrollbar-color: $basicColor3 $basicColor5;
       scrollbar-width: thin;
 
-      max-height: calc(100% - 37px - 17px); //check info an nav height
+      max-height: calc(
+        100% - 34px - 47px - 1em
+      ); //check info and nav height with margin
 
       &::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 1px $basicColor4;
+        box-shadow: inset 0 0 1px $basicColor4;
         background-color: transparent;
       }
 
@@ -206,8 +216,7 @@
     padding: 0.5rem 0;
 
     @media screen and (min-width: $tablets) {
-      width: calc(100% - 250px);
-      margin-left: 250px;
+      width: 100%;
       margin-top: auto;
     }
   }

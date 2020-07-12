@@ -221,14 +221,20 @@ function getPaginationLayout() {
   return pagination;
 }
 
-function getPageLayout(data) {
+function getVocabularyInnerLayout(data) {
   const { allWordsNum, todayWordsNum, words } = data;
   return [
     getVocabularyInfoLayout(allWordsNum, todayWordsNum),
-    getVocabularyNavLayout(),
     getWordsListLayout(words),
     getPaginationLayout(),
   ];
 }
 
-export default getPageLayout;
+function getContainerLayout() {
+  return createElement({
+    tag: 'div',
+    className: pageLayout.container.className,
+  });
+}
+
+export { getVocabularyNavLayout, getVocabularyInnerLayout as getLayout, getContainerLayout };

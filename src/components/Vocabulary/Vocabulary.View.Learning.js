@@ -1,9 +1,5 @@
-// router
-import { onRouteChangeEvent } from 'router/RouteHandler';
-
 // constants
 import STATUSES from 'services/requestHandler.Statuses';
-import { ROUTERS } from 'router/Router.Constants';
 import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
 
 // view
@@ -18,7 +14,7 @@ import Loader from '../Loader/Loader.View';
 // import Settings from '../../domain-models/Settings/Settings';
 
 // layout
-import getPageLayout from './Vocabulary.Layout';
+import { getLayout } from './Vocabulary.Layout';
 
 // data
 import { pageLayout, constants, filterQuery } from './Vocabulary.Data';
@@ -42,23 +38,21 @@ class VocabularyLearning extends BaseComponent {
   }
 
   createLayout() {
-    this.component.className = pageLayout.container.className;
+    this.component.className = pageLayout.inner.className;
     [
       this.info,
-      this.nav,
       [
         this.wordsContainer,
         this.words,
       ],
       this.pagination,
-    ] = getPageLayout({
+    ] = getLayout({
       allWordsNum: this.categoryWordsAmount,
       todayWordsNum: this.todayWordsAmount,
       words: this.words,
     });
 
     this.component.append(
-      this.nav,
       this.info,
       this.wordsContainer,
       this.pagination,
@@ -109,7 +103,6 @@ class VocabularyLearning extends BaseComponent {
       this.categoryWordsAmount = 0;
       this.words = null;
     }
-    console.log(wordsData);
   }
 
   playAudio(src) {
@@ -127,21 +120,13 @@ class VocabularyLearning extends BaseComponent {
   }
 
   addListeners() {
-    this.component.addEventListener('click', this.handleSwitchTab);
-
     this.component.addEventListener('click', this.handleWordButtons);
   }
 
   removeListeners() {
-    this.component.removeEventListener('click', this.handleSwitchTab);
-
     this.component.removeEventListener('click', this.handleWordButtons);
 
     console.groupEnd('vocabulary: ', this.vocabularyType);
-  }
-
-  handleSwitchTab(event) {
-    onRouteChangeEvent(event, ROUTERS.VOCABULARY);
   }
 
   handleWordButtons(event) {
