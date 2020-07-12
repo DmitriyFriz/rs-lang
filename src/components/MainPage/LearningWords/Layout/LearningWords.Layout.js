@@ -65,6 +65,9 @@ const slideLayout = {
   [SETTINGS_MAIN.MEANING](root, { textMeaning }) {
     addBlock(root, data, SETTINGS_MAIN.MEANING, textMeaning);
   },
+  [SETTINGS_MAIN.WORD_TRANSLATION](root, { wordTranslate }) {
+    addBlock(root, data, SETTINGS_MAIN.WORD_TRANSLATION, wordTranslate);
+  },
   [SETTINGS_MAIN.ANSWER_BUTTON](root) {
     addBlock(root, data, SETTINGS_MAIN.ANSWER_BUTTON);
   },
@@ -72,8 +75,10 @@ const slideLayout = {
 
 function createWordSlide(enabledSettings, { _id, word, ...param }) {
   const card = createElement({
-    ...data.slide,
+    tag: data.slide.tag,
+    className: data.slide.className,
     id: _id,
+    innerHTML: enabledSettings.includes(SETTINGS_MAIN.WORD_TRANSLATION) ? '' : data.slide.innerHTML,
   });
 
   enabledSettings.forEach((setting) => {

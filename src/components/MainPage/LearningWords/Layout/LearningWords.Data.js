@@ -40,6 +40,7 @@ const data = {
   slide: {
     tag: 'div',
     className: 'swiper-slide',
+    innerHTML: `<div class="swiper-slide__answer" data-translation="${TRANSLATIONS.WORD}"></div>`,
   },
 
   // ======================== buttons ==========================
@@ -190,6 +191,22 @@ const data = {
     },
   },
   // ======================== texts ==========================
+  [SETTINGS_MAIN.WORD_TRANSLATION]: {
+    parent: {
+      tag: 'div',
+      className: 'swiper-slide__word-translation',
+      dataset: {
+        settings: SETTINGS_MAIN.WORD_TRANSLATION,
+      },
+    },
+
+    children: [
+      {
+        tag: 'p',
+        className: 'word__translation',
+      },
+    ],
+  },
 
   [SETTINGS_MAIN.EXAMPLE]: {
     parent: {
@@ -219,7 +236,6 @@ const data = {
       id: 'card-word',
       dataset: {
         settings: SETTINGS_MAIN.TRANSCRIPTION,
-        translation: TRANSLATIONS.WORD,
       },
     },
 
