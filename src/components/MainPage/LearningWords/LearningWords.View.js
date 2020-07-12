@@ -131,12 +131,12 @@ class LearningWords extends BaseComponent {
   }
 
   async initTraining() {
-    if (this.isNewSettings) {
-      statistics.todayStat.addNewTrainingToPlan();
-    }
+    // if (this.isNewSettings) {
+    //   statistics.todayStat.addNewTrainingToPlan();
+    // }
     console.log('PLAN === ', statistics.todayStat.dailyPlanCompleted,
       'NEW DAY === ', !statistics.isNewDay,
-      'NEW SETTINGS === ', !this.isNewSettings,
+      // 'NEW SETTINGS === ', !this.isNewSettings,
       'MODE RANDOM === ', !(status.mode === MODES.RANDOM));
     if (
       statistics.todayStat.dailyPlanCompleted
@@ -182,9 +182,9 @@ class LearningWords extends BaseComponent {
     changeRoute(MAIN_PAGE_ROUTES.START_MENU, ROUTERS.MAIN_PAGE);
   }
 
-  get isNewSettings() {
-    return this.settings[SETTINGS.MAIN].isNew;
-  }
+  // get isNewSettings() {
+  //   return this.settings[SETTINGS.MAIN].isNew;
+  // }
 
   async handleButtons(event) {
     const buttonFunction = get(event, 'target.dataset.button');
@@ -358,8 +358,7 @@ class LearningWords extends BaseComponent {
       && this.savedWords.length
     ) {
       console.log('GETTING SAVED WORDS: ',
-        'SAVED WORDS === ', this.savedWords,
-        'NEW SETTINGS === ', this.settings[SETTINGS.MAIN].isNew);
+        'SAVED WORDS === ', this.savedWords);
       this.getSavedWords();
       return;
     }
@@ -435,19 +434,19 @@ class LearningWords extends BaseComponent {
     const enabled = Object.keys(all)
       .filter((setting) => all[setting] === true);
 
-    if (!this.savedSettings) {
-      this.savedSettings = { [name]: all };
-    }
+    // if (!this.savedSettings) {
+    //   this.savedSettings = { [name]: all };
+    // }
 
-    const updatedSettings = this.savedSettings;
-    const isNew = !isEqual(all, updatedSettings[name]);
+    // const updatedSettings = this.savedSettings;
+    // const isNew = !isEqual(all, updatedSettings[name]);
 
-    if (isNew) {
-      console.log('SAVE SETTINGS!');
-      updatedSettings[name] = all;
-      this.savedSettings = updatedSettings;
-    }
-    return { enabled, all, isNew };
+    // if (isNew) {
+    //   console.log('SAVE SETTINGS!');
+    //   updatedSettings[name] = all;
+    //   this.savedSettings = updatedSettings;
+    // }
+    return { enabled, all };// , isNew };
   }
 
   async initSettings() {
@@ -461,13 +460,13 @@ class LearningWords extends BaseComponent {
     await Promise.all(promises);
   }
 
-  get savedSettings() {
-    return JSON.parse(localStorage.getItem('savedSettings'));
-  }
+  // get savedSettings() {
+  //   return JSON.parse(localStorage.getItem('savedSettings'));
+  // }
 
-  set savedSettings(value) {
-    localStorage.setItem('savedSettings', JSON.stringify(value));
-  }
+  // set savedSettings(value) {
+  //   localStorage.setItem('savedSettings', JSON.stringify(value));
+  // }
 }
 
 export default LearningWords;
