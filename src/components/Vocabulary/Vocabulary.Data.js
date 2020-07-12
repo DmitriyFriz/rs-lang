@@ -19,6 +19,9 @@ const pageLayout = {
   item: {
     className: 'vocabulary__item',
   },
+  wordInfo: {
+    className: 'vocabulary__word-info',
+  },
   word: {
     className: 'vocabulary__word',
   },
@@ -35,15 +38,18 @@ const pageLayout = {
   image: {
     className: 'vocabulary__image',
   },
-  meaning: {
-    className: 'vocabulary__meaning',
+  text: {
+    className: 'vocabulary__text',
   },
-  example: {
-    className: 'vocabulary__example',
+  statistic: {
+    className: 'vocabulary__statistic',
+  },
+  buttons: {
+    className: 'vocabulary__buttons',
   },
   remove: {
     content: 'x',
-    className: 'vocabulary__remove',
+    className: 'vocabulary__remove button',
   },
   noWords: 'Nothing to show',
   pagination: {
@@ -51,11 +57,11 @@ const pageLayout = {
   },
   prev: {
     content: '<<',
-    className: 'vocabulary__prev',
+    className: 'vocabulary__prev button',
   },
   next: {
     content: '>>',
-    className: 'vocabulary__next',
+    className: 'vocabulary__next button',
   },
   hidden: 'hidden',
 };
@@ -63,7 +69,7 @@ const pageLayout = {
 const navTabsLayout = [
   {
     content: 'Learning words',
-    className: 'vocabulary__tab',
+    className: 'vocabulary__tab vocabulary__tab--active',
     destination: MAIN_ROUTES.VOCABULARY,
   },
   {
