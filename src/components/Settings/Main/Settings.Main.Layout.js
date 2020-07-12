@@ -54,6 +54,10 @@ function getLayout() {
     data-settings="${SETTINGS_MAIN.MEANING}"
     <label for="meaning">Meaning</label>
 
+    <input type="checkbox" id="word-translation" name="wordTranslation"
+    data-settings="${SETTINGS_MAIN.WORD_TRANSLATION}"
+    <label for="word-translation">Word translation</label>
+
     <input type="checkbox" id="transcription" name="transcription"
     data-settings="${SETTINGS_MAIN.TRANSCRIPTION}">
     <label for="translate">Transcription</label>

@@ -9,6 +9,7 @@ const SETTINGS_MAIN = {
   IMAGE: 'image',
   EXAMPLE: 'example',
   MEANING: 'meaning',
+  WORD_TRANSLATION: 'wordTranslation',
   TRANSLATION: 'translation',
   TRANSCRIPTION: 'transcription',
   DIFFICULTY_BUTTONS: 'difficultyButtons',
@@ -38,7 +39,7 @@ const VALIDATOR_GROUPS = {
 const ERRORS_LIST = {
   [VALIDATOR_GROUPS.WORDS]: `New words per day should
   not exceed the Total words per day`,
-  [VALIDATOR_GROUPS.DISPLAYING]: 'Meaning or example should be marked',
+  [VALIDATOR_GROUPS.DISPLAYING]: 'Meaning, word translation or example should be marked',
   [VALIDATOR_GROUPS.TIMERS]: `Data must be in the format <##.##>
   and must not be less than zero`,
   [VALIDATOR_GROUPS.EMAIL]: 'Incorrect email',
@@ -53,6 +54,7 @@ const DEFAULT_SETTINGS_MAIN = {
   [SETTINGS_MAIN.IMAGE]: true,
   [SETTINGS_MAIN.EXAMPLE]: true,
   [SETTINGS_MAIN.MEANING]: false,
+  [SETTINGS_MAIN.WORD_TRANSLATION]: false,
   [SETTINGS_MAIN.TRANSLATION]: true,
   [SETTINGS_MAIN.TRANSCRIPTION]: false,
   [SETTINGS_MAIN.DIFFICULTY_BUTTONS]: true,
