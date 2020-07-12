@@ -20,6 +20,8 @@ import Notification from '../../Notification/Notification.View';
 
 // handler
 import { checkData } from '../Settings.Handler';
+import { changeRoute } from '../../../router/RouteHandler';
+import { MAIN_ROUTES, ROUTERS } from '../../../router/Router.Constants';
 
 class SettingsUser extends BaseComponent {
   prepareData() {
@@ -64,7 +66,7 @@ class SettingsUser extends BaseComponent {
     const { isSuccess, errorName } = checkData(dataList);
 
     if (!isSuccess) {
-      this.notification.add(ERRORS_LIST[errorName]);
+      this.notification.add(ERRORS_LIST[errorName], 5000);
       return;
     }
 
@@ -83,19 +85,23 @@ class SettingsUser extends BaseComponent {
   }
 
   deleteAccount() {
-    this.layoutOfConfirmDelete = getLayoutOfConfirmDelete();
-    this.component.append(this.layoutOfConfirmDelete);
+    const html = getLayoutOfConfirmDelete();
+    this.notification.add(html);
   }
 
   cancelDeleteAccount() {
-    this.layoutOfConfirmDelete.remove();
+    this.notification.drop();
   }
 
   async confirmDeleteAccount() {
+    this.notification.drop();
     const { status } = await UserDomain.remove();
+
     if (status !== STATUSES.NO_CONTENT) {
       this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
+      return;
     }
+    changeRoute(MAIN_ROUTES.PROMO, ROUTERS.MAIN, ROUTERS.HEADER);
   }
 }
 

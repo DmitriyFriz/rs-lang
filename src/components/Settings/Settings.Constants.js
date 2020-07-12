@@ -85,6 +85,7 @@ const NOTIFICATIONS = {
   SAVED_SUCCESSFULLY: 'Saved successfully',
   SAVE_ERROR: 'Something went wrong. Please try again later or try to enter other details',
   ACCOUNT_DELETED: 'Account deleted',
+  CONFIRM_DELETE_ACCOUNT: 'Are you sure you want to delete your account? All data will be lost!',
 };
 
 export {
