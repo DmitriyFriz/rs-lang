@@ -8,7 +8,7 @@ import finishGameAudio from 'assets/mini-games/audio/finish-game.mp3';
 import SprintStart from '../Start/SprintStart.View';
 
 // short statistic
-// import ShortStatistic from '../../ShortStatistic/ShortStatistic.View'
+import ShortStatistic from '../../ShortStatistic/ShortStatistic.View';
 
 // layout
 import getLayout from './SprintFinish.Layout';
@@ -24,8 +24,14 @@ class SprintFinish extends SprintStart {
     this.component.innerHTML = getLayout();
     this.playAudio(finishGameAudio);
 
-    // this.statistic = new ShortStatistic(this.component.firstElementChild, 'div', this.shortStatistic);
-    // this.statistic.show();
+    this.statisticList = new ShortStatistic(this.component.firstElementChild, 'div', this.shortStatistic);
+    this.statisticList.show();
+  }
+
+  removeListeners() {
+    super.removeListeners();
+
+    this.statisticList.hide();
   }
 
   playAudio(src) {
