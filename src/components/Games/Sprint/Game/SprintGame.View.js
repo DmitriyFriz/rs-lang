@@ -29,6 +29,7 @@ import errorAudio from 'assets/mini-games/audio/error.mp3';
 import supersetAudio from 'assets/mini-games/audio/superset.mp3';
 
 // layout
+import get from 'lodash.get';
 import getLayout from './SprintGame.Layout';
 
 const wordsDomainModel = new Words();
@@ -80,9 +81,14 @@ class SprintGame extends BaseComponent {
     this.gameArray = [];
     this.gameArray.push(...repeatWords, ...newWords, ...this.group);
 
-    this.allStatistic = await statisticsDomainModel.getStatistics();
-    this.statistic = this.allStatistic.data.optional[GAMES_ROUTES.SPRINT];
-    this.statisticTotal = this.statistic ? this.statistic[2] : 0;
+    const { data } = await statisticsDomainModel.getStatistics();
+    this.statistic = get(data, `optional.${GAMES_ROUTES.SPRINT}`); // Lodash
+
+    if (!data || !this.statistic) {
+      this.statistic = [Date.now(), 0, 0]; // [Date, Results, TotalGame]
+    }
+
+    [, , this.statisticTotal] = this.statistic;
 
     this.loader.hide();
   }
