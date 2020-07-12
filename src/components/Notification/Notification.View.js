@@ -27,7 +27,7 @@ class Notification extends BaseComponent {
     this.component.removeEventListener('animationend', this.remove);
   }
 
-  add(content, timer = 4000) {
+  add(content, timer) {
     if (this.isShow) {
       this.addToQueue({ content, timer });
       return;
@@ -38,11 +38,11 @@ class Notification extends BaseComponent {
     this.isShow = true;
     this.show();
 
-    setTimeout(() => this.drop(), timer);
+    if (timer) { setTimeout(() => this.drop(), timer); }
   }
 
   addToQueue(data) {
-    if (this.queue.length > this.maxQueueLength) { return; }
+    if (this.queue.length >= this.maxQueueLength) { return; }
     this.queue.push(data);
   }
 
