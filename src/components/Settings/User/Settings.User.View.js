@@ -23,7 +23,7 @@ import { checkData } from '../Settings.Handler';
 
 class SettingsUser extends BaseComponent {
   prepareData() {
-    this.notification = new Notification(this.component);
+    this.notification = new Notification(this.component, 1);
     this.functionListForButtons = {
       [BUTTONS.DELETE_ACCOUNT]: () => this.deleteAccount(),
       [BUTTONS.CONFIRM_DELETE_ACCOUNT]: () => this.confirmDeleteAccount(),
@@ -79,7 +79,7 @@ class SettingsUser extends BaseComponent {
       return;
     }
 
-    this.notification.add(NOTIFICATIONS.SAVED_SUCCESSFULLY);
+    this.notification.add(NOTIFICATIONS.SAVED_SUCCESSFULLY, 2000);
   }
 
   deleteAccount() {

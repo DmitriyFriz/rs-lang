@@ -24,7 +24,7 @@ import {
 
 class SettingsMain extends BaseComponent {
   prepareData() {
-    this.notification = new Notification(this.component, 0);
+    this.notification = new Notification(this.component, 1);
     this.functionListForButtons = {
       [BUTTONS.SAVE_MAIN]: (event) => this.saveMainSettings(event),
     };
@@ -52,7 +52,7 @@ class SettingsMain extends BaseComponent {
     const { isSuccess, errorName } = checkData(dataList);
 
     if (!isSuccess) {
-      this.notification.add(ERRORS_LIST[errorName]);
+      this.notification.add(ERRORS_LIST[errorName], 5000);
       return;
     }
 
@@ -62,7 +62,7 @@ class SettingsMain extends BaseComponent {
       return;
     }
 
-    this.notification.add(NOTIFICATIONS.SAVED_SUCCESSFULLY);
+    this.notification.add(NOTIFICATIONS.SAVED_SUCCESSFULLY, 2000);
   }
 }
 
