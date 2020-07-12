@@ -1,5 +1,6 @@
 .savannah__game-wrapper {
   display: flex;
+  height: 80vh;
   position: relative;
   justify-content: center;
   font-family: $mainFont;
@@ -9,10 +10,18 @@
     position: absolute;
     top: 0;
     margin: auto;
+
+    h1 {
+      font-family: $mainFont;
+      font-size: 3rem;
+      color: $fontColor;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px $basicColor4;
+    }
   }
 
   .keyboard-info{
-    justify-content: flex-end;
+    width: 2rem;
   }
 
   .hide-word {

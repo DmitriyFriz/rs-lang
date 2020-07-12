@@ -7,12 +7,18 @@ export default function getGameLayout() {
     className: 'savannah__game-wrapper',
   });
 
-  const word = BaseComponent.createElement({
+  const wordPlace = BaseComponent.createElement({
     tag: 'div',
     className: 'savannah-game__word',
-    content: 'New Word',
     id: 'transferWord',
   });
+
+  const word = BaseComponent.createElement({
+    tag: 'h1',
+    content: 'New Word',
+  });
+
+  wordPlace.append(word);
 
   const keyInfo = BaseComponent.createElement({
     tag: 'div',
@@ -25,7 +31,7 @@ export default function getGameLayout() {
 
   keyInfo.insertAdjacentHTML('afterbegin', keyInfoMessage);
 
-  savannahWrapper.append(word, keyInfo);
+  savannahWrapper.append(wordPlace, keyInfo);
 
   return savannahWrapper;
 }

@@ -1,8 +1,11 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-// import user from 'domainModels/User/User';
+
 import getGameLayout from 'components/Games/Savannah/components/Game/Savannah.Game.Layout';
+
 import Loader from 'components/Loader/Loader.View';
+
 import Words from 'domainModels/Words/Words';
+
 import './SavannahGame.scss';
 
 export default class SavannahGame extends BaseComponent {
@@ -23,9 +26,6 @@ export default class SavannahGame extends BaseComponent {
 
   async prepareData() {
     this.group = await this.words.selectGroupWords(0);
-    this.userWords = await this.words.getAllUserWords();
-    console.log(this.group);
-    console.log(this.userWords);
     this.loader.hide();
   }
 
@@ -56,7 +56,7 @@ export default class SavannahGame extends BaseComponent {
       clearInterval(this.timerId);
     }
 
-    this.moveWordSape += 0.6;
+    this.moveWordSape += 0.8;
     this.transferWord.style.top = `${this.moveWordSape}px`;
   }
 
