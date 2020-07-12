@@ -12,6 +12,11 @@ import BaseComponent from '../BaseComponent/BaseComponent';
 // domain-models
 import Words from '../../domain-models/Words/Words';
 
+// loader
+import Loader from '../Loader/Loader.View';
+
+// import Settings from '../../domain-models/Settings/Settings';
+
 // layout
 import getPageLayout from './Vocabulary.Layout';
 
@@ -27,8 +32,13 @@ class VocabularyLearning extends BaseComponent {
     this.wordsDomainModel = new Words(0);
     this.categoryWordsAmount = 0;
     this.todayWordsAmount = 0;
+    this.words = null;
     this.vocabularyType = VOCABULARY.RESTORED;
+
     this.handleWordButtons = this.handleWordButtons.bind(this);
+
+    this.loader = new Loader();
+    this.loader.show();
   }
 
   createLayout() {
@@ -53,6 +63,8 @@ class VocabularyLearning extends BaseComponent {
       this.wordsContainer,
       this.pagination,
     );
+
+    this.loader.hide();
   }
 
   async prepareData() {
@@ -64,17 +76,34 @@ class VocabularyLearning extends BaseComponent {
       wordsPerPage: constants.wordsPerPage,
       filter,
     });
+
     if (
       STATUSES.isSuccess(wordsData.status)
       && wordsData.data[0].totalCount[0]
       && wordsData.data[0].totalCount[0].count
     ) {
       this.categoryWordsAmount = wordsData.data[0].totalCount[0].count;
+      this.words = [];
+      console.log(wordsData.data[0].paginatedResults);
+      wordsData.data[0].paginatedResults.forEach((element) => {
+        const resultElement = {
+          // eslint-disable-next-line no-underscore-dangle
+          id: element._id,
+          image: this.wordsDomainModel.getFileLink(element.image),
+          wordText: element.word,
+          audio: element.audio,
+          wordTranslate: element.wordTranslate,
+          wordTranscription: element.transcription,
+          textExample: element.textExample,
+          textExampleTranslate: element.textExampleTranslate,
+          textMeaning: element.textMeaning,
+          textMeaningTranslate: element.textMeaningTranslate,
+          date: this.getDate(element.userWord.optional.DATE),
+          amount: element.userWord.optional.AMOUNT,
+          repeatDate: this.getDate(element.userWord.optional.REPEAT.DATE),
+        };
 
-      this.words = wordsData.data[0].paginatedResults;
-      this.words.forEach((element) => {
-        // eslint-disable-next-line no-param-reassign
-        element.image = this.wordsDomainModel.getFileLink(element.image);
+        this.words.push(resultElement);
       });
     } else {
       this.categoryWordsAmount = 0;
@@ -88,6 +117,13 @@ class VocabularyLearning extends BaseComponent {
     audio.preload = 'auto';
     audio.src = src;
     audio.play();
+  }
+
+  getDate(timestamp, lang = 'en') {
+    return (new Date(timestamp))
+      .toLocaleString(lang, {
+        weekday: 'short', month: 'long', day: 'numeric',
+      });
   }
 
   addListeners() {
@@ -126,7 +162,7 @@ class VocabularyLearning extends BaseComponent {
     const removeType = this.vocabularyType !== VOCABULARY.RESTORED
       ? VOCABULARY.RESTORED
       : VOCABULARY.REMOVED;
-
+    this.loader.show();
     this
       .wordsDomainModel
       .updateUserWord(wordId, null, removeType)
@@ -135,6 +171,7 @@ class VocabularyLearning extends BaseComponent {
           console.log(res);
           this.hideWord(wordId);
         }
+        this.loader.hide();
       });
   }
 
