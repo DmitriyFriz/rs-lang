@@ -16,7 +16,6 @@ class Notification extends BaseComponent {
     this.queue = [];
     this.maxQueueLength = maxQueueLength;
 
-    this.show();
     this.remove = this.remove.bind(this);
   }
 
@@ -37,6 +36,7 @@ class Notification extends BaseComponent {
     this.createContentLayout(content);
     this.component.className = 'down up';
     this.isShow = true;
+    this.show();
 
     setTimeout(() => this.drop(), timer);
   }
@@ -77,7 +77,10 @@ class Notification extends BaseComponent {
     if (this.queue.length) {
       const { content, timer } = this.getFromQueue();
       this.add(content, timer);
+      return;
     }
+
+    this.hide();
   }
 }
 
