@@ -22,7 +22,7 @@ const statistics = {
 
   handleLastStat() {
     const lastStat = this.longTermStat[this.longTermStat.length - 1];
-    const [lastGameDate = 0, allWords = 0, newWords = 0, trainingNumber = 0, plan = 0] = lastStat;
+    const [lastGameDate = 0, allWords = 0, newWords = 0, trainingNumber = 0, plan = 1] = lastStat;
     this.lastGameDate = lastGameDate;
 
     this.todayStat = {
@@ -96,7 +96,6 @@ const statistics = {
       this.todayStat.trainingNumber,
       this.todayStat.plan,
     ];
-
     if (this.isNewDay) {
       this.longTermStat.push(preparedStat);
     } else {

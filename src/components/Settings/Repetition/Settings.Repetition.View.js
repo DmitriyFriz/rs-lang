@@ -8,7 +8,7 @@ import {
 } from '../Settings.Constants';
 
 // layout
-import getLayout from './Settings.Main.Layout';
+import getLayout from './Settings.Repetition.Layout';
 
 // Notification
 import Notification from '../../Notification/Notification.View';
@@ -22,16 +22,16 @@ import {
   saveSettings,
 } from '../Settings.Handler';
 
-class SettingsMain extends BaseComponent {
+class SettingsRepetition extends BaseComponent {
   prepareData() {
     this.notification = new Notification(this.component, 0);
     this.functionListForButtons = {
-      [BUTTONS.SAVE_MAIN]: (event) => this.saveMainSettings(event),
+      [BUTTONS.SAVE_REPETITION]: (event) => this.saveRepetitionSettings(event),
     };
   }
 
   createLayout() {
-    this.component.className = 'settings-page__main';
+    this.component.className = 'settings-page__repetition';
     this.component.innerHTML = getLayout();
   }
 
@@ -39,15 +39,14 @@ class SettingsMain extends BaseComponent {
     await super.show();
 
     const settings = getSettingsList(this.component);
-    await loadSettings(SETTINGS.MAIN, settings);
+    await loadSettings(SETTINGS.REPETITION, settings);
   }
 
-  async saveMainSettings() {
+  async saveRepetitionSettings() {
     const settingsList = getSettingsList(this.component);
     const settings = prepareSettingsData(settingsList);
     const dataList = [
-      [VALIDATOR_GROUPS.WORDS, settings],
-      [VALIDATOR_GROUPS.DISPLAYING, settings],
+      [VALIDATOR_GROUPS.TIMERS, settings],
     ];
     const { isSuccess, errorName } = checkData(dataList);
 
@@ -56,7 +55,7 @@ class SettingsMain extends BaseComponent {
       return;
     }
 
-    const { status } = await saveSettings(SETTINGS.MAIN, settings);
+    const { status } = await saveSettings(SETTINGS.REPETITION, settings);
     if (status !== STATUSES.OK) {
       this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
       return;
@@ -66,4 +65,4 @@ class SettingsMain extends BaseComponent {
   }
 }
 
-export default SettingsMain;
+export default SettingsRepetition;

@@ -1,32 +1,29 @@
-// lodash
-import get from 'lodash.get';
-
-// router
-import { changeRoute } from 'router/RouteHandler';
-
 // constants
-import { ROUTERS, SETTINGS_ROUTES } from 'router/Router.Constants';
 import STATUSES from 'services/requestHandler.Statuses';
 
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // layout
-import { getLayout, getLayoutOfConfirmDelete, getNotificationLayout } from './Settings.User.Layout';
-import { addErrorToLayout } from '../Settings.Layout';
-
-// validator
-import checkValidation from '../Settings.Validator';
+import { getLayout, getLayoutOfConfirmDelete } from './Settings.User.Layout';
 
 // constants
-import { BUTTONS, VALIDATOR_GROUPS } from '../Settings.Constants';
-import { MAIN_ROUTES, HEADER_ROUTES } from '../../../router/Router.Constants';
+import {
+  BUTTONS, VALIDATOR_GROUPS, NOTIFICATIONS, ERRORS_LIST,
+} from '../Settings.Constants';
 
-// User
+// User domain
 import UserDomain from '../../../domain-models/User/User';
+
+// Views
+import Notification from '../../Notification/Notification.View';
+
+// handler
+import { checkData } from '../Settings.Handler';
 
 class SettingsUser extends BaseComponent {
   prepareData() {
+    this.notification = new Notification(this.component);
     this.functionListForButtons = {
       [BUTTONS.DELETE_ACCOUNT]: () => this.deleteAccount(),
       [BUTTONS.CONFIRM_DELETE_ACCOUNT]: () => this.confirmDeleteAccount(),
@@ -38,16 +35,6 @@ class SettingsUser extends BaseComponent {
   createLayout() {
     this.component.className = 'settings-page__user';
     this.component.innerHTML = getLayout();
-  }
-
-  addListeners() {
-    this.component.addEventListener('click', (event) => this.handleButtons(event));
-  }
-
-  async handleButtons(event) {
-    const buttonFunction = get(event, 'target.dataset.button');
-    if (!buttonFunction) { return; }
-    this.functionListForButtons[buttonFunction](event);
   }
 
   async saveUserSettings(event) {
@@ -66,24 +53,38 @@ class SettingsUser extends BaseComponent {
       .updatedConfirmPassword
       .value;
 
-    const isValid = this.checkData();
-    if (!isValid) { return; }
+    const dataList = [
+      [VALIDATOR_GROUPS.EMAIL, this.email],
+      [VALIDATOR_GROUPS.PASSWORD, this.password],
+      [VALIDATOR_GROUPS.CONFIRM_PASSWORD, {
+        password: this.password,
+        confirmedPassword: this.confirmedPassword,
+      }],
+    ];
+    const { isSuccess, errorName } = checkData(dataList);
 
-    const { status, statusText } = await UserDomain.update({
-      email: this.email,
-      password: this.password,
-    });
-
-    if (status !== STATUSES.OK) {
-      getNotificationLayout(this.component, statusText);
+    if (!isSuccess) {
+      this.notification.add(ERRORS_LIST[errorName]);
+      return;
     }
-    console.log('UPDATE COMPLETED === ', status);
+
+    const { status } = await UserDomain.update(
+      {
+        email: this.email,
+        password: this.password,
+      },
+    );
+    if (status !== STATUSES.OK) {
+      this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
+      return;
+    }
+
+    this.notification.add(NOTIFICATIONS.SAVED_SUCCESSFULLY);
   }
 
   deleteAccount() {
     this.layoutOfConfirmDelete = getLayoutOfConfirmDelete();
     this.component.append(this.layoutOfConfirmDelete);
-    console.log('DELETE ACCOUNT');
   }
 
   cancelDeleteAccount() {
@@ -91,32 +92,10 @@ class SettingsUser extends BaseComponent {
   }
 
   async confirmDeleteAccount() {
-    await UserDomain.remove();
-    console.log('USER DELETED');
-    changeRoute(MAIN_ROUTES.PROMO, ROUTERS.MAIN, ROUTERS.HEADER);
-  }
-
-  checkData() {
-    let isSuccess = true;
-
-    [
-      [VALIDATOR_GROUPS.EMAIL, this.email],
-      [VALIDATOR_GROUPS.PASSWORD, this.password],
-      [VALIDATOR_GROUPS.CONFIRM_PASSWORD, {
-        password: this.password,
-        confirmedPassword: this.confirmedPassword,
-      }],
-    ].forEach((item) => {
-      if (!isSuccess) { return; }
-      const [name, data] = item;
-      isSuccess = checkValidation(name, data);
-
-      if (!isSuccess) {
-        addErrorToLayout(name);
-      }
-    });
-
-    return isSuccess;
+    const { status } = await UserDomain.remove();
+    if (status !== STATUSES.NO_CONTENT) {
+      this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
+    }
   }
 }
 

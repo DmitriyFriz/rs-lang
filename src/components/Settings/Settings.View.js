@@ -1,3 +1,6 @@
+// lodash
+import get from 'lodash.get';
+
 // constants
 import { ROUTERS, SETTINGS_ROUTES } from 'router/Router.Constants';
 
@@ -13,6 +16,7 @@ import {
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 import SettingsMain from './Main/Settings.Main.View';
 import SettingsUser from './User/Settings.User.View';
+import SettingsRepetition from './Repetition/Settings.Repetition.View';
 
 // styles
 import './Settings.scss';
@@ -27,6 +31,7 @@ class Settings extends BaseComponent {
     const settingsRoutes = {
       [SETTINGS_ROUTES.MAIN]: SettingsMain,
       [SETTINGS_ROUTES.USER]: SettingsUser,
+      [SETTINGS_ROUTES.REPETITION]: SettingsRepetition,
     };
 
     this.component.className = 'settings-page';
@@ -46,6 +51,9 @@ class Settings extends BaseComponent {
       SETTINGS_ROUTES.MAIN,
     );
     registerRouter(this.settingsRouter);
+
+    this.handleButtons = this.handleButtons.bind(this);
+    this.handleTabs = this.handleTabs.bind(this);
   }
 
   createLayout() {
@@ -60,13 +68,26 @@ class Settings extends BaseComponent {
   }
 
   addListeners() {
-    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.SETTINGS));
+    this.component.addEventListener('click', this.handleTabs);
+    this.component.addEventListener('click', this.handleButtons);
   }
 
   removeListeners() {
-    this.component.removeEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.SETTINGS));
-
+    this.component.removeEventListener('click', this.handleTabs);
+    this.component.removeEventListener('click', this.handleButtons);
     unregisterRouter(this.settingsRouter);
+  }
+
+  async handleButtons(event) {
+    const buttonFunction = get(event, 'target.dataset.button');
+    if (!buttonFunction) { return; }
+    this.settingsRouter
+      .currentRoute
+      .functionListForButtons[buttonFunction](event);
+  }
+
+  handleTabs(event) {
+    onRouteChangeEvent(event, ROUTERS.SETTINGS);
   }
 }
 

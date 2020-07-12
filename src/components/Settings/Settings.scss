@@ -1,16 +1,3 @@
-$notificationBottom: 9vh;
-
-@mixin position($width: 400px) {
-  z-index: 1000;
-  left: calc(50% - #{$width} / 2);
-  box-sizing: border-box;
-  bottom: $notificationBottom;
-  padding: 15px 10px;
-  width: $width;
-  line-height: 1.3;
-  user-select: none;
-}
-
 .settings-page {
   margin: 0 auto;
   width: 90vw;
@@ -38,52 +25,4 @@ $notificationBottom: 9vh;
   }
 
 
-
-.notifications {
-  @include position(250px);
-  position: fixed;
-  animation-name: notification;
-  animation-duration: 5s;
-  border: 1px solid;
-  border-radius: 10px;
-  background-color: $basicColor5;
-  font-size: 1em;
-  color: $basicColor1;
-
-  .description {
-    width: 100%;
-    word-wrap: break-word;
-    text-align: center;
-  }
-
-  @media (min-width: 768px) {
-    @include position();
-  }
-
-  @keyframes notification {
-    0% {
-      bottom: 0;
-      opacity: 0;
-    }
-
-    15% {
-      bottom: $notificationBottom;
-      opacity: 0.9;
-    }
-
-    88% {
-      bottom: $notificationBottom;
-      opacity: 0.9;
-    }
-
-    100% {
-      bottom: 0;
-      opacity: 0;
-    }
-  }
-
-  // &.hide {
-  //   display: none;
-  // }
-}
 }

@@ -48,6 +48,7 @@ const MAIN_PAGE_ROUTES = {
 const SETTINGS_ROUTES = {
   MAIN: 'MAIN',
   USER: 'USER',
+  REPETITION: 'REPETITION',
 };
 
 const SPEAK_IT_ROUTERS = {

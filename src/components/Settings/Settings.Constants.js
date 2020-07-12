@@ -78,6 +78,13 @@ const BUTTONS = {
   CANCEL_DELETE_ACCOUNT: 'cancelDeleteAccount',
   SAVE_MAIN: 'saveMain',
   SAVE_USER: 'saveUser',
+  SAVE_REPETITION: 'saveRepetition',
+};
+
+const NOTIFICATIONS = {
+  SAVED_SUCCESSFULLY: 'Saved successfully',
+  SAVE_ERROR: 'Something went wrong. Please try again later or try to enter other details',
+  ACCOUNT_DELETED: 'Account deleted',
 };
 
 export {
@@ -90,4 +97,5 @@ export {
   VALIDATOR_GROUPS,
   ERRORS_LIST,
   BUTTONS,
+  NOTIFICATIONS,
 };

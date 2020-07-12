@@ -28,7 +28,7 @@ import {
 import { data } from './Layout/LearningWords.Data';
 
 // Settings
-import { getSettings } from '../../Settings/Main/Settings.Main.Handler';
+import { getSettings } from '../../Settings/Settings.Handler';
 import { SETTINGS } from '../../Settings/Settings.Constants';
 
 import statistics from '../MainPage.Statistics';
@@ -131,6 +131,9 @@ class LearningWords extends BaseComponent {
   }
 
   async initTraining() {
+    if (this.isNewSettings) {
+      statistics.todayStat.addNewTrainingToPlan();
+    }
     console.log('PLAN === ', statistics.todayStat.dailyPlanCompleted,
       'NEW DAY === ', !statistics.isNewDay,
       'NEW SETTINGS === ', !this.isNewSettings,
@@ -138,7 +141,6 @@ class LearningWords extends BaseComponent {
     if (
       statistics.todayStat.dailyPlanCompleted
       && !statistics.isNewDay
-      && !this.isNewSettings
       && !(status.mode === MODES.RANDOM)
     ) {
       console.log('INIT TRAINING === ',
