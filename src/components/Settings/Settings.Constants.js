@@ -85,6 +85,8 @@ const BUTTONS = {
 
 const NOTIFICATIONS = {
   SAVED_SUCCESSFULLY: 'Saved successfully',
+  MAIN_SAVED_SUCCESSFULLY: `Saved successfully. <br>
+  The parameters “Total words per day” and “New words per day” will be valid after the end of the daily task`,
   SAVE_ERROR: 'Something went wrong. Please try again later or try to enter other details',
   ACCOUNT_DELETED: 'Account deleted',
   CONFIRM_DELETE_ACCOUNT: 'Are you sure you want to delete your account? All data will be lost!',

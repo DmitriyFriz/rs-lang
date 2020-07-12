@@ -62,7 +62,7 @@ class SettingsMain extends BaseComponent {
       return;
     }
 
-    this.notification.add(NOTIFICATIONS.SAVED_SUCCESSFULLY, 2000);
+    this.notification.add(NOTIFICATIONS.MAIN_SAVED_SUCCESSFULLY, 6000);
   }
 }
 
