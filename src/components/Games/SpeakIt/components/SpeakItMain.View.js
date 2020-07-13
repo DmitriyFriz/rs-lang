@@ -9,10 +9,11 @@ import Loader from 'components/Loader/Loader.View';
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // constants
-import { ROUTERS } from 'router/Router.Constants';
+import { ROUTERS, GAMES_ROUTES } from 'router/Router.Constants';
 
 // domain models
 import Words from 'domainModels/Words/Words';
+import Statistics from 'domainModels/Statistics/Statistics';
 
 // layout
 import getLayout from './SpeakItMain.Layout';
@@ -21,10 +22,14 @@ import createResults from './SpeakItResults.Layout';
 import defaultImage from '../images/english.jpg';
 import starImage from '../images/star-win.svg';
 
+// lodash
+import get from 'lodash.get';
+
 // styles
 import './SpeakItMain.scss';
 
 const wordsDomainModel = new Words();
+const statisticsDomainModel = new Statistics();
 let recognition;
 
 // Speech Recognition Mode
@@ -41,23 +46,45 @@ console.log(navigator.userAgent);
 class SpeakItMain extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
+
     this.state = {
       level: 0,
       words: null,
       learnedWords: [],
       isGameActive: false,
     };
+
+    this.shortStatistic = {
+      incorrect: [],
+      correct: [],
+    };
+
+    this.needStatistic = true;
   }
 
   async prepareData() {
-    // this.loader = new Loader();
-    // this.loader.show();
+    this.loader = new Loader();
+    this.loader.show();
 
     const page = Math.floor(Math.random() * 30);
     const response = await wordsDomainModel.getChunk(page, this.state.level);
     this.state.words = response.data.slice(0, 10);
 
-    // this.loader.hide();
+    if (this.needStatistic) {
+      const { data } = await statisticsDomainModel.getStatistics();
+      this.statistic = get(data, `optional.${GAMES_ROUTES.SPEAK_IT}`); // Lodash
+
+      if (!data || !this.statistic) {
+        this.statistic = [Date.now(), 0, 0]; // [Date, Results, TotalGame]
+      }
+
+      [, , this.statisticTotal] = this.statistic;
+
+      console.log(this.statistic);
+      this.needStatistic = !this.needStatistic;
+    }
+
+    this.loader.hide();
   }
 
   createWords() {
@@ -222,6 +249,21 @@ class SpeakItMain extends BaseComponent {
         recognition.start();
       }
     });
+  }
+
+  removeListeners() {
+    this.statisticFinish();
+  }
+
+  statisticFinish() {
+    const date = Date.now();
+    const res = {
+      incorrect: this.shortStatistic.incorrect.length,
+      correct: this.shortStatistic.correct.length
+    };
+    const total = this.statisticTotal + 1;
+    const data = [date, res, total];
+    statisticsDomainModel.updateStatistics(GAMES_ROUTES.SPEAK_IT, data);
   }
 }
 
