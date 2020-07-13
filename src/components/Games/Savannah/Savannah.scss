@@ -6,6 +6,17 @@
   animation: showAnimation .4s ease;
 }
 
+.game-message {
+  .game-message__logo {
+    max-width: 450px;
+  }
+  p {
+    font-size: .8rem;
+    padding-bottom: 15px;
+    text-transform: uppercase;
+  }
+}
+
 .game-savanna {
   position: relative;
 

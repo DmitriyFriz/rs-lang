@@ -7,6 +7,7 @@ export default function getLayout() {
 <div class="game-message">
       <img class="game-message__logo" src=${logo} alt="game logo">
       <h1 class="game-message__title">Savannah</h1>
+      <p>playing savannah you expand vocabulary</p>
     <fieldset class="fieldset">
         <legend class="fieldset__legend">Select level</legend>
         <div class="fieldset__control-inline">
