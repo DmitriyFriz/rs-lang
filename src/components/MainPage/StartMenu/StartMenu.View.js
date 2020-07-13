@@ -28,7 +28,7 @@ class StartMenu extends BaseComponent {
       const statisticsName = element.dataset.statistics;
       if (statisticsName === STATISTICS.LAST_GAME_DATE) {
         const date = new Date(statistics[statisticsName]);
-        element.textContent = date.toString().replace(/GMT.*$/g, '');
+        element.textContent = statistics[statisticsName] ? date.toString().replace(/GMT.*$/g, '') : '-';
         return;
       }
       element.textContent = statistics[statisticsName];
