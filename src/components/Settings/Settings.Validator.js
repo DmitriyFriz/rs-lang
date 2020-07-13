@@ -17,7 +17,8 @@ function checkWords(data) {
 function checkDisplaying(data) {
   const example = data[SETTINGS_MAIN.EXAMPLE];
   const meaning = data[SETTINGS_MAIN.MEANING];
-  if (!example && !meaning) {
+  const wordTranslation = data[SETTINGS_MAIN.WORD_TRANSLATION];
+  if (!example && !meaning && !wordTranslation) {
     return false;
   }
   return true;
