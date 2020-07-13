@@ -15,15 +15,19 @@ export default class Savannah extends BaseComponent {
     super(parent, tagName);
     this.body = document.body;
     this.words = new Words();
+
     this.handlerCloseBtn = this.handlerCloseBtn.bind(this);
     this.handlerGetReady = this.handlerGetReady.bind(this);
   }
 
   createLayout() {
     this.body.classList.add('game-savanna');
-    this.component.innerHTML = getLayout();
+
+    this.component.insertAdjacentHTML('afterbegin', getLayout());
+
     this.buttonBack = this.component.querySelector('#gameListBtn');
     this.buttonGame = this.component.querySelector('#startGameBtn');
+    this.levelGroup = document.getElementsByName('chapter');
   }
 
   addListeners() {
@@ -42,6 +46,13 @@ export default class Savannah extends BaseComponent {
   }
 
   handlerGetReady(event) {
+    this.levelGroup
+      .forEach((level) => {
+        if (level.checked) {
+          localStorage.setItem('savannah-level', level.value);
+        }
+      });
+
     onRouteChangeEvent(event, ROUTERS.GAMES);
   }
 }
