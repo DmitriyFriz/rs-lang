@@ -5,11 +5,14 @@ import { MAIN_PAGE_ROUTES } from '../../router/Router.Constants';
 
 import StatisticsDomain from '../../domain-models/Statistics/Statistics';
 
+import { STATISTICS } from './MainPage.Constants';
+
 const nameStat = MAIN_PAGE_ROUTES.LEARNING_WORDS;
 
 const MODE = {
   DEFAULT: 'DEFAULT',
   RANDOM: 'RANDOM',
+  NO_STAT: 'NO_STAT',
 };
 
 // ================================ session statistics ================================
@@ -18,14 +21,15 @@ const sessionStatistics = {
   mode: MODE.DEFAULT,
 
   initSession() {
-    this.newWords = 0;
-    this.allWords = 0;
-    this.successSeries = 0;
+    this[STATISTICS.NEW_WORDS] = 0;
+    this[STATISTICS.ALL_WORDS] = 0;
+    this[STATISTICS.SUCCESS_SERIES] = 0;
+    this.series = 0;
     this.fails = 0;
     this.success = 0;
   },
 
-  get successRate() {
+  get [STATISTICS.SUCCESS_RATE]() {
     const rate = 100 - Math.floor((this.fails / (this.fails + this.success)) * 100);
     return rate || 0;
   },
@@ -33,8 +37,8 @@ const sessionStatistics = {
   addSuccess(isRepeated) {
     if (isRepeated) { return this; }
     console.log('ADD SUCCESS');
-    this.successSeries += 1;
     this.success += 1;
+    this.series += 1;
     this.addWord();
     return this;
   },
@@ -43,7 +47,10 @@ const sessionStatistics = {
     if (isRepeated) { return this; }
     console.log('ADD FAIL');
     this.fails += 1;
-    this.successSeries = 0;
+    if (this[STATISTICS.SUCCESS_SERIES] < this.series) {
+      this[STATISTICS.SUCCESS_SERIES] = this.series;
+    }
+    this.series = 0;
     this.addWord();
     return this;
   },
@@ -51,12 +58,12 @@ const sessionStatistics = {
   addNewWord(isNewWord, isRepeated) {
     if (!isNewWord || isRepeated) { return this; }
     console.log('ADD NEW WORD');
-    this.newWords += 1;
+    this[STATISTICS.NEW_WORDS] += 1;
     return this;
   },
 
   addWord() {
-    this.allWords += 1;
+    this[STATISTICS.ALL_WORDS] += 1;
     return this;
   },
 };
@@ -70,10 +77,10 @@ const statistics = {
     this.handleLastStat();
 
     console.log('CURRENT STATISTICS:',
-      'LAST GAME === ', new Date(this.lastGameDate),
-      'ALL WORDS === ', this.allWords,
-      'NEW WORDS === ', this.newWords,
-      'TRAINING === ', this.trainingNumber,
+      'LAST GAME === ', new Date(this[STATISTICS.LAST_GAME_DATE]),
+      'ALL WORDS === ', this[STATISTICS.ALL_WORDS],
+      'NEW WORDS === ', this[STATISTICS.NEW_WORDS],
+      'TRAINING === ', this[STATISTICS.TRAINING_NUMBER],
       'PLAN === ', this.plan);
   },
 
@@ -81,14 +88,14 @@ const statistics = {
     const lastStat = this.longTermStat[this.longTermStat.length - 1];
 
     [
-      this.lastGameDate = 0,
-      this.allWords = 0,
-      this.newWords = 0,
-      this.trainingNumber = 0,
+      this[STATISTICS.LAST_GAME_DATE] = 0,
+      this[STATISTICS.ALL_WORDS] = 0,
+      this[STATISTICS.NEW_WORDS] = 0,
+      this[STATISTICS.TRAINING_NUMBER] = 0,
       this.plan = 1,
     ] = lastStat;
 
-    console.log('LAST GAME ===', this.lastGameDate);
+    console.log('LAST GAME ===', this[STATISTICS.LAST_GAME_DATE]);
 
     if (this.isNewDay) {
       this.reset();
@@ -100,33 +107,33 @@ const statistics = {
   },
 
   addCompletedTrainingToStat() {
-    this.trainingNumber += 1;
+    this[STATISTICS.TRAINING_NUMBER] += 1;
   },
 
   updateStat(all, newWord) {
-    this.gameDate = Date.now();
-    this.allWords += all;
-    this.newWords += newWord;
+    this[STATISTICS.LAST_GAME_DATE] = Date.now();
+    this[STATISTICS.ALL_WORDS] += all;
+    this[STATISTICS.NEW_WORDS] += newWord;
   },
 
   reset() {
-    this.allWords = 0;
-    this.newWords = 0;
-    this.trainingNumber = 0;
+    this[STATISTICS.ALL_WORDS] = 0;
+    this[STATISTICS.NEW_WORDS] = 0;
+    this[STATISTICS.TRAINING_NUMBER] = 0;
     this.plan = 1;
   },
 
   get dailyPlanCompleted() {
-    return this.trainingNumber >= this.plan;
+    return this[STATISTICS.TRAINING_NUMBER] >= this.plan;
   },
 
   get isNewDay() {
-    if (!this.lastGameDate) {
+    if (!this[STATISTICS.LAST_GAME_DATE]) {
       return false;
     }
 
     const REAL_TIME = new Date();
-    const LAST_GAME_TIME = new Date(this.lastGameDate);
+    const LAST_GAME_TIME = new Date(this[STATISTICS.LAST_GAME_DATE]);
     console.log('isNewDay', REAL_TIME.getDate(), ' > ', LAST_GAME_TIME.getDate(), REAL_TIME.getDate() > LAST_GAME_TIME.getDate());
     return REAL_TIME.getDate() > LAST_GAME_TIME.getDate();
   },
@@ -141,15 +148,17 @@ const statistics = {
   },
 
   async saveToRemoteStat() {
-    if (this.isNewDay) {
-      this.reset();
-    }
-    this.updateStat(sessionStatistics.allWords, sessionStatistics.newWords);
+    if (this.isNewDay) { this.reset(); }
+    this.updateStat(
+      sessionStatistics[STATISTICS.ALL_WORDS],
+      sessionStatistics[STATISTICS.NEW_WORDS],
+    );
+    sessionStatistics[STATISTICS.TRAINING_NUMBER] = this[STATISTICS.TRAINING_NUMBER];
     const preparedStat = [
-      this.gameDate,
-      this.allWords,
-      this.newWords,
-      this.trainingNumber,
+      this[STATISTICS.LAST_GAME_DATE],
+      this[STATISTICS.ALL_WORDS],
+      this[STATISTICS.NEW_WORDS],
+      this[STATISTICS.TRAINING_NUMBER],
       this.plan,
     ];
     if (this.isNewDay) {

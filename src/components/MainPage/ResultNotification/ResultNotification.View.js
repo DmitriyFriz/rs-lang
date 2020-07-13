@@ -28,7 +28,20 @@ class Notification extends BaseComponent {
   }
 
   createLayout() {
+    this.component.className = 'result-notification';
     this.component.append(createBlock(data, 'completionNotice'));
+    if (sessionStatistics.mode === MODE.NO_STAT) { return; }
+    this.addStatistics();
+  }
+
+  addStatistics() {
+    this.component.append(createBlock(data, 'statistics'));
+    const elementsList = this.component.querySelectorAll('[data-statistics]');
+    [...elementsList].forEach((item) => {
+      const element = item;
+      const statisticsName = element.dataset.statistics;
+      element.textContent = sessionStatistics[statisticsName];
+    });
   }
 
   addListeners() {
@@ -37,7 +50,6 @@ class Notification extends BaseComponent {
 
   async createAdditionalTraining() {
     statistics.addNewTrainingToPlan();
-    // status.mode = MODES.ADDITIONAL;
     changeRoute(MAIN_PAGE_ROUTES.LEARNING_WORDS, ROUTERS.MAIN_PAGE);
   }
 

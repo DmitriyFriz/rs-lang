@@ -1,5 +1,5 @@
 import { SETTINGS_MAIN } from '../../../Settings/Settings.Constants';
-import { TRANSLATIONS, BUTTONS } from '../LearningWords.Constants';
+import { TRANSLATIONS, BUTTONS } from '../../MainPage.Constants';
 import { DIFFICULTY, VOCABULARY } from '../../../../domain-models/Words/Words.Constants';
 
 const data = {

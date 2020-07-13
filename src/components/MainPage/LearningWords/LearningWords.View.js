@@ -19,7 +19,9 @@ import Swiper from 'swiper';
 import swiperOptions from 'components/MainPage/LearningWords/Swiper.Options';
 
 // constants
-import { BUTTONS, HIDDEN_ELEMENTS_LIST, NOTIFICATIONS } from './LearningWords.Constants';
+import {
+  BUTTONS, HIDDEN_ELEMENTS_LIST, NOTIFICATIONS, STATISTICS,
+} from '../MainPage.Constants';
 
 // layout
 import {
@@ -98,7 +100,7 @@ class LearningWords extends BaseComponent {
 
     if (this.currentInput.value === word) {
       sessionStatistics
-        .addSuccess(isNewWord, isRepeated)
+        .addSuccess(isRepeated)
         .addNewWord(isNewWord, isRepeated);
       this.handleSuccessResult();
     } else {
@@ -138,17 +140,18 @@ class LearningWords extends BaseComponent {
     //   statistics..addNewTrainingToPlan();
     // }
     console.log('PLAN === ', statistics.dailyPlanCompleted,
-      'NEW DAY === ', !statistics.isNewDay,
+      'NEW DAY === ', statistics.isNewDay,
       // 'NEW SETTINGS === ', !this.isNewSettings,
-      'MODE RANDOM === ', !(sessionStatistics.mode === MODE.RANDOM));
+      'MODE RANDOM === ', (sessionStatistics.mode === MODE.RANDOM));
     if (
       statistics.dailyPlanCompleted
       && !statistics.isNewDay
       && !(sessionStatistics.mode === MODE.RANDOM)
     ) {
       console.log('INIT TRAINING === ',
-        statistics.trainingNumber >= statistics.plan,
+        statistics[STATISTICS.TRAINING_NUMBER] >= statistics.plan,
         'isNewDate === ', statistics.isNewDay);
+      sessionStatistics.mode = MODE.NO_STAT;
       changeRoute(MAIN_PAGE_ROUTES.NOTIFICATION, ROUTERS.MAIN_PAGE);
       return;
     }
@@ -164,7 +167,7 @@ class LearningWords extends BaseComponent {
   }
 
   endTraining() {
-    console.log('STATISTICS ==== ', statistics, sessionStatistics.successRate);
+    console.log('STATISTICS ==== ', statistics, sessionStatistics[STATISTICS.SUCCESS_RATE]);
     this.destroySwiper();
     this.audioControl.destroy();
     statistics.saveToRemoteStat();
@@ -295,6 +298,7 @@ class LearningWords extends BaseComponent {
 
   showTrueWord() {
     this.currentInput = this.trueWordsData[this.currentIndex].word;
+    sessionStatistics.addWord();
     this.handleSuccessResult();
   }
 
