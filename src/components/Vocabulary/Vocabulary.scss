@@ -14,12 +14,6 @@
     box-sizing: border-box;
   }
 
-  @media screen and (min-width: $tablets) {
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-  }
-
   &__nav {
     display: flex;
     overflow: hidden;
@@ -69,12 +63,19 @@
   &__container {
     @media screen and (min-width: $tablets) {
       @include main-content-width();
+      height: 100%;
       max-height: 100%;
     }
   }
 
   &__inner {
     height: 100%;
+
+    @media screen and (min-width: $tablets) {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+    }
     &.removed {
       .vocabulary__remove {
         width: 32px;

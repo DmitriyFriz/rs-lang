@@ -14,7 +14,12 @@ import Loader from '../Loader/Loader.View';
 // import Settings from '../../domain-models/Settings/Settings';
 
 // layout
-import { getLayout } from './Vocabulary.Layout';
+import {
+  getLayout,
+  getWordsListLayout,
+  getPaginationLayout,
+  getVocabularyInfoLayout,
+} from './Vocabulary.Layout';
 
 // data
 import { pageLayout, constants, filterQuery } from './Vocabulary.Data';
@@ -32,9 +37,12 @@ class VocabularyLearning extends BaseComponent {
     this.vocabularyType = VOCABULARY.RESTORED;
 
     this.handleWordButtons = this.handleWordButtons.bind(this);
+    this.handlePaginationButtons = this.handlePaginationButtons.bind(this);
 
     this.loader = new Loader();
     this.loader.show();
+
+    this.page = 0;
   }
 
   createLayout() {
@@ -43,14 +51,16 @@ class VocabularyLearning extends BaseComponent {
       this.info,
       [
         this.wordsContainer,
-        this.words,
+        this.wordLayouts,
       ],
       this.pagination,
     ] = getLayout({
       allWordsNum: this.categoryWordsAmount,
       todayWordsNum: this.todayWordsAmount,
-      words: this.words,
+      words: this.wordsOnPage,
       layoutType: this.vocabularyType,
+      hasNextNav: this.hasNextPage(),
+      hasPrevNav: this.hasPrevPage(),
     });
 
     this.component.append(
@@ -100,10 +110,18 @@ class VocabularyLearning extends BaseComponent {
 
         this.words.push(resultElement);
       });
+
+      this.prepareWordsPerPage();
     } else {
       this.categoryWordsAmount = 0;
       this.words = null;
     }
+  }
+
+  prepareWordsPerPage() {
+    const offsetStart = this.page * constants.wordsPerPage;
+    const offsetLimit = offsetStart + constants.wordsPerPage;
+    this.wordsOnPage = this.words.slice(offsetStart, offsetLimit);
   }
 
   playAudio(src) {
@@ -122,10 +140,13 @@ class VocabularyLearning extends BaseComponent {
 
   addListeners() {
     this.component.addEventListener('click', this.handleWordButtons);
+
+    this.component.addEventListener('click', this.handlePaginationButtons);
   }
 
   removeListeners() {
     this.component.removeEventListener('click', this.handleWordButtons);
+    this.component.removeEventListener('click', this.handlePaginationButtons);
 
     console.groupEnd('vocabulary: ', this.vocabularyType);
   }
@@ -164,6 +185,46 @@ class VocabularyLearning extends BaseComponent {
         }
         this.loader.hide();
       });
+  }
+
+  handlePaginationButtons(event) {
+    const { target } = event;
+
+    if (target.classList.contains('vocabulary__prev') && this.hasPrevPage()) {
+      this.page -= 1;
+      this.updatePage();
+    }
+
+    if (
+      target.classList.contains('vocabulary__next')
+      && this.hasNextPage()) {
+      this.page += 1;
+      this.updatePage();
+    }
+  }
+
+  updatePage() {
+    this.prepareWordsPerPage();
+    const [list, wordLayouts] = getWordsListLayout(this.wordsOnPage, this.vocabularyType);
+    this.wordLayouts = wordLayouts;
+    this.wordsContainer.replaceWith(list);
+    this.wordsContainer = list;
+
+    const pagination = getPaginationLayout(this.hasPrevPage(), this.hasNextPage());
+    this.pagination.replaceWith(pagination);
+    this.pagination = pagination;
+
+    const info = getVocabularyInfoLayout(this.categoryWordsAmount, this.todayWordsAmount);
+    this.info.replaceWith(info);
+    this.info = info;
+  }
+
+  hasPrevPage() {
+    return this.page > 0;
+  }
+
+  hasNextPage() {
+    return this.page < (Math.ceil(this.categoryWordsAmount / constants.wordsPerPage) - 1);
   }
 
   hideWord(id) {

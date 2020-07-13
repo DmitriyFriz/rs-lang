@@ -92,6 +92,7 @@ const navTabsLayout = [
 
 const constants = {
   wordsPerGroupe: 600,
+  wordsPerPage: 10,
   group: 0,
 };
 

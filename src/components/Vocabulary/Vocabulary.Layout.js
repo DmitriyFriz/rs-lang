@@ -220,34 +220,48 @@ function getWordsListLayout(wordsData, layoutType) {
   return [list, wordsLayout];
 }
 
-function getPaginationLayout() {
+function getPaginationLayout(hasPrevNav, hasNextNav) {
   const pagination = createElement({
     tag: 'div',
     className: pageLayout.pagination.className,
   });
+
   const prev = createElement({
     tag: 'button',
     content: pageLayout.prev.content,
     className: pageLayout.prev.className,
   });
+  if (!hasPrevNav) {
+    prev.disabled = true;
+  }
+  pagination.append(prev);
+
   const next = createElement({
     tag: 'button',
     content: pageLayout.next.content,
     className: pageLayout.next.className,
   });
+  if (!hasNextNav) {
+    next.disabled = true;
+  }
+  pagination.append(next);
 
-  pagination.append(prev, next);
   return pagination;
 }
 
 function getVocabularyInnerLayout(data) {
   const {
-    allWordsNum, todayWordsNum, words, layoutType,
+    allWordsNum,
+    todayWordsNum,
+    words,
+    layoutType,
+    hasNextNav,
+    hasPrevNav,
   } = data;
   return [
     getVocabularyInfoLayout(allWordsNum, todayWordsNum),
     getWordsListLayout(words, layoutType),
-    getPaginationLayout(),
+    getPaginationLayout(hasPrevNav, hasNextNav),
   ];
 }
 
@@ -258,4 +272,11 @@ function getContainerLayout() {
   });
 }
 
-export { getVocabularyNavLayout, getVocabularyInnerLayout as getLayout, getContainerLayout };
+export {
+  getVocabularyNavLayout,
+  getVocabularyInnerLayout as getLayout,
+  getContainerLayout,
+  getWordsListLayout,
+  getPaginationLayout,
+  getVocabularyInfoLayout,
+};
