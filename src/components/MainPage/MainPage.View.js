@@ -16,7 +16,7 @@ import LearningWords from './LearningWords/LearningWords.View';
 import Notification from './Notification/Notification.View';
 
 // statistics
-import statistics from './MainPage.Statistics';
+import { statistics } from './MainPage.Statistics';
 
 // styles
 import './MainPage.scss';

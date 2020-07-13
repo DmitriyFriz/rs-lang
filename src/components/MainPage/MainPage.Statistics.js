@@ -5,113 +5,17 @@ import { MAIN_PAGE_ROUTES } from '../../router/Router.Constants';
 
 import StatisticsDomain from '../../domain-models/Statistics/Statistics';
 
-const statisticsDomain = new StatisticsDomain();
 const nameStat = MAIN_PAGE_ROUTES.LEARNING_WORDS;
 
-const statistics = {
-  async prepareData() {
-    await this.getRemoteStat();
-    this.handleLastStat();
+const MODE = {
+  DEFAULT: 'DEFAULT',
+  RANDOM: 'RANDOM',
+};
 
-    console.log('CURRENT STATISTICS:',
-      'LAST GAME === ', new Date(this.lastGameDate),
-      'WORDS === ', this.todayStat.words,
-      'TRAINING === ', this.todayStat.trainingNumber,
-      'PLAN === ', this.todayStat.plan);
-  },
+// ================================ session statistics ================================
 
-  handleLastStat() {
-    const lastStat = this.longTermStat[this.longTermStat.length - 1];
-    const [lastGameDate = 0, allWords = 0, newWords = 0, trainingNumber = 0, plan = 1] = lastStat;
-    this.lastGameDate = lastGameDate;
-
-    this.todayStat = {
-      allWords,
-      newWords,
-      trainingNumber,
-      plan,
-
-      addNewTrainingToPlan() {
-        this.plan += 1;
-      },
-
-      addCompletedTrainingToStat() {
-        this.trainingNumber += 1;
-      },
-
-      updateStat(all, newWord) {
-        this.gameDate = Date.now();
-        this.allWords += all;
-        this.newWords += newWord;
-      },
-
-      reset() {
-        this.allWords = 0;
-        this.newWords = 0;
-        this.trainingNumber = 0;
-        this.plan = 1;
-      },
-
-      get dailyPlanCompleted() {
-        return this.trainingNumber >= this.plan;
-      },
-    };
-
-    console.log('LAST GAME ===', this.lastGameDate);
-
-    if (this.isNewDay) {
-      this.todayStat.reset();
-    }
-  },
-
-  get isNewDay() {
-    if (!this.lastGameDate) {
-      return false;
-    }
-
-    const REAL_TIME = new Date();
-    const LAST_GAME_TIME = new Date(this.lastGameDate);
-    console.log('isNewDay', REAL_TIME.getDate(), ' > ', LAST_GAME_TIME.getDate(), REAL_TIME.getDate() > LAST_GAME_TIME.getDate());
-    return REAL_TIME.getDate() > LAST_GAME_TIME.getDate();
-  },
-
-  async getRemoteStat() {
-    const { data } = await statisticsDomain.getStatistics();
-    this.longTermStat = get(data, `optional.${nameStat}`);
-
-    if (!this.longTermStat) {
-      this.longTermStat = [[]];
-    }
-  },
-
-  async saveToRemoteStat() {
-    if (this.isNewDay) {
-      this.todayStat.reset();
-    }
-    this.todayStat.updateStat(this.allWords, this.newWords);
-    const preparedStat = [
-      this.todayStat.gameDate,
-      this.todayStat.allWords,
-      this.todayStat.newWords,
-      this.todayStat.trainingNumber,
-      this.todayStat.plan,
-    ];
-    if (this.isNewDay) {
-      this.longTermStat.push(preparedStat);
-    } else {
-      this.longTermStat.pop();
-      this.longTermStat.push(preparedStat);
-    }
-
-    this.updateRemoteStat();
-  },
-
-  async updateRemoteStat() {
-    console.log('LONG TERM STAT ====', this.longTermStat);
-    await statisticsDomain.updateStatistics(nameStat, this.longTermStat);
-  },
-
-  // ================================= session statistics ==============================
+const sessionStatistics = {
+  mode: MODE.DEFAULT,
 
   initSession() {
     this.newWords = 0;
@@ -157,4 +61,111 @@ const statistics = {
   },
 };
 
-export default statistics;
+// ================================ long statistics ================================
+
+const statistics = {
+  async prepareData() {
+    this.statisticsDomain = new StatisticsDomain();
+    await this.getRemoteStat();
+    this.handleLastStat();
+
+    console.log('CURRENT STATISTICS:',
+      'LAST GAME === ', new Date(this.lastGameDate),
+      'ALL WORDS === ', this.allWords,
+      'NEW WORDS === ', this.newWords,
+      'TRAINING === ', this.trainingNumber,
+      'PLAN === ', this.plan);
+  },
+
+  handleLastStat() {
+    const lastStat = this.longTermStat[this.longTermStat.length - 1];
+
+    [
+      this.lastGameDate = 0,
+      this.allWords = 0,
+      this.newWords = 0,
+      this.trainingNumber = 0,
+      this.plan = 1,
+    ] = lastStat;
+
+    console.log('LAST GAME ===', this.lastGameDate);
+
+    if (this.isNewDay) {
+      this.reset();
+    }
+  },
+
+  addNewTrainingToPlan() {
+    this.plan += 1;
+  },
+
+  addCompletedTrainingToStat() {
+    this.trainingNumber += 1;
+  },
+
+  updateStat(all, newWord) {
+    this.gameDate = Date.now();
+    this.allWords += all;
+    this.newWords += newWord;
+  },
+
+  reset() {
+    this.allWords = 0;
+    this.newWords = 0;
+    this.trainingNumber = 0;
+    this.plan = 1;
+  },
+
+  get dailyPlanCompleted() {
+    return this.trainingNumber >= this.plan;
+  },
+
+  get isNewDay() {
+    if (!this.lastGameDate) {
+      return false;
+    }
+
+    const REAL_TIME = new Date();
+    const LAST_GAME_TIME = new Date(this.lastGameDate);
+    console.log('isNewDay', REAL_TIME.getDate(), ' > ', LAST_GAME_TIME.getDate(), REAL_TIME.getDate() > LAST_GAME_TIME.getDate());
+    return REAL_TIME.getDate() > LAST_GAME_TIME.getDate();
+  },
+
+  async getRemoteStat() {
+    const { data } = await this.statisticsDomain.getStatistics();
+    this.longTermStat = get(data, `optional.${nameStat}`);
+
+    if (!this.longTermStat) {
+      this.longTermStat = [[]];
+    }
+  },
+
+  async saveToRemoteStat() {
+    if (this.isNewDay) {
+      this.reset();
+    }
+    this.updateStat(sessionStatistics.allWords, sessionStatistics.newWords);
+    const preparedStat = [
+      this.gameDate,
+      this.allWords,
+      this.newWords,
+      this.trainingNumber,
+      this.plan,
+    ];
+    if (this.isNewDay) {
+      this.longTermStat.push(preparedStat);
+    } else {
+      this.longTermStat.pop();
+      this.longTermStat.push(preparedStat);
+    }
+
+    this.updateRemoteStat();
+  },
+
+  async updateRemoteStat() {
+    console.log('LONG TERM STAT ====', this.longTermStat);
+    await this.statisticsDomain.updateStatistics(nameStat, this.longTermStat);
+  },
+};
+
+export { statistics, sessionStatistics, MODE };
