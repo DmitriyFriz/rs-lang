@@ -3,6 +3,7 @@
   height: 80vh;
   position: relative;
   justify-content: center;
+  align-items: center;
   font-family: $mainFont;
   font-size: $fontSize;
 
@@ -20,8 +21,44 @@
     }
   }
 
-  .keyboard-info{
+  .gameBtn-block {
+    display: grid;
+    grid-template-rows: 2fr;
+    grid-template: 'firstBlock secondBlock';
+    height: fit-content;
+
+    .first-btn-block {
+      grid-area: firstBlock;
+      text-align: center;
+    }
+
+    .second-btn-block {
+      grid-area: secondBlock;
+      text-align: center;
+    }
+
+    .savannah-button {
+      margin: 5px;
+      width: fit-content;
+      height: 3.5rem;
+      padding: 15px;
+      border: none;
+      background: none;
+      color: $fontColor;
+      font-family: $mainFont;
+      font-size: $fontSize;
+      font-weight: bold;
+      text-shadow: 1px 0 1px $basicColor4;
+      outline: none;
+
+      &:hover {
+        background-color: $basicColor5;
+        text-shadow: 1px 0 1px $basicColor5;
+        color: $basicColor4;
+      }
+    }
   }
+
 
   .hide-word {
     opacity: 0;
