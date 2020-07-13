@@ -8,7 +8,7 @@ import { ROUTERS, MAIN_PAGE_ROUTES } from 'router/Router.Constants';
 import BaseComponent from '../../BaseComponent/BaseComponent';
 
 // layout
-import { data, BUTTONS } from './Notification.Data';
+import { data, BUTTONS } from './ResultNotification.Data';
 import { createBlock } from '../LearningWords/Layout/LearningWords.Layout';
 
 // statistics

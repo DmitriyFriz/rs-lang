@@ -13,7 +13,7 @@ import {
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 import StartMenu from './StartMenu/StartMenu.View';
 import LearningWords from './LearningWords/LearningWords.View';
-import Notification from './Notification/Notification.View';
+import ResultNotification from './ResultNotification/ResultNotification.View';
 
 // statistics
 import { statistics } from './MainPage.Statistics';
@@ -26,7 +26,7 @@ class MainPage extends BaseComponent {
     const mainPageRoutes = {
       [MAIN_PAGE_ROUTES.START_MENU]: StartMenu,
       [MAIN_PAGE_ROUTES.LEARNING_WORDS]: LearningWords,
-      [MAIN_PAGE_ROUTES.NOTIFICATION]: Notification,
+      [MAIN_PAGE_ROUTES.NOTIFICATION]: ResultNotification,
     };
 
     this.component.className = 'main-page';
