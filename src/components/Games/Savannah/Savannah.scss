@@ -10,15 +10,13 @@
   position: relative;
 
   &::after {
+    transition: background-position 2s;
     background-image: url("./images/SnavannaBGR.svg");
-    background-size: cover;
+    background-size: unset;
     background-position-y: 100%;
     background-position-x: center;
     background-repeat: no-repeat;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    opacity: 1;
+    opacity: .7;
   }
 
   h3 {

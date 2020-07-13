@@ -13,14 +13,14 @@ import getLayout from 'components/Games/Savannah/Savannah.Layout';
 export default class Savannah extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.parent = parent;
+    this.body = document.body;
     this.words = new Words();
     this.handlerCloseBtn = this.handlerCloseBtn.bind(this);
-    this.handlerStartGame = this.handlerStartGame.bind(this);
+    this.handlerGetReady = this.handlerGetReady.bind(this);
   }
 
   createLayout() {
-    this.parent.classList.add('game-savanna');
+    this.body.classList.add('game-savanna');
     this.component.innerHTML = getLayout();
     this.buttonBack = this.component.querySelector('#gameListBtn');
     this.buttonGame = this.component.querySelector('#startGameBtn');
@@ -28,12 +28,12 @@ export default class Savannah extends BaseComponent {
 
   addListeners() {
     this.buttonBack.addEventListener('click', this.handlerCloseBtn);
-    this.buttonGame.addEventListener('click', this.handlerStartGame);
+    this.buttonGame.addEventListener('click', this.handlerGetReady);
   }
 
   removeListeners() {
     this.buttonBack.removeEventListener('click', this.handlerCloseBtn);
-    this.buttonGame.removeEventListener('click', this.handlerStartGame);
+    this.buttonGame.removeEventListener('click', this.handlerGetReady);
   }
 
   handlerCloseBtn(event) {
@@ -41,7 +41,7 @@ export default class Savannah extends BaseComponent {
     this.body.removeAttribute('class');
   }
 
-  handlerStartGame(event) {
+  handlerGetReady(event) {
     onRouteChangeEvent(event, ROUTERS.GAMES);
   }
 }

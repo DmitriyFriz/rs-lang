@@ -36,10 +36,9 @@ export default function getLayout() {
       </fieldset>
        <div class="game-message__button-container">
         <button class="game-message__button" id="gameListBtn" data-destination=${GAMES_ROUTES.GAMES_LIST}>Back</button>
-        <button class="game-message__button" id="startGameBtn" data-destination=${GAMES_ROUTES.SAVANNAH_GAME}>Play</button>
+        <button class="game-message__button" id="startGameBtn" data-destination=${GAMES_ROUTES.SAVANNAH_GET_READY}>Play</button>
       </div>
     </div>
   </div>
 `;
 }
-
