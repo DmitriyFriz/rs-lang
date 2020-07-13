@@ -19,7 +19,7 @@ import Swiper from 'swiper';
 import swiperOptions from 'components/MainPage/LearningWords/Swiper.Options';
 
 // constants
-import { BUTTONS, HIDDEN_ELEMENTS_LIST } from './LearningWords.Constants';
+import { BUTTONS, HIDDEN_ELEMENTS_LIST, NOTIFICATIONS } from './LearningWords.Constants';
 
 // layout
 import {
@@ -45,6 +45,9 @@ import {
   registrationWord,
 } from './LearningWordsHandler';
 
+// Notification
+import Notification from '../../Notification/Notification.View';
+
 const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
@@ -67,6 +70,7 @@ class LearningWords extends BaseComponent {
     };
 
     this.checkResult = this.checkResult.bind(this);
+    this.notification = new Notification(this.component, 1);
   }
 
   createLayout() {
@@ -123,7 +127,11 @@ class LearningWords extends BaseComponent {
     if (
       this.currentIndex === (this.trueWordsAmount - 1)
     ) {
-      this.checkBtn.replaceWith(this.finishBtn);
+      this.checkBtn.remove();
+      this.exitBtn.remove();
+      this.notification.add(NOTIFICATIONS.FINISH_TRAINING);
+      this.notification.layout.append(this.finishBtn);
+      // this.checkBtn.replaceWith(this.finishBtn);
     }
   }
 

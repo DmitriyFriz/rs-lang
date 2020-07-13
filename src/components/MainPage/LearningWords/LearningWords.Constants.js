@@ -25,4 +25,8 @@ const HIDDEN_ELEMENTS_LIST = [
   '#card-play-audio',
 ];
 
-export { TRANSLATIONS, BUTTONS, HIDDEN_ELEMENTS_LIST };
+const NOTIFICATIONS = {
+  FINISH_TRAINING: 'Congratulations! You have completed the training!',
+};
+
+export { TRANSLATIONS, BUTTONS, HIDDEN_ELEMENTS_LIST, NOTIFICATIONS };
