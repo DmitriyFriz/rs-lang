@@ -9,6 +9,9 @@ import data from './StartMenu.Data';
 import { statistics } from '../MainPage.Statistics';
 import { STATISTICS } from '../MainPage.Constants';
 
+// Loader
+import Loader from '../../Loader/Loader.View';
+
 class StartMenu extends BaseComponent {
   async prepareData() {
     await statistics.prepareData();
@@ -33,6 +36,13 @@ class StartMenu extends BaseComponent {
       }
       element.textContent = statistics[statisticsName];
     });
+  }
+
+  async show() {
+    this.loader = new Loader();
+    await this.loader.show();
+    await super.show();
+    this.loader.hide();
   }
 }
 

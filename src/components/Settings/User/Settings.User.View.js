@@ -23,6 +23,9 @@ import { checkData } from '../Settings.Handler';
 import { changeRoute } from '../../../router/RouteHandler';
 import { MAIN_ROUTES, ROUTERS } from '../../../router/Router.Constants';
 
+// Loader
+import Loader from '../../Loader/Loader.View';
+
 class SettingsUser extends BaseComponent {
   prepareData() {
     this.notification = new Notification(this.component, 1);
@@ -32,6 +35,7 @@ class SettingsUser extends BaseComponent {
       [BUTTONS.CANCEL_DELETE_ACCOUNT]: () => this.cancelDeleteAccount(),
       [BUTTONS.SAVE_USER]: (event) => this.saveUserSettings(event),
     };
+    this.loader = new Loader();
   }
 
   createLayout() {
@@ -41,6 +45,7 @@ class SettingsUser extends BaseComponent {
 
   async saveUserSettings(event) {
     event.preventDefault();
+    await this.loader.show();
 
     this.email = document.forms
       .updatedUserData
@@ -66,6 +71,7 @@ class SettingsUser extends BaseComponent {
     const { isSuccess, errorName } = checkData(dataList);
 
     if (!isSuccess) {
+      this.loader.hide();
       this.notification.add(ERRORS_LIST[errorName], 5000);
       return;
     }
@@ -77,10 +83,12 @@ class SettingsUser extends BaseComponent {
       },
     );
     if (status !== STATUSES.OK) {
+      this.loader.hide();
       this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
       return;
     }
 
+    this.loader.hide();
     this.notification.add(NOTIFICATIONS.SAVED_SUCCESSFULLY, 2000);
   }
 
@@ -95,12 +103,15 @@ class SettingsUser extends BaseComponent {
 
   async confirmDeleteAccount() {
     this.notification.drop();
+    this.loader.show();
     const { status } = await UserDomain.remove();
 
     if (status !== STATUSES.NO_CONTENT) {
       this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
+      this.loader.hide();
       return;
     }
+    this.loader.hide();
     changeRoute(MAIN_ROUTES.PROMO, ROUTERS.MAIN, ROUTERS.HEADER);
   }
 }

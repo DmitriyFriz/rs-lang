@@ -49,6 +49,9 @@ import {
 // Notification
 import Notification from '../../Notification/Notification.View';
 
+// Loader
+import Loader from '../../Loader/Loader.View';
+
 const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
@@ -88,8 +91,11 @@ class LearningWords extends BaseComponent {
   }
 
   async show() {
+    this.loader = new Loader();
+    await this.loader.show();
     await super.show();
     await this.initTraining();
+    this.loader.hide();
   }
 
   // ========================== main ==================================

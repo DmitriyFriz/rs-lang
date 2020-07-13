@@ -23,6 +23,9 @@ import {
   saveSettings,
 } from '../Settings.Handler';
 
+// Loader
+import Loader from '../../Loader/Loader.View';
+
 class SettingsMain extends BaseComponent {
   prepareData() {
     this.notification = new Notification(this.component, 1);
@@ -41,12 +44,15 @@ class SettingsMain extends BaseComponent {
 
   async show() {
     await super.show();
-
+    this.loader = new Loader();
+    await this.loader.show();
     const settings = getSettingsList(this.component);
     await loadSettings(SETTINGS.MAIN, settings);
+    this.loader.hide();
   }
 
   async saveMainSettings() {
+    await this.loader.show();
     const settingsList = getSettingsList(this.component);
     const settings = prepareSettingsData(settingsList);
     const dataList = [
@@ -56,16 +62,19 @@ class SettingsMain extends BaseComponent {
     const { isSuccess, errorName } = checkData(dataList);
 
     if (!isSuccess) {
+      this.loader.hide();
       this.notification.add(ERRORS_LIST[errorName], 5000);
       return;
     }
 
     const { status } = await saveSettings(SETTINGS.MAIN, settings);
     if (status !== STATUSES.OK) {
+      this.loader.hide();
       this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
       return;
     }
 
+    this.loader.hide();
     this.notification.add(NOTIFICATIONS.MAIN_SAVED_SUCCESSFULLY, 6000);
   }
 
@@ -76,6 +85,7 @@ class SettingsMain extends BaseComponent {
 
   async confirmDefaultSettings() {
     this.notification.drop();
+    await this.loader.show();
     const { status } = await saveSettings(SETTINGS.MAIN, DEFAULT_SETTINGS_MAIN);
     if (status !== STATUSES.OK) {
       this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
@@ -84,6 +94,7 @@ class SettingsMain extends BaseComponent {
 
     const settings = getSettingsList(this.component);
     await loadSettings(SETTINGS.MAIN, settings);
+    this.loader.hide();
     this.notification.add(NOTIFICATIONS.SUCCESS_DEFAULT_SETTINGS, 3000);
   }
 

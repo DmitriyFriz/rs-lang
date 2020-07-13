@@ -23,6 +23,9 @@ import {
   saveSettings,
 } from '../Settings.Handler';
 
+// Loader
+import Loader from '../../Loader/Loader.View';
+
 class SettingsRepetition extends BaseComponent {
   prepareData() {
     this.notification = new Notification(this.component, 1);
@@ -41,12 +44,15 @@ class SettingsRepetition extends BaseComponent {
 
   async show() {
     await super.show();
-
+    this.loader = new Loader();
+    await this.loader.show();
     const settings = getSettingsList(this.component);
     await loadSettings(SETTINGS.REPETITION, settings);
+    this.loader.hide();
   }
 
   async saveRepetitionSettings() {
+    await this.loader.show();
     const settingsList = getSettingsList(this.component);
     const settings = prepareSettingsData(settingsList);
     const dataList = [
@@ -55,16 +61,19 @@ class SettingsRepetition extends BaseComponent {
     const { isSuccess, errorName } = checkData(dataList);
 
     if (!isSuccess) {
+      this.loader.hide();
       this.notification.add(ERRORS_LIST[errorName], 5000);
       return;
     }
 
     const { status } = await saveSettings(SETTINGS.REPETITION, settings);
     if (status !== STATUSES.OK) {
+      this.loader.hide();
       this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
       return;
     }
 
+    this.loader.hide();
     this.notification.add(NOTIFICATIONS.SAVED_SUCCESSFULLY, 2000);
   }
 
