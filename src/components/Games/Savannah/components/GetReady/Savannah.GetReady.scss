@@ -1,0 +1,24 @@
+.getReady-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 87vh;
+
+  @media screen and (min-width: $phones) {
+    height: 80vh;
+
+    #root {
+      padding: 0;
+    }
+  }
+}
+
+#root {
+  @media screen and (min-width: $phones) {
+      padding: 0;
+  }
+}
+
+
+
