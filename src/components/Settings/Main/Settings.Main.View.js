@@ -4,11 +4,12 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 // constants
 import STATUSES from 'services/requestHandler.Statuses';
 import {
-  SETTINGS, NOTIFICATIONS, ERRORS_LIST, BUTTONS, VALIDATOR_GROUPS,
+  SETTINGS, NOTIFICATIONS, ERRORS_LIST, BUTTONS, VALIDATOR_GROUPS, DEFAULT_SETTINGS_MAIN,
 } from '../Settings.Constants';
 
 // layout
 import getLayout from './Settings.Main.Layout';
+import { getConfirmLayout } from '../Settings.Layout';
 
 // Notification
 import Notification from '../../Notification/Notification.View';
@@ -26,7 +27,10 @@ class SettingsMain extends BaseComponent {
   prepareData() {
     this.notification = new Notification(this.component, 1);
     this.functionListForButtons = {
-      [BUTTONS.SAVE_MAIN]: (event) => this.saveMainSettings(event),
+      [BUTTONS.SAVE_MAIN]: () => this.saveMainSettings(),
+      [BUTTONS.DEFAULT_MAIN]: () => this.resetSettings(),
+      [BUTTONS.CONFIRM_DEFAULT_MAIN]: () => this.confirmDefaultSettings(),
+      [BUTTONS.CANCEL]: () => this.cancel(),
     };
   }
 
@@ -63,6 +67,28 @@ class SettingsMain extends BaseComponent {
     }
 
     this.notification.add(NOTIFICATIONS.MAIN_SAVED_SUCCESSFULLY, 6000);
+  }
+
+  resetSettings() {
+    const html = getConfirmLayout();
+    this.notification.add(html);
+  }
+
+  async confirmDefaultSettings() {
+    this.notification.drop();
+    const { status } = await saveSettings(SETTINGS.MAIN, DEFAULT_SETTINGS_MAIN);
+    if (status !== STATUSES.OK) {
+      this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
+      return;
+    }
+
+    const settings = getSettingsList(this.component);
+    await loadSettings(SETTINGS.MAIN, settings);
+    this.notification.add(NOTIFICATIONS.SUCCESS_DEFAULT_SETTINGS, 3000);
+  }
+
+  cancel() {
+    this.notification.drop();
   }
 }
 

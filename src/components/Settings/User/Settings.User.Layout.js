@@ -1,8 +1,4 @@
-// views
-import BaseComponent from 'components/BaseComponent/BaseComponent';
-import { VALIDATOR_GROUPS, BUTTONS } from '../Settings.Constants';
-
-const { createElement } = BaseComponent;
+import { VALIDATOR_GROUPS, BUTTONS, NOTIFICATIONS } from '../Settings.Constants';
 
 function getLayout() {
   return `
@@ -33,7 +29,7 @@ function getLayout() {
 
 function getLayoutOfConfirmDelete() {
   return `
-      <p class="confirm-delete__description">Are you sure you want to delete your account? All data will be lost!</p>
+      <p class="confirm-delete__description">${NOTIFICATIONS.CONFIRM_DELETE_ACCOUNT}</p>
       <button class="button button-confirm-delete" data-button="${BUTTONS.CONFIRM_DELETE_ACCOUNT}">Yes</button>
       <button class="button button-cancel-delete" data-button="${BUTTONS.CANCEL_DELETE_ACCOUNT}">Cancel</button>
   `;

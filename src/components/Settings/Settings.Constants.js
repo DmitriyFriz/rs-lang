@@ -79,8 +79,13 @@ const BUTTONS = {
   CONFIRM_DELETE_ACCOUNT: 'confirmDeleteAccount',
   CANCEL_DELETE_ACCOUNT: 'cancelDeleteAccount',
   SAVE_MAIN: 'saveMain',
+  DEFAULT_MAIN: 'resetMain',
+  CONFIRM_DEFAULT_MAIN: 'confirmDefaultMain',
   SAVE_USER: 'saveUser',
   SAVE_REPETITION: 'saveRepetition',
+  DEFAULT_REPETITION: 'resetMain',
+  CONFIRM_DEFAULT_REPETITION: 'confirmDefaultMain',
+  CANCEL: 'Cancel',
 };
 
 const NOTIFICATIONS = {
@@ -90,6 +95,8 @@ const NOTIFICATIONS = {
   SAVE_ERROR: 'Something went wrong. Please try again later or try to enter other details',
   ACCOUNT_DELETED: 'Account deleted',
   CONFIRM_DELETE_ACCOUNT: 'Are you sure you want to delete your account? All data will be lost!',
+  CONFIRM_DEFAULT_SETTINGS: 'Are you sure you want to reset your settings?',
+  SUCCESS_DEFAULT_SETTINGS: 'Settings have been reset',
 };
 
 export {

@@ -46,6 +46,7 @@ function getLayout() {
     </div>
 
     <button class="button button-save-settings" data-button="${BUTTONS.SAVE_REPETITION}">Save</button>
+    <button class="button button-default-settings" data-button="${BUTTONS.DEFAULT_MAIN}">Default</button>
  `;
 }
 

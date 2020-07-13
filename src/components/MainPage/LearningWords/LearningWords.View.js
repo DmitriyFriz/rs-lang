@@ -124,9 +124,7 @@ class LearningWords extends BaseComponent {
     this.showElementsForTrueWord();
     this.updateProgress();
 
-    if (
-      this.currentIndex === (this.trueWordsAmount - 1)
-    ) {
+    if (this.currentIndex === (this.trueWordsAmount - 1)) {
       this.checkBtn.remove();
       this.exitBtn.remove();
       this.notification.add(NOTIFICATIONS.FINISH_TRAINING);

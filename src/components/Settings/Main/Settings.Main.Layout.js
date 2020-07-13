@@ -81,7 +81,9 @@ function getLayout() {
     data-settings="${SETTINGS_MAIN.ANSWER_BUTTON}">
     <label for="answer">"I don't know" button</label>
   </div>
+
   <button class="button button-save-main-settings" data-button="${BUTTONS.SAVE_MAIN}">Save</button>
+  <button class="button button-default-settings" data-button="${BUTTONS.DEFAULT_MAIN}">Default</button>
 `;
 }
 
