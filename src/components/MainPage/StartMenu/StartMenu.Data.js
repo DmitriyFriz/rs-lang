@@ -12,7 +12,7 @@ const data = {
       {
         tag: 'div',
         className: 'today',
-        innerHTML: `<p class="today__title">Today<span class="today__value" data-statistics="${STATISTICS.ALL_WORDS}"></span></p>`,
+        innerHTML: `<p class="today__title">Today</p><div class="today__value" data-statistics="${STATISTICS.ALL_WORDS}"></div>`,
       },
       {
         tag: 'div',
