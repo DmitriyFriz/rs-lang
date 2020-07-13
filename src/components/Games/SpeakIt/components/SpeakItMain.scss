@@ -59,10 +59,13 @@
   div {
     background-color: $basicColor2;
     padding: 10px;
+
+    cursor: pointer;
   }
 
-  div:hover {
-    cursor: pointer;
+  .button-active {
+    background-color: $basicColor4;
+    color: #fff;
   }
 }
 

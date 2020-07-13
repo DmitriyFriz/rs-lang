@@ -2,6 +2,9 @@
 // router
 import { onRouteChangeEvent } from 'router/RouteHandler';
 
+// loader
+import Loader from 'components/Loader/Loader.View';
+
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
@@ -33,6 +36,8 @@ if (/Chrome|Edge/.test(navigator.userAgent)) {
   recognition.maxAlternatives = 7;
 }
 
+console.log(navigator.userAgent);
+
 class SpeakItMain extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
@@ -45,9 +50,14 @@ class SpeakItMain extends BaseComponent {
   }
 
   async prepareData() {
+    // this.loader = new Loader();
+    // this.loader.show();
+
     const page = Math.floor(Math.random() * 30);
     const response = await wordsDomainModel.getChunk(page, this.state.level);
     this.state.words = response.data.slice(0, 10);
+
+    // this.loader.hide();
   }
 
   createWords() {
@@ -109,6 +119,10 @@ class SpeakItMain extends BaseComponent {
   }
 
   startGame() {
+    if (this.state.isGameActive) {
+      return;
+    }
+    this.speakButton.classList.add('button-active');
     this.state.isGameActive = true;
     this.resetImage();
     document.querySelectorAll('.card').forEach((el) => {
@@ -180,6 +194,7 @@ class SpeakItMain extends BaseComponent {
   }
 
   reset() {
+    this.speakButton.classList.remove('button-active');
     this.state.isGameActive = false;
     this.state.learnedWords = [];
     recognition.stop();
@@ -194,7 +209,10 @@ class SpeakItMain extends BaseComponent {
     this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
     document.querySelector('fieldset').addEventListener('click', (event) => this.switchLevels(event));
     this.wordsContainer.addEventListener('click', (event) => this.handleWordClick(event));
-    document.getElementById('speak-button').addEventListener('click', () => this.startGame());
+
+    this.speakButton = document.getElementById('speak-button');
+    this.speakButton.addEventListener('click', () => this.startGame());
+
     document.getElementById('results-button').addEventListener('click', () => this.showResults());
     document.getElementById('reset-button').addEventListener('click', () => this.reset());
     recognition.addEventListener('result', (event) => this.handleRecognitionResult(event));
