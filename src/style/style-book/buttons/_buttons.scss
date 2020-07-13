@@ -13,4 +13,9 @@
   font-family: $mainFont;
   text-align: center;
   text-transform: uppercase;
+
+  &[disabled] {
+    opacity: 0.2;
+    pointer-events: none;
+  }
 }
