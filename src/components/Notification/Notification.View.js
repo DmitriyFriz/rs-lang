@@ -15,16 +15,6 @@ class Notification extends BaseComponent {
     this.isShow = false;
     this.queue = [];
     this.maxQueueLength = maxQueueLength;
-
-    this.remove = this.remove.bind(this);
-  }
-
-  addListeners() {
-    this.component.addEventListener('animationend', this.remove);
-  }
-
-  removeListeners() {
-    this.component.removeEventListener('animationend', this.remove);
   }
 
   add(content, timer) {
@@ -33,8 +23,8 @@ class Notification extends BaseComponent {
       return;
     }
 
-    this.createContentLayout(content);
     this.component.className = 'down up';
+    this.createContentLayout(content);
     this.isShow = true;
     this.show();
 
@@ -66,12 +56,13 @@ class Notification extends BaseComponent {
 
   drop() {
     this.component.classList.remove('up');
-    this.isShow = false;
+    this.component.addEventListener('animationend', () => {
+      this.isShow = false;
+      this.remove();
+    }, { once: true });
   }
 
   remove() {
-    if (this.isShow) { return; }
-    this.component.className = '';
     this.layout.remove();
 
     if (this.queue.length) {
