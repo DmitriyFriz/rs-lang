@@ -24,7 +24,7 @@ class SprintFinish extends SprintStart {
     this.component.innerHTML = getLayout();
     this.playAudio(finishGameAudio);
 
-    this.statisticList = new ShortStatistic(this.component.firstElementChild, 'div', this.shortStatistic);
+    this.statisticList = new ShortStatistic(this.component.firstElementChild, this.shortStatistic);
     this.statisticList.show();
   }
 

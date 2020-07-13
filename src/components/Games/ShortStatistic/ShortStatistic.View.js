@@ -7,18 +7,28 @@ import getStatistic from './ShortStatistic.Layout';
 // styles
 import './ShortStatistic.scss';
 
+const listsOptionDefault = {
+  incorrectName: 'Errors',
+  isIncorrect: true,
+  correctName: 'Learned',
+  isCorrect: true,
+};
+
 class ShortStatistic extends BaseComponent {
-  constructor(parent, tagName, shortStatistic) {
-    super(parent, tagName);
+  constructor(parent, shortStatistic, listsOption = listsOptionDefault) {
+    super(parent);
+
+    this.component = document.createElement('div');
+    this.url = 'https://raw.githubusercontent.com/jack-guzya/rslang-data/master/';
 
     this.shortStatistic = shortStatistic;
-    this.url = 'https://raw.githubusercontent.com/jack-guzya/rslang-data/master/';
+    this.listsOption = listsOption;
 
     this.handleClickStatistic = this.handleClickStatistic.bind(this);
   }
 
   createLayout() {
-    this.statisticList = getStatistic(this.shortStatistic);
+    this.statisticList = getStatistic(this.shortStatistic, this.listsOption);
 
     this.component.append(this.statisticList);
   }
