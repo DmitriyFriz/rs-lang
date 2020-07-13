@@ -11,7 +11,6 @@ import './SavannahGame.scss';
 export default class SavannahGame extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
-    this.words = new Words();
     this.loader = new Loader();
     this.date = new Date();
     this.second = this.date.getSeconds();
@@ -25,7 +24,7 @@ export default class SavannahGame extends BaseComponent {
   }
 
   async prepareData() {
-    this.group = await this.words.selectGroupWords(0);
+
     this.loader.hide();
   }
 

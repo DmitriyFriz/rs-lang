@@ -2,25 +2,26 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 import keyboardImg from '../../images/keyboard.svg';
 
 export default function getGameLayout() {
-  const savannahWrapper = BaseComponent.createElement({
+  const { createElement } = BaseComponent;
+  const savannahWrapper = createElement({
     tag: 'div',
     className: 'savannah__game-wrapper',
   });
 
-  const wordPlace = BaseComponent.createElement({
+  const wordPlace = createElement({
     tag: 'div',
     className: 'savannah-game__word',
     id: 'transferWord',
   });
 
-  const word = BaseComponent.createElement({
+  const word = createElement({
     tag: 'h1',
     content: 'New Word',
   });
 
   wordPlace.append(word);
 
-  const keyInfo = BaseComponent.createElement({
+  const keyInfo = createElement({
     tag: 'div',
     className: 'keyboard-info',
   });
