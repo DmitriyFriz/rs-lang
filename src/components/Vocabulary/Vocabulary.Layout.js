@@ -1,4 +1,5 @@
 import BaseComponent from '../BaseComponent/BaseComponent';
+import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
 import { pageLayout, navTabsLayout } from './Vocabulary.Data';
 
 const { createElement } = BaseComponent;
@@ -29,7 +30,7 @@ function getVocabularyNavLayout() {
   return nav;
 }
 
-function getWordLayout(wordData) {
+function getWordLayout(wordData, layoutType) {
   const {
     id,
     image,
@@ -175,16 +176,34 @@ function getWordLayout(wordData) {
     tag: 'button',
     content: pageLayout.remove.content,
     className: pageLayout.remove.className,
-    dataset: { id },
+    dataset: {
+      id,
+      remove: layoutType,
+    },
   });
+  removeButton.title = layoutType === VOCABULARY.RESTORED
+    ? 'Remove' : 'Restore';
   buttonsWrap.append(removeButton);
+
+  if (layoutType === VOCABULARY.RESTORED) {
+    const difficultButton = createElement({
+      tag: 'button',
+      className: 'vocabulary__difficult button',
+      dataset: {
+        id,
+        difficult: 'true',
+      },
+    });
+    difficultButton.title = 'Difficult word';
+    buttonsWrap.append(difficultButton);
+  }
 
   item.append(...children);
 
   return item;
 }
 
-function getWordsListLayout(wordsData) {
+function getWordsListLayout(wordsData, layoutType) {
   const list = createElement({
     tag: 'div',
     content: wordsData ? '' : pageLayout.noWords,
@@ -192,7 +211,7 @@ function getWordsListLayout(wordsData) {
   });
   let wordsLayout;
   if (wordsData) {
-    wordsLayout = wordsData.map((data) => getWordLayout(data));
+    wordsLayout = wordsData.map((data) => getWordLayout(data, layoutType));
 
     list.append(...wordsLayout);
   } else {
@@ -222,10 +241,12 @@ function getPaginationLayout() {
 }
 
 function getVocabularyInnerLayout(data) {
-  const { allWordsNum, todayWordsNum, words } = data;
+  const {
+    allWordsNum, todayWordsNum, words, layoutType,
+  } = data;
   return [
     getVocabularyInfoLayout(allWordsNum, todayWordsNum),
-    getWordsListLayout(words),
+    getWordsListLayout(words, layoutType),
     getPaginationLayout(),
   ];
 }

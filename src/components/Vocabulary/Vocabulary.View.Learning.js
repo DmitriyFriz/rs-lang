@@ -38,7 +38,7 @@ class VocabularyLearning extends BaseComponent {
   }
 
   createLayout() {
-    this.component.className = pageLayout.inner.className;
+    this.component.className = `${pageLayout.inner.className} ${this.vocabularyType.toLowerCase()}`;
     [
       this.info,
       [
@@ -50,6 +50,7 @@ class VocabularyLearning extends BaseComponent {
       allWordsNum: this.categoryWordsAmount,
       todayWordsNum: this.todayWordsAmount,
       words: this.words,
+      layoutType: this.vocabularyType,
     });
 
     this.component.append(
@@ -67,7 +68,7 @@ class VocabularyLearning extends BaseComponent {
 
     const wordsData = await this.wordsDomainModel.getAggregatedWords({
       group: constants.group,
-      wordsPerPage: constants.wordsPerPage,
+      wordsPerPage: constants.wordsPerGroupe,
       filter,
     });
 
@@ -138,17 +139,22 @@ class VocabularyLearning extends BaseComponent {
       this.playAudio(src);
     }
 
-    if (target.classList.contains(pageLayout.remove.className)) {
+    if (target.dataset && target.dataset.remove) {
       this.handleRemove(target.dataset.id);
+    }
+
+    if (target.dataset && target.dataset.difficult) {
+      this.handleRemove(target.dataset.id, VOCABULARY.DIFFICULT);
     }
   }
 
-  handleRemove(wordId) {
-    const removeType = this.vocabularyType !== VOCABULARY.RESTORED
+  async handleRemove(wordId, type = null) {
+    const removeType = type || (this.vocabularyType !== VOCABULARY.RESTORED
       ? VOCABULARY.RESTORED
-      : VOCABULARY.REMOVED;
+      : VOCABULARY.REMOVED);
+    console.log(removeType);
     this.loader.show();
-    this
+    await this
       .wordsDomainModel
       .updateUserWord(wordId, null, removeType)
       .then((res) => {

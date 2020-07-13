@@ -75,6 +75,20 @@
 
   &__inner {
     height: 100%;
+    &.removed {
+      .vocabulary__remove {
+        width: 32px;
+        height: 32px;
+        background-image: url(/assets/vocabulary/restore.svg);
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-position: center;
+        font-size: 0;
+      }
+    }
+    &.difficult {
+      @extend .removed;
+    }
   }
 
   &__info {
@@ -177,7 +191,7 @@
     width: 1.3em;
     height: 1.3em;
     background-color: transparent;
-    background-image: url(/assets/img/sound-icon.svg);
+    background-image: url(/assets/mini-games/img/sound-icon.svg);
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -187,6 +201,12 @@
   &__text {
     padding: 0.5em 0;
     border-bottom: 1px solid $basicColor2;
+    p {
+      &:nth-child(2) {
+        font-size: 0.875em;
+        color: $basicColor3;
+      }
+    }
   }
 
   &__statistic {
@@ -208,6 +228,20 @@
     display: flex;
     flex-direction: column;
     padding: 0.5em;
+  }
+
+  &__remove {
+    margin-bottom: 0.2em;
+  }
+
+  &__difficult {
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/vocabulary/difficult.svg);
+    background-repeat: no-repeat;
+    background-size: 90%;
+    background-position: center;
+    font-size: 0;
   }
 
   &__pagination {
