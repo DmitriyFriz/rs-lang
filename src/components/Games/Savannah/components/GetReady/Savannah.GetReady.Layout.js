@@ -28,7 +28,7 @@ export default function getGetReadyLayout() {
 
   const keyInfo = createElement({
     tag: 'div',
-    className: 'keyboard-info',
+    className: 'keyboard-info load-keyInfo',
   });
 
   const keyInfoMessage = `

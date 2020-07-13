@@ -19,6 +19,7 @@
 
 .game-savanna {
   position: relative;
+  overflow: hidden;
 
   &::after {
     transition: background-position 2s;
