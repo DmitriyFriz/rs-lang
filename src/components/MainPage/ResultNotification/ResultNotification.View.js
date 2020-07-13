@@ -9,7 +9,7 @@ import BaseComponent from '../../BaseComponent/BaseComponent';
 
 // layout
 import { data, BUTTONS } from './ResultNotification.Data';
-import { createBlock } from '../LearningWords/Layout/LearningWords.Layout';
+import createBlock from '../MainPage.Layout';
 
 // statistics
 import { statistics, sessionStatistics, MODE } from '../MainPage.Statistics';

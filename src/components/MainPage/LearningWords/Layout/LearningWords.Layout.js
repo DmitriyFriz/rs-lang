@@ -1,24 +1,9 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 import { SETTINGS_MAIN } from '../../../Settings/Settings.Constants';
 import { data, translationsList } from './LearningWords.Data';
+import createBlock from '../../MainPage.Layout';
 
 const { createElement } = BaseComponent;
-
-function createBlock(blocksData, blockName, content) {
-  const parent = createElement(blocksData[blockName].parent);
-  const { children } = blocksData[blockName];
-
-  children.forEach((childParameters) => {
-    let parameters = childParameters;
-    if (content) {
-      parameters = { ...childParameters, content };
-    }
-    const child = createElement(parameters);
-    parent.append(child);
-  });
-
-  return parent;
-}
 
 function addBlock(root, blocksData, blockName, content) {
   const parent = createBlock(blocksData, blockName, content);
@@ -100,7 +85,4 @@ function createWordSlide(enabledSettings, { _id, word, ...param }) {
   return card;
 }
 
-export {
-  createWordSlide,
-  createBlock,
-};
+export default createWordSlide;

@@ -73,19 +73,19 @@ const data = {
         tag: 'div',
         className: 'success-rate',
         innerHTML: `<p class="success-rate__title">
-          Success rate: <span class="all-words__success-rate" data-statistics="${STATISTICS.SUCCESS_RATE}"></span></p>`,
+          Success rate: <span class="success-rate__value" data-statistics="${STATISTICS.SUCCESS_RATE}"></span></p>`,
       },
       {
         tag: 'div',
         className: 'new-words',
         innerHTML: `<p class="new-words__title">
-          New words: <span class="all-words__new-words" data-statistics="${STATISTICS.NEW_WORDS}"></span></p>`,
+          New words: <span class="new-words__value" data-statistics="${STATISTICS.NEW_WORDS}"></span></p>`,
       },
       {
         tag: 'div',
         className: 'success-series',
         innerHTML: `<p class="success-series__title">
-          Success series: <span class="all-words__success-series" data-statistics="${STATISTICS.SUCCESS_SERIES}"></span></p>`,
+          Success series: <span class="success-series__value" data-statistics="${STATISTICS.SUCCESS_SERIES}"></span></p>`,
       },
     ],
   },

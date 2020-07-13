@@ -2,18 +2,37 @@
 import BaseComponent from '../../BaseComponent/BaseComponent';
 
 // layout
-import getLayout from './Layout/StartMenu.Layout';
+import createBlock from '../MainPage.Layout';
+import data from './StartMenu.Data';
 
-// constants
-import { MAIN_PAGE_ROUTES } from '../../../router/Router.Constants';
+// Statistics
+import { statistics } from '../MainPage.Statistics';
+import { STATISTICS } from '../MainPage.Constants';
 
 class StartMenu extends BaseComponent {
-  static get name() {
-    return MAIN_PAGE_ROUTES.START_MENU;
+  async prepareData() {
+    await statistics.prepareData();
   }
 
   createLayout() {
-    this.component.innerHTML = getLayout();
+    this.component.className = 'start-menu';
+    this.component.append(createBlock(data, 'statistics'));
+    this.component.append(BaseComponent.createElement(data.startTraining));
+    this.addStatisticsToElements();
+  }
+
+  addStatisticsToElements() {
+    const elementsList = this.component.querySelectorAll('[data-statistics]');
+    [...elementsList].forEach((item) => {
+      const element = item;
+      const statisticsName = element.dataset.statistics;
+      if (statisticsName === STATISTICS.LAST_GAME_DATE) {
+        const date = new Date(statistics[statisticsName]);
+        element.textContent = date.toString().replace(/GMT.*$/g, '');
+        return;
+      }
+      element.textContent = statistics[statisticsName];
+    });
   }
 }
 

@@ -24,10 +24,9 @@ import {
 } from '../MainPage.Constants';
 
 // layout
-import {
-  createWordSlide, createBlock,
-} from './Layout/LearningWords.Layout';
+import createWordSlide from './Layout/LearningWords.Layout';
 import { data } from './Layout/LearningWords.Data';
+import createBlock from '../MainPage.Layout';
 
 // Settings
 import { getSettings } from '../../Settings/Settings.Handler';

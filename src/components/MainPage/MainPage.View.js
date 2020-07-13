@@ -15,9 +15,6 @@ import StartMenu from './StartMenu/StartMenu.View';
 import LearningWords from './LearningWords/LearningWords.View';
 import ResultNotification from './ResultNotification/ResultNotification.View';
 
-// statistics
-import { statistics } from './MainPage.Statistics';
-
 // styles
 import './MainPage.scss';
 
@@ -37,8 +34,6 @@ class MainPage extends BaseComponent {
       MAIN_PAGE_ROUTES.START_MENU,
     );
     registerRouter(this.mainPageRouter);
-
-    await statistics.prepareData();
   }
 
   addListeners() {
