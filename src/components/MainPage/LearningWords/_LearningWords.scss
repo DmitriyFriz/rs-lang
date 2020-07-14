@@ -1,24 +1,18 @@
 .learning-words {
+  position: relative;
   margin: 0 auto;
-  width: 290px;
-  height: 100%;
-  // height: 100%;
+  width: 90vw;
+  max-width: 800px;
 
   .training {
-    // display: grid;
-    // grid-template-rows: 5fr 1fr 1fr;
-    // grid-template-columns: 1fr 1fr;
-    // grid-template-areas:
-    //   "swiper swiper"
-    //   "close close"
-    //   "progress-bar progress-bar";
-    // justify-items: center;
-    // align-items: center;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    & > div {
+      margin-bottom: 20px;
+    }
   }
 
   .button-close,
@@ -45,11 +39,9 @@
 
   .button-close,
   .button-finish {
-    // grid-area: close;
     order: 2;
   }
   .progress-bar {
-    // grid-area: progress-bar;
     order: 0;
   }
 
@@ -76,6 +68,10 @@
       height: 30px;
     }
   }
+
+  @media screen and (min-width: $laptops) {
+    font-size: 1.1em;
+  }
 }
 
 .completion-notice {
@@ -101,18 +97,11 @@
 }
 
 .swiper {
-  // grid-area: swiper;
   order: 1;
   margin: 0 auto;
   width: 90%;
   height: 80%;
 }
-
-// $swiperButtonsMargin: -40px;
-// $heightPosterForLargeScreen: 340px;
-// $heightPoster: 300px;
-// $heightPosterForSmallScreen: 250px;
-// $fontSlide: 18px;
 
 .swiper__container {
   overflow: auto;
@@ -122,7 +111,6 @@
   box-sizing: border-box;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 25px;
   width: 100%;
   height: 100%;
   user-select: none;
@@ -130,45 +118,32 @@
 }
 
 .swiper-slide {
-  // display: grid;
-  // grid-template-rows: 1fr 0.2fr 0.4fr 0.4fr 0.1fr 0.1fr 0.2fr 0.2fr 0.2fr 0.2fr;
-  // grid-template-columns: 1fr 1fr;
-  // grid-template-areas:
-  //   "associative associative"
-  //   "word-translation word-translation"
-  //   "example example"
-  //   "meaning meaning"
-  //   "transcription transcription"
-  //   "word-input word-input"
-  //   "btn-skip btn-check"
-  //   "difficulty difficulty"
-  //   "vocabulary vocabulary"
-  //   "btn-play-audio btn-play-audio";
   display: flex;
   flex-flow: column;
   justify-content: space-between;
   transition-duration: 1s;
   align-items: center;
-  // align-content: flex-start;
   box-sizing: border-box;
   border: solid 1px #9b9997;
   border-radius: 7px;
   padding: 5px;
-  // width: 95% !important;
   height: 100%;
   background-color: $basicColor5;
   text-align: center;
   font-size: 0.8em;
   color: $basicColor1;
 
+  & > div,
+  & > button {
+    margin: 5px;
+  }
+
   &__associative {
-    // grid-area: associative;
     order: 0;
     position: relative;
     overflow: hidden;
-    margin-bottom: 5px;
     width: 100%;
-    // height: 50%;
+    max-width: 500px;
 
     img {
       width: 100%;
@@ -176,42 +151,33 @@
   }
 
   &__example {
-    // grid-area: example;
     order: 2;
   }
   &__meaning {
-    // grid-area: meaning;
     order: 3;
   }
   &__word-translation {
-    // grid-area: word-translation;
     order: 1;
   }
   &__transcription {
-    // grid-area: transcription;
     order: 4;
   }
   &__difficulty-buttons {
-    // grid-area: difficulty;
     order: 7;
   }
   &__vocabulary-buttons {
-    // grid-area: vocabulary;
     order: 8;
   }
   .skip-container {
-    // grid-area: btn-skip;
     order: 10;
-    width: 100%;
+    width: 97%;
     text-align: right;
   }
   .button-check-word,
   &__answer {
-    // grid-area: btn-check;
     order: 6;
   }
   .button-play-audio {
-    // grid-area: btn-play-audio;
     order: 9;
     width: 40px;
     height: 40px;
@@ -220,28 +186,18 @@
     }
   }
   &__word-input {
-    // grid-area: word-input;
     order: 5;
   }
 
   &__difficulty-buttons {
     display: grid;
     grid-template-areas: "a";
-    // grid-template-areas:
-    // "title title title title"
-    // "btn btn btn btn";
-    // grid-template-columns: 1fr 1fr 1fr 1fr;
-    // grid-template-rows: 1fr 1fr;
-
-    // .difficulty-buttons__title {
-    //   grid-area: title;
-    // }
   }
   &__vocabulary-buttons {
     display: grid;
     grid-template-areas:
-    "title title"
-    "btn btn";
+      "title title"
+      "btn btn";
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
 
@@ -255,8 +211,7 @@
   &__example,
   &__answer,
   &__transcription {
-    margin-bottom: 7px;
-    padding-bottom: 3px;
+    padding: 5px;
     border-bottom: 1px solid #9b9997d2;
     width: 95%;
   }
@@ -267,8 +222,6 @@
 
   .translation,
   &__transcription,
-  // &__difficulty-buttons,
-  // &__vocabulary-buttons,
   #card-play-audio,
   #card-check-btn,
   #card-skip-btn {
@@ -276,12 +229,7 @@
       display: none;
     }
   }
-
-  // .show {
-  //   display: block;
-  // }
 }
-
 
 .progress-bar {
   display: grid;
@@ -291,7 +239,7 @@
   height: 15px;
 
   .progress-container {
-    border: 1px solid ;
+    border: 1px solid;
     margin: 0 10px;
     background-color: $basicColor5;
 
@@ -352,17 +300,3 @@
     color: #00ad09;
   }
 }
-
-// .swiper-button-next {
-//   right: $swiperButtonsMargin !important;
-//   @media (max-width: 1019px) {
-//     right: 0 !important;
-//   }
-// }
-
-// .swiper-button-prev {
-//   left: $swiperButtonsMargin !important;
-//   @media (max-width: 1019px) {
-//     left: 0 !important;
-//   }
-// }

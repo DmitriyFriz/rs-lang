@@ -1,5 +1,5 @@
 const swiperOptions = {
-  slidesPerView: 3,
+  slidesPerView: 1,
   spaceBetween: 10,
   centerInsufficientSlides: true,
   centeredSlides: true,
@@ -10,18 +10,16 @@ const swiperOptions = {
   preventInteractionOnTransition: true,
   touchEventsTarget: 'container',
 
-  breakpoints: {
+  // breakpoints: {
 
-    320: {
-      slidesPerView: 1,
-      spaceBetween: 20,
-    },
+  //   320: {
+  //     spaceBetween: 20,
+  //   },
 
-    768: {
-      slidesPerView: 3,
-      spaceBetween: 20,
-    },
-  },
+  //   768: {
+  //     spaceBetween: 20,
+  //   },
+  // },
 
   navigation: {
     nextEl: '.swiper-button-next',

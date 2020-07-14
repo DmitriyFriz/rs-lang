@@ -114,7 +114,7 @@ const data = {
           vocabulary: VOCABULARY.DIFFICULT,
           button: BUTTONS.VOCABULARY,
         },
-        content: 'Add to hard',
+        content: 'Difficult',
       },
       {
         tag: 'button',
@@ -123,7 +123,7 @@ const data = {
           vocabulary: VOCABULARY.REMOVED,
           button: BUTTONS.VOCABULARY,
         },
-        content: 'Add to removed',
+        content: 'Removed',
       },
     ],
   },
