@@ -1,8 +1,9 @@
 // lodash
 import get from 'lodash.get';
 
-// constants
+// router
 import { ROUTERS, MAIN_PAGE_ROUTES } from 'router/Router.Constants';
+import { changeRoute } from '../../../router/RouteHandler';
 
 // views
 import BaseComponent from '../../BaseComponent/BaseComponent';
@@ -14,10 +15,8 @@ import createBlock from '../MainPage.Layout';
 // statistics
 import { statistics, sessionStatistics, MODE } from '../MainPage.Statistics';
 
-// // status
-// import { status, MODES } from '../MainPage.Status';
-
-import { changeRoute } from '../../../router/RouteHandler';
+// style
+import './ResultNotification.scss';
 
 class Notification extends BaseComponent {
   async prepareData() {
@@ -29,7 +28,11 @@ class Notification extends BaseComponent {
 
   createLayout() {
     this.component.className = 'result-notification';
-    this.component.append(createBlock(data, 'completionNotice'));
+    const completionNotice = createBlock(data, 'completionNotice');
+    const buttons = createBlock(data, 'buttons');
+    completionNotice.append(buttons);
+    this.component.append(completionNotice);
+
     if (sessionStatistics.mode === MODE.NO_STAT) { return; }
     this.addStatistics();
   }

@@ -30,8 +30,6 @@ const HIDDEN_ELEMENTS_LIST = [
   '#card-example-translation',
   '#card-word-translation',
   '#card-transcription',
-  // '#card-difficulty',
-  // '#card-vocabulary',
   '#card-play-audio',
 ];
 
@@ -40,10 +38,10 @@ const HIDDEN_BUTTONS_LIST = [
   '#card-check-btn',
 ];
 
-const NOTIFICATIONS = {
-  FINISH_TRAINING: 'Congratulations! You have completed the training!',
-};
-
 export {
-  TRANSLATIONS, BUTTONS, HIDDEN_ELEMENTS_LIST, NOTIFICATIONS, STATISTICS, HIDDEN_BUTTONS_LIST,
+  TRANSLATIONS,
+  BUTTONS,
+  HIDDEN_ELEMENTS_LIST,
+  STATISTICS,
+  HIDDEN_BUTTONS_LIST,
 };

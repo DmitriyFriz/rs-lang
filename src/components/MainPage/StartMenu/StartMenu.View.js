@@ -12,6 +12,9 @@ import { STATISTICS } from '../MainPage.Constants';
 // Loader
 import Loader from '../../Loader/Loader.View';
 
+// Style
+import './StartMenu.scss';
+
 class StartMenu extends BaseComponent {
   async prepareData() {
     await statistics.prepareData();

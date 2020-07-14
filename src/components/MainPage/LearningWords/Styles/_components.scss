@@ -5,8 +5,6 @@
     cursor: pointer;
     box-sizing: border-box;
     border-radius: 4px;
-    // width: 90px;
-    // height: 40px;
     background-color: $basicColor5;
     border: solid 1px #9b9997;
     color: $basicColor1;
@@ -39,6 +37,7 @@
     animation-duration: 3s;
     animation-direction: alternate;
     animation-iteration-count: infinite;
+    padding: 25px;
 
     @keyframes finish-btn {
       0% {

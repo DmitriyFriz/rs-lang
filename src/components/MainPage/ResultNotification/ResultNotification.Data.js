@@ -7,23 +7,13 @@ const BUTTONS = {
 };
 
 const data = {
-  completionNotice: {
+  buttons: {
     parent: {
       tag: 'div',
-      className: 'result-notification__completion-notice',
+      className: 'completion-notice__buttons',
     },
 
     children: [
-      {
-        tag: 'h2',
-        className: 'completion-notice__title',
-        content: 'Congratulations!',
-      },
-      {
-        tag: 'p',
-        className: 'completion-notice__description',
-        content: 'There are no words for today. You can continue training by clicking "Additional"',
-      },
       {
         tag: 'button',
         className: 'button button-close-training',
@@ -51,6 +41,21 @@ const data = {
     ],
   },
 
+  completionNotice: {
+    parent: {
+      tag: 'div',
+      className: 'result-notification__completion-notice',
+    },
+
+    children: [
+      {
+        tag: 'p',
+        className: 'completion-notice__description',
+        content: 'There are no words for today. You can continue training by clicking "Additional" or "Random words training"',
+      },
+    ],
+  },
+
   statistics: {
     parent: {
       tag: 'div',
@@ -59,9 +64,19 @@ const data = {
 
     children: [
       {
+        tag: 'h2',
+        className: 'completion-notice__title',
+        content: 'Congratulations!',
+      },
+      {
         tag: 'div',
         className: 'training-number',
         innerHTML: `<div class="training-number__value" data-statistics="${STATISTICS.TRAINING_NUMBER}"></div>`,
+      },
+      {
+        tag: 'h3',
+        className: 'series-completed',
+        content: 'Series completed!',
       },
       {
         tag: 'div',
