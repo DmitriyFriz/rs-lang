@@ -59,10 +59,14 @@ class LearningWords extends BaseComponent {
     await this.initSettings();
 
     this.functionListForButtons = {
-      [BUTTONS.DIFFICULTY]: (event) => addWordDifficulty(
-        event, this.currentSlide.id, this.settings[SETTINGS.REPETITION].all,
-      ),
-      [BUTTONS.VOCABULARY]: (event) => addWordToVocabulary(event, this.currentSlide.id),
+      [BUTTONS.DIFFICULTY]: (event) => {
+        this.notification.drop();
+        addWordDifficulty(event, this.currentSlide.id, this.settings[SETTINGS.REPETITION].all);
+      },
+      [BUTTONS.VOCABULARY]: (event) => {
+        this.notification.drop();
+        addWordToVocabulary(event, this.currentSlide.id);
+      },
       [BUTTONS.TRUE_WORD]: (event) => this.showTrueWord(event),
       [BUTTONS.CHECK]: () => this.checkResult(),
       [BUTTONS.FINISH]: () => this.finishTraining(),
@@ -111,7 +115,9 @@ class LearningWords extends BaseComponent {
       this.addControlBlock();
       this.handleSuccessResult();
     } else {
-      sessionStatistics.addFail(isRepeated);
+      sessionStatistics
+        .addFail(isRepeated)
+        .addNewWord(isNewWord, isRepeated);
       this.showLetterErrors();
       this.addWordToRepeat(this.currentSlideData);
     }
@@ -136,16 +142,10 @@ class LearningWords extends BaseComponent {
 
     if (this.currentIndex === (this.trueWordsAmount - 1)) {
       this.exitBtn.replaceWith(this.finishBtn);
-      // this.notification.add(NOTIFICATIONS.FINISH_TRAINING);
-      // this.notification.layout.append(this.finishBtn);
-      // this.checkBtn.replaceWith(this.finishBtn);
     }
   }
 
   async initTraining() {
-    // if (this.isNewSettings) {
-    //   statistics..addNewTrainingToPlan();
-    // }
     console.log('PLAN === ', statistics.dailyPlanCompleted,
       'NEW DAY === ', statistics.isNewDay,
       // 'NEW SETTINGS === ', !this.isNewSettings,
@@ -292,7 +292,8 @@ class LearningWords extends BaseComponent {
     [...texts].forEach((item) => {
       const text = item;
       const { cut } = text.dataset;
-      text.innerHTML = text.innerHTML.replace(/\.{3}/, words[cut]);
+      text.innerHTML = text.innerHTML
+        .replace(/\.{3}/, `<span class="success-word">${words[cut]}</span>`);
     });
   }
 
