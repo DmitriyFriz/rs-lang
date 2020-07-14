@@ -103,11 +103,15 @@ class SpeakItMain extends BaseComponent {
   switchLevels(event) {
     if (event.target.tagName === 'INPUT') {
       this.state.level = event.target.value;
-      this.prepareData().then(() => {
-        this.wordsContainer.innerHTML = '';
-        this.wordsContainer.append(...this.createWords());
-      });
+      this.getNewWords();
     }
+  }
+
+  getNewWords() {
+    this.prepareData().then(() => {
+      this.wordsContainer.innerHTML = '';
+      this.wordsContainer.append(...this.createWords());
+    });
     this.reset();
   }
 
@@ -197,6 +201,7 @@ class SpeakItMain extends BaseComponent {
   }
 
   showResults() {
+    console.log(this.state.learnedWords, this.state.words);
     this.modal = createResults(this.state.learnedWords, this.state.words);
     this.component.appendChild(this.modal);
     this.modal.addEventListener('click', (event) => this.handleModal(event));
