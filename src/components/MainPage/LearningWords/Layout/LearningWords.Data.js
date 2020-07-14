@@ -129,16 +129,22 @@ const data = {
 
   [SETTINGS_MAIN.ANSWER_BUTTON]: {
     parent: {
-      tag: 'button',
-      className: 'button button-true-word',
-      content: 'I don\'t know',
-      dataset: {
-        settings: SETTINGS_MAIN.ANSWER_BUTTON,
-        button: BUTTONS.TRUE_WORD,
-      },
+      tag: 'div',
+      className: 'skip-container',
     },
 
-    children: [],
+    children: [
+      {
+        tag: 'button',
+        className: 'button button-skip',
+        content: 'Skip',
+        id: 'card-skip-btn',
+        dataset: {
+          settings: SETTINGS_MAIN.ANSWER_BUTTON,
+          button: BUTTONS.TRUE_WORD,
+        },
+      },
+    ],
   },
 
   finishTraining: {
@@ -169,16 +175,13 @@ const data = {
   },
 
   checkWord: {
-    parent: {
-      tag: 'button',
-      className: 'button button-check-word',
-      content: 'Check',
-      dataset: {
-        button: BUTTONS.CHECK,
-      },
+    tag: 'button',
+    className: 'button button-check-word',
+    content: 'Check',
+    id: 'card-check-btn',
+    dataset: {
+      button: BUTTONS.CHECK,
     },
-
-    children: [],
   },
 
   playAudioBtn: {
@@ -190,7 +193,18 @@ const data = {
       button: BUTTONS.PLAY_AUDIO,
     },
   },
+
+  closeNotification: {
+    tag: 'button',
+    className: 'button button-close-notification',
+    dataset: {
+      button: BUTTONS.CLOSE_NOTIFICATION,
+    },
+    content: 'Х',
+  },
+
   // ======================== texts ==========================
+
   [SETTINGS_MAIN.WORD_TRANSLATION]: {
     parent: {
       tag: 'div',
@@ -232,8 +246,8 @@ const data = {
   [SETTINGS_MAIN.TRANSCRIPTION]: {
     parent: {
       tag: 'div',
-      className: 'swiper-slide__word',
-      id: 'card-word',
+      className: 'swiper-slide__transcription',
+      id: 'card-transcription',
       dataset: {
         settings: SETTINGS_MAIN.TRANSCRIPTION,
       },

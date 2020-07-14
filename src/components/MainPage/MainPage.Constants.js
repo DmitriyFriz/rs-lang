@@ -20,6 +20,7 @@ const BUTTONS = {
   CHECK: 'check',
   FINISH: 'finish',
   CLOSE: 'close',
+  CLOSE_NOTIFICATION: 'closeNotification',
   AGAIN: 'again',
   PLAY_AUDIO: 'playAudio',
 };
@@ -28,10 +29,15 @@ const HIDDEN_ELEMENTS_LIST = [
   '#card-meaning-translation',
   '#card-example-translation',
   '#card-word-translation',
-  '#card-word',
-  '#card-difficulty',
-  '#card-vocabulary',
+  '#card-transcription',
+  // '#card-difficulty',
+  // '#card-vocabulary',
   '#card-play-audio',
+];
+
+const HIDDEN_BUTTONS_LIST = [
+  '#card-skip-btn',
+  '#card-check-btn',
 ];
 
 const NOTIFICATIONS = {
@@ -39,5 +45,5 @@ const NOTIFICATIONS = {
 };
 
 export {
-  TRANSLATIONS, BUTTONS, HIDDEN_ELEMENTS_LIST, NOTIFICATIONS, STATISTICS,
+  TRANSLATIONS, BUTTONS, HIDDEN_ELEMENTS_LIST, NOTIFICATIONS, STATISTICS, HIDDEN_BUTTONS_LIST,
 };

@@ -28,13 +28,13 @@ function createAssociativeImg(root, url) {
   root.append(block);
 }
 
-const slideLayout = {
-  [SETTINGS_MAIN.DIFFICULTY_BUTTONS](root) {
-    addBlock(root, data, SETTINGS_MAIN.DIFFICULTY_BUTTONS);
-  },
-  [SETTINGS_MAIN.VOCABULARY_BUTTONS](root) {
-    addBlock(root, data, SETTINGS_MAIN.VOCABULARY_BUTTONS);
-  },
+const slideElementsList = {
+  // [SETTINGS_MAIN.DIFFICULTY_BUTTONS](root) {
+  //   addBlock(root, data, SETTINGS_MAIN.DIFFICULTY_BUTTONS);
+  // },
+  // [SETTINGS_MAIN.VOCABULARY_BUTTONS](root) {
+  //   addBlock(root, data, SETTINGS_MAIN.VOCABULARY_BUTTONS);
+  // },
   [SETTINGS_MAIN.IMAGE](root, { image }) {
     createAssociativeImg(root, image);
   },
@@ -58,6 +58,22 @@ const slideLayout = {
   },
 };
 
+const buttonsList = {
+  [SETTINGS_MAIN.DIFFICULTY_BUTTONS](root) {
+    addBlock(root, data, SETTINGS_MAIN.DIFFICULTY_BUTTONS);
+  },
+  [SETTINGS_MAIN.VOCABULARY_BUTTONS](root) {
+    addBlock(root, data, SETTINGS_MAIN.VOCABULARY_BUTTONS);
+  },
+};
+
+function addEnabledElements(settings, elementsList, root, param) {
+  settings.forEach((setting) => {
+    if (!elementsList[setting]) { return; }
+    elementsList[setting](root, param);
+  });
+}
+
 function createWordSlide(enabledSettings, { _id, word, ...param }) {
   const card = createElement({
     tag: data.slide.tag,
@@ -66,11 +82,13 @@ function createWordSlide(enabledSettings, { _id, word, ...param }) {
     innerHTML: enabledSettings.includes(SETTINGS_MAIN.WORD_TRANSLATION) ? '' : data.slide.innerHTML,
   });
 
-  enabledSettings.forEach((setting) => {
-    if (!slideLayout[setting]) { return; }
-    slideLayout[setting](card, { ...param });
-  });
+  addEnabledElements(enabledSettings, slideElementsList, card, { ...param })
+  // enabledSettings.forEach((setting) => {
+  //   if (!slideLayout[setting]) { return; }
+  //   slideLayout[setting](card, { ...param });
+  // });
 
+  const checkBtn = createElement(data.checkWord);
   const wordInput = createElement({
     ...data.wordInputBlock,
     innerHTML: `
@@ -81,8 +99,8 @@ function createWordSlide(enabledSettings, { _id, word, ...param }) {
 
   const playAudioBtn = createElement(data.playAudioBtn);
 
-  card.append(playAudioBtn, wordInput);
+  card.append(playAudioBtn, wordInput, checkBtn);
   return card;
 }
 
-export default createWordSlide;
+export { buttonsList, createWordSlide, addEnabledElements };

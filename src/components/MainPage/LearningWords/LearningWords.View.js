@@ -20,11 +20,11 @@ import swiperOptions from 'components/MainPage/LearningWords/Swiper.Options';
 
 // constants
 import {
-  BUTTONS, HIDDEN_ELEMENTS_LIST, NOTIFICATIONS, STATISTICS,
+  BUTTONS, HIDDEN_ELEMENTS_LIST, HIDDEN_BUTTONS_LIST, NOTIFICATIONS, STATISTICS,
 } from '../MainPage.Constants';
 
 // layout
-import createWordSlide from './Layout/LearningWords.Layout';
+import { createWordSlide, buttonsList, addEnabledElements } from './Layout/LearningWords.Layout';
 import { data } from './Layout/LearningWords.Data';
 import createBlock from '../MainPage.Layout';
 
@@ -71,6 +71,7 @@ class LearningWords extends BaseComponent {
       [BUTTONS.PLAY_AUDIO]: () => this.audioControl.initAudio(
         this.trueWordsData[this.currentIndex], this.settings[SETTINGS.MAIN].all,
       ),
+      [BUTTONS.CLOSE_NOTIFICATION]: () => this.closeNotification(),
     };
 
     this.checkResult = this.checkResult.bind(this);
@@ -107,6 +108,7 @@ class LearningWords extends BaseComponent {
       sessionStatistics
         .addSuccess(isRepeated)
         .addNewWord(isNewWord, isRepeated);
+      this.addControlBlock();
       this.handleSuccessResult();
     } else {
       sessionStatistics.addFail(isRepeated);
@@ -128,14 +130,14 @@ class LearningWords extends BaseComponent {
     registrationWord(currentWordId, settingsOfRepetitionMethod);
     this.addWordToSwiper();
     this.pasteWordsToTexts(cutWords);
-    this.showElementsForTrueWord();
+    this.showElements(HIDDEN_ELEMENTS_LIST, this.currentSlide);
+    this.hideElements(HIDDEN_BUTTONS_LIST, this.currentSlide);
     this.updateProgress();
 
     if (this.currentIndex === (this.trueWordsAmount - 1)) {
-      this.checkBtn.remove();
-      this.exitBtn.remove();
-      this.notification.add(NOTIFICATIONS.FINISH_TRAINING);
-      this.notification.layout.append(this.finishBtn);
+      this.exitBtn.replaceWith(this.finishBtn);
+      // this.notification.add(NOTIFICATIONS.FINISH_TRAINING);
+      // this.notification.layout.append(this.finishBtn);
       // this.checkBtn.replaceWith(this.finishBtn);
     }
   }
@@ -232,6 +234,7 @@ class LearningWords extends BaseComponent {
 
     const enabledSettings = this.settings[SETTINGS.MAIN].enabled;
     const slide = createWordSlide(enabledSettings, this.currentSlideData);
+    this.hideElements(HIDDEN_ELEMENTS_LIST, slide);
     this.swiper.virtual.appendSlide(slide);
     this.swiper.update();
   }
@@ -273,11 +276,11 @@ class LearningWords extends BaseComponent {
   initTrainingLayout() {
     this.trainingLayout = createElement(data.trainingLayout.parent);
     this.exitBtn = createElement(data.closeTraining.parent);
-    this.checkBtn = createElement(data.checkWord.parent);
+    // this.checkBtn = createElement(data.checkWord.parent);
     this.finishBtn = createElement(data.finishTraining.parent);
     this.trainingLayout.append(
       this.exitBtn,
-      this.checkBtn,
+      // this.checkBtn,
       this.createProgressBar(),
     );
     this.component.append(this.trainingLayout);
@@ -293,11 +296,21 @@ class LearningWords extends BaseComponent {
     });
   }
 
-  showElementsForTrueWord() {
-    this.hideTrueWordBtn();
-    HIDDEN_ELEMENTS_LIST.forEach((selector) => {
-      const elem = this.currentSlide.querySelector(selector);
-      if (elem) { elem.classList.add('show'); }
+  showElements(list, slide) {
+    // this.hideSkipCheckButtons();
+    list.forEach((selector) => {
+      const elem = slide.querySelector(selector);
+      if (elem) {
+        elem.classList.remove('hide');
+        elem.classList.add('show');
+      }
+    });
+  }
+
+  hideElements(list, slide) {
+    list.forEach((selector) => {
+      const elem = slide.querySelector(selector);
+      if (elem) { elem.classList.add('hide'); }
     });
   }
 
@@ -307,7 +320,7 @@ class LearningWords extends BaseComponent {
     this.handleSuccessResult();
   }
 
-  hideTrueWordBtn() {
+  hideSkipCheckButtons() {
     const trueWordBtn = this.currentSlide
       .querySelector(`[data-button=${BUTTONS.TRUE_WORD}]`);
     trueWordBtn.style.display = 'none';
@@ -358,6 +371,22 @@ class LearningWords extends BaseComponent {
 
   get header() {
     return document.querySelector('header');
+  }
+
+  addControlBlock() {
+    const closeBtn = createElement(data.closeNotification);
+    this.notification.add('');
+    this.notification.layout.append(closeBtn);
+    addEnabledElements(
+      this.settings[SETTINGS.MAIN].enabled,
+      buttonsList,
+      this.notification.layout,
+    );
+    this.swiper.once('transitionStart', () => this.closeNotification());
+  }
+
+  closeNotification() {
+    this.notification.drop();
   }
 
   // ========================== words ==================================
