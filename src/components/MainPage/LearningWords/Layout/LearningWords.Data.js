@@ -49,7 +49,7 @@ const data = {
     parent: {
       tag: 'div',
       className: 'swiper-slide__difficulty-buttons',
-      id: 'card-difficulty',
+      innerHTML: '<p class="difficulty-buttons__title">Difficulty</p>',
       dataset: {
         settings: SETTINGS_MAIN.DIFFICULTY_BUTTONS,
       },
@@ -99,7 +99,8 @@ const data = {
     parent: {
       tag: 'div',
       className: 'swiper-slide__vocabulary-buttons',
-      id: 'card-vocabulary',
+      // id: 'card-vocabulary',
+      innerHTML: '<p class="vocabulary-buttons__title">Vocabulary</p>',
       dataset: {
         settings: SETTINGS_MAIN.VOCABULARY_BUTTONS,
       },
@@ -195,12 +196,9 @@ const data = {
   },
 
   closeNotification: {
-    tag: 'button',
-    className: 'button button-close-notification',
-    dataset: {
-      button: BUTTONS.CLOSE_NOTIFICATION,
-    },
-    content: 'Х',
+    tag: 'div',
+    className: 'close-notification-container',
+    innerHTML: `<button class="button button-close-notification" data-button="${BUTTONS.CLOSE_NOTIFICATION}">Х</button>`,
   },
 
   // ======================== texts ==========================

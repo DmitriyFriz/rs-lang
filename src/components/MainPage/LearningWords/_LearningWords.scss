@@ -51,6 +51,29 @@
     order: 0;
   }
 
+  .button {
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: $basicColor5;
+    border: solid 1px #9b9997;
+    color: $basicColor1;
+  }
+
+  #notification > .content {
+    display: flex;
+    flex-flow: column;
+
+    .close-notification-container {
+      text-align: right;
+    }
+
+    .button-close-notification {
+      border-radius: 50%;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+    }
+  }
 }
 
 .completion-notice {
@@ -191,13 +214,29 @@
 
   &__difficulty-buttons {
     display: grid;
-    grid-template-areas: "a a a a";
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "a";
+    // grid-template-areas:
+    // "title title title title"
+    // "btn btn btn btn";
+    // grid-template-columns: 1fr 1fr 1fr 1fr;
+    // grid-template-rows: 1fr 1fr;
+
+    // .difficulty-buttons__title {
+    //   grid-area: title;
+    // }
   }
   &__vocabulary-buttons {
     display: grid;
-    grid-template-areas: "a a";
+    grid-template-areas:
+    "title title"
+    "btn btn";
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    .vocabulary-buttons__title {
+      grid-area: title;
+      align-self: end;
+    }
   }
   // &__word,
   // &__meaning,
@@ -228,6 +267,7 @@
   //   display: block;
   // }
 }
+
 
 .progress-bar {
   display: grid;

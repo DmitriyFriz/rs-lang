@@ -30,7 +30,7 @@ import createBlock from '../MainPage.Layout';
 
 // Settings
 import { getSettings } from '../../Settings/Settings.Handler';
-import { SETTINGS } from '../../Settings/Settings.Constants';
+import { SETTINGS, SETTINGS_MAIN } from '../../Settings/Settings.Constants';
 
 import { statistics, sessionStatistics, MODE } from '../MainPage.Statistics';
 
@@ -374,6 +374,13 @@ class LearningWords extends BaseComponent {
   }
 
   addControlBlock() {
+    const enabledSettings = this.settings[SETTINGS.MAIN].enabled;
+    if (
+      !enabledSettings.includes(SETTINGS_MAIN.DIFFICULTY_BUTTONS)
+      || !enabledSettings.includes(SETTINGS_MAIN.DIFFICULTY_BUTTONS)
+    ) {
+      return;
+    }
     const closeBtn = createElement(data.closeNotification);
     this.notification.add('');
     this.notification.layout.append(closeBtn);

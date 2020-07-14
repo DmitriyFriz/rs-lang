@@ -12,7 +12,19 @@
   color: $basicColor1;
 
   .button {
+    transition: $basicTransition;
+    cursor: pointer;
     font-size: 0.8em;
+    color: $basicColor1;
+
+    &:hover {
+      background-color: $basicColor2;
+    }
+
+    &:active {
+      transition: none;
+      background-color: $basicColor5;
+    }
   }
 
   @media (min-width: $laptops) {
