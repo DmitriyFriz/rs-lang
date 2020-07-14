@@ -230,7 +230,9 @@ class VocabularyLearning extends BaseComponent {
   hideWord(id) {
     const wordItem = document.getElementById(id);
     wordItem.classList.add(pageLayout.hidden);
-    this.wordsContainer.removeChild(wordItem);
+    this.words = this.words.filter((item) => item.id !== id);
+    this.categoryWordsAmount -= 1;
+    this.updatePage();
   }
 }
 
