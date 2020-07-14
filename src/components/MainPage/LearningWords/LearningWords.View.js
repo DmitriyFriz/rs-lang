@@ -1,56 +1,55 @@
 // lodash
 import get from 'lodash.get';
-import isEqual from 'lodash.isequal';
 
-// constants
+// router
 import { ROUTERS, MAIN_PAGE_ROUTES } from 'router/Router.Constants';
-
-// route handler
-import {
-  changeRoute,
-} from 'router/RouteHandler';
-
-// views
-import BaseComponent from 'components/BaseComponent/BaseComponent';
+import { changeRoute } from 'router/RouteHandler';
 
 // Swiper
 import 'swiper/css/swiper.min.css';
 import Swiper from 'swiper';
 import swiperOptions from 'components/MainPage/LearningWords/Swiper.Options';
 
+// views
+import BaseComponent from 'components/BaseComponent/BaseComponent';
+import Notification from '../../Notification/Notification.View';
+import Loader from '../../Loader/Loader.View';
+
 // constants
 import {
-  BUTTONS, HIDDEN_ELEMENTS_LIST, HIDDEN_BUTTONS_LIST, NOTIFICATIONS, STATISTICS,
+  BUTTONS,
+  HIDDEN_ELEMENTS_LIST,
+  HIDDEN_BUTTONS_LIST,
 } from '../MainPage.Constants';
-
-// layout
-import { createWordSlide, buttonsList, addEnabledElements } from './Layout/LearningWords.Layout';
-import { data } from './Layout/LearningWords.Data';
-import createBlock from '../MainPage.Layout';
-
-// Settings
-import { getSettings } from '../../Settings/Settings.Handler';
 import { SETTINGS, SETTINGS_MAIN } from '../../Settings/Settings.Constants';
 
-import { statistics, sessionStatistics, MODE } from '../MainPage.Statistics';
+// layout
+import {
+  createWordSlide,
+  buttonsList,
+  addEnabledElements,
+  pasteWordsToTexts,
+  showElements,
+  hideElements,
+} from './Layout/LearningWords.Layout';
+import { data } from './Layout/LearningWords.Data';
+import createBlock from '../MainPage.Layout';
 
 // Audio control
 import AudioControl from './LearningWords.AudioControl';
 
 // handler
 import {
-  getDayWordsCollection,
   addWordDifficulty,
   addWordToVocabulary,
-  getTrueWordsData,
   registrationWord,
-} from './LearningWordsHandler';
+  getLetterErrors,
+  initSettings,
+} from './LearningWords.Helpers';
 
-// Notification
-import Notification from '../../Notification/Notification.View';
-
-// Loader
-import Loader from '../../Loader/Loader.View';
+// other
+import WordsCollection from './LearnedWords.WordsCollection';
+import { statistics, sessionStatistics, MODE } from '../MainPage.Statistics';
 
 // style
 import './Styles/LearningWords.scss';
@@ -59,7 +58,7 @@ const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
   async prepareData() {
-    await this.initSettings();
+    this.settings = await initSettings();
 
     this.functionListForButtons = {
       [BUTTONS.DIFFICULTY]: (event) => {
@@ -74,11 +73,11 @@ class LearningWords extends BaseComponent {
       [BUTTONS.CHECK]: () => this.checkResult(),
       [BUTTONS.FINISH]: () => this.finishTraining(),
       [BUTTONS.CLOSE]: () => this.closeTraining(),
-      [BUTTONS.AGAIN]: () => this.addWordToRepeat(),
+      [BUTTONS.AGAIN]: () => this.wordsCollection.addWordToRepeat(this.currentIndex),
       [BUTTONS.PLAY_AUDIO]: () => this.audioControl.initAudio(
-        this.trueWordsData[this.currentIndex], this.settings[SETTINGS.MAIN].all,
+        this.wordsCollection.trueWordsData[this.currentIndex], this.settings[SETTINGS.MAIN].all,
       ),
-      [BUTTONS.CLOSE_NOTIFICATION]: () => this.closeNotification(),
+      [BUTTONS.CLOSE_NOTIFICATION]: () => this.notification.drop(),
     };
 
     this.checkResult = this.checkResult.bind(this);
@@ -109,7 +108,7 @@ class LearningWords extends BaseComponent {
   // ========================== main ==================================
 
   checkResult() {
-    const { word, isNewWord, isRepeated } = this.trueWordsData[this.currentIndex];
+    const { word, isNewWord, isRepeated } = this.wordsCollection.trueWordsData[this.currentIndex];
 
     if (this.currentInput.value === word) {
       sessionStatistics
@@ -122,68 +121,61 @@ class LearningWords extends BaseComponent {
         .addFail(isRepeated)
         .addNewWord(isNewWord, isRepeated);
       this.showLetterErrors();
-      this.addWordToRepeat(this.currentSlideData);
+      this.wordsCollection.addWordToRepeat(
+        this.currentIndex, this.wordsCollection.currentWordData,
+      );
     }
   }
 
   handleSuccessResult() {
-    const { cutWords } = this.trueWordsData[this.currentIndex];
-    const currentTrueWordData = this.trueWordsData[this.currentIndex];
+    const { cutWords } = this.wordsCollection.trueWordsData[this.currentIndex];
+    const currentTrueWordData = this.wordsCollection.trueWordsData[this.currentIndex];
     const mainSettings = this.settings[SETTINGS.MAIN].all;
     const settingsOfRepetitionMethod = this.settings[SETTINGS.REPETITION].all;
-    const currentWordId = this.currentSlideData._id;
+    const currentWordId = this.wordsCollection.currentWordData._id;
 
     this.audioControl.checkAutoAudioPlay(currentTrueWordData, mainSettings);
     this.currentInput.disabled = true;
-    this.addWordToLearned();
+    this.wordsCollection.addWordToLearned();
     registrationWord(currentWordId, settingsOfRepetitionMethod);
     this.addWordToSwiper();
-    this.pasteWordsToTexts(cutWords);
-    this.showElements(HIDDEN_ELEMENTS_LIST, this.currentSlide);
-    this.hideElements(HIDDEN_BUTTONS_LIST, this.currentSlide);
+    pasteWordsToTexts(cutWords, this.currentSlide);
+    showElements(HIDDEN_ELEMENTS_LIST, this.currentSlide);
+    hideElements(HIDDEN_BUTTONS_LIST, this.currentSlide);
     this.updateProgress();
 
-    if (this.currentIndex === (this.trueWordsAmount - 1)) {
+    if (this.currentIndex === (this.wordsCollection.trueWordsAmount - 1)) {
       this.exitBtn.replaceWith(this.finishBtn);
     }
   }
 
   async initTraining() {
-    console.log('PLAN === ', statistics.dailyPlanCompleted,
-      'NEW DAY === ', statistics.isNewDay,
-      // 'NEW SETTINGS === ', !this.isNewSettings,
-      'MODE RANDOM === ', (sessionStatistics.mode === MODE.RANDOM));
     if (
       statistics.dailyPlanCompleted
       && !statistics.isNewDay
       && !(sessionStatistics.mode === MODE.RANDOM)
     ) {
-      console.log('INIT TRAINING === ',
-        statistics[STATISTICS.TRAINING_NUMBER] >= statistics.plan,
-        'isNewDate === ', statistics.isNewDay);
       sessionStatistics.mode = MODE.NO_STAT;
       changeRoute(MAIN_PAGE_ROUTES.NOTIFICATION, ROUTERS.MAIN_PAGE);
       return;
     }
 
-    await this.initWordsCollection();
+    this.wordsCollection = new WordsCollection();
+    await this.wordsCollection.init(this.settings[SETTINGS.MAIN].all);
     sessionStatistics.initSession();
     this.initTrainingLayout();
     this.initSwiper();
     this.addWordToSwiper();
     this.audioControl = new AudioControl(this.component);
     this.updateProgress();
-    console.log('WORDS COLLECTION ==', this.wordsCollection);
   }
 
   endTraining() {
-    console.log('STATISTICS ==== ', statistics, sessionStatistics[STATISTICS.SUCCESS_RATE]);
     this.destroySwiper();
     this.audioControl.destroy();
     statistics.saveToRemoteStat();
     this.trainingLayout.remove();
-    console.log('MODE BEFORE SAVING WORDS=== ', sessionStatistics.mode);
-    this.saveWords();
+    this.wordsCollection.saveWords();
     sessionStatistics.mode = MODE.DEFAULT;
   }
 
@@ -197,10 +189,6 @@ class LearningWords extends BaseComponent {
     this.endTraining();
     changeRoute(MAIN_PAGE_ROUTES.START_MENU, ROUTERS.MAIN_PAGE);
   }
-
-  // get isNewSettings() {
-  //   return this.settings[SETTINGS.MAIN].isNew;
-  // }
 
   async handleButtons(event) {
     const buttonFunction = get(event, 'target.dataset.button');
@@ -233,11 +221,11 @@ class LearningWords extends BaseComponent {
   }
 
   addWordToSwiper() {
-    if (!this.wordsCollection.length) { return; }
+    if (!this.wordsCollection.collection.length) { return; }
 
     const enabledSettings = this.settings[SETTINGS.MAIN].enabled;
-    const slide = createWordSlide(enabledSettings, this.currentSlideData);
-    this.hideElements(HIDDEN_ELEMENTS_LIST, slide);
+    const slide = createWordSlide(enabledSettings, this.wordsCollection.currentWordData);
+    hideElements(HIDDEN_ELEMENTS_LIST, slide);
     this.swiper.virtual.appendSlide(slide);
     this.swiper.update();
   }
@@ -270,64 +258,22 @@ class LearningWords extends BaseComponent {
     return this.swiper.virtual.slides[this.currentIndex];
   }
 
-  get currentSlideData() {
-    return this.wordsCollection[this.wordsCollection.length - 1];
-  }
-
   // ========================== layout ==================================
 
   initTrainingLayout() {
     this.trainingLayout = createElement(data.trainingLayout.parent);
     this.exitBtn = createElement(data.closeTraining.parent);
-    // this.checkBtn = createElement(data.checkWord.parent);
     this.finishBtn = createElement(data.finishTraining.parent);
     this.trainingLayout.append(
       this.exitBtn,
-      // this.checkBtn,
       this.createProgressBar(),
     );
     this.component.append(this.trainingLayout);
   }
 
-  pasteWordsToTexts(words) {
-    const texts = this.currentSlide.querySelectorAll('[data-cut]');
-
-    [...texts].forEach((item) => {
-      const text = item;
-      const { cut } = text.dataset;
-      text.innerHTML = text.innerHTML
-        .replace(/\.{3}/, `<span class="success-word">${words[cut]}</span>`);
-    });
-  }
-
-  showElements(list, slide) {
-    // this.hideSkipCheckButtons();
-    list.forEach((selector) => {
-      const elem = slide.querySelector(selector);
-      if (elem) {
-        elem.classList.remove('hide');
-        elem.classList.add('show');
-      }
-    });
-  }
-
-  hideElements(list, slide) {
-    list.forEach((selector) => {
-      const elem = slide.querySelector(selector);
-      if (elem) { elem.classList.add('hide'); }
-    });
-  }
-
   showTrueWord() {
-    this.currentInput = this.trueWordsData[this.currentIndex].word;
-    sessionStatistics.addWord();
+    this.currentInput = this.wordsCollection.trueWordsData[this.currentIndex].word;
     this.handleSuccessResult();
-  }
-
-  hideSkipCheckButtons() {
-    const trueWordBtn = this.currentSlide
-      .querySelector(`[data-button=${BUTTONS.TRUE_WORD}]`);
-    trueWordBtn.style.display = 'none';
   }
 
   createProgressBar() {
@@ -344,11 +290,11 @@ class LearningWords extends BaseComponent {
   }
 
   updateProgress() {
-    this.learnedWordsAmount.textContent = this.learnedWords.length;
-    this.totalWords.textContent = this.trueWordsAmount;
+    this.learnedWordsAmount.textContent = this.wordsCollection.learnedWords.length;
+    this.totalWords.textContent = this.wordsCollection.trueWordsAmount;
     const progress = (
-      (this.trueWordsAmount - this.learnedWords.length)
-      / this.trueWordsAmount
+      (this.wordsCollection.trueWordsAmount - this.wordsCollection.learnedWords.length)
+      / this.wordsCollection.trueWordsAmount
     );
     const RED = 255;
     const GREEN = 194;
@@ -366,15 +312,11 @@ class LearningWords extends BaseComponent {
   }
 
   showLetterErrors() {
-    const trueWord = this.trueWordsData[this.currentIndex];
-    this.errorsBlock = this.getLetterErrors(this.currentInput.value, trueWord.word);
+    const trueWord = this.wordsCollection.trueWordsData[this.currentIndex];
+    this.errorsBlock = getLetterErrors(this.currentInput.value, trueWord.word);
     this.hideInput();
     this.currentInput = '';
     this.currentInput.addEventListener('input', () => this.showInput(), { once: true });
-  }
-
-  get header() {
-    return document.querySelector('header');
   }
 
   addControlBlock() {
@@ -393,132 +335,8 @@ class LearningWords extends BaseComponent {
       buttonsList,
       this.notification.layout,
     );
-    this.swiper.once('transitionStart', () => this.closeNotification());
+    this.swiper.once('transitionStart', () => this.notification.drop());
   }
-
-  closeNotification() {
-    this.notification.drop();
-  }
-
-  // ========================== words ==================================
-
-  async initWordsCollection() {
-    this.learnedWords = [];
-    if (
-      !statistics.dailyPlanCompleted
-      && !statistics.isNewDay
-      && this.savedWords.length
-    ) {
-      console.log('GETTING SAVED WORDS: ',
-        'SAVED WORDS === ', this.savedWords);
-      this.getSavedWords();
-      return;
-    }
-    await this.createWordsCollection();
-  }
-
-  async createWordsCollection(settings = this.settings[SETTINGS.MAIN].all) {
-    this.wordsCollection = await getDayWordsCollection(settings);
-    this.trueWordsData = getTrueWordsData(this.wordsCollection);
-  }
-
-  getSavedWords() {
-    this.wordsCollection = this.savedWords;
-    this.trueWordsData = getTrueWordsData(this.wordsCollection);
-  }
-
-  saveWords() {
-    if (!(sessionStatistics.mode === MODE.RANDOM)) {
-      this.savedWords = this.wordsCollection;
-      console.log('SAVED WORDS === ', this.savedWords);
-    }
-  }
-
-  addWordToRepeat(word = this.learnedWords[this.learnedWords.length - 1]) {
-    const trueWord = this.trueWordsData[this.currentIndex];
-    trueWord.isRepeated = true;
-    this.addWordToCollection(word, trueWord);
-  }
-
-  addWordToLearned() {
-    this.learnedWords.push(this.currentSlideData);
-    this.wordsCollection.pop();
-    console.log('WORDS COLLECTION ===', this.wordsCollection);
-  }
-
-  addWordToCollection(wordData, trueWord) {
-    const LAST_ELEMENT = 0;
-    const previousWordData = this.wordsCollection[LAST_ELEMENT];
-    const isRepeated = isEqual(wordData, previousWordData);
-    if (isRepeated) { return; }
-    this.wordsCollection.unshift(wordData);
-    this.trueWordsData.push(trueWord);
-  }
-
-  getLetterErrors(word, trueWord) {
-    let res = '';
-    Array.from(trueWord).forEach((trueLetter, index) => {
-      const letter = word[index];
-      if (trueLetter === letter) {
-        res += `<span class="success">${trueLetter}</span>`;
-        return;
-      }
-      res += `<span class="fail">${trueLetter}</span>`;
-    });
-    return res;
-  }
-
-  get savedWords() {
-    return JSON.parse(localStorage.getItem('savedWords'));
-  }
-
-  set savedWords(value) {
-    localStorage.setItem('savedWords', JSON.stringify(value));
-  }
-
-  get trueWordsAmount() {
-    return this.trueWordsData.length;
-  }
-  // ========================== settings ===============================
-
-  async handleSettings(name) {
-    const all = await getSettings(name);
-    const enabled = Object.keys(all)
-      .filter((setting) => all[setting] === true);
-
-    // if (!this.savedSettings) {
-    //   this.savedSettings = { [name]: all };
-    // }
-
-    // const updatedSettings = this.savedSettings;
-    // const isNew = !isEqual(all, updatedSettings[name]);
-
-    // if (isNew) {
-    //   console.log('SAVE SETTINGS!');
-    //   updatedSettings[name] = all;
-    //   this.savedSettings = updatedSettings;
-    // }
-    return { enabled, all };// , isNew };
-  }
-
-  async initSettings() {
-    this.settings = {};
-    const promises = Object
-      .keys(SETTINGS)
-      .map(async (settingsName) => {
-        this.settings[SETTINGS[settingsName]] = await this.handleSettings(SETTINGS[settingsName]);
-      });
-
-    await Promise.all(promises);
-  }
-
-  // get savedSettings() {
-  //   return JSON.parse(localStorage.getItem('savedSettings'));
-  // }
-
-  // set savedSettings(value) {
-  //   localStorage.setItem('savedSettings', JSON.stringify(value));
-  // }
 }
 
 export default LearningWords;

@@ -36,7 +36,6 @@ const sessionStatistics = {
 
   addSuccess(isRepeated) {
     if (isRepeated) { return this; }
-    console.log('ADD SUCCESS');
     this.success += 1;
     this.series += 1;
     this.addWord();
@@ -45,7 +44,6 @@ const sessionStatistics = {
 
   addFail(isRepeated) {
     if (isRepeated) { return this; }
-    console.log('ADD FAIL');
     this.fails += 1;
     if (this[STATISTICS.SUCCESS_SERIES] < this.series) {
       this[STATISTICS.SUCCESS_SERIES] = this.series;
@@ -57,7 +55,6 @@ const sessionStatistics = {
 
   addNewWord(isNewWord, isRepeated) {
     if (!isNewWord || isRepeated) { return this; }
-    console.log('ADD NEW WORD');
     this[STATISTICS.NEW_WORDS] += 1;
     return this;
   },
@@ -75,13 +72,6 @@ const statistics = {
     this.statisticsDomain = new StatisticsDomain();
     await this.getRemoteStat();
     this.handleLastStat();
-
-    console.log('CURRENT STATISTICS:',
-      'LAST GAME === ', new Date(this[STATISTICS.LAST_GAME_DATE]),
-      'ALL WORDS === ', this[STATISTICS.ALL_WORDS],
-      'NEW WORDS === ', this[STATISTICS.NEW_WORDS],
-      'TRAINING === ', this[STATISTICS.TRAINING_NUMBER],
-      'PLAN === ', this.plan);
   },
 
   handleLastStat() {
@@ -94,8 +84,6 @@ const statistics = {
       this[STATISTICS.TRAINING_NUMBER] = 0,
       this.plan = 1,
     ] = lastStat;
-
-    console.log('LAST GAME ===', this[STATISTICS.LAST_GAME_DATE]);
 
     if (this.isNewDay) {
       this.reset();
@@ -134,7 +122,6 @@ const statistics = {
 
     const REAL_TIME = new Date();
     const LAST_GAME_TIME = new Date(this[STATISTICS.LAST_GAME_DATE]);
-    console.log('isNewDay', REAL_TIME.getDate(), ' > ', LAST_GAME_TIME.getDate(), REAL_TIME.getDate() > LAST_GAME_TIME.getDate());
     return REAL_TIME.getDate() > LAST_GAME_TIME.getDate();
   },
 

@@ -4,9 +4,10 @@ import shuffle from 'lodash.shuffle';
 
 import WordsDomain from '../../../domain-models/Words/Words';
 
-// // status
-// import { status, MODES } from '../MainPage.Status';
 import { sessionStatistics, MODE } from '../MainPage.Statistics';
+
+import { getSettings } from '../../Settings/Settings.Handler';
+import { SETTINGS } from '../../Settings/Settings.Constants';
 
 // ===================== words =============================
 
@@ -123,6 +124,19 @@ function registrationWord(wordId, repeatedSettings) {
   wordsDomain.createUserWord(wordId, null, null, repeatedSettings);
 }
 
+function getLetterErrors(word, trueWord) {
+  let res = '';
+  Array.from(trueWord).forEach((trueLetter, index) => {
+    const letter = word[index];
+    if (trueLetter === letter) {
+      res += `<span class="success">${trueLetter}</span>`;
+      return;
+    }
+    res += `<span class="fail">${trueLetter}</span>`;
+  });
+  return res;
+}
+
 // ===================== buttons =============================
 
 async function handleButtons(event, functionsList) {
@@ -143,6 +157,27 @@ async function addWordToVocabulary(event, wordId) {
   await wordsDomain.createUserWord(wordId, null, vocabulary);
 }
 
+// ======================== settings ===========================
+
+async function handleSettings(name) {
+  const all = await getSettings(name);
+  const enabled = Object.keys(all)
+    .filter((setting) => all[setting] === true);
+  return { enabled, all };
+}
+
+async function initSettings() {
+  const settings = {};
+  const promises = Object
+    .keys(SETTINGS)
+    .map(async (settingsName) => {
+      settings[SETTINGS[settingsName]] = await handleSettings(SETTINGS[settingsName]);
+    });
+
+  await Promise.all(promises);
+  return settings;
+}
+
 export {
   handleWords,
   getDayWordsCollection,
@@ -154,4 +189,6 @@ export {
   getTrueWordsData,
   getRandomWords,
   registrationWord,
+  getLetterErrors,
+  initSettings,
 };

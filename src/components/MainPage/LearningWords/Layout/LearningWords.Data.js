@@ -99,7 +99,6 @@ const data = {
     parent: {
       tag: 'div',
       className: 'swiper-slide__vocabulary-buttons',
-      // id: 'card-vocabulary',
       innerHTML: '<p class="vocabulary-buttons__title">Vocabulary</p>',
       dataset: {
         settings: SETTINGS_MAIN.VOCABULARY_BUTTONS,

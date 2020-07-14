@@ -29,12 +29,6 @@ function createAssociativeImg(root, url) {
 }
 
 const slideElementsList = {
-  // [SETTINGS_MAIN.DIFFICULTY_BUTTONS](root) {
-  //   addBlock(root, data, SETTINGS_MAIN.DIFFICULTY_BUTTONS);
-  // },
-  // [SETTINGS_MAIN.VOCABULARY_BUTTONS](root) {
-  //   addBlock(root, data, SETTINGS_MAIN.VOCABULARY_BUTTONS);
-  // },
   [SETTINGS_MAIN.IMAGE](root, { image }) {
     createAssociativeImg(root, image);
   },
@@ -82,11 +76,7 @@ function createWordSlide(enabledSettings, { _id, word, ...param }) {
     innerHTML: enabledSettings.includes(SETTINGS_MAIN.WORD_TRANSLATION) ? '' : data.slide.innerHTML,
   });
 
-  addEnabledElements(enabledSettings, slideElementsList, card, { ...param })
-  // enabledSettings.forEach((setting) => {
-  //   if (!slideLayout[setting]) { return; }
-  //   slideLayout[setting](card, { ...param });
-  // });
+  addEnabledElements(enabledSettings, slideElementsList, card, { ...param });
 
   const checkBtn = createElement(data.checkWord);
   const wordInput = createElement({
@@ -103,4 +93,39 @@ function createWordSlide(enabledSettings, { _id, word, ...param }) {
   return card;
 }
 
-export { buttonsList, createWordSlide, addEnabledElements };
+function pasteWordsToTexts(words, slide) {
+  const texts = slide.querySelectorAll('[data-cut]');
+
+  [...texts].forEach((item) => {
+    const text = item;
+    const { cut } = text.dataset;
+    text.innerHTML = text.innerHTML
+      .replace(/\.{3}/, `<span class="success-word">${words[cut]}</span>`);
+  });
+}
+
+function showElements(list, slide) {
+  list.forEach((selector) => {
+    const elem = slide.querySelector(selector);
+    if (elem) {
+      elem.classList.remove('hide');
+      elem.classList.add('show');
+    }
+  });
+}
+
+function hideElements(list, slide) {
+  list.forEach((selector) => {
+    const elem = slide.querySelector(selector);
+    if (elem) { elem.classList.add('hide'); }
+  });
+}
+
+export {
+  buttonsList,
+  createWordSlide,
+  addEnabledElements,
+  pasteWordsToTexts,
+  showElements,
+  hideElements,
+};
