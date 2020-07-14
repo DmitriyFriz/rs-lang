@@ -188,7 +188,7 @@ const data = {
   playAudioBtn: {
     tag: 'button',
     className: 'button button-play-audio',
-    content: 'Play',
+    innerHTML: `<img src="assets/speaker.png" data-button="${BUTTONS.PLAY_AUDIO}">`,
     id: 'card-play-audio',
     dataset: {
       button: BUTTONS.PLAY_AUDIO,
