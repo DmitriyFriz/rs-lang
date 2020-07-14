@@ -52,6 +52,9 @@ import Notification from '../../Notification/Notification.View';
 // Loader
 import Loader from '../../Loader/Loader.View';
 
+// style
+import './Styles/LearningWords.scss';
+
 const { createElement } = BaseComponent;
 
 class LearningWords extends BaseComponent {
@@ -378,7 +381,7 @@ class LearningWords extends BaseComponent {
     const enabledSettings = this.settings[SETTINGS.MAIN].enabled;
     if (
       !enabledSettings.includes(SETTINGS_MAIN.DIFFICULTY_BUTTONS)
-      || !enabledSettings.includes(SETTINGS_MAIN.DIFFICULTY_BUTTONS)
+      && !enabledSettings.includes(SETTINGS_MAIN.VOCABULARY_BUTTONS)
     ) {
       return;
     }
