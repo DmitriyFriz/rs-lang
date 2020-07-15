@@ -45,7 +45,7 @@ function checkGroupWordsStatus(group) {
 
 function updateRepeatParameters(date) {
   const updateParameters = {
-    [REPEAT.DATE]: Date.now() + date * MILLISECONDS_OF_DAY,
+    [REPEAT.DATE]: Date.now() + date,
     [REPEAT.STATUS]: false,
   };
   return updateParameters;
@@ -73,19 +73,22 @@ function registrationWord(
   let amount = parameters.optional[OPTIONAL.AMOUNT];
   amount = (amount > maxAmount ? maxAmount : amount);
 
-  const date = getDayOfRepeat(rating, forgettingSpeed, amount);
+  const date = MILLISECONDS_OF_DAY * getDayOfRepeat(
+    rating, forgettingSpeed, amount,
+  );
   parameters.optional[OPTIONAL.REPEAT] = updateRepeatParameters(date);
 
   if (DIFFICULTY[difficulty]) {
     parameters.difficulty = difficulty;
     parameters.optional[OPTIONAL.REPEAT] = updateRepeatParameters(
-      options[DIFFICULTY[difficulty]],
+      options[REPEAT_INTERVAL.TIMERS][DIFFICULTY[difficulty]],
     );
   }
 
   if (VOCABULARY[vocabulary]) {
     parameters.optional[OPTIONAL.VOCABULARY] = vocabulary;
   }
+
   return parameters;
 }
 
