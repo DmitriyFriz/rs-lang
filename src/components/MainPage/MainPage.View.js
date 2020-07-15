@@ -34,16 +34,22 @@ class MainPage extends BaseComponent {
       MAIN_PAGE_ROUTES.START_MENU,
     );
     registerRouter(this.mainPageRouter);
+
+    this.handleChangeEvent = this.handleChangeEvent.bind(this);
   }
 
   addListeners() {
-    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.MAIN_PAGE));
+    this.component.addEventListener('click', this.handleChangeEvent);
   }
 
   removeListeners() {
-    this.component.removeEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.MAIN_PAGE));
+    this.component.removeEventListener('click', this.handleChangeEvent);
 
     unregisterRouter(this.mainPageRouter);
+  }
+
+  handleChangeEvent(event) {
+    onRouteChangeEvent(event, ROUTERS.MAIN_PAGE);
   }
 }
 
