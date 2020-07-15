@@ -109,7 +109,6 @@ class Controller {
   }
 
   newRound() {
-    this.updateLevel();
     this.clearFields();
     this.isEndRound = false;
     this.buttonDknow.style.display = 'block';
