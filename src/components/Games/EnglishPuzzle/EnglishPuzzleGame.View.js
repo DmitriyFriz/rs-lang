@@ -1,7 +1,6 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 import { ENGLISH_PUZZLE_ROUTES, ROUTERS } from 'router/Router.Constants';
 import { onRouteChangeEvent } from 'router/RouteHandler';
-import Statistics from 'domainModels/Statistics/Statistics';
 
 // components
 import CreateHeader from 'components/Games/EnglishPuzzle/components/Header/EnglishPuzzle.Header';

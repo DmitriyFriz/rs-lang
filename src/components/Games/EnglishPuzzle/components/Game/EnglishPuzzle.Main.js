@@ -5,6 +5,8 @@ import { getAbsoluteUrl } from 'services/helper';
 import Statistics from 'domainModels/Statistics/Statistics';
 import { GAMES_ROUTES } from 'router/Router.Constants';
 
+const MAX_SENTENCES = 10;
+
 class Controller {
   constructor() {
     this.playboard = document.querySelector('.playboard');
@@ -51,7 +53,7 @@ class Controller {
     this.currentLevel = parseInt(this.levelSelector.value, 10);
     this.currentPage = parseInt(this.pageSelector.value, 10);
     this.currentSentence = 0;
-    this.count = 1;
+    this.count = 0;
     this.currentEngSentence = 0;
     this.piecesArr = [];
   }
@@ -67,25 +69,19 @@ class Controller {
       this.isEndRound = true;
       this.showPicture();
       this.buttonMute.style.display = 'none';
-
-      if (this.pageSelector.length < this.currentPage + 1) {
-        this.pageSelector.value = 1;
-        this.levelSelector.value = this.levelSelector.length < this.currentLevel + 1
-          ? 1
-          : this.currentLevel + 1;
-      } else {
-        this.pageSelector.value = this.currentPage + 1;
-      }
     }
   }
 
   showPicture() {
-    this.finalPic.style.backgroundImage = `url('${getAbsoluteUrl(LEVELS[this.currentLevel - 1][this.currentPage].cutSrc)}')`;
+    this.finalPic.style.backgroundImage = `url('${getAbsoluteUrl(LEVELS[this.currentLevel - 1][this.currentPage - 1].cutSrc)}')`;
     this.finalPic.style.visibility = 'visible';
-    this.finalPic.textContent = `${LEVELS[this.currentLevel - 1][this.currentPage].name} ${LEVELS[this.currentLevel - 1][this.currentPage].author} ${LEVELS[this.currentLevel - 1][this.currentPage].year}`;
+    this.finalPic.textContent = `${LEVELS[this.currentLevel - 1][this.currentPage - 1].name} ${LEVELS[this.currentLevel - 1][this.currentPage - 1].author} ${LEVELS[this.currentLevel - 1][this.currentPage - 1].year}`;
 
     this.buttonCheck.textContent = 'Next Round';
-    this.buttonCheck.onclick = this.newRound.bind(this);
+    this.buttonCheck.onclick = () => {
+      this.updateLevel();
+      this.newRound();
+    };
   }
 
   clearFields() {
@@ -98,6 +94,17 @@ class Controller {
       }
 
       rows[i].innerHTML = '';
+    }
+  }
+
+  updateLevel() {
+    if (this.pageSelector.length < this.currentPage + 1) {
+      this.pageSelector.value = 1;
+      this.levelSelector.value = this.levelSelector.length < this.currentLevel + 1
+        ? 1
+        : this.currentLevel + 1;
+    } else {
+      this.pageSelector.value = this.currentPage + 1;
     }
   }
 
@@ -124,12 +131,13 @@ class Controller {
   }
 
   createRuSentence() {
-    this.ruSentence.innerHTML = BOOKS[this.currentLevel - 1][(this.count * this.currentPage) - 1]
-      .textExampleTranslate;
+    this.ruSentence.innerHTML = BOOKS[
+      this.currentLevel - 1][(this.currentPage - 1) * MAX_SENTENCES + this.count
+    ].textExampleTranslate;
   }
 
   createPieces() {
-    this.currentEngSentence = BOOKS[this.currentLevel - 1][(this.count * this.currentPage) - 1].textExample.split(' ');
+    this.currentEngSentence = BOOKS[this.currentLevel - 1][(this.currentPage - 1) * MAX_SENTENCES + this.count].textExample.split(' ');
     this.statics.style.display = 'none';
     this.piecesArr = [];
 
@@ -166,7 +174,7 @@ class Controller {
       }
 
       this.piecesArr[i].style.width = `${newWidthArr[i]}px`;
-      this.piecesArr[i].style.backgroundImage = `url('${getAbsoluteUrl(LEVELS[this.currentLevel - 1][this.currentPage].cutSrc)}')`;
+      this.piecesArr[i].style.backgroundImage = `url('${getAbsoluteUrl(LEVELS[this.currentLevel - 1][this.currentPage - 1].cutSrc)}')`;
       this.piecesArr[i].style.backgroundPosition = `-${reduced}px -${(this.currentSentence) * 30}px`;
 
       if (!this.buttonBack.classList.contains('button-active')) {
@@ -275,7 +283,7 @@ class Controller {
 
   displayStatistics() {
     const containerPicture = document.querySelector('.container-picture');
-    const currentLevel = LEVELS[this.currentLevel - 1][this.currentPage];
+    const currentLevel = LEVELS[this.currentLevel - 1][this.currentPage - 1];
 
     this.buttonClose.onclick = this.closePopup.bind(this);
 
@@ -295,24 +303,33 @@ class Controller {
 
     for (let i = 0; i < currentSentences.data.length; i += 1) {
       // eslint-disable-next-line max-len
-      const sentence = BOOKS[currentSentences.currentLevel - 1][currentSentences.currentPage * currentSentences.data[i].sentence];
+      const sentence = BOOKS[currentSentences.currentLevel - 1][(currentSentences.currentPage - 1) * MAX_SENTENCES + currentSentences.data[i].sentence];
       const container = currentSentences.data[i].isCorrect
         ? document.querySelector('.list-of-right')
         : document.querySelector('.list-of-error');
 
       container.innerHTML += `
             <div class="item">
-                <img src="./../../../../../assets/EnglishPuzzle/sound.svg" class="sound__icon">
+                <img src="./../../../../../assets/EnglishPuzzle/sound.svg" data-audio="${sentence.audioExample}" class="sound__icon">
                 <p class="sentence">
                     ${sentence.textExample}
                 </p>
             </div>
       `;
     }
+
+    document.querySelectorAll('.sound__icon').forEach((el) => {
+      el.addEventListener('click', () => {
+        this.sound(el.getAttribute('data-audio'), false);
+      });
+    });
   }
 
-  sound(url = BOOKS[this.currentLevel - 1][(this.count * this.currentPage) - 1].audioExample) {
-    if (!this.isEndRound) {
+  sound(
+    url = BOOKS[this.currentLevel - 1][(this.currentPage - 1) * MAX_SENTENCES + this.count].audioExample,
+    isEndRound = this.isEndRound,
+  ) {
+    if (!isEndRound) {
       const audio = new Audio(getAbsoluteUrl(url));
 
       audio.play();
