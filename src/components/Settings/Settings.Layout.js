@@ -21,6 +21,7 @@ function getConfirmLayout() {
 function addErrorToLayout(validatorGroup) {
   const errorBlock = document
     .querySelector(`[data-validator=${validatorGroup}]`)
+    .parentNode
     .parentNode;
   errorBlock.classList.add('error');
 

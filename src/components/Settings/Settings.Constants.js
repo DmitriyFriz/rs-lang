@@ -37,8 +37,8 @@ const VALIDATOR_GROUPS = {
 };
 
 const ERRORS_LIST = {
-  [VALIDATOR_GROUPS.WORDS]: `New words per day should
-  not exceed the Total words per day`,
+  [VALIDATOR_GROUPS.WORDS]: `Incorrect data <br> New words per day should
+    not exceed the Total words per day; <br> Must not be less than zero`,
   [VALIDATOR_GROUPS.DISPLAYING]: 'Meaning, word translation or example should be marked',
   [VALIDATOR_GROUPS.TIMERS]: `Data must be in the format <##.##>
   and must not be less than zero`,

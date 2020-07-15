@@ -8,10 +8,22 @@ import {
 import { regEmailRegExp, regPasswordRegEx } from '../Authorization/RegisterPage/RegisterPage.Data';
 
 function checkWords(data) {
+  let isFail = false;
   if (+data[SETTINGS_MAIN.NEW_WORDS] > +data[SETTINGS_MAIN.WORDS_PER_DAY]) {
-    return false;
+    return isFail;
   }
-  return true;
+
+  [
+    +data[SETTINGS_MAIN.NEW_WORDS],
+    +data[SETTINGS_MAIN.WORDS_PER_DAY],
+  ].forEach((words) => {
+    if (isFail) { return; }
+    if (!words || words < 0) {
+      isFail = true;
+    }
+  });
+
+  return !isFail;
 }
 
 function checkDisplaying(data) {

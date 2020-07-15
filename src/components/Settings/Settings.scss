@@ -45,6 +45,7 @@
   grid-template-areas: "a a a";
   grid-template-columns: 1fr 1fr 1fr;
   border-bottom: 2px solid $basicColor1;
+  margin-bottom: 10px;
   padding-bottom: 7px;
   background-color: $basicColor5;
 
@@ -78,6 +79,7 @@
 }
 
 .settings-page__root {
+  padding: 15px;
   background-color: $basicColor5;
 
   @media screen and (min-width: $laptops) {

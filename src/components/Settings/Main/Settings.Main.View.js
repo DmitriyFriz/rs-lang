@@ -26,6 +26,9 @@ import {
 // Loader
 import Loader from '../../Loader/Loader.View';
 
+// Style
+import './Settings.Main.scss';
+
 class SettingsMain extends BaseComponent {
   prepareData() {
     this.notification = new Notification(this.component, 1);
@@ -38,7 +41,7 @@ class SettingsMain extends BaseComponent {
   }
 
   createLayout() {
-    this.component.className = 'settings-page__main';
+    this.component.className = 'main-settings';
     this.component.innerHTML = getLayout();
   }
 
@@ -84,10 +87,10 @@ class SettingsMain extends BaseComponent {
   }
 
   async confirmDefaultSettings() {
-    this.notification.drop();
     await this.loader.show();
     const { status } = await saveSettings(SETTINGS.MAIN, DEFAULT_SETTINGS_MAIN);
     if (status !== STATUSES.OK) {
+      this.notification.drop();
       this.notification.add(NOTIFICATIONS.SAVE_ERROR, 5000);
       return;
     }
@@ -95,6 +98,7 @@ class SettingsMain extends BaseComponent {
     const settings = getSettingsList(this.component);
     await loadSettings(SETTINGS.MAIN, settings);
     this.loader.hide();
+    this.notification.drop();
     this.notification.add(NOTIFICATIONS.SUCCESS_DEFAULT_SETTINGS, 3000);
   }
 

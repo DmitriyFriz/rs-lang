@@ -1,0 +1,37 @@
+.main-settings {
+  // & > div {
+  //   border-bottom: solid 1px #9b9997;
+  // }
+
+  .input {
+    width: 40px;
+    height: 20px;
+    text-align: center;
+  }
+}
+
+.main-settings__words {
+  text-align: center;
+
+  .words-title,
+  .collection-title,
+  .level-title {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}
+
+.words__total-words,
+.words__new-words {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 260px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.words__collection,
+.words__level {
+  margin-bottom: 10px;
+}
