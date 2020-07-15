@@ -56,7 +56,8 @@ class Notification extends BaseComponent {
   }
 
   drop() {
-    if (this.isDrop) { return; }
+    if (this.isDrop || !this.isShow) { return; }
+
     this.isDrop = true;
     this.component.classList.remove('up');
     this.component.addEventListener('animationend', () => {

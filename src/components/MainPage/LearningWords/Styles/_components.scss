@@ -2,6 +2,7 @@
   .button-close,
   .button-finish {
     order: 2;
+    padding: 25px;
   }
 
   .button-finish {
@@ -9,16 +10,21 @@
     animation-duration: 3s;
     animation-direction: alternate;
     animation-iteration-count: infinite;
-    padding: 25px;
 
     @keyframes finish-btn {
+      // 0% {
+      //   background-color: $basicColor5;
+      //   color: $basicColor1;
+      // }
+      // 100% {
+      //   background-color: $basicColor3;
+      //   color: $fontColor;
+      // }
       0% {
-        background-color: $basicColor5;
-        color: $basicColor1;
+        box-shadow: inset 0 0 3px 1px $basicColor5;
       }
       100% {
-        background-color: $basicColor3;
-        color: $fontColor;
+        box-shadow: inset 0 0 12px 1px $basicColor3;
       }
     }
   }
