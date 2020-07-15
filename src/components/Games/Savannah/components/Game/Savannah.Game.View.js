@@ -13,14 +13,14 @@ export default class SavannahGame extends BaseComponent {
     this.statistics = new Statistics();
     this.word = new Words();
     this.date = new Date();
-    this.second = this.date.getSeconds();
+    // this.second = this.date.getSeconds();
     this.wordIndex = 0;
     this.moveWordSape = 0;
     this.singTime = 6;
-    this.animateWordMsec = 4000;
+    // this.animateWordMsec = 4000;
     this.gameArray = JSON.parse(localStorage.getItem('savannah-gameArray'));
 
-    this.moveWord = this.moveWord.bind(this);
+    // this.moveWord = this.moveWord.bind(this);
     this.hideWord = this.hideWord.bind(this);
   }
 
@@ -38,27 +38,11 @@ export default class SavannahGame extends BaseComponent {
   createLayout() {
     const layout = getGameLayout();
     const gameWords = this.getGameWord();
-    const { rightWord } = gameWords;
     [, this.transferWord] = layout.childNodes;
-    const currentGameWord = this.transferWord.querySelector('#currentGameWord');
     const gameWordsBtn = layout.querySelectorAll('#gameBtnBlock button');
-
-    gameWordsBtn.forEach((btn, i) => {
-      const id = gameWords.gameWords[i]._id;
-      const word = gameWords.gameWords[i].wordTranslate;
-      btn.id = id;
-      btn.textContent = `${i + 1}. ${word.slice(0, 1).toUpperCase()}${word.slice(1)}`;
-    });
-
-    this.transferWord.style.top = `${this.moveWordSape}px`;
-    currentGameWord.textContent = rightWord.word;
-
-    console.log(this.getGameWord());
+    this.addGameData(gameWords, gameWordsBtn);
 
     this.component.append(layout);
-    this.transferWord.classList.add('move-word');
-    this.timerId = setInterval(this.moveWord, 10);
-    setTimeout(this.hideWord, this.animateWordMsec);
   }
 
   addListeners() {
@@ -89,19 +73,32 @@ export default class SavannahGame extends BaseComponent {
     };
   }
 
-  moveWord() {
-    const gameTime = new Date().getSeconds();
-    const finalGameTime = this.second + this.singTime;
-
-    if (gameTime === finalGameTime) {
-      clearInterval(this.timerId);
-    }
-
-    this.moveWordSape += 0.8;
-    this.transferWord.style.top = `${this.moveWordSape}px`;
+  addGameData(gameWords, gameWordsBtn) {
+    const currentGameWord = this.transferWord.querySelector('#currentGameWord');
+    const { rightWord } = gameWords;
+    gameWordsBtn.forEach((btn, i) => {
+      const id = gameWords.gameWords[i]._id;
+      const word = gameWords.gameWords[i].wordTranslate;
+      btn.id = id;
+      btn.textContent = `${i + 1}. ${word.slice(0, 1).toUpperCase()}${word.slice(1)}`;
+      currentGameWord.textContent = rightWord.word;
+      this.transferWord.classList.add('move-word');
+    });
   }
 
+  // moveWord() {
+  //   const gameTime = new Date().getSeconds();
+  //   const finalGameTime = this.second + this.singTime;
+  //
+  //   if (gameTime === finalGameTime) {
+  //     clearInterval(this.timerId);
+  //   }
+  //
+  //   this.moveWordSape += 0.8;
+  //   this.transferWord.style.top = `${this.moveWordSape}px`;
+  // }
+
   hideWord() {
-    this.transferWord.classList.add('hide-word');
+    // this.transferWord.classList.add('hide-word');
   }
 }

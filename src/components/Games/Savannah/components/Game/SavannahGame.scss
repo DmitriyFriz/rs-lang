@@ -50,19 +50,64 @@
       font-weight: bold;
       text-shadow: 1px 0 1px $basicColor4;
       outline: none;
+      cursor: pointer;
+      transition: all .3s;
 
       &:hover {
         background-color: $basicColor5;
         text-shadow: 1px 0 1px $basicColor5;
         color: $basicColor4;
       }
+
+      &:active {
+        transform: scale(.85);
+      }
+    }
+
+    @media screen and (max-width: $phones) {
+      .savannah-button {
+        font-size: 15px;
+      }
     }
   }
 
+  .move-word {
+    animation: moveWord 4s ease-in;
+    opacity: 0;
+  }
 
   .hide-word {
     opacity: 0;
     animation: hideAnimation 1.2s ease;
   }
 
+  .right-word {
+    animation: rightWord 1s ease-out;
+    letter-spacing: 0;
+    opacity: 0;
+  }
+
 }
+
+@keyframes rightWord {
+  from {
+    letter-spacing: 0;
+    opacity: 1;
+  }
+  to {
+    letter-spacing: 800px;
+    opacity: 0;
+  }
+}
+
+@keyframes moveWord {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(400px);
+    opacity: 0;
+  }
+}
+
