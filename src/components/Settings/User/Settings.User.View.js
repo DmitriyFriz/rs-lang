@@ -26,6 +26,9 @@ import { MAIN_ROUTES, ROUTERS } from '../../../router/Router.Constants';
 // Loader
 import Loader from '../../Loader/Loader.View';
 
+// Style
+import './Settings.User.scss';
+
 class SettingsUser extends BaseComponent {
   prepareData() {
     this.notification = new Notification(this.component, 1);
