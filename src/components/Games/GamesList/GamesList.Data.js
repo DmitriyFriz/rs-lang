@@ -9,7 +9,7 @@ const games = [
     logo: 'speakItLogo.svg',
   },
   {
-    name: 'English Puzzle',
+    name: 'English puzzle',
     description: 'Practice your writing English skills',
     id: 'english-puzzle',
     destination: GAMES_ROUTES.ENGLISH_PUZZLE,
