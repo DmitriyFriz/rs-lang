@@ -1,5 +1,5 @@
 import { VOCABULARY_ROUTERS } from 'router/Router.Constants';
-import { VOCABULARY } from 'domain-models/Words/Words.Constants';
+import { VOCABULARY } from 'domainModels/Words/Words.Constants';
 
 const pageLayout = {
   component: {

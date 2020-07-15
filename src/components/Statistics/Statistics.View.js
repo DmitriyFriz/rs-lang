@@ -36,7 +36,8 @@ class Statistics extends BaseComponent {
     this.component.className = 'statistics-page';
     const noStatNotification = createElement(
       {
-        tag: 'statistics-page__no-stat',
+        tag: 'div',
+        className: 'statistics-page__no-stat',
         innerHTML: getNoStatNotification(),
       },
     );

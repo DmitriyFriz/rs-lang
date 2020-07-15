@@ -28,4 +28,16 @@
       margin-bottom: 10px;
     }
   }
+
+  .no-stat__title {
+    font-size: 2em;
+    text-align: center;
+  }
+
+  .statistics-page__no-stat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+  }
 }
