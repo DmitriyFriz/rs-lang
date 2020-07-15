@@ -63,11 +63,17 @@
         transform: scale(.85);
       }
     }
+  }
 
-    @media screen and (max-width: $phones) {
-      .savannah-button {
-        font-size: 15px;
-      }
+  @media screen and (max-width: $tablets) {
+    .savannah-button {
+      font-size: 15px;
+    }
+  }
+
+  @media screen and (max-width: $phones) {
+    .gameBtn-block {
+      grid-template: 'firstBlock' 'secondBlock';
     }
   }
 
