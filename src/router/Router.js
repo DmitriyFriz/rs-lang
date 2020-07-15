@@ -39,7 +39,7 @@ class Router {
   changeRoute(routeName) {
     if (
       this.routes[routeName]
-      && routeName !== this.currentRoute.routeName
+      // && routeName !== this.currentRoute.routeName
     ) {
       this.createChangeRouteEvent(routeName);
 
@@ -70,7 +70,7 @@ class Router {
   async showRoute(routeName) {
     if (routeName && this.routes[routeName]) {
       this.currentRoute = new this.routes[routeName](this.root, this.routeTag);
-      this.currentRoute.routeName = routeName;
+      // this.currentRoute.routeName = routeName;
       await this.currentRoute.show();
       this.currentRoute.component.classList.add(
         this.transitionClasses.hide,

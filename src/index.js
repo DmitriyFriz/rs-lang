@@ -14,7 +14,9 @@ import MainPage from './components/MainPage/MainPage.View';
 import Games from './components/Games/Games.View';
 import Team from './components/Team/Team.View';
 import Vocabulary from './components/Vocabulary/Vocabulary.View';
+import Settings from './components/Settings/Settings.View';
 import Promo from './components/Promo/Promo.View';
+import Statistics from './components/Statistics/Statistics.View';
 
 // constants
 import { ROUTERS, MAIN_ROUTES, HEADER_ROUTES } from './router/Router.Constants';
@@ -34,7 +36,9 @@ const mainRoutes = {
   [MAIN_ROUTES.GAMES]: Games,
   [MAIN_ROUTES.VOCABULARY]: Vocabulary,
   [MAIN_ROUTES.ABOUT_TEAM]: Team,
+  [MAIN_ROUTES.SETTINGS]: Settings,
   [MAIN_ROUTES.PROMO]: Promo,
+  [MAIN_ROUTES.STATISTIC]: Statistics,
   // other endpoints should be added here,
 };
 

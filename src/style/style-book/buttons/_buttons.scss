@@ -19,3 +19,26 @@
     pointer-events: none;
   }
 }
+
+.button--light {
+  transition: $basicTransition;
+  cursor: pointer;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: $basicColor5;
+  border: solid 1px #9b9997;
+  font-family: $mainFont;
+  text-transform: uppercase;
+  color: $basicColor1;
+
+    &:hover {
+      background-color: $basicColor2;
+    }
+
+    &:active {
+      transition: none;
+      background-color: $basicColor5;
+    }
+}

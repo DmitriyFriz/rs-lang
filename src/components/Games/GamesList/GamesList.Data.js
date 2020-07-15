@@ -29,20 +29,6 @@ const games = [
     destination: GAMES_ROUTES.SPRINT,
     logo: 'sprinterLogo.svg',
   },
-  {
-    name: 'Audiochallenge',
-    description: 'Improves you listening skills in English',
-    id: 'audiochallenge',
-    destination: GAMES_ROUTES.AUDIO_CHALLENGE,
-    logo: 'audioCallLogo.svg',
-  },
-  {
-    name: 'Our game',
-    description: '???',
-    id: 'our-game',
-    destination: GAMES_ROUTES.MYSTERIOUS,
-    logo: 'yourGameLogo.svg',
-  },
 ];
 
 export default games;
