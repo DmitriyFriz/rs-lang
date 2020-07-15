@@ -126,7 +126,7 @@ function getLayout() {
   </div>
   </form>
 
-  <div class="main-settings__control-block">
+  <div class="settings-page__control-block">
     <button class="button--light button-save-main-settings" data-button="${BUTTONS.SAVE_MAIN}">Save</button>
     <button class="button--light button-default-settings" data-button="${BUTTONS.DEFAULT_MAIN}">Default</button>
   </div>

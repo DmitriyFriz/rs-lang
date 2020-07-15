@@ -6,6 +6,18 @@
   max-width: 1000px;
   // min-height: 80vh;
 
+  .input {
+    width: 40px;
+    height: 20px;
+    text-align: center;
+  }
+
+  p {
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.4em;
+  }
+
   &__words {
     input {
       width: 150px;
@@ -36,6 +48,10 @@
 
   .button--light {
     font-size: 0.8em;
+  }
+
+  &__control-block {
+    margin-top: 30px;
   }
 
   @media screen and (min-width: $laptops) {

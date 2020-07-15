@@ -26,6 +26,9 @@ import {
 // Loader
 import Loader from '../../Loader/Loader.View';
 
+// Style
+import './Settings.Repetition.scss';
+
 class SettingsRepetition extends BaseComponent {
   prepareData() {
     this.notification = new Notification(this.component, 1);
