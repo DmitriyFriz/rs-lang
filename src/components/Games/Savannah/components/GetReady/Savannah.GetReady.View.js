@@ -10,6 +10,7 @@ import { GAMES_ROUTES, ROUTERS } from 'router/Router.Constants';
 export default class SavannahGetReady extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
+    this.body = document.body;
     this.loader = new Loader();
     this.words = new Words();
     this.level = localStorage.getItem('savannah-level');
@@ -26,19 +27,25 @@ export default class SavannahGetReady extends BaseComponent {
     this.group = await this.words.selectGroupWords(this.level);
     const { repeatWords } = this.words;
     const { newWords } = this.words;
-    this.shuffleWords(this.group);
-    this.shuffleWords(repeatWords);
-    this.shuffleWords(newWords);
-    this.gameArray = [...new Set([...repeatWords, ...newWords, ...this.group])];
+    this.gameArray = [...repeatWords, ...newWords, ...this.group];
+    this.shuffleWords(this.gameArray);
     localStorage.setItem('savannah-gameArray', JSON.stringify(this.gameArray));
   }
 
+  removeListeners() {
+    clearInterval(this.timerId);
+    clearInterval(this.timeSetIntervalID);
+  }
+
   createLayout() {
+    if (!this.body.classList.contains('game-savanna')) {
+      this.body.classList.add('game-savanna');
+    }
     const layout = getGetReadyLayout();
     this.timerTitle = layout.querySelector('#countdown');
     this.timerId = setInterval(this.countTimer, this.timerMiliSeconds);
     this.component.append(layout);
-    setTimeout(this.startGame, 5500);
+    this.timeSetIntervalID = setTimeout(this.startGame, 5500);
 
     this.loader.hide();
   }
