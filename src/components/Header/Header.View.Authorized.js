@@ -23,6 +23,7 @@ class HeaderAuthorized extends BaseComponent {
   constructor(parent, tagName) {
     super(parent, tagName);
 
+    this.body = document.body;
     this.isAuthorized = true;
 
     this.handleMenuClick = this.handleMenuClick.bind(this);
@@ -60,6 +61,7 @@ class HeaderAuthorized extends BaseComponent {
   }
 
   handleMenuClick(event) {
+    this.body.removeAttribute('class');
     onRouteChangeEvent(event, ROUTERS.MAIN);
   }
 
