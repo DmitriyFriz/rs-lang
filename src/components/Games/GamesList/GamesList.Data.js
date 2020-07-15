@@ -9,7 +9,7 @@ const games = [
     logo: 'speakItLogo.svg',
   },
   {
-    name: 'English puzzle',
+    name: 'English Puzzle',
     description: 'Practice your writing English skills',
     id: 'english-puzzle',
     destination: GAMES_ROUTES.ENGLISH_PUZZLE,
@@ -28,20 +28,6 @@ const games = [
     id: 'sprint',
     destination: GAMES_ROUTES.SPRINT,
     logo: 'sprinterLogo.svg',
-  },
-  {
-    name: 'Audiochallenge',
-    description: 'Improves you listening skills in English',
-    id: 'audiochallenge',
-    destination: GAMES_ROUTES.AUDIO_CHALLENGE,
-    logo: 'audioCallLogo.svg',
-  },
-  {
-    name: 'Our game',
-    description: '???',
-    id: 'our-game',
-    destination: GAMES_ROUTES.MYSTERIOUS,
-    logo: 'yourGameLogo.svg',
   },
 ];
 
