@@ -1,0 +1,36 @@
+.game-screen__buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  align-content: center;
+  margin-top: 20%;
+  flex-direction: column;
+  margin-left: 10px;
+  width: 100%;
+
+  @media (min-width: 550px) {
+    margin-top: 0;
+    flex-direction: row;
+  }
+
+  .button {
+    margin-right: 10px;
+    padding: 2% 0;
+    width: 100%;
+    margin-bottom: 2%;
+    height: auto;
+    font-size: 1em;
+    color: $fontColor !important;
+
+    @media (min-width: 550px) {
+      width: 200px;
+    }
+  }
+}
+
+.measure {
+  position: absolute;
+  visibility: hidden;
+}
+
