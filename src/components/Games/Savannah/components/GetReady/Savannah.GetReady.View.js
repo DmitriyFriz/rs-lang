@@ -24,13 +24,18 @@ export default class SavannahGetReady extends BaseComponent {
 
   async prepareData() {
     this.group = await this.words.selectGroupWords(this.level);
-    console.log(this.group);
+    const { repeatWords } = this.words;
+    const { newWords } = this.words;
+    this.shuffleWords(this.group);
+    this.shuffleWords(repeatWords);
+    this.shuffleWords(newWords);
+    this.gameArray = [...new Set([...repeatWords, ...newWords, ...this.group])];
+    localStorage.setItem('savannah-gameArray', JSON.stringify(this.gameArray));
   }
 
   createLayout() {
     const layout = getGetReadyLayout();
     this.timerTitle = layout.querySelector('#countdown');
-
     this.timerId = setInterval(this.countTimer, this.timerMiliSeconds);
     this.component.append(layout);
     setTimeout(this.startGame, 5500);
@@ -49,6 +54,14 @@ export default class SavannahGetReady extends BaseComponent {
     if (this.countdown === 0) {
       this.timerTitle.textContent = 'GO';
       clearInterval(this.timerId);
+    }
+  }
+
+  shuffleWords(words) {
+    const array = words;
+    for (let i = array.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (array.length));
+      [array[i], array[j]] = [array[j], array[i]];
     }
   }
 }
