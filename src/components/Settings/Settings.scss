@@ -4,7 +4,7 @@
   margin: 0 auto;
   width: 90vw;
   max-width: 1000px;
-  min-height: 80vh;
+  // min-height: 80vh;
 
   &__words {
     input {
@@ -26,7 +26,7 @@
 
     @keyframes error {
       from {
-        background-color: #ffdd1b;
+        background-color: #40d9ff;
       }
       to {
         background-color: #ff000000;

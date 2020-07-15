@@ -10,19 +10,8 @@
   font-size: $fontSize;
   color: $basicColor1;
 
-  .button {
-    transition: $basicTransition;
-    cursor: pointer;
-    color: $basicColor1;
-
-    &:hover {
-      background-color: $basicColor2;
-    }
-
-    &:active {
-      transition: none;
-      background-color: $basicColor5;
-    }
+  .button--light {
+    font-size: 0.8em;
   }
 
   @media (min-width: $laptops) {

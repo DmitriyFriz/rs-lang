@@ -69,14 +69,14 @@ function getLayout() {
 
     <div class="cards__meaning">
       <input type="checkbox" id="meaning" name="meaning"
-      data-settings="${SETTINGS_MAIN.MEANING}"
+      data-settings="${SETTINGS_MAIN.MEANING}">
       <label for="meaning">Meaning</label>
     </div>
 
 
     <div class="cards__word-translation">
       <input type="checkbox" id="word-translation" name="wordTranslation"
-      data-settings="${SETTINGS_MAIN.WORD_TRANSLATION}"
+      data-settings="${SETTINGS_MAIN.WORD_TRANSLATION}">
       <label for="word-translation">Word translation</label>
     </div>
 
@@ -84,7 +84,7 @@ function getLayout() {
     <div class="cards__transcription">
       <input type="checkbox" id="transcription" name="transcription"
       data-settings="${SETTINGS_MAIN.TRANSCRIPTION}">
-      <label for="translate">Transcription</label>
+      <label for="transcription">Transcription</label>
     </div>
 
 
@@ -126,9 +126,11 @@ function getLayout() {
   </div>
   </form>
 
+  <div class="main-settings__control-block">
+    <button class="button button-save-main-settings" data-button="${BUTTONS.SAVE_MAIN}">Save</button>
+    <button class="button button-default-settings" data-button="${BUTTONS.DEFAULT_MAIN}">Default</button>
+  </div>
 
-  <button class="button button-save-main-settings" data-button="${BUTTONS.SAVE_MAIN}">Save</button>
-  <button class="button button-default-settings" data-button="${BUTTONS.DEFAULT_MAIN}">Default</button>
 `;
 }
 

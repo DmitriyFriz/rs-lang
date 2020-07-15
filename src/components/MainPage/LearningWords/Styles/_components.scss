@@ -1,35 +1,7 @@
 .learning-words {
   .button-close,
-  .button-check-word {
-    transition: $basicTransition;
-    cursor: pointer;
-    box-sizing: border-box;
-    border-radius: 4px;
-    background-color: $basicColor5;
-    border: solid 1px #9b9997;
-    color: $basicColor1;
-
-    &:hover {
-      background-color: $basicColor2;
-    }
-
-    &:active {
-      transition: none;
-      background-color: $basicColor5;
-    }
-  }
-
-  .button-close,
   .button-finish {
     order: 2;
-  }
-
-  .button {
-    box-sizing: border-box;
-    border-radius: 4px;
-    background-color: $basicColor5;
-    border: solid 1px #9b9997;
-    color: $basicColor1;
   }
 
   .button-finish {

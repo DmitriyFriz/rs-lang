@@ -7,18 +7,12 @@
   height: 100%;
 
   &__completion-notice,
-  &__statistics,
-  .button {
+  &__statistics {
     box-sizing: border-box;
     border-radius: 4px;
     border: solid 1px #9b9997;
     background-color: $basicColor5;
     padding: 10px;
-  }
-
-  .button {
-    color: $basicColor1;
-    font-size: 0.7em;
   }
 
   &__completion-notice {
@@ -94,6 +88,6 @@
   @media screen and (min-width: $tablets) {
     grid-template-areas:"close-btn add-btn random-btn";
     margin: 0 auto;
-    width: 60%;
+    width: 75%;
   }
 }

@@ -16,7 +16,7 @@ const data = {
     children: [
       {
         tag: 'button',
-        className: 'button button-close-training',
+        className: 'button--light button-close-training',
         content: 'OK',
         dataset: {
           destination: MAIN_PAGE_ROUTES.START_MENU,
@@ -24,7 +24,7 @@ const data = {
       },
       {
         tag: 'button',
-        className: 'button button-additional',
+        className: 'button--light button-additional',
         content: 'Additional',
         dataset: {
           button: BUTTONS.ADDITIONAL,
@@ -32,7 +32,7 @@ const data = {
       },
       {
         tag: 'button',
-        className: 'button button-random-words',
+        className: 'button--light button-random-words',
         content: 'Random words training',
         dataset: {
           button: BUTTONS.RANDOM_WORDS,

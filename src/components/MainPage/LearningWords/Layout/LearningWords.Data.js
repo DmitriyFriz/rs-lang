@@ -58,7 +58,7 @@ const data = {
     children: [
       {
         tag: 'button',
-        className: 'button button-hard',
+        className: 'button--light button-hard',
         dataset: {
           difficulty: DIFFICULTY.HARD,
           button: BUTTONS.DIFFICULTY,
@@ -67,7 +67,7 @@ const data = {
       },
       {
         tag: 'button',
-        className: 'button button-medium',
+        className: 'button--light button-medium',
         dataset: {
           difficulty: DIFFICULTY.MEDIUM,
           button: BUTTONS.DIFFICULTY,
@@ -76,7 +76,7 @@ const data = {
       },
       {
         tag: 'button',
-        className: 'button button-easy',
+        className: 'button--light button-easy',
         dataset: {
           difficulty: DIFFICULTY.EASY,
           button: BUTTONS.DIFFICULTY,
@@ -85,7 +85,7 @@ const data = {
       },
       {
         tag: 'button',
-        className: 'button button-again',
+        className: 'button--light button-again',
         dataset: {
           button: BUTTONS.AGAIN,
         },
@@ -108,7 +108,7 @@ const data = {
     children: [
       {
         tag: 'button',
-        className: 'button button-hard-vocabulary',
+        className: 'button--light button-hard-vocabulary',
         dataset: {
           vocabulary: VOCABULARY.DIFFICULT,
           button: BUTTONS.VOCABULARY,
@@ -117,7 +117,7 @@ const data = {
       },
       {
         tag: 'button',
-        className: 'button button-removed-vocabulary',
+        className: 'button--light button-removed-vocabulary',
         dataset: {
           vocabulary: VOCABULARY.REMOVED,
           button: BUTTONS.VOCABULARY,
@@ -136,7 +136,7 @@ const data = {
     children: [
       {
         tag: 'button',
-        className: 'button button-skip',
+        className: 'button--light button-skip',
         content: 'Skip',
         id: 'card-skip-btn',
         dataset: {
@@ -150,7 +150,7 @@ const data = {
   finishTraining: {
     parent: {
       tag: 'button',
-      className: 'button button-finish',
+      className: 'button--light button-finish',
       dataset: {
         button: BUTTONS.FINISH,
       },
@@ -163,7 +163,7 @@ const data = {
   closeTraining: {
     parent: {
       tag: 'button',
-      className: 'button button-close',
+      className: 'button--light button-close',
       id: 'exit',
       dataset: {
         button: BUTTONS.CLOSE,
@@ -176,7 +176,7 @@ const data = {
 
   checkWord: {
     tag: 'button',
-    className: 'button button-check-word',
+    className: 'button--light button-check-word',
     content: 'Check',
     id: 'card-check-btn',
     dataset: {
@@ -186,7 +186,7 @@ const data = {
 
   playAudioBtn: {
     tag: 'button',
-    className: 'button button-play-audio',
+    className: 'button--light button-play-audio',
     innerHTML: `<img src="assets/speaker.png" data-button="${BUTTONS.PLAY_AUDIO}">`,
     id: 'card-play-audio',
     dataset: {
@@ -197,7 +197,7 @@ const data = {
   closeNotification: {
     tag: 'div',
     className: 'close-notification-container',
-    innerHTML: `<button class="button button-close-notification" data-button="${BUTTONS.CLOSE_NOTIFICATION}">Х</button>`,
+    innerHTML: `<button class="button--light button-close-notification" data-button="${BUTTONS.CLOSE_NOTIFICATION}">Х</button>`,
   },
 
   // ======================== texts ==========================
