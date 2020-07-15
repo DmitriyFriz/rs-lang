@@ -128,7 +128,7 @@ header {
 
   .menu {
     grid-template-areas: "logo";
-    grid-template-rows: 4fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr;
+    grid-template-rows: 4fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 4fr;
 
     @media screen and (min-width: $laptops) {
       grid-template-rows: none;
