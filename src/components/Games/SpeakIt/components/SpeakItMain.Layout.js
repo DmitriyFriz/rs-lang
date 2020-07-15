@@ -1,10 +1,13 @@
+import { GAMES_ROUTES } from 'router/Router.Constants';
 import defaultImage from '../images/english.jpg';
+
+// constants
 
 export default function createLayout() {
   return `
   <section class="main-section">
     <fieldset class="fieldset">
-      <legend class="fieldset__legend">Levels</legend>
+      <legend class="fieldset__legend">Select level</legend>
       <div class="fieldset__control-inline">
         <input class="fieldset__radio" type="radio" id="defaultInline1" value="0" name="chapter" checked>
         <label class="fieldset__label" for="defaultInline1">1</label>
@@ -30,15 +33,19 @@ export default function createLayout() {
         <label class="fieldset__label" for="defaultInline6">6</label>
       </div>
     </fieldset>
-    <button class="button" id="stats-btn"><i class="fas fa-list-ol"></i> statistics</button>
     <div id="picture-card" class="card">
       <img class="card-img" src=${defaultImage} alt="picture">
       <p id="translation">translation</p>
     </div>
-    <div class="buttons-group">
-      <div id="reset-button">Reset</div>
-      <div id="speak-button"><i class="fas fa-microphone"></i>Speak</div>
-      <div id="results-button">Results<span id="result"></span></div>
+    <div class="speak-it__buttons-group speak-it__buttons-group_first">
+      <div class="speak-it__button" id="reset-button">Reset</div>
+      <div class="speak-it__button" id="speak-button">Speak</div>
+      <div class="speak-it__button" id="results-button">Results<span id="result"></span></div>
+    </div>
+    <div class="speak-it__buttons-group">
+      <div class="speak-it__button" id="games-button" data-destination=${GAMES_ROUTES.GAMES_LIST}>Games</div>
+      <div class="speak-it__button" id="next-button">Next</div>
+      <div class="speak-it__button" id="statistic-button">Statistics</div>
     </div>
     <div class="stars-container"></div>
   </section>`;

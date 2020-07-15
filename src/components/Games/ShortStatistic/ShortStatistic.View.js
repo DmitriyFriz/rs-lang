@@ -34,14 +34,10 @@ class ShortStatistic extends BaseComponent {
   }
 
   addListeners() {
-    super.addListeners();
-
     this.statisticList.addEventListener('click', this.handleClickStatistic);
   }
 
   removeListeners() {
-    super.addListeners();
-
     this.statisticList.removeEventListener('click', this.handleClickStatistic);
   }
 
