@@ -12,16 +12,16 @@ import swiperOptions from 'components/MainPage/LearningWords/Swiper.Options';
 
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-import Notification from '../../Notification/Notification.View';
-import Loader from '../../Loader/Loader.View';
+import Notification from 'components/Notification/Notification.View';
+import Loader from 'components/Loader/Loader.View';
 
 // constants
 import {
   BUTTONS,
   HIDDEN_ELEMENTS_LIST,
   HIDDEN_BUTTONS_LIST,
-} from '../MainPage.Constants';
-import { SETTINGS, SETTINGS_MAIN } from '../../Settings/Settings.Constants';
+} from 'components/MainPage/MainPage.Constants';
+import { SETTINGS, SETTINGS_MAIN } from 'components/Settings/Settings.Constants';
 
 // layout
 import {

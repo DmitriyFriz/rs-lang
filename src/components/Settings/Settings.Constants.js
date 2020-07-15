@@ -1,4 +1,4 @@
-import { REPEAT_INTERVAL, DIFFICULTY, DEFAULT_OPTIONS } from '../../domain-models/Words/Words.Constants';
+import { REPEAT_INTERVAL, DIFFICULTY, DEFAULT_OPTIONS } from 'domainModels/Words/Words.Constants';
 
 const SETTINGS = {
   MAIN: 'main',

@@ -1,9 +1,9 @@
 // lodash
 import get from 'lodash.get';
 
-import { MAIN_PAGE_ROUTES } from '../../router/Router.Constants';
+import { MAIN_PAGE_ROUTES } from 'router/Router.Constants';
 
-import StatisticsDomain from '../../domain-models/Statistics/Statistics';
+import StatisticsDomain from 'domainModels/Statistics/Statistics';
 
 import { STATISTICS } from './MainPage.Constants';
 
@@ -159,7 +159,6 @@ const statistics = {
   },
 
   async updateRemoteStat() {
-    console.log('LONG TERM STAT ====', this.longTermStat);
     await this.statisticsDomain.updateStatistics(nameStat, this.longTermStat);
   },
 };

@@ -52,7 +52,6 @@ class WordsCollection {
   addWordToLearned() {
     this.learnedWords.push(this.currentWordData);
     this.collection.pop();
-    console.log('WORDS COLLECTION ===', this.collection);
   }
 
   addWordToCollection(wordData, trueWord) {

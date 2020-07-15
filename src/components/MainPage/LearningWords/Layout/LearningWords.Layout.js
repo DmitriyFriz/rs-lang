@@ -1,7 +1,7 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
-import { SETTINGS_MAIN } from '../../../Settings/Settings.Constants';
+import { SETTINGS_MAIN } from 'components/Settings/Settings.Constants';
+import createBlock from 'components/MainPage/MainPage.Layout';
 import { data, translationsList } from './LearningWords.Data';
-import createBlock from '../../MainPage.Layout';
 
 const { createElement } = BaseComponent;
 

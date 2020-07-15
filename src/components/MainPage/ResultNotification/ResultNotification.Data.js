@@ -1,4 +1,4 @@
-import { MAIN_PAGE_ROUTES } from '../../../router/Router.Constants';
+import { MAIN_PAGE_ROUTES } from 'router/Router.Constants';
 import { STATISTICS } from '../MainPage.Constants';
 
 const BUTTONS = {

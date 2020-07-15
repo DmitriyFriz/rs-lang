@@ -1,9 +1,8 @@
 import get from 'lodash.get';
-import SettingsDomain from '../../domain-models/Settings/Settings';
+import SettingsDomain from 'domainModels/Settings/Settings';
+
 import { DEFAULT_SETTINGS_LIST } from './Settings.Constants';
-
 import checkValidation from './Settings.Validator';
-
 import { addErrorToLayout } from './Settings.Layout';
 
 const settingsDomain = new SettingsDomain();

@@ -2,12 +2,12 @@
 import get from 'lodash.get';
 import shuffle from 'lodash.shuffle';
 
-import WordsDomain from '../../../domain-models/Words/Words';
+import WordsDomain from 'domainModels/Words/Words';
 
-import { sessionStatistics, MODE } from '../MainPage.Statistics';
+import { sessionStatistics, MODE } from 'components/MainPage/MainPage.Statistics';
 
-import { getSettings } from '../../Settings/Settings.Handler';
-import { SETTINGS } from '../../Settings/Settings.Constants';
+import { getSettings } from 'components/Settings/Settings.Handler';
+import { SETTINGS } from 'components/Settings/Settings.Constants';
 
 // ===================== words =============================
 

@@ -3,10 +3,10 @@ import get from 'lodash.get';
 
 // router
 import { ROUTERS, MAIN_PAGE_ROUTES } from 'router/Router.Constants';
-import { changeRoute } from '../../../router/RouteHandler';
+import { changeRoute } from 'router/RouteHandler';
 
 // views
-import BaseComponent from '../../BaseComponent/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // layout
 import { data, BUTTONS } from './ResultNotification.Data';

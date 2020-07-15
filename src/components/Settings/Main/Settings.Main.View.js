@@ -1,5 +1,7 @@
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
+import Notification from 'components/Notification/Notification.View';
+import Loader from 'components/Loader/Loader.View';
 
 // constants
 import STATUSES from 'services/requestHandler.Statuses';
@@ -11,9 +13,6 @@ import {
 import getLayout from './Settings.Main.Layout';
 import { getConfirmLayout } from '../Settings.Layout';
 
-// Notification
-import Notification from '../../Notification/Notification.View';
-
 // handler
 import {
   getSettingsList,
@@ -22,9 +21,6 @@ import {
   checkData,
   saveSettings,
 } from '../Settings.Handler';
-
-// Loader
-import Loader from '../../Loader/Loader.View';
 
 // Style
 import './Settings.Main.scss';

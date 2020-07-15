@@ -10,17 +10,6 @@ const swiperOptions = {
   preventInteractionOnTransition: true,
   touchEventsTarget: 'container',
 
-  // breakpoints: {
-
-  //   320: {
-  //     spaceBetween: 20,
-  //   },
-
-  //   768: {
-  //     spaceBetween: 20,
-  //   },
-  // },
-
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev',

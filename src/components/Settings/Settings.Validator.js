@@ -1,4 +1,4 @@
-import { DIFFICULTY } from '../../domain-models/Words/Words.Constants';
+import { DIFFICULTY } from 'domainModels/Words/Words.Constants';
 
 import {
   VALIDATOR_GROUPS,

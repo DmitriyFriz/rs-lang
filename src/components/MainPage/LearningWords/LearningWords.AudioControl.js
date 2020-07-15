@@ -1,4 +1,4 @@
-import { SETTINGS_MAIN } from '../../Settings/Settings.Constants';
+import { SETTINGS_MAIN } from 'components/Settings/Settings.Constants';
 
 class AudioControl {
   constructor(root) {

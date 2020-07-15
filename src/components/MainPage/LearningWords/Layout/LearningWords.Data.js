@@ -1,6 +1,6 @@
-import { SETTINGS_MAIN } from '../../../Settings/Settings.Constants';
-import { TRANSLATIONS, BUTTONS } from '../../MainPage.Constants';
-import { DIFFICULTY, VOCABULARY } from '../../../../domain-models/Words/Words.Constants';
+import { SETTINGS_MAIN } from 'components/Settings/Settings.Constants';
+import { TRANSLATIONS, BUTTONS } from 'components/MainPage/MainPage.Constants';
+import { DIFFICULTY, VOCABULARY } from 'domainModels/Words/Words.Constants';
 
 const data = {
   trainingLayout: {

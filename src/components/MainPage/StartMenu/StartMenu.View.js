@@ -1,5 +1,6 @@
 // views
-import BaseComponent from '../../BaseComponent/BaseComponent';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
+import Loader from 'components/Loader/Loader.View';
 
 // layout
 import createBlock from '../MainPage.Layout';
@@ -8,9 +9,6 @@ import data from './StartMenu.Data';
 // Statistics
 import { statistics } from '../MainPage.Statistics';
 import { STATISTICS } from '../MainPage.Constants';
-
-// Loader
-import Loader from '../../Loader/Loader.View';
 
 // Style
 import './StartMenu.scss';

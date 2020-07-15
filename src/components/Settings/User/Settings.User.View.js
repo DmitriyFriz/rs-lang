@@ -3,28 +3,24 @@ import STATUSES from 'services/requestHandler.Statuses';
 
 // views
 import BaseComponent from 'components/BaseComponent/BaseComponent';
+import Loader from 'components/Loader/Loader.View';
+import Notification from 'components/Notification/Notification.View';
 
 // layout
-import { getLayout, getLayoutOfConfirmDelete } from './Settings.User.Layout';
+import { getLayout, getLayoutOfConfirmDelete } from 'components/Settings/User/Settings.User.Layout';
 
 // constants
 import {
   BUTTONS, VALIDATOR_GROUPS, NOTIFICATIONS, ERRORS_LIST,
-} from '../Settings.Constants';
+} from 'components/Settings/Settings.Constants';
 
 // User domain
-import UserDomain from '../../../domain-models/User/User';
-
-// Views
-import Notification from '../../Notification/Notification.View';
+import UserDomain from 'domainModels/User/User';
 
 // handler
-import { checkData } from '../Settings.Handler';
-import { changeRoute } from '../../../router/RouteHandler';
-import { MAIN_ROUTES, ROUTERS } from '../../../router/Router.Constants';
-
-// Loader
-import Loader from '../../Loader/Loader.View';
+import { checkData } from 'components/Settings/Settings.Handler';
+import { changeRoute } from 'router/RouteHandler';
+import { MAIN_ROUTES, ROUTERS } from 'router/Router.Constants';
 
 // Style
 import './Settings.User.scss';
