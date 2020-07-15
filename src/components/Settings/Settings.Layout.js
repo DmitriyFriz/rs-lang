@@ -13,8 +13,8 @@ function getLayout() {
 function getConfirmLayout() {
   return `
   <p class="confirm-default">${NOTIFICATIONS.CONFIRM_DEFAULT_SETTINGS}</p>
-  <button class="button button-confirm-default-main" data-button="${BUTTONS.CONFIRM_DEFAULT_MAIN}">Yes</button>
-  <button class="button button-cancel-settings" data-button="${BUTTONS.CANCEL}">Cancel</button>
+  <button class="button--light button-confirm-default-main" data-button="${BUTTONS.CONFIRM_DEFAULT_MAIN}">Yes</button>
+  <button class="button--light button-cancel-settings" data-button="${BUTTONS.CANCEL}">Cancel</button>
   `;
 }
 

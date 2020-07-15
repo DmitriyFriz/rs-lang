@@ -34,6 +34,10 @@
     }
   }
 
+  .button--light {
+    font-size: 0.8em;
+  }
+
   @media screen and (min-width: $laptops) {
     flex-direction: row;
     font-size: 1.2em;
@@ -84,6 +88,7 @@
 
   @media screen and (min-width: $laptops) {
     margin-left: 25px;
+    border-left:  1px solid;
     width: 70%;
   }
 }
