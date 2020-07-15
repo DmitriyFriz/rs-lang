@@ -1,4 +1,7 @@
 .team {
+  margin: 0 auto;
+  max-width: 1000px;
+
   &__list {
     display: flex;
     flex-wrap: wrap;
