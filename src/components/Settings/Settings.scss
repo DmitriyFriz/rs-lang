@@ -37,12 +37,6 @@
     animation-fill-mode: forwards;
 
     @keyframes error {
-      // from {
-      //   background-color: #40d9ff;
-      // }
-      // to {
-      //   background-color: #ff000000;
-      // }
       0% {
         box-shadow: inset 85px -5px 200px -100px #40d9ff;
       }

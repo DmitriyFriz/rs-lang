@@ -12,14 +12,6 @@
     animation-iteration-count: infinite;
 
     @keyframes finish-btn {
-      // 0% {
-      //   background-color: $basicColor5;
-      //   color: $basicColor1;
-      // }
-      // 100% {
-      //   background-color: $basicColor3;
-      //   color: $fontColor;
-      // }
       0% {
         box-shadow: inset 0 0 3px 1px $basicColor5;
       }

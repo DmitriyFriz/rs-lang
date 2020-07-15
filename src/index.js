@@ -1,5 +1,4 @@
 import './style/main.scss';
-// import UserDomain from './domain-models/User/User';
 
 // router
 import user from 'domainModels/User/User';
