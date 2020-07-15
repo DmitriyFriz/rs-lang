@@ -1,0 +1,89 @@
+.result-notification {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &__completion-notice,
+  &__statistics {
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: solid 1px #9b9997;
+    background-color: $basicColor5;
+    padding: 10px;
+  }
+
+  &__completion-notice {
+    order: 2;
+    padding: 20px;
+    max-width: 800px;
+  }
+
+  &__statistics {
+    order: 1;
+    padding: 30px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 420px;
+
+    & > div {
+      margin-bottom: 10px;
+    }
+
+    .training-number__value {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid #148abd;
+      margin: 0 auto;
+      margin-bottom: 25px;
+      width: 130px;
+      font-size: 5em;
+      color: #148abd;
+    }
+
+    .series-completed {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.completion-notice__title {
+  margin: 10px;
+  margin-bottom: 20px;
+  order: 0;
+  font-size: 1.3em;
+}
+
+.completion-notice__description {
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.completion-notice__buttons {
+  display: grid;
+  grid-template-areas:
+    "close-btn"
+    "add-btn"
+    "random-btn";
+  margin: 0 auto;
+  max-width: 600px;
+
+  .button-close-training {
+    grid-area: close-btn;
+  }
+  .button-additional {
+    grid-area: add-btn;
+  }
+  .button-random-words {
+    grid-area: random-btn;
+  }
+
+  @media screen and (min-width: $tablets) {
+    grid-template-areas:"close-btn add-btn random-btn";
+    margin: 0 auto;
+    width: 75%;
+  }
+}

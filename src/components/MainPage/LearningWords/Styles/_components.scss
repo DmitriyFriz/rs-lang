@@ -1,0 +1,94 @@
+.learning-words {
+  .button-close,
+  .button-finish {
+    order: 2;
+    padding: 25px;
+  }
+
+  .button-finish {
+    animation-name: finish-btn;
+    animation-duration: 3s;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+
+    @keyframes finish-btn {
+      0% {
+        box-shadow: inset 0 0 3px 1px $basicColor5;
+      }
+      100% {
+        box-shadow: inset 0 0 12px 1px $basicColor3;
+      }
+    }
+  }
+}
+
+.swiper-slide {
+  &__associative {
+    order: 0;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__example {
+    order: 2;
+  }
+  &__meaning {
+    order: 3;
+  }
+  &__word-translation {
+    order: 1;
+  }
+  &__transcription {
+    order: 4;
+  }
+  &__difficulty-buttons {
+    order: 7;
+  }
+  &__vocabulary-buttons {
+    order: 8;
+  }
+  .skip-container {
+    order: 10;
+    width: 97%;
+    text-align: right;
+  }
+  .button-check-word,
+  &__answer {
+    order: 6;
+  }
+  .button-play-audio {
+    order: 9;
+    width: 50px;
+    height: 50px;
+    img {
+      width: 100%;
+    }
+  }
+  &__word-input {
+    order: 5;
+  }
+
+  &__difficulty-buttons {
+    display: grid;
+    grid-template-areas: "a";
+  }
+  &__vocabulary-buttons {
+    display: grid;
+    grid-template-areas:
+      "title title"
+      "btn btn";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    .vocabulary-buttons__title {
+      grid-area: title;
+      align-self: end;
+    }
+  }
+}
