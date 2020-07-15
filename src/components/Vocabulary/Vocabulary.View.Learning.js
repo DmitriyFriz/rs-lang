@@ -38,23 +38,33 @@ class VocabularyLearning extends BaseComponent {
 
     this.handleWordButtons = this.handleWordButtons.bind(this);
     this.handlePaginationButtons = this.handlePaginationButtons.bind(this);
+    this.handleGroups = this.handleGroups.bind(this);
 
     this.loader = new Loader();
     this.loader.show();
 
     this.page = 0;
+    this.group = constants.groupZero;
+
+    this.groupsLayout = null;
+    this.infoLayout = null;
+    this.wordsContainerLayout = null;
+    this.wordLayouts = null;
+    this.paginationLayout = null;
   }
 
   createLayout() {
     this.component.className = `${pageLayout.inner.className} ${this.vocabularyType.toLowerCase()}`;
     [
-      this.info,
+      this.groupsLayout,
+      this.infoLayout,
       [
-        this.wordsContainer,
+        this.wordsContainerLayout,
         this.wordLayouts,
       ],
-      this.pagination,
+      this.paginationLayout,
     ] = getLayout({
+      activeGroup: this.group,
       allWordsNum: this.categoryWordsAmount,
       todayWordsNum: this.todayWordsAmount,
       words: this.wordsOnPage,
@@ -64,9 +74,10 @@ class VocabularyLearning extends BaseComponent {
     });
 
     this.component.append(
-      this.info,
-      this.wordsContainer,
-      this.pagination,
+      this.groupsLayout,
+      this.infoLayout,
+      this.wordsContainerLayout,
+      this.paginationLayout,
     );
 
     this.loader.hide();
@@ -77,7 +88,7 @@ class VocabularyLearning extends BaseComponent {
     console.group('vocabulary: ', this.vocabularyType);
 
     const wordsData = await this.wordsDomainModel.getAggregatedWords({
-      group: constants.group,
+      group: this.group,
       wordsPerPage: constants.wordsPerGroupe,
       filter,
     });
@@ -89,7 +100,7 @@ class VocabularyLearning extends BaseComponent {
     ) {
       this.categoryWordsAmount = wordsData.data[0].totalCount[0].count;
       this.words = [];
-      console.log(wordsData.data[0].paginatedResults);
+      console.log(wordsData.data[0]);
       wordsData.data[0].paginatedResults.forEach((element) => {
         const resultElement = {
           // eslint-disable-next-line no-underscore-dangle
@@ -119,9 +130,13 @@ class VocabularyLearning extends BaseComponent {
   }
 
   prepareWordsPerPage() {
-    const offsetStart = this.page * constants.wordsPerPage;
-    const offsetLimit = offsetStart + constants.wordsPerPage;
-    this.wordsOnPage = this.words.slice(offsetStart, offsetLimit);
+    if (this.words) {
+      const offsetStart = this.page * constants.wordsPerPage;
+      const offsetLimit = offsetStart + constants.wordsPerPage;
+      this.wordsOnPage = this.words.slice(offsetStart, offsetLimit);
+    } else {
+      this.wordsOnPage = null;
+    }
   }
 
   playAudio(src) {
@@ -142,11 +157,16 @@ class VocabularyLearning extends BaseComponent {
     this.component.addEventListener('click', this.handleWordButtons);
 
     this.component.addEventListener('click', this.handlePaginationButtons);
+
+    this.component.addEventListener('change', this.handleGroups);
   }
 
   removeListeners() {
     this.component.removeEventListener('click', this.handleWordButtons);
+
     this.component.removeEventListener('click', this.handlePaginationButtons);
+
+    this.component.removeEventListener('change', this.handleGroups);
 
     console.groupEnd('vocabulary: ', this.vocabularyType);
   }
@@ -173,8 +193,9 @@ class VocabularyLearning extends BaseComponent {
     const removeType = type || (this.vocabularyType !== VOCABULARY.RESTORED
       ? VOCABULARY.RESTORED
       : VOCABULARY.REMOVED);
-    console.log(removeType);
+
     this.loader.show();
+
     await this
       .wordsDomainModel
       .updateUserWord(wordId, null, removeType)
@@ -183,6 +204,7 @@ class VocabularyLearning extends BaseComponent {
           console.log(res);
           this.hideWord(wordId);
         }
+
         this.loader.hide();
       });
   }
@@ -207,16 +229,28 @@ class VocabularyLearning extends BaseComponent {
     this.prepareWordsPerPage();
     const [list, wordLayouts] = getWordsListLayout(this.wordsOnPage, this.vocabularyType);
     this.wordLayouts = wordLayouts;
-    this.wordsContainer.replaceWith(list);
-    this.wordsContainer = list;
+    this.wordsContainerLayout.replaceWith(list);
+    this.wordsContainerLayout = list;
 
     const pagination = getPaginationLayout(this.hasPrevPage(), this.hasNextPage());
-    this.pagination.replaceWith(pagination);
-    this.pagination = pagination;
+    this.paginationLayout.replaceWith(pagination);
+    this.paginationLayout = pagination;
 
     const info = getVocabularyInfoLayout(this.categoryWordsAmount, this.todayWordsAmount);
-    this.info.replaceWith(info);
-    this.info = info;
+    this.infoLayout.replaceWith(info);
+    this.infoLayout = info;
+  }
+
+  async handleGroups(event) {
+    if (event.target.name === 'groups') {
+      this.group = event.target.value;
+      this.page = 0;
+      this.loader.show();
+
+      await this.prepareData();
+      this.updatePage();
+      this.loader.hide();
+    }
   }
 
   hasPrevPage() {

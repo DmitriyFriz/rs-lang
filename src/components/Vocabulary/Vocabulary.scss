@@ -100,6 +100,9 @@
     padding: 0.5em 1em;
     background-color: $basicColor5;
   }
+  &__groups {
+    @extend .vocabulary__info;
+  }
 
   &__list {
     margin-top: 0.5em;

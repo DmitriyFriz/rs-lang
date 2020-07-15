@@ -13,7 +13,7 @@ const pageLayout = {
   },
   info: {
     content1: 'AMOUNT OF WORDS:',
-    content2: 'ADDED TODAY:',
+    content2: 'REPEATED TODAY:',
     className: 'vocabulary__info',
   },
   nav: {
@@ -93,7 +93,8 @@ const navTabsLayout = [
 const constants = {
   wordsPerGroupe: 600,
   wordsPerPage: 10,
-  group: 0,
+  groupZero: 0,
+  groupsAmount: 6,
 };
 
 const filterQuery = {

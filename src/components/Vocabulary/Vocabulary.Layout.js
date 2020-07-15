@@ -1,6 +1,6 @@
 import BaseComponent from '../BaseComponent/BaseComponent';
 import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
-import { pageLayout, navTabsLayout } from './Vocabulary.Data';
+import { pageLayout, navTabsLayout, constants } from './Vocabulary.Data';
 
 const { createElement } = BaseComponent;
 
@@ -11,6 +11,41 @@ function getVocabularyInfoLayout(allWordsNum, todayWordsNum) {
     ${pageLayout.info.content2} ${todayWordsNum}`,
     className: pageLayout.info.className,
   });
+}
+
+function getVocabularyGroup(targetGroup) {
+  const groups = createElement({
+    tag: 'div',
+    className: 'vocabulary__groups',
+  });
+
+  const fieldset = createElement({
+    tag: 'fieldset',
+    className: 'vocabulary__groups',
+    innerHTML: '<legend>Groups</legend>',
+  });
+  groups.append(fieldset);
+
+  [...Array(constants.groupsAmount).keys()].forEach((index) => {
+    const input = createElement({
+      tag: 'input',
+      id: `group_${index}`,
+    });
+    input.type = 'radio';
+    input.name = 'groups';
+    input.value = index;
+    if (index === targetGroup) {
+      input.checked = true;
+    }
+    const label = createElement({
+      tag: 'label',
+      content: `Group ${index}`,
+    });
+    label.htmlFor = `group_${index}`;
+    fieldset.append(input, label);
+  });
+
+  return groups;
 }
 
 function getVocabularyNavLayout() {
@@ -257,8 +292,10 @@ function getVocabularyInnerLayout(data) {
     layoutType,
     hasNextNav,
     hasPrevNav,
+    activeGroup,
   } = data;
   return [
+    getVocabularyGroup(activeGroup),
     getVocabularyInfoLayout(allWordsNum, todayWordsNum),
     getWordsListLayout(words, layoutType),
     getPaginationLayout(hasPrevNav, hasNextNav),
@@ -274,6 +311,7 @@ function getContainerLayout() {
 
 export {
   getVocabularyNavLayout,
+  getVocabularyGroup,
   getVocabularyInnerLayout as getLayout,
   getContainerLayout,
   getWordsListLayout,
