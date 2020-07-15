@@ -5,29 +5,26 @@ import BaseComponent from 'components/BaseComponent/BaseComponent';
 import { onRouteChangeEvent } from 'router/RouteHandler';
 
 // constants
-import { ROUTERS, GAMES_ROUTES, SPEAK_IT_ROUTERS } from 'router/Router.Constants';
+import { ROUTERS } from 'router/Router.Constants';
+
+// layout
+import getLayout from './SpeakIt.Layout';
 
 class SpeakIt extends BaseComponent {
-  static get name() {
-    return GAMES_ROUTES.SPEAK_IT;
-  }
-
   createLayout() {
-    this.component.innerHTML = `
-    <div class="start-message">
-      <h1>SPEAKIT</h1>
-      <p>Click on the words to hear them sound.<br>
-        Click on the button and speak the words into the microphone.</p>
-      <div>
-        <button data-destination=${GAMES_ROUTES.GAMES_LIST}>Back</button>
-        <button data-destination=${SPEAK_IT_ROUTERS.SPEAK_IT_MAIN}>Play</button>
-      </div>
-    </div>
-    `;
+    this.component.innerHTML = getLayout();
   }
 
   addListeners() {
-    this.component.addEventListener('click', (event) => onRouteChangeEvent(event, ROUTERS.GAMES));
+    this.component.addEventListener('click', this.handleClick);
+  }
+
+  removeListeners() {
+    this.component.removeEventListener('click', this.handleClick);
+  }
+
+  handleClick(event) {
+    onRouteChangeEvent(event, ROUTERS.GAMES);
   }
 }
 

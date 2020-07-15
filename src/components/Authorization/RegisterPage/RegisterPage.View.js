@@ -168,8 +168,8 @@ export default class RegisterPage extends BaseComponent {
           submitBtn.dataset.destination = HEADER_ROUTES.HEADER_AUTHORIZED;
           onRouteChangeEvent(event, ROUTERS.MAIN, ROUTERS.HEADER);
 
-          submitBtn.dataset.destination = MAIN_ROUTES.MAIN_PAGE;
-          onRouteChangeEvent(event, ROUTERS.MAIN);
+          // submitBtn.dataset.destination = MAIN_ROUTES.MAIN_PAGE;
+          // onRouteChangeEvent(event, ROUTERS.MAIN);
         });
     }
 

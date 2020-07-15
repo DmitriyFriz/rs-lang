@@ -1,0 +1,41 @@
+.settings-page__repetition{
+  .input {
+    margin-right: 10px;
+    width: 60px !important;
+  }
+
+  input[type="range"] {
+    width: 60%;
+    max-width: 300px;
+  }
+}
+
+.repetition__timers {
+  margin-bottom: 20px;
+
+  & > div {
+    margin-bottom: 5px;
+
+    @media screen and (min-width: $laptops) {
+      margin-left: 30px;
+    }
+  }
+}
+
+.repetition__additional {
+  text-align: center;
+  span {
+    color: #148abd;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.05em;
+  }
+
+
+  & > div {
+     margin-bottom: 25px;
+  }
+}
