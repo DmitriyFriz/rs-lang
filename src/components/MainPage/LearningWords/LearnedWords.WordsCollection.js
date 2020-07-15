@@ -64,7 +64,8 @@ class WordsCollection {
   }
 
   get savedWords() {
-    return JSON.parse(localStorage.getItem('savedWords'));
+    const wordsData = JSON.parse(localStorage.getItem('savedWords'));
+    return wordsData || [];
   }
 
   set savedWords(value) {
