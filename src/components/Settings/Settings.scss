@@ -1,7 +1,10 @@
 .settings-page {
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   width: 90vw;
-
+  max-width: 1000px;
+  min-height: 80vh;
 
   &__words {
     input {
@@ -9,20 +12,76 @@
     }
   }
 
-  .error {
-      animation-name: error;
-      animation-duration: 3s;
-      animation-fill-mode: forwards;
-
-      @keyframes error {
-        from {
-          background-color: #ff0000;
-        };
-        to {
-          background-color: #ff000000;
-        }
-      }
+  &__header {
+    order: 0;
+  }
+  &__root {
+    order: 1;
   }
 
+  .error {
+    animation-name: error;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
 
+    @keyframes error {
+      from {
+        background-color: #ffdd1b;
+      }
+      to {
+        background-color: #ff000000;
+      }
+    }
+  }
+
+  @media screen and (min-width: $laptops) {
+    flex-direction: row;
+    font-size: 1.2em;
+  }
+}
+
+.settings-page__header {
+  display: grid;
+  grid-template-areas: "a a a";
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 2px solid $basicColor1;
+  padding-bottom: 7px;
+  background-color: $basicColor5;
+
+  .button {
+    transition-duration: 0.5s;
+    border: none;
+    background-color: initial;
+    font-family: $mainFont2;
+    font-size: 0.7em;
+    color: #000;
+
+    &:hover {
+      background-color: $basicColor3;
+      color: $fontColor;
+    }
+    &.active {
+      color: $basicColor1;
+      border-bottom: 1px solid $basicColor1;
+    }
+  }
+
+  @media screen and (min-width: $laptops) {
+    grid-template-areas: "a";
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    border-bottom: none;
+    border-right: 2px solid $basicColor1;
+    width: 150px;
+    height: 350px;
+  }
+}
+
+.settings-page__root {
+  background-color: $basicColor5;
+
+  @media screen and (min-width: $laptops) {
+    margin-left: 25px;
+    width: 70%;
+  }
 }

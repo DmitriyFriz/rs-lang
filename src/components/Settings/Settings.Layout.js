@@ -4,7 +4,7 @@ import { BUTTONS, NOTIFICATIONS } from './Settings.Constants';
 
 function getLayout() {
   return `
-    <button class="button button-settings-main" data-destination="${SETTINGS_ROUTES.MAIN}">Main</button>
+    <button class="button button-settings-main active" data-destination="${SETTINGS_ROUTES.MAIN}">Main</button>
     <button class="button button-settings-repetition" data-destination="${SETTINGS_ROUTES.REPETITION}">Interval repetition method</button>
     <button class="button button-settings-user" data-destination="${SETTINGS_ROUTES.USER}">User</button>
 `;

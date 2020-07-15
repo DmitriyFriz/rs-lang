@@ -24,7 +24,7 @@ const data = {
         tag: 'div',
         className: 'completed',
         innerHTML: `<p class="completed__title">
-          Completed: <span class="completed__value" data-statistics="${STATISTICS.TRAINING_NUMBER}"></span></p>`,
+          Completed training: <span class="completed__value" data-statistics="${STATISTICS.TRAINING_NUMBER}"></span></p>`,
       },
       {
         tag: 'div',

@@ -87,7 +87,18 @@ class Settings extends BaseComponent {
   }
 
   handleTabs(event) {
+    this.switchActive(event);
     onRouteChangeEvent(event, ROUTERS.SETTINGS);
+  }
+
+  switchActive(event) {
+    const path = get(event, 'target.dataset.destination');
+    if (!path) { return; }
+
+    const items = this.header.querySelectorAll('[data-destination]');
+    [...items].forEach((item) => item.classList.remove('active'));
+
+    event.target.classList.add('active');
   }
 }
 
