@@ -9,7 +9,6 @@ import SpeakItMain from './SpeakIt/components/SpeakItMain.View';
 import SprintStart from './Sprint/Start/SprintStart.View';
 import SprintGame from './Sprint/Game/SprintGame.View';
 import SprintFinish from './Sprint/Finish/SprintFinish.View';
-import EnglishPuzzleMainStatisticsView from './EnglishPuzzle/EnglishPuzzleMainStatistics.View';
 
 // router
 import Router from '../../router/Router';
@@ -38,7 +37,6 @@ class Games extends BaseComponent {
       [GAMES_ROUTES.SPRINT_GAME]: SprintGame,
       [GAMES_ROUTES.SPRINT_FINISH]: SprintFinish,
       [ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_GAME]: EnglishPuzzleGame,
-      [ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_MAIN_STATISTICS]: EnglishPuzzleMainStatisticsView,
     };
 
     this.gamesRouter = new Router(

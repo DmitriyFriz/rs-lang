@@ -67,15 +67,6 @@ class Controller {
       this.isEndRound = true;
       this.showPicture();
       this.buttonMute.style.display = 'none';
-
-      if (this.pageSelector.length < this.currentPage + 1) {
-        this.pageSelector.value = 1;
-        this.levelSelector.value = this.levelSelector.length < this.currentLevel + 1
-          ? 1
-          : this.currentLevel + 1;
-      } else {
-        this.pageSelector.value = this.currentPage + 1;
-      }
     }
   }
 
@@ -101,7 +92,19 @@ class Controller {
     }
   }
 
+  updateLevel() {
+    if (this.pageSelector.length < this.currentPage + 1) {
+      this.pageSelector.value = 1;
+      this.levelSelector.value = this.levelSelector.length < this.currentLevel + 1
+        ? 1
+        : this.currentLevel + 1;
+    } else {
+      this.pageSelector.value = this.currentPage + 1;
+    }
+  }
+
   newRound() {
+    this.updateLevel();
     this.clearFields();
     this.isEndRound = false;
     this.buttonDknow.style.display = 'block';
@@ -302,17 +305,26 @@ class Controller {
 
       container.innerHTML += `
             <div class="item">
-                <img src="./../../../../../assets/EnglishPuzzle/sound.svg" class="sound__icon">
+                <img src="./../../../../../assets/EnglishPuzzle/sound.svg" data-audio="${sentence.audioExample}" class="sound__icon">
                 <p class="sentence">
                     ${sentence.textExample}
                 </p>
             </div>
       `;
     }
+
+    document.querySelectorAll('.sound__icon').forEach((el) => {
+      el.addEventListener('click', () => {
+        this.sound(el.getAttribute('data-audio'), false);
+      });
+    });
   }
 
-  sound(url = BOOKS[this.currentLevel - 1][(this.count * this.currentPage) - 1].audioExample) {
-    if (!this.isEndRound) {
+  sound(
+    url = BOOKS[this.currentLevel - 1][(this.count * this.currentPage) - 1].audioExample,
+    isEndRound = this.isEndRound,
+  ) {
+    if (!isEndRound) {
       const audio = new Audio(getAbsoluteUrl(url));
 
       audio.play();
