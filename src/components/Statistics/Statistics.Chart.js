@@ -1,7 +1,7 @@
 import CanvasJS from './canvasjs.min';
 
-function initChart(container, chartData) {
-  const chart = new CanvasJS.Chart(container, {
+function initChart(chartData) {
+  const chart = new CanvasJS.Chart('statistics-chart', {
     animationEnabled: true,
     theme: 'light2',
     axisX: {
