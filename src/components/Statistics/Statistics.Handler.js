@@ -50,14 +50,41 @@ function createGamesStatLayout(name, date, res, total) {
   return layout;
 }
 
+function checkGameStat(gameStat) {
+  const [lastDate, res, total] = gameStat;
+
+  if (
+    typeof lastDate === 'number'
+    && (typeof res === 'number' || typeof res === 'string')
+    && (typeof total === 'number' || typeof total === 'string')
+  ) {
+    return { lastDate, res, total };
+  }
+  return false;
+}
+
 function createGamesStat(root, stat) {
   Object.keys(GAMES_ROUTES).forEach((key) => {
     const gameStat = get(stat, `optional.${GAMES_ROUTES[key]}`);
-    if (!gameStat) { return; }
-    const [lastDate, res, total] = gameStat;
-    const date = new Date(lastDate);
+
+    if (
+      !gameStat
+      || !GAMES_NAMES[GAMES_ROUTES[key]]
+    ) { return; }
+
+    const checkedData = checkGameStat(gameStat);
+    if (!checkedData) { return; }
+
+    // const [lastDate, res, total] = gameStat;
+    const date = new Date(checkedData.lastDate);
+
     root.append(
-      createGamesStatLayout(GAMES_NAMES[GAMES_ROUTES[key]], date.toString().replace(/GMT.*$/g, ''), res, total),
+      createGamesStatLayout(
+        GAMES_NAMES[GAMES_ROUTES[key]],
+        date.toString().replace(/GMT.*$/g, ''),
+        checkedData.res,
+        checkedData.total,
+      ),
     );
   });
 }
