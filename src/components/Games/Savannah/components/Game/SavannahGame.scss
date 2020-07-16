@@ -1,16 +1,23 @@
+.game-savanna {
+  overflow: hidden;
+}
+
 .savannah__game-wrapper {
   display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
   height: 80vh;
   position: relative;
-  justify-content: center;
-  align-items: center;
   font-family: $mainFont;
   font-size: $fontSize;
 
   .savannah-game__word {
     position: absolute;
     top: 0;
-    margin: auto;
+    transform: translateY(90px);
+    text-align: center;
 
     h1 {
       font-family: $mainFont;
@@ -21,20 +28,39 @@
     }
   }
 
+  .correct {
+    border: 1px solid rgba(88, 210, 120, 0.6) !important;
+    background: rgba(88, 210, 120, 0.7) !important;
+  }
+
+  .incorrect {
+    border: 1px solid rgba(255, 0, 47, 0.6) !important;
+    background: rgba(255, 0, 47, 0.7) !important;
+  }
+
   .gameBtn-block {
     display: grid;
+    justify-content: center;
     grid-template-rows: 2fr;
     grid-template: 'firstBlock secondBlock';
+    grid-gap: 10px;
     height: fit-content;
+    margin-bottom: 30%;
 
     .first-btn-block {
       grid-area: firstBlock;
-      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
     }
 
     .second-btn-block {
       grid-area: secondBlock;
-      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
     }
 
     .savannah-button {
@@ -48,7 +74,8 @@
       font-family: $mainFont;
       font-size: $fontSize;
       font-weight: bold;
-      text-shadow: 1px 0 1px $basicColor4;
+      text-shadow: 1px 1px 5px $basicColor4;
+      white-space: nowrap;
       outline: none;
       cursor: pointer;
       transition: all .3s;
@@ -62,6 +89,13 @@
       &:active {
         transform: scale(.85);
       }
+    }
+
+    .activeBtn {
+      background-color: $basicColor5;
+      text-shadow: 1px 0 1px $basicColor5;
+      color: $basicColor4;
+      transform: scale(.85);
     }
   }
 
@@ -78,31 +112,67 @@
   }
 
   .move-word {
-    animation: moveWord 4s ease-in;
+    animation: moveWord 2.5s ease-in;
     opacity: 0;
   }
 
-  .hide-word {
-    opacity: 0;
-    animation: hideAnimation 1.2s ease;
+  .show-word {
+    animation: showWord .5s ease-in;
   }
 
   .right-word {
-    animation: rightWord 1s ease-out;
-    letter-spacing: 0;
+    transform: translateY(90px) !important;
+    animation: rightWord .5s ease-in-out;
     opacity: 0;
   }
 
+  .control-game {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 0 15px;
+  }
+
+  .sound-control-btn {
+    outline: none;
+    background: none;
+    border: none;
+    margin-left: 2rem;
+    cursor: pointer;
+
+
+    img {
+      transition: all .3s;
+      width: 50px;
+      height: 35px;
+
+      &:hover {
+        transform: scale(1.2);
+        filter: invert(1);
+      }
+      &:active {
+        transform: scale(.9);
+      }
+    }
+  }
+
+  .game-life-block {
+    margin-right: 2rem;
+  }
 }
 
 @keyframes rightWord {
   from {
-    letter-spacing: 0;
+    letter-spacing: normal;
     opacity: 1;
+    transform: translateY(400px);
+    color: $basicColor4
   }
   to {
     letter-spacing: 800px;
-    opacity: 0;
+    opacity: .3;
+    transform: translateY(90px);
+    color: $fontColor;
   }
 }
 
@@ -114,6 +184,15 @@
   to {
     transform: translateY(400px);
     opacity: 0;
+  }
+}
+
+@keyframes showWord {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

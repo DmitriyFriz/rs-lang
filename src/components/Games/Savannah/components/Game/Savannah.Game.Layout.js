@@ -1,4 +1,6 @@
 import BaseComponent from 'components/BaseComponent/BaseComponent';
+import lifeIn from '../../images/life_in.svg';
+import soundOn from '../../images/music_on.svg';
 
 export default function getGameLayout() {
   const { createElement } = BaseComponent;
@@ -9,8 +11,24 @@ export default function getGameLayout() {
 
   const wordPlace = createElement({
     tag: 'div',
-    className: 'savannah-game__word',
+    className: 'savannah-game__word move-word',
     id: 'transferWord',
+  });
+
+  const controlGame = createElement({
+    tag: 'div',
+    className: 'control-game',
+  });
+
+  const soundBlock = createElement({
+    tag: 'div',
+    className: 'soundBlock',
+  });
+
+  const lifeGameBlock = createElement({
+    tag: 'div',
+    className: 'game-life-block',
+    id: 'gameLifeBlock',
   });
 
   const gameWord = createElement({
@@ -35,6 +53,31 @@ export default function getGameLayout() {
     className: 'second-btn-block',
   });
 
+  const gameLife = [...Array(5)].map((img, index) => createElement({
+    tag: 'img',
+    className: 'gameLife',
+    id: `life${index}`,
+  }));
+
+  gameLife.forEach((element) => {
+    element.src = `${lifeIn}`;
+  });
+
+  const soundControl = createElement({
+    tag: 'button',
+    className: 'sound-control-btn',
+    id: 'controlSound',
+  });
+
+  const soundImg = createElement({
+    tag: 'img',
+    className: 'savannah-sound-img',
+    id: 'soundImg',
+  });
+
+  soundImg.src = soundOn;
+  soundControl.append(soundImg);
+
   const gameBtn = [...Array(4)]
     .map(() => createElement({
       tag: 'button',
@@ -42,12 +85,17 @@ export default function getGameLayout() {
       content: 'type',
     }));
 
+  soundBlock.append(soundControl);
+  lifeGameBlock.append(...gameLife);
+
+  controlGame.append(soundBlock, lifeGameBlock);
+
   firstBlock.append(gameBtn[0], gameBtn[1]);
   secondBlock.append(gameBtn[2], gameBtn[3]);
 
   gameBtnBlock.append(firstBlock, secondBlock);
   wordPlace.append(gameWord);
-  savannahWrapper.append(gameBtnBlock, wordPlace);
+  savannahWrapper.append(wordPlace, gameBtnBlock, controlGame);
 
   return savannahWrapper;
 }
