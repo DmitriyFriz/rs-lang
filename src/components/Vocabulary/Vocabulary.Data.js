@@ -70,6 +70,7 @@ const pageLayout = {
     className: 'vocabulary__next button',
   },
   hidden: 'hidden',
+  today: 'Today',
 };
 
 const navTabsLayout = [

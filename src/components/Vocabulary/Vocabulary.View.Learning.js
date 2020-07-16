@@ -11,8 +11,6 @@ import Words from '../../domain-models/Words/Words';
 // loader
 import Loader from '../Loader/Loader.View';
 
-// import Settings from '../../domain-models/Settings/Settings';
-
 // layout
 import {
   getLayout,
@@ -99,6 +97,7 @@ class VocabularyLearning extends BaseComponent {
       && wordsData.data[0].totalCount[0].count
     ) {
       this.categoryWordsAmount = wordsData.data[0].totalCount[0].count;
+      this.todayWordsAmount = 0;
       this.words = [];
       console.log(wordsData.data[0]);
       wordsData.data[0].paginatedResults.forEach((element) => {
@@ -114,10 +113,25 @@ class VocabularyLearning extends BaseComponent {
           textExampleTranslate: element.textExampleTranslate,
           textMeaning: element.textMeaning,
           textMeaningTranslate: element.textMeaningTranslate,
-          date: this.getDate(element.userWord.optional.DATE),
+          // date: this.getDate(element.userWord.optional.DATE),
           amount: element.userWord.optional.AMOUNT,
-          repeatDate: this.getDate(element.userWord.optional.REPEAT.DATE),
+          // repeatDate: this.getDate(element.userWord.optional.REPEAT.DATE),
         };
+
+        const date = element.userWord.optional.DATE;
+        const repeatDate = element.userWord.optional.REPEAT.DATE;
+
+        if (this.isDateToday(date)) {
+          this.todayWordsAmount += 1;
+          resultElement.date = pageLayout.today;
+        } else {
+          resultElement.date = this.getDate(date);
+        }
+
+        resultElement.repeatDate = new Date() > repeatDate
+          ? pageLayout.today
+          : this.getDate(repeatDate);
+        console.log(resultElement.repeatDate);
 
         this.words.push(resultElement);
       });
@@ -125,6 +139,7 @@ class VocabularyLearning extends BaseComponent {
       this.prepareWordsPerPage();
     } else {
       this.categoryWordsAmount = 0;
+      this.todayWordsAmount = 0;
       this.words = null;
     }
   }
@@ -144,6 +159,15 @@ class VocabularyLearning extends BaseComponent {
     audio.preload = 'auto';
     audio.src = src;
     audio.play();
+  }
+
+  isDateToday(timestamp) {
+    const today = new Date();
+    const newDate = new Date(timestamp);
+
+    return newDate.getDate() === today.getDate()
+    && newDate.getMonth() === today.getMonth()
+    && newDate.getFullYear() === today.getFullYear();
   }
 
   getDate(timestamp, lang = 'en') {
