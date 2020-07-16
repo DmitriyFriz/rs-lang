@@ -17,6 +17,7 @@ import EnglishPuzzleGame from 'components/Games/EnglishPuzzle/EnglishPuzzleGame.
 import Savannah from 'components/Games/Savannah/Savannah';
 import SavannahGetReady from 'components/Games/Savannah/components/GetReady/Savannah.GetReady.View';
 import SavannahGame from 'components/Games/Savannah/components/Game/Savannah.Game.View';
+import SavannahResultGameView from 'components/Games/Savannah/components/ResultGame/Savannah.ResultGame.View';
 import GamesList from './GamesList/GamesList.View';
 import SpeakIt from './SpeakIt/SpeakIt.View';
 import EnglishPuzzle from './EnglishPuzzle/EnglishPuzzleMenu.View';
@@ -37,6 +38,7 @@ class Games extends BaseComponent {
       [GAMES_ROUTES.SAVANNAH]: Savannah,
       [GAMES_ROUTES.SAVANNAH_GET_READY]: SavannahGetReady,
       [GAMES_ROUTES.SAVANNAH_GAME]: SavannahGame,
+      [GAMES_ROUTES.SAVANNAH_RESULT_GAME]: SavannahResultGameView,
       [SPEAK_IT_ROUTERS.SPEAK_IT_MAIN]: SpeakItMain,
       [GAMES_ROUTES.ENGLISH_PUZZLE]: EnglishPuzzle,
       [GAMES_ROUTES.SPRINT]: SprintStart,
