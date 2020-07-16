@@ -11,13 +11,14 @@ const GAMES_NAMES = {
   [GAMES_ROUTES.SPRINT]: 'Sprint',
 };
 
-function getLineData(name) {
+function getLineData(name, color) {
   return {
-    type: 'line',
     name,
     showInLegend: true,
+    legendMarkerType: 'square',
+    type: 'area',
+    color,
     markerSize: 0,
-    yValueFormatString: '',
     dataPoints: [],
   };
 }
@@ -27,8 +28,8 @@ function getDataPoint(date, words) {
 }
 
 function getChartData(statData) {
-  const newWordsChartData = getLineData('New words');
-  const allWordsChartData = getLineData('All words');
+  const newWordsChartData = getLineData('New words', 'rgba(14, 113, 138, 0.7)');
+  const allWordsChartData = getLineData('All words', 'rgba(62, 178, 207, 0.6)');
 
   statData.forEach((stat) => {
     const [lastGameDate, allWords, newWords] = stat;
