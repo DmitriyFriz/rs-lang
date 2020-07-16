@@ -327,10 +327,9 @@ class SpeakItMain extends BaseComponent {
 
   statisticFinish() {
     const date = Date.now();
-    const res = {
-      incorrect: this.longStatistic.incorrect.length,
-      correct: this.longStatistic.correct.length,
-    };
+    const correct = this.longStatistic.correct.length;
+    const incorrect = this.longStatistic.incorrect.length
+    const res = `${Math.round((correct / (correct + incorrect)) * 100)}%`;
     const total = this.statisticTotal + 1;
     const data = [date, res, total];
     statisticsDomainModel.updateStatistics(GAMES_ROUTES.SPEAK_IT, data);
