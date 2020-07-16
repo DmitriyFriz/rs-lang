@@ -17,7 +17,7 @@ class EnglishPuzzleGame extends BaseComponent {
 
   createLayout() {
     this.component.innerHTML = `
-    <main class="main">
+    <main class="english-puzzle">
         <div class="content main__content">
             <div class="game-screen">
                 ${CreateStatistics()}
