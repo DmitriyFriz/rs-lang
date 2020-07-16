@@ -1,95 +1,95 @@
 .learning-words {
-
-}
-
-.swiper {
-  order: 1;
-  margin: 0 auto;
-  width: 90%;
-  height: 80%;
-}
-
-.swiper__container {
-  overflow: auto;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  box-sizing: border-box;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  height: 100%;
-  user-select: none;
-  list-style: none;
-}
-
-.swiper-slide {
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
-  transition-duration: 1s;
-  align-items: center;
-  box-sizing: border-box;
-  border: solid 1px #9b9997;
-  border-radius: 7px;
-  padding: 5px;
-  height: 100%;
-  background-color: $basicColor5;
-  text-align: center;
-  color: $basicColor1;
-
-  & > div,
-  & > button {
-    margin: 5px;
+  .swiper {
+    order: 1;
+    margin: 0 auto;
+    width: 90%;
+    height: 80%;
   }
 
-  &__translation,
-  &__meaning,
-  &__example,
-  &__answer,
-  &__transcription {
-    padding: 5px;
-    border-bottom: 1px solid #9b9997d2;
-    width: 95%;
-  }
-
-  &__word-input {
+  .swiper__container {
+    overflow: auto;
     position: relative;
+    z-index: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    list-style: none;
   }
 
-  .translation,
-  &__transcription,
-  #card-play-audio,
-  #card-check-btn,
-  #card-skip-btn {
-    &.hide {
-      display: none;
+  .swiper-slide {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    transition-duration: 1s;
+    align-items: center;
+    box-sizing: border-box;
+    border: solid 1px #9b9997;
+    border-radius: 7px;
+    padding: 5px;
+    height: 100%;
+    background-color: $basicColor5;
+    text-align: center;
+    color: $basicColor1;
+
+    & > div,
+    & > button {
+      margin: 5px;
+    }
+
+    &__translation,
+    &__meaning,
+    &__example,
+    &__answer,
+    &__transcription {
+      padding: 5px;
+      border-bottom: 1px solid #9b9997d2;
+      width: 95%;
+    }
+
+    &__word-input {
+      position: relative;
+    }
+
+    .translation,
+    &__transcription,
+    #card-play-audio,
+    #card-check-btn,
+    #card-skip-btn {
+      &.hide {
+        display: none;
+      }
+    }
+
+    &__answer,
+    .success-word,
+    &__word-translation {
+      text-transform: uppercase;
+      color: #148abd;
     }
   }
 
-  &__answer,
-  .success-word,
-  &__word-translation {
-    text-transform: uppercase;
-    color: #148abd;
+  .swiper-button-next {
+    right: -15px;
+  }
+  .swiper-button-prev {
+    left: -15px;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    transition: $basicTransition;
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      color: $basicColor1;
+    }
   }
 }
 
-.swiper-button-next {
-  right: -15px;
-}
-.swiper-button-prev {
-  left: -15px;
-}
 
-.swiper-button-next,
-.swiper-button-prev {
-  transition: $basicTransition;
-  &:focus {
-    outline: none;
-  }
-  &:hover {
-    color: $basicColor1;
-  }
-}
 
