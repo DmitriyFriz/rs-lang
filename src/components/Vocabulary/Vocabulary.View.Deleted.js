@@ -1,5 +1,5 @@
 // constants
-import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
+import { VOCABULARY } from 'domainModels/Words/Words.Constants';
 
 // views
 import Vocabulary from './Vocabulary.View.Learning';

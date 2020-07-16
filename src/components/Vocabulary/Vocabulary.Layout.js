@@ -1,5 +1,5 @@
-import BaseComponent from '../BaseComponent/BaseComponent';
-import { VOCABULARY } from '../../domain-models/Words/Words.Constants';
+import BaseComponent from 'components/BaseComponent/BaseComponent';
+import { VOCABULARY } from 'domainModels/Words/Words.Constants';
 import { pageLayout, navTabsLayout, constants } from './Vocabulary.Data';
 
 const { createElement } = BaseComponent;
