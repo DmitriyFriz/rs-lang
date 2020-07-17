@@ -1,5 +1,5 @@
 .game-savanna {
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 .savannah__game-wrapper {
@@ -45,7 +45,7 @@
     grid-template: 'firstBlock secondBlock';
     grid-gap: 10px;
     height: fit-content;
-    margin-bottom: 30%;
+    margin-bottom: 10em;
 
     .first-btn-block {
       grid-area: firstBlock;
@@ -99,17 +99,7 @@
     }
   }
 
-  @media screen and (max-width: $tablets) {
-    .savannah-button {
-      font-size: 15px;
-    }
-  }
 
-  @media screen and (max-width: $phones) {
-    .gameBtn-block {
-      grid-template: 'firstBlock' 'secondBlock';
-    }
-  }
 
   .move-word {
     animation: moveWord 2.5s ease-in;
@@ -122,7 +112,7 @@
 
   .right-word {
     transform: translateY(90px) !important;
-    animation: rightWord .5s ease-in-out;
+    animation: rightWord 5s ease-in-out;
     opacity: 0;
   }
 
@@ -196,3 +186,41 @@
   }
 }
 
+@media screen and (max-width: $tablets) {
+  .savannah-button {
+    font-size: 15px!important;
+  }
+}
+
+@media screen and (max-width: $phones) {
+  .gameBtn-block {
+    grid-template: 'firstBlock' 'secondBlock';
+  }
+}
+
+@media screen and (max-width: 410px) {
+  @keyframes rightWord {
+    from {
+      opacity: 1;
+      transform: rotate(0deg) translateY(90px);
+      color: $basicColor4
+    }
+    to {
+      opacity: .3;
+      transform: rotate(3600deg) translateY(90px);
+      color: $fontColor;
+    }
+  }
+
+  .keyboard-info {
+    display: none !important;
+  }
+
+  .gameBtn-block {
+    margin-bottom: 3em !important;
+  }
+
+  .savannah-button {
+    font-size: 13px !important;
+  }
+}
