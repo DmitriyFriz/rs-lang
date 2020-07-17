@@ -33,6 +33,7 @@
 
       span {
         color: $basicColor1;
+        text-shadow: 1px 1px 2px #ccc;
       }
 
       label {
@@ -74,6 +75,7 @@
       margin-top: 20px;
       margin-bottom: 0 !important;
       color: $basicColor1;
+      text-shadow: 1px 1px 2px #ccc;
     }
 
     &__avatars-link {
@@ -107,13 +109,14 @@
     -webkit-background-size: cover;
     background-size: cover;
     background-position: center;
-    background-image: url(../../assets/img/parallax-background.png);
+    background-image: url(../../assets/img/parallax-background.jpg);
   }
 
   .swiper-slide .title {
     font-size: 1.5em;
     margin-bottom: 20px;
     color: $basicColor4;
+    text-shadow: 1px 1px 2px #ccc;
 
     @media (min-width: $laptops){
       font-size: 2.5em;
@@ -126,6 +129,8 @@
     max-width: 1000px;
     font-size: 0.8em;
     line-height: 1.3;
+    text-shadow: 1px 1px 2px #000;
+
     p {
       margin-bottom: 20px;
     }
