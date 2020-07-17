@@ -18,8 +18,8 @@ class EnglishPuzzleGame extends BaseComponent {
   createLayout() {
     this.component.innerHTML = `
     <main class="english-puzzle">
-        <div class="content main__content">
-            <div class="game-screen">
+        <div class="english-puzzle-content english-puzzle-main__content">
+            <div class="english-puzzle-game-screen">
                 ${CreateStatistics()}
                 ${CreateHeader()}
                 ${CreateMainBlock()}
