@@ -20,16 +20,26 @@ class Promo extends BaseComponent {
     await super.show();
 
     return new Swiper('.promo-container', {
-      speed: 600,
+      speed: 1200,
       parallax: true,
-      // grabCursor: true,
+      direction: 'vertical',
+      touchEventsTarget: 'container',
+      mousewheel: {
+        invert: false,
+      },
+      scrollbar: {
+        el: '.swiper-scrollbar',
+      },
       pagination: {
         el: '.swiper-pagination',
+        dynamicBullets: true,
         clickable: true,
       },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+      autoplay: {
+        delay: 7000,
+      },
+      keyboard: {
+        enabled: true,
       },
     });
   }
