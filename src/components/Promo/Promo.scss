@@ -111,21 +111,26 @@
   }
 
   .swiper-slide .title {
-    font-size: 2.5em;
+    font-size: 1.5em;
     margin-bottom: 20px;
     color: $basicColor4;
+
+    @media (min-width: $laptops){
+      font-size: 2.5em;
+    }
   }
   .swiper-slide .subtitle {
     margin-bottom: 10px;
   }
   .swiper-slide .text {
     max-width: 1000px;
+    font-size: 0.8em;
     line-height: 1.3;
     p {
       margin-bottom: 20px;
     }
 
-    @media (min-width: $tablets){
+    @media (min-width: $laptops){
       display: block;
       font-size: 1.5em;
     }
