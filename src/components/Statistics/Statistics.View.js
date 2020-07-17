@@ -20,9 +20,7 @@ import StatisticsDomain from '../../domain-models/Statistics/Statistics';
 import { getChartData, createGamesStat } from './Statistics.Handler';
 
 // Layout
-import { getNoStatNotification } from './Statistics.Layout';
-
-const { createElement } = BaseComponent;
+import { initMainStatLayout } from './Statistics.Layout';
 
 class Statistics extends BaseComponent {
   async prepareData() {
@@ -34,24 +32,7 @@ class Statistics extends BaseComponent {
 
   createLayout() {
     this.component.className = 'statistics-page';
-    const noStatNotification = createElement(
-      {
-        tag: 'div',
-        className: 'statistics-page__no-stat',
-        innerHTML: getNoStatNotification(),
-      },
-    );
-
-    if (!this.mainStat) {
-      this.component.append(noStatNotification);
-      return;
-    }
-
-    this.chartContainer = createElement({
-      tag: 'div',
-      id: 'statistics-chart',
-    });
-    this.component.append(this.chartContainer);
+    initMainStatLayout(this.component, this.mainStat);
 
     if (this.data) {
       createGamesStat(this.component, this.data);
@@ -62,7 +43,7 @@ class Statistics extends BaseComponent {
     await super.show();
     if (!this.mainStat) { return; }
     const chartData = getChartData(this.mainStat);
-    initChart(this.chartContainer.id, chartData);
+    initChart(chartData);
   }
 }
 

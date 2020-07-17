@@ -1,3 +1,8 @@
+// views
+import BaseComponent from 'components/BaseComponent/BaseComponent';
+
+const { createElement } = BaseComponent;
+
 function getNoStatNotification() {
   return `
       <p class="no-stat__title">Do at least one training and I'll show you everything</p>
@@ -21,4 +26,25 @@ function getGamesStatLayout(name, lastGameDate, res, totalGames) {
   `;
 }
 
-export { getNoStatNotification, getGamesStatLayout };
+function initMainStatLayout(root, stat) {
+  const noStatNotification = createElement(
+    {
+      tag: 'div',
+      className: 'statistics-page__no-stat',
+      innerHTML: getNoStatNotification(),
+    },
+  );
+
+  if (!stat) {
+    root.append(noStatNotification);
+    return;
+  }
+
+  const chartContainer = createElement({
+    tag: 'div',
+    id: 'statistics-chart',
+  });
+  root.append(chartContainer);
+}
+
+export { initMainStatLayout, getGamesStatLayout };

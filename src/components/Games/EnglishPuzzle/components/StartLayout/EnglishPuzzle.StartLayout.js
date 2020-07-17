@@ -1,13 +1,16 @@
 import { GAMES_ROUTES, ENGLISH_PUZZLE_ROUTES } from 'router/Router.Constants';
 
+// logo
+import logo from 'assets/mini-games-logo/englishPuzzleLogo.svg';
+
 const createLayoutGame = () => (
-  `<div class="start-display">
-    <img class="logo-of-game" src="./../../../../../assets/mini-games-logo/englishPuzzleLogo.svg" alt="">
-    <h1 class="name-of-game">English–Puzzle</h1>
-    <h3 class="description-of-game">Practice your writing English skills</h3>
-    <div class="button-for-game">
-      <button class="button button_back" data-destination=${GAMES_ROUTES.GAMES_LIST}>Back</button>
-      <button class="button button_start" data-destination=${ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_GAME}>Play</button>
+  `<div class="game-message">
+    <img class="game-message__logo" src="${logo}" alt="">
+    <h1 class="game-message__title">English–Puzzle</h1>
+    <p class="game-message__description">Practice your writing English skills</p>
+    <div class="game-message__button-container">
+      <button class="game-message__button" data-destination=${GAMES_ROUTES.GAMES_LIST}>Back</button>
+      <button class="game-message__button" data-destination=${ENGLISH_PUZZLE_ROUTES.ENGLISH_PUZZLE_GAME}>Play</button>
     </div>
   </div>`
 );

@@ -11,13 +11,14 @@ const GAMES_NAMES = {
   [GAMES_ROUTES.SPRINT]: 'Sprint',
 };
 
-function getLineData(name) {
+function getLineData(name, color) {
   return {
-    type: 'line',
     name,
     showInLegend: true,
+    legendMarkerType: 'square',
+    type: 'area',
+    color,
     markerSize: 0,
-    yValueFormatString: '',
     dataPoints: [],
   };
 }
@@ -27,8 +28,8 @@ function getDataPoint(date, words) {
 }
 
 function getChartData(statData) {
-  const newWordsChartData = getLineData('New words');
-  const allWordsChartData = getLineData('All words');
+  const newWordsChartData = getLineData('New words', 'rgba(14, 113, 138, 0.7)');
+  const allWordsChartData = getLineData('All words', 'rgba(62, 178, 207, 0.6)');
 
   statData.forEach((stat) => {
     const [lastGameDate, allWords, newWords] = stat;
@@ -50,14 +51,41 @@ function createGamesStatLayout(name, date, res, total) {
   return layout;
 }
 
+function checkGameStat(gameStat) {
+  const [lastDate, res, total] = gameStat;
+
+  if (
+    typeof lastDate === 'number'
+    && (typeof res === 'number' || typeof res === 'string')
+    && (typeof total === 'number' || typeof total === 'string')
+  ) {
+    return { lastDate, res, total };
+  }
+  return false;
+}
+
 function createGamesStat(root, stat) {
   Object.keys(GAMES_ROUTES).forEach((key) => {
     const gameStat = get(stat, `optional.${GAMES_ROUTES[key]}`);
-    if (!gameStat) { return; }
-    const [lastDate, res, total] = gameStat;
-    const date = new Date(lastDate);
+
+    if (
+      !gameStat
+      || !GAMES_NAMES[GAMES_ROUTES[key]]
+    ) { return; }
+
+    const checkedData = checkGameStat(gameStat);
+    if (!checkedData) { return; }
+
+    // const [lastDate, res, total] = gameStat;
+    const date = new Date(checkedData.lastDate);
+
     root.append(
-      createGamesStatLayout(GAMES_NAMES[GAMES_ROUTES[key]], date.toString().replace(/GMT.*$/g, ''), res, total),
+      createGamesStatLayout(
+        GAMES_NAMES[GAMES_ROUTES[key]],
+        date.toString().replace(/GMT.*$/g, ''),
+        checkedData.res,
+        checkedData.total,
+      ),
     );
   });
 }

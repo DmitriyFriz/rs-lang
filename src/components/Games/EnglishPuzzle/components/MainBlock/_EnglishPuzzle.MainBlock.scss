@@ -38,7 +38,7 @@
 
   .playboard__sentence {
     display: flex;
-    overflow: scroll;
+    overflow: auto;
     align-items: center;
     font-size: 0.3em;
     text-transform: uppercase;
@@ -91,6 +91,7 @@
   align-items: center;
   border: 3px solid $basicColor4;
   background-color: $basicColor3;
+  min-width: 70px;
   color: white;
   height: 25px;
   display: flex;

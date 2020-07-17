@@ -27,6 +27,9 @@ class Controller {
     this.statics = document.querySelector('.button__results');
     this.statistics = new Statistics();
     this.buttonClose = document.querySelector('.close');
+    this.statisticsLoc = localStorage.getItem(GAMES_ROUTES.ENGLISH_PUZZLE)
+      ? JSON.parse(localStorage.getItem(GAMES_ROUTES.ENGLISH_PUZZLE))
+      : [];
 
     this.setStatistics().then();
     this.updateFields();
@@ -35,7 +38,7 @@ class Controller {
   async setStatistics() {
     try {
       const result = await this.statistics.getStatistics();
-      this.currentStatistics = result.data.optional[GAMES_ROUTES.ENGLISH_PUZZLE];
+      this.currentStatistics = result.data.optional[GAMES_ROUTES.ENGLISH_PUZZLE] || [];
     } catch (e) {
       this.currentStatistics = [];
     }
@@ -207,6 +210,7 @@ class Controller {
 
     if (correct === this.piecesArr.length) {
       this.saveLocalStorage(true);
+      this.saveToDateBase(true);
       if (this.buttonListen.classList.contains('button-active')) {
         this.sound();
       }
@@ -218,15 +222,15 @@ class Controller {
   }
 
   saveLocalStorage(isCorrect) {
-    if (!this.currentStatistics.some((el) => this.checkOnLevelAndPage(el))) {
-      this.currentStatistics.push({
+    if (!this.statisticsLoc.some((el) => this.checkOnLevelAndPage(el))) {
+      this.statisticsLoc.push({
         currentLevel: this.currentLevel,
         currentPage: this.currentPage,
         data: [],
       });
     }
 
-    const blockPuzzle = this.currentStatistics.find((el) => this.checkOnLevelAndPage(el));
+    const blockPuzzle = this.statisticsLoc.find((el) => this.checkOnLevelAndPage(el));
     const sentenceBlock = blockPuzzle.data.find((el) => el.sentence === this.currentSentence);
 
     if (sentenceBlock) {
@@ -238,11 +242,22 @@ class Controller {
       });
     }
 
-    this.updateStatistics(this.currentStatistics).then();
+    localStorage.setItem(GAMES_ROUTES.ENGLISH_PUZZLE, JSON.stringify(this.statisticsLoc));
   }
 
   checkOnLevelAndPage(el) {
     return el.currentLevel === this.currentLevel && el.currentPage === this.currentPage;
+  }
+
+  saveToDateBase(isCorrect) {
+    const date = Date.now();
+    const statisticTotal = this.currentStatistics[2] || 0;
+    const statisticRes = this.currentStatistics[1] || 0;
+    const res = isCorrect ? statisticRes + 1 : statisticRes;
+    const total = statisticTotal + 1;
+    this.currentStatistics = [date, res, total];
+
+    this.updateStatistics(this.currentStatistics).then();
   }
 
   dontknow() {
@@ -254,6 +269,7 @@ class Controller {
     }
 
     this.saveLocalStorage(false);
+    this.saveToDateBase(false);
 
     if (this.buttonListen.classList.contains('button-active')) {
       this.sound();
@@ -292,7 +308,7 @@ class Controller {
         <p class="modal-name-of-picture">${currentLevel.author}-${currentLevel.name}(${currentLevel.year})</p>
     `;
 
-    const sentences = this.currentStatistics;
+    const sentences = this.statisticsLoc;
 
     const currentSentences = sentences.find((sentence) => (
       sentence.currentLevel === this.currentLevel && sentence.currentPage === this.currentPage));

@@ -6,7 +6,7 @@ import Swiper from 'swiper';
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // layout
-import getLayout from './Promo.Layout';
+import { getLayout, addAvatars } from './Promo.Layout';
 
 // style
 import './Promo.scss';
@@ -14,22 +14,33 @@ import './Promo.scss';
 class Promo extends BaseComponent {
   createLayout() {
     this.component.innerHTML = getLayout();
+    addAvatars(this.component);
   }
 
   async show() {
     await super.show();
 
     return new Swiper('.promo-container', {
-      speed: 600,
+      speed: 1200,
       parallax: true,
-      // grabCursor: true,
+      direction: 'vertical',
+      touchEventsTarget: 'container',
+      mousewheel: {
+        invert: false,
+      },
+      scrollbar: {
+        el: '.swiper-scrollbar',
+      },
       pagination: {
         el: '.swiper-pagination',
+        dynamicBullets: true,
         clickable: true,
       },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+      autoplay: {
+        delay: 7000,
+      },
+      keyboard: {
+        enabled: true,
       },
     });
   }

@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+  padding-bottom: 20px;
   width: 90vw;
   max-width: 1000px;
-
+  
   #statistics-chart {
     height: 50vh;
     @media (min-width: $laptops) {
@@ -17,15 +18,17 @@
     margin-top: 20px;
     padding: 20px 0;
     text-align: center;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #9b9997;
+    box-shadow: inset 0px -100px 80px -80px $basicColor5;
 
     & > div {
       margin-bottom: 7px;
     }
 
     &__title {
-      font-size: 1.7em;
       margin-bottom: 10px;
+      font-size: 1.7em;
+      color: #148abd;
     }
   }
 

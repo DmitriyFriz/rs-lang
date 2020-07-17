@@ -1,9 +1,9 @@
 import CanvasJS from './canvasjs.min';
 
-function initChart(container, chartData) {
-  const chart = new CanvasJS.Chart(container, {
+function initChart(chartData) {
+  const chart = new CanvasJS.Chart('statistics-chart', {
     animationEnabled: true,
-    theme: 'light2',
+    theme: 'light1',
     axisX: {
       valueFormatString: 'DD MMM',
       crosshair: {
@@ -22,8 +22,8 @@ function initChart(container, chartData) {
     },
     legend: {
       cursor: 'pointer',
-      verticalAlign: 'bottom',
-      horizontalAlign: 'left',
+      verticalAlign: 'top',
+      horizontalAlign: 'right',
       dockInsidePlotArea: true,
     },
     data: chartData,
