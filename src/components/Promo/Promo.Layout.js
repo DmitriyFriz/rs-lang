@@ -1,4 +1,6 @@
-export default function getLayout() {
+import teamData from '../Team/Team.Data';
+
+function getLayout() {
   return `
     <div class="promo-container">
       <div class="parallax-bg" data-swiper-parallax="-23%"></div>
@@ -11,7 +13,7 @@ export default function getLayout() {
               Our team hope, that you'll like it! <br>
               If you wanna improve your english skills, you should use our application every day for an hour!
               </p>
-              <a href="https://github.com/jack-guzya/rs-lang">
+              <a class="swiper-slide__repo-link" href="https://github.com/jack-guzya/rs-lang">
                 <img src="assets/img/github.svg">
               </a>
             </div>
@@ -83,14 +85,8 @@ export default function getLayout() {
         <img src="assets/logo-black.svg">
         </div>
 
-          <div class="swiper-slide__avatars">
-          <a href=""></a>
-          <img src="https://avatars0.githubusercontent.com/u/60508453?s=460&u=265c9d60fe6f50df6fcdbc67b834f2f6ad255ddb&v=4">
-          <img src="https://avatars1.githubusercontent.com/u/52852333?s=460&u=e0752e79575444937fffbf09c0697c953325e170&v=4">
-          <img src="https://avatars1.githubusercontent.com/u/51335216?s=460&u=607c60ebe14e35744068d4c62ae090b76aebae6e&v=4">
-          <img src="https://avatars2.githubusercontent.com/u/60404055?s=460&u=5665c692aa841cb824735248caa730dcf2b7e1e7&v=4">
-          <img src="https://avatars1.githubusercontent.com/u/25509335?s=460&u=a6818be768fecb4948c8f862e8da46c47e584996&v=4">
-          <img src="https://avatars2.githubusercontent.com/u/55161018?s=460&u=7bfd25389b7ed59da679441f8d29aa7f569d3f6a&v=4">
+          <div class="swiper-slide__avatars" id="slide-avatars">
+
           </div>
 
           <p class="swiper-slide__footer">2020</p>
@@ -101,3 +97,30 @@ export default function getLayout() {
     </div>
   `;
 }
+
+function addAvatars(root) {
+  const avatarsContainer = root.querySelector('#slide-avatars');
+  const DEFAULT_LINK = 'assets/img/github.svg';
+
+  teamData.forEach((data) => {
+    const avatar = document.createElement('img');
+
+    const link = document.createElement('a');
+    link.className = 'swiper-slide__avatars-link';
+    link.href = `https://github.com/${data.github}/`;
+    link.append(avatar);
+
+    avatar.src = data.photo || DEFAULT_LINK;
+
+    avatar.onerror = () => {
+      avatar.src = DEFAULT_LINK;
+      avatarsContainer.append(link);
+    };
+
+    avatar.onload = () => {
+      avatarsContainer.append(link);
+    };
+  });
+}
+
+export { getLayout, addAvatars };

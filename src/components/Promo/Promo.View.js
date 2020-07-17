@@ -6,7 +6,7 @@ import Swiper from 'swiper';
 import BaseComponent from 'components/BaseComponent/BaseComponent';
 
 // layout
-import getLayout from './Promo.Layout';
+import { getLayout, addAvatars } from './Promo.Layout';
 
 // style
 import './Promo.scss';
@@ -14,6 +14,7 @@ import './Promo.scss';
 class Promo extends BaseComponent {
   createLayout() {
     this.component.innerHTML = getLayout();
+    addAvatars(this.component);
   }
 
   async show() {
