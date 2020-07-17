@@ -1,8 +1,6 @@
 .savannah-wrapper {
   margin: auto;
   width: fit-content;
-  //background: rgba(246, 243, 241, 0.7);
-  //box-shadow: 0 0 10px 1px white;
   box-shadow: 0 0 6px $basicColor3;
   border-radius: 4px;
 
@@ -11,29 +9,40 @@
 
   background-color: $basicColor5;
   animation: showAnimation .4s ease;
-}
 
-.game-message {
-  .game-message__logo {
-    max-width: 450px;
+  .game-message {
+    .game-message__logo {
+      max-width: 400px;
+      max-height: 235px;
+    }
+
+    p {
+      font-size: 1rem;
+      padding-bottom: 15px;
+      text-transform: uppercase;
+    }
   }
 
-  p {
-    font-size: .8rem;
-    padding-bottom: 15px;
-    text-transform: uppercase;
-  }
 }
 
-@media (min-width: $phones) {
+
+
+@media (max-width: $phones) {
   .game-message__logo {
     width: 83%;
   }
 }
 
+@media screen and (max-width: 411px) {
+  .game-savanna {
+    &::after {
+      background-size: 225% !important;
+    }
+  }
+}
+
 .game-savanna {
   position: relative;
-  overflow: hidden;
 
   &::after {
     transition: background-position 2s;

@@ -38,6 +38,7 @@ export default class Savannah extends BaseComponent {
   removeListeners() {
     this.buttonBack.removeEventListener('click', this.handlerCloseBtn);
     this.buttonGame.removeEventListener('click', this.handlerGetReady);
+    localStorage.removeItem('savannah-gameArray');
   }
 
   handlerCloseBtn(event) {
