@@ -1,0 +1,275 @@
+@mixin main-content-width {
+  width: calc(100% - 250px);
+  margin-left: 250px;
+}
+
+.vocabulary {
+  position: relative;
+  box-sizing: border-box;
+  height: calc(100vh - 80px);
+  max-height: 100%;
+  padding: 0.5rem;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  &__nav {
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 0.5em;
+    border-radius: 4px;
+    border: $lightBorder;
+    @media screen and (min-width: $tablets) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      flex-direction: column;
+      margin: 0;
+      border-width: 0 1px 0 0;
+      border-radius: 0;
+      width: 250px;
+    }
+  }
+
+  &__tab {
+    width: calc(100% / 3);
+    padding: 0.5rem;
+    cursor: pointer;
+    background-color: $basicColor5;
+    text-align: center;
+    text-transform: uppercase;
+
+    &:hover {
+      color: $basicColor1;
+      background-color: $basicColor2;
+    }
+
+    &--active {
+      background-color: $basicColor2;
+      font-family: $headerFont;
+    }
+
+    @media screen and (min-width: $tablets) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: calc(100% / 3);
+    }
+  }
+
+  &__container {
+    @media screen and (min-width: $tablets) {
+      @include main-content-width();
+      height: 100%;
+      max-height: 100%;
+    }
+  }
+
+  &__inner {
+    height: 100%;
+
+    @media screen and (min-width: $tablets) {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+    }
+    &.removed {
+      .vocabulary__remove {
+        width: 32px;
+        height: 32px;
+        background-image: url(/assets/vocabulary/restore.svg);
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-position: center;
+        font-size: 0;
+      }
+    }
+    &.difficult {
+      @extend .removed;
+    }
+  }
+
+  &__info {
+    text-transform: uppercase;
+    border: $lightBorder;
+    margin-bottom: 0.5em;
+    border-radius: 4px;
+    padding: 0.5em 1em;
+    background-color: $basicColor5;
+  }
+  &__groups {
+    @extend .vocabulary__info;
+  }
+
+  &__list {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    @media screen and (min-width: $tablets) {
+      width: 100%;
+      padding-right: 0.5em;
+      overflow-y: auto;
+
+      scrollbar-color: $basicColor3 $basicColor5;
+      scrollbar-width: thin;
+
+      max-height: calc(
+        100% - 34px - 47px - 1em
+      ); //check info and nav height with margin
+
+      &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 1px $basicColor4;
+        background-color: transparent;
+      }
+
+      &::-webkit-scrollbar {
+        width: 3px;
+        background-color: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $basicColor4;
+        border: 1px solid $basicColor1;
+      }
+    }
+  }
+
+  &__item {
+    position: relative;
+    transition: $basicTransition;
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    border: $lightBorder;
+    border-radius: 4px;
+    background-color: $basicColor5;
+    line-height: 1.3;
+
+    @media screen and (min-width: $tablets) {
+      display: flex;
+      justify-content: flex-start;
+      padding-right: 2em;
+    }
+    &.hidden {
+      overflow: hidden;
+      height: 0;
+      padding: 0;
+      opacity: 0;
+    }
+  }
+
+  &__image {
+    display: block;
+    margin: auto;
+    margin-bottom: 1em;
+    width: 300px;
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+
+    @media screen and (min-width: $tablets) {
+      width: 100px;
+      height: 100px;
+      margin: 0.5em;
+      margin-right: 2%;
+    }
+  }
+
+  &__word-info {
+    flex-grow: 1;
+  }
+
+  &__word {
+    display: inline-block;
+    font-size: $fontSize;
+    font-family: $headerFont;
+    color: $basicColor4;
+  }
+
+  &__audio {
+    display: inline-block;
+    margin-left: 1em;
+    outline: none;
+    border: 0;
+    width: 1.3em;
+    height: 1.3em;
+    background-color: transparent;
+    background-image: url(/assets/mini-games/img/sound-icon.svg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+
+  &__text {
+    padding: 0.5em 0;
+    border-bottom: 1px solid $basicColor2;
+    p {
+      &:nth-child(2) {
+        font-size: 0.875em;
+        color: $basicColor3;
+      }
+    }
+  }
+
+  &__statistic {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0.3em 0;
+    font-family: $mainFont;
+    font-size: 0.75em;
+    span {
+      font-family: $mainFont2;
+    }
+  }
+
+  &__buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+  }
+
+  &__remove {
+    margin-bottom: 0.2em;
+  }
+
+  &__difficult {
+    width: 32px;
+    height: 32px;
+    background-image: url(/assets/vocabulary/difficult.svg);
+    background-repeat: no-repeat;
+    background-size: 90%;
+    background-position: center;
+    font-size: 0;
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+
+    @media screen and (min-width: $tablets) {
+      width: 100%;
+      margin-top: auto;
+    }
+  }
+
+  &__prev {
+    margin-right: auto;
+  }
+
+  &__next {
+    margin-left: auto;
+  }
+
+  i,
+  b {
+    font-family: $headerFont;
+    color: $basicColor4;
+  }
+}

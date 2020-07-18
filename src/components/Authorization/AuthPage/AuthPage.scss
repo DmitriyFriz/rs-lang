@@ -1,0 +1,23 @@
+.authorization {
+  fieldset {
+    input
+    {
+      margin-top: 1rem;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  input:disabled {
+    opacity: .4;
+  }
+}
+
+.authorization, .auth {
+
+  .button {
+    margin: .5rem 0 1rem 0;
+    color: $fontColor;
+  }
+}

@@ -1,0 +1,78 @@
+.savannah-wrapper {
+  margin: auto;
+  width: fit-content;
+  box-shadow: 0 0 6px $basicColor3;
+  border-radius: 4px;
+
+  padding: 15px 10px;
+  box-sizing: border-box;
+
+  background-color: $basicColor5;
+  animation: showAnimation .4s ease;
+
+  .game-message {
+    .game-message__logo {
+      max-width: 400px;
+      max-height: 235px;
+    }
+
+    p {
+      font-size: 1rem;
+      padding-bottom: 15px;
+      text-transform: uppercase;
+    }
+  }
+
+}
+
+
+
+@media (max-width: $phones) {
+  .game-message__logo {
+    width: 83%;
+  }
+}
+
+@media screen and (max-width: 411px) {
+  .game-savanna {
+    &::after {
+      background-size: 225% !important;
+    }
+  }
+}
+
+.game-savanna {
+  position: relative;
+
+  &::after {
+    transition: background-position 2s;
+    background-image: url("./images/SnavannaBGR.svg");
+    background-size: unset;
+    background-position-y: 100%;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    opacity: .7;
+  }
+
+  h3 {
+    color: $fontColor;
+  }
+}
+
+@keyframes showAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hideAnimation {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

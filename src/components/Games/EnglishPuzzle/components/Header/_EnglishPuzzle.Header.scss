@@ -1,0 +1,128 @@
+.english-puzzle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  height: 100vh;
+
+  .english-puzzle-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1020px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+
+    .english-puzzle-game-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      max-width: 900px;
+      height: 90vh;
+    }
+
+    .game-screen-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 1%;
+      font-family: $mainFont;
+      width: 100%;
+      padding: 10px 0;
+
+      .game-screen-header__left {
+        display: flex;
+        align-items: center;
+      }
+
+      .game-screen-header__right {
+        display: flex;
+        margin-top: 5%;
+
+        @media (min-width: 768px) {
+          margin-top: 0;
+        }
+      }
+
+      @media (min-width: 768px) {
+        flex-direction: row;
+        margin-top: 0;
+      }
+    }
+
+    .game-screen-header__page,
+    .game-screen-header__lvl {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+    }
+
+    select {
+      background-color: transparent;
+      border: 1px solid $basicColor4;
+      margin-left: 5px;
+      color: black;
+      outline: none;
+      font-family: $mainFont;
+    }
+
+    .button-active {
+      background-color: #b1efff;
+    }
+
+    .btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
+      padding: 1%;
+      border: $lightBorder;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.1s;
+
+      &:hover {
+        filter: drop-shadow(2px 3px 4px #68c2e8);
+      }
+
+      .button-img {
+        width: 25px;
+        height: 30px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.game-screen-panel {
+  .game-screen__sentence {
+    margin-bottom: 10px;
+    font-family: $headerFont;
+    width: 100%;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .button-mute,
+  .button-for-sound {
+    width: 30px;
+  }
+
+  .button-for-sound {
+    cursor: pointer;
+  }
+
+  .button-mute {
+    cursor: not-allowed	;
+  }
+}
+
+
